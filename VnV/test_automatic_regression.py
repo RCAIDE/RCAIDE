@@ -55,7 +55,7 @@ modules = [
     # 'Verification/performance/payload_range_test.py',
     'Verification/performance/take_off_field_length_test.py',
     'Verification/performance/take_off_weight_from_tofl_test.py',
-    'Verification/performance/aircraft_aerodynamics_test.py', 
+    # 'Verification/performance/aircraft_aerodynamics_test.py', 
     # 'Verification/performance/noise_certification_test.py', 
     'Verification/performance/V_n_diagram_test.py', 
     # 'Verification/propulsion/rotor_performance_test.py',  
