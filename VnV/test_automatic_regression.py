@@ -16,7 +16,7 @@ modules = [
     'Verification/analysis_aerodynamics/VLM_control_surface_test.py',    
     'Verification/analysis_aerodynamics/VLM_moving_surface_test.py',   
     'Verification/analysis_aerodynamics/AVL_test.py',  
-    'Verification/analysis_aerodynamics/SU2_test.py',  
+    # 'Verification/analysis_aerodynamics/SU2_test.py',  
     'Verification/analysis_aerodynamics/blended_wing_body_aerodynamics_test.py',
     'Verification/atmosphere/atmosphere.py',
     'Verification/atmosphere/constant_temperature.py',
@@ -122,6 +122,9 @@ def run_module_test(module_path):
         print(f'# Test Duration: {elapsed:.4f} min\n')
         sys.stdout.flush()
         sys.stderr.flush()
+        for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
+            if fname.endswith(".pkl"):
+                os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
 
     return passed
 

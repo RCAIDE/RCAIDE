@@ -21,7 +21,7 @@ import os,sys
 # ----------------------------------------------------------------------
 #  Calculate vehicle Payload Range Diagram
 # ----------------------------------------------------------------------  
-def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise", fuel_reserve_percentage=0.05, plot_diagram = True, fuel_name=None):  
+def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise", fuel_reserve_percentage=0.05, plot_diagram = True, fuel_name=None, delete_training_data=False):  
     """
     Calculate and plot the payload range diagram for an aircraft by modifying the cruise segment and weights.
     
@@ -115,9 +115,10 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
         else:
             payload_range  =  electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagram)
     
-    for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
-        if fname.endswith(".pkl"):
-            os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
+    if delete_training_data:
+        for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
+            if fname.endswith(".pkl"):
+                os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
 
     print("\n============== Payload Range Report ==============\n")            
     try:
