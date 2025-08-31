@@ -36,7 +36,7 @@ def main():
     return 
 
 def active_transition_test(update_regression_values):    
-    TW_vehicle  = vehicle_setup(redesign_rotors=True) 
+    TW_vehicle  = vehicle_setup(redesign_rotors=False) 
 
     # plot vehicle 
     plot_3d_vehicle(TW_vehicle,  
@@ -203,7 +203,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
     segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
                                                                                         'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
-    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise ]] 
+    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
      
     mission.append_segment(segment)
    
