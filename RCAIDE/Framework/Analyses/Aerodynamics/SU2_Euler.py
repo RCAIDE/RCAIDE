@@ -136,6 +136,9 @@ class SU2_Euler(Aerodynamics):
         if use_surrogate == True: 
             #  training data
             if not os.path.exists(self.filename):
+                for network in vehicle.networks:
+                    for propulsor in network.propulsors:
+                        propulsor.clear()
                 export_vsp_vehicle(vehicle, vehicle.tag)
         
                 vsp_filename        =  vehicle.tag +  '.vsp3'

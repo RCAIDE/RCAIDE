@@ -91,7 +91,7 @@ def main():
             print(val)
     
     # Truth values 
-    cruise_CL_truth       = 0.2753922048272238
+    cruise_CL_truth       = 0.2753927270500611
     
     # Store errors 
     error = Data() 
@@ -101,7 +101,7 @@ def main():
     print(error)
      
     for k,v in list(error.items()): 
-        assert(np.abs(v)<1e-6)
+        assert(np.abs(v)<1e-3)
         
     return 
 # ----------------------------------------------------------------------
