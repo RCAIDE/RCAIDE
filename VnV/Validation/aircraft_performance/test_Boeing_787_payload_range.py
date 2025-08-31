@@ -61,7 +61,7 @@ def payload_range_test():
     missions = Boeing_787.missions_setup(mission)
      
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.05)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.05, delete_training_data = True)
   
     
     return  payload_range_results

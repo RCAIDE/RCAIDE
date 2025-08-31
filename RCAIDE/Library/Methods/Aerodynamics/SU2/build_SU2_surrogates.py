@@ -53,6 +53,7 @@ def build_SU2_surrogates(aerodynamics):
     surrogates.dClift_dalpha    = interpolate.interp1d(mach_data, training.dClift_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')     
     surrogates.dCM_dalpha       = interpolate.interp1d(mach_data,training.dCM_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')         
       
-    return surrogates
+    aerodynamics.surrogates = surrogates
+    return #surrogates
  
  

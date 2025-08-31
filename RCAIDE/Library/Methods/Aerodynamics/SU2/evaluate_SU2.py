@@ -29,7 +29,7 @@ def evaluate_surrogate(state,settings,vehicle):
     """          
     conditions    = state.conditions
     aerodynamics  = state.analyses.aerodynamics 
-    sub_sur       = aerodynamics.surrogates.subsonic 
+    sur       = aerodynamics.surrogates #.subsonic 
     ref_vals      = aerodynamics.reference_values
     AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)    
     Mach          = np.atleast_2d(conditions.freestream.mach_number)  
@@ -58,8 +58,8 @@ def evaluate_surrogate(state,settings,vehicle):
     # Query surrogates  
     # ----------------------------------------------------------------------------------------------------------------------- 
     pts   = np.hstack((AoA,Mach))    
-    conditions.aerodynamics.coefficients.lift.total            = np.atleast_2d(sub_sur.Clift(pts)).T  
-    conditions.aerodynamics.coefficients.drag.induced.inviscid = np.atleast_2d(sub_sur.Cdrag(pts)).T 
-    conditions.static_stability.coefficients.M                 = np.atleast_2d(sub_sur.CM(pts)).T    
+    conditions.aerodynamics.coefficients.lift.inviscid.total            = np.atleast_2d(sur.Clift_alpha(pts)).T  
+    conditions.aerodynamics.coefficients.drag.induced.inviscid          = np.atleast_2d(sur.Cdrag_alpha(pts)).T 
+    conditions.static_stability.coefficients.M                          = np.atleast_2d(sur.CM_alpha(pts)).T   
     
     return 

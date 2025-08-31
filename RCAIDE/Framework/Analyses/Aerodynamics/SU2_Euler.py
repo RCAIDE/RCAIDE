@@ -19,6 +19,8 @@ from .Aerodynamics                                                   import Aero
 
 # package imports 
 import numpy as np 
+import os
+import pickle
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  SU2_Euler
@@ -65,6 +67,7 @@ class SU2_Euler(Aerodynamics):
         self.process                                                = Process()
         self.process.initialize                                     = Process()
 
+        # settings              
         self.settings.vsp_filename                                  = None
         self.settings.stl_filename                                  = None
         self.settings.SU2_filename                                  = None
@@ -127,26 +130,42 @@ class SU2_Euler(Aerodynamics):
         
 
     def initialize(self):
+        use_surrogate   = self.settings.use_surrogate   
+        # If we are using the surrogate
         vehicle = self.vehicle
-        export_vsp_vehicle(vehicle, vehicle.tag)
+        if use_surrogate == True: 
+            #  training data
+            if not os.path.exists(self.filename):
+                export_vsp_vehicle(vehicle, vehicle.tag)
         
-        vsp_filename        =  vehicle.tag +  '.vsp3'
-        stl_filename        =  vehicle.tag +  '.stl'  
-        SU2_filename        =  vehicle.tag +  '.su2'  
-        SU2_config_filename =  vehicle.tag +  '.cfg'       
-        run_vsp_mesh(vehicle,vsp_filename, self.settings.minedge,self.settings.maxedge, sym=False,farfield_scale = self.settings.farfield_scale,farfield=True,source=False)
-        write_SU2_file(stl_filename, SU2_filename)
-        
-        self.settings.vsp_filename        = vsp_filename
-        self.settings.stl_filename        = stl_filename
-        self.settings.SU2_filename        = SU2_filename
-        self.settings.SU2_config_filename = SU2_config_filename
-        
-        # sample training data
-        train_SU2_surrogates(self)
-        
-        # build surrogate
-        build_SU2_surrogates(self)
+                vsp_filename        =  vehicle.tag +  '.vsp3'
+                stl_filename        =  vehicle.tag +  '.stl'  
+                SU2_filename        =  vehicle.tag +  '.su2'  
+                SU2_config_filename =  vehicle.tag +  '.cfg'       
+                run_vsp_mesh(vehicle,vsp_filename, self.settings.minedge,self.settings.maxedge, sym=False,farfield_scale = self.settings.farfield_scale,farfield=True,source=False)
+                write_SU2_file(stl_filename, SU2_filename)
+                
+                self.settings.vsp_filename        = vsp_filename
+                self.settings.stl_filename        = stl_filename
+                self.settings.SU2_filename        = SU2_filename
+                self.settings.SU2_config_filename = SU2_config_filename
+    
+                train_SU2_surrogates(self)
+                if self.settings.store_training_data:
+                    with open(self.filename, 'wb') as file:
+                        pickle.dump(self.training, file)
+            else:
+                with open(self.filename, 'rb') as file:
+                    self.training = pickle.load(file)
+                print(r"""
+                        +----------------------------------------------------+
+                        | Aerodynamic training data loaded from file.       |
+                        | If new training data is needed, delete the file   |
+                        | and rerun the script.                             |
+                        +----------------------------------------------------+
+                        """)
+            # build surrogate
+            build_SU2_surrogates(self)
             
         return 
     

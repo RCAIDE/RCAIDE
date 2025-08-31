@@ -63,8 +63,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.process                                                = Process()
         self.process.initialize                                     = Process()  
                     
-        # correction factors               
-        self.settings.use_surrogate                                 = True  
+        # settings              
         self.settings.propeller_wake_model                          = False  
         self.settings.model_fuselage                                = False   
         self.settings.number_of_spanwise_vortices                   = 15
