@@ -8,9 +8,10 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Framework.Core import Units  
+from RCAIDE.Framework.Core import Units  , Container
 from RCAIDE.Library.Methods.Performance.aircraft_loading_diagram        import aircraft_loading_diagram
 from RCAIDE.Library.Plots.Common import set_axes, plot_style
+import matplotlib.pyplot as plt
 
 # python imports      
 import os

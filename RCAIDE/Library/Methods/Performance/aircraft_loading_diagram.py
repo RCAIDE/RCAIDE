@@ -220,7 +220,7 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
                 # store results
                 segment = results.segments['cruise'] 
             
-                aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff[0][0])
+                aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
                 aero_moment.append( segment.state.conditions.frames.wind.moment_vector[0][1])
                 aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
                 
@@ -241,7 +241,9 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
                aero_moment         = aero_moment,       
                aero_static_margin  = aero_static_margin, 
                percent_payload     =  percent_payload, 
-               percent_fuel        =  percent_fuel,    
+               percent_fuel        =  percent_fuel,
+               MTOW                = MTOW, 
+               MLW                 = MLW, 
                static_margins      =  static_margins, 
                )
     
@@ -285,6 +287,7 @@ def base_analysis(vehicle, aerodynamics,stability, weights,update_center_of_grav
     weights.settings.FLOPS.fidelity = 'Complex' 
     weights.settings.update_moment_of_inertia    = update_center_of_gravity 
     weights.settings.update_center_of_gravity    = update_center_of_gravity
+    weights.print_weight_analysis_report = False
     analyses.append(weights)
 
     # ------------------------------------------------------------------
@@ -328,7 +331,7 @@ def mission_setup(analyses, altitude, airspeed):
   
     Segments = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment()
-    base_segment.state.numerics.solver = 'root_finder'
+    base_segment.state.numerics.solver.type = 'root_finder'
 
     # ------------------------------------------------------------------    
     #   Cruise Segment 
