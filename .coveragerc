@@ -1,7 +1,7 @@
 [run]
 omit = 
     */RCAIDE/Framework/External_Interfaces/*
-    */RCAIDE/Framework/Analyses/Aerodynamics/SU2_Euler.py/*
+    */RCAIDE/Framework/Analyses/Aerodynamics/SU2_Euler.py
     */RCAIDE/Library/Methods/Aerodynamics/Athena_Vortex_Lattice/*
     */RCAIDE/Library/Methods/Emissions/Chemical_Reactor_Network_Method/*
     */RCAIDE/Library/Methods/Aerodynamics/SU2/*
