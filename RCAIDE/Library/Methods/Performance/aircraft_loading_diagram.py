@@ -18,7 +18,7 @@ import numpy as np
 #------------------------------------------------------------------------------
 # aircraft_loading_diagram
 #------------------------------------------------------------------------------  
-def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
+def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
     """
     Computes the loading dragram of an aircraft 
  
@@ -118,9 +118,9 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
     #------------------------------------------------------------------------  
     # Compute Loading Points 
     #------------------------------------------------------------------------
-    percent_payload      =  np.linspace(0, 1, resolution)
-    percent_fuel         =  np.linspace(0, 1, resolution)
-    static_margins       =  np.linspace(-0.5,0.5, resolution)
+    percent_payload      =  np.linspace(0, 1, number_of_points)
+    percent_fuel         =  np.linspace(0, 1, number_of_points)
+    static_margins       =  np.linspace(-0.5,0.5, number_of_points)
     
     # create empty data structures 
     lift_coefficient     = np.zeros((len(percent_payload),len(percent_fuel)))
@@ -235,14 +235,14 @@ def aircraft_loading_diagram(vehicle, resolution = 4, aerodynamic_analysis = Non
                moment_coefficient  = moment_coefficient, 
                neutral_point       = neutral_point,         
                static_margin       = static_margin,
-               resolution          = resolution, 
+               number_of_points    = number_of_points, 
                aerodynamic_moment  = aerodynamic_moment,   
                weight              = weight,               
                aero_weight         = aero_weight,          
                aero_moment         = aero_moment,       
                aero_static_margin  = aero_static_margin, 
-               percent_payload     =  percent_payload, 
-               percent_fuel        =  percent_fuel,
+               percent_payload     = percent_payload, 
+               percent_fuel        = percent_fuel,
                MTOW                = MTOW, 
                MLW                 = MLW, 
                static_margins      =  static_margins, 
