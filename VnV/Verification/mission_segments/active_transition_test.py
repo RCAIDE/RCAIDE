@@ -28,7 +28,7 @@ from Tiltrotor         import configs_setup as  configs_setup
 # ----------------------------------------------------------------------
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
-    update_regression_values = False
+    update_regression_values = True
      
     # TEST 1
     active_transition_test(update_regression_values)
@@ -36,7 +36,7 @@ def main():
     return 
 
 def active_transition_test(update_regression_values):    
-    TW_vehicle  = vehicle_setup(redesign_rotors=True) 
+    TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values) 
 
     # plot vehicle 
     plot_3d_vehicle(TW_vehicle,  
@@ -70,7 +70,7 @@ def active_transition_test(update_regression_values):
             print(val)
     
     # Truth values 
-    transition_throttle_truth              = 0.47615426146573125
+    transition_throttle_truth              = 0.7651704611740368
     
     # Store errors 
     error = Data() 
@@ -176,11 +176,11 @@ def mission_setup(analyses):
     segment                           = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
     segment.tag                       = "departure_transition_3"  
     segment.analyses.extend(analyses.high_speed_transition)   
-    segment.air_speed_end             = 125.  * Units['mph']  
+    segment.air_speed_end             = 91.  * Units['mph']  
     segment.acceleration              = 9.81/5 
     segment.true_course               = 90 * Units.degree
     segment.altitude                  = 1000 * Units.ft
-    segment.air_speed_start           = 95.  * Units['mph']  
+    segment.air_speed_start           = 90.  * Units['mph']  
     
 
     segment.state.numerics.solver.step_size                 = 1E-2 
@@ -203,7 +203,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
     segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
                                                                                         'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
-    #segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
+    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
      
     mission.append_segment(segment)
    
