@@ -73,7 +73,7 @@ def aerodynamics(mission):
                 if last_tag!=  None:
                     if segment.analyses.aerodynamics.settings.unique_segment_surrogate:
                         aero   = segment.analyses.aerodynamics
-                        aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), aero.tag + "_" + mission.tag +"_aerodynamic_training_data.pkl")
+                        aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), aero.tag + "_" + mission.tag + "_" + os.path.splitext(os.path.basename(sys.argv[0]))[0] +"_aerodynamic_training_data.pkl")
                         aero.initialize()   
                         last_tag = tag
                     else:
@@ -84,7 +84,7 @@ def aerodynamics(mission):
                                 segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
                 else: 
                     aero   = segment.analyses.aerodynamics
-                    aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), aero.tag + "_" + mission.tag +"_aerodynamic_training_data.pkl")
+                    aero.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), aero.tag + "_" + mission.tag+ "_" + os.path.splitext(os.path.basename(sys.argv[0]))[0] +"_aerodynamic_training_data.pkl")
                     aero.initialize()   
                     last_tag = tag  
     return 

@@ -165,13 +165,8 @@ class Vortex_Lattice_Method(Aerodynamics):
             else:
                 with open(self.filename, 'rb') as file:
                     self.training = pickle.load(file)
-                print(r"""
-                        +----------------------------------------------------+
-                        | Aerodynamic training data loaded from file.       |
-                        | If new training data is needed, delete the file   |
-                        | and rerun the script.                             |
-                        +----------------------------------------------------+
-                        """)
+                print(r""" 
+                [INFO] Aerodynamic training data loaded. Delete the file and rerun to regenerate. """)
             # build surrogate
             build_VLM_surrogates(self)
     
