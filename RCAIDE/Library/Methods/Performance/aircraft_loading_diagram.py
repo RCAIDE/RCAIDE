@@ -18,7 +18,7 @@ import numpy as np
 #------------------------------------------------------------------------------
 # aircraft_loading_diagram
 #------------------------------------------------------------------------------  
-def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
+def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
     """
     Computes the loading dragram of an aircraft 
  
@@ -118,44 +118,41 @@ def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis
     #------------------------------------------------------------------------  
     # Compute Loading Points 
     #------------------------------------------------------------------------
-    percent_payload      =  np.linspace(0, 1, number_of_points)
-    percent_fuel         =  np.linspace(0, 1, number_of_points)
-    static_margins       =  np.linspace(-0.5,0.5, number_of_points)
+    percent_cargo        =  np.hstack((np.zeros(number_of_points), np.linspace(0, 1, number_of_points)))
+    percent_pax          =  np.hstack((np.linspace(0, 1, number_of_points), np.ones(number_of_points)))
+    percent_fuel         =  np.linspace(0, 1, number_of_points) 
     
     # create empty data structures 
-    lift_coefficient     = np.zeros((len(percent_payload),len(percent_fuel)))
-    drag_coefficient     = np.zeros((len(percent_payload),len(percent_fuel)))
-    moment_coefficient   = np.zeros((len(percent_payload),len(percent_fuel)))
-    neutral_point        = np.zeros((len(percent_payload),len(percent_fuel)))
-    static_margin        = np.zeros((len(percent_payload),len(percent_fuel)))
-    aerodynamic_moment   = np.zeros((len(percent_payload),len(percent_fuel)))
-    weight               = np.zeros((len(percent_payload),len(percent_fuel))) 
-    aero_weight          = []
-    aero_moment          = []
-    aero_static_margin   = []
-    
-    total_sims           = len(percent_payload)*len(percent_fuel) * len(static_margins)
+    lift_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
+    drag_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
+    moment_coefficient   = np.zeros((len(percent_cargo),len(percent_fuel)))
+    neutral_point        = np.zeros((len(percent_cargo),len(percent_fuel)))
+    static_margin        = np.zeros((len(percent_cargo),len(percent_fuel)))
+    aerodynamic_moment   = np.zeros((len(percent_cargo),len(percent_fuel)))
+    mass                 = np.zeros((len(percent_cargo),len(percent_fuel)))  
     
     # compute mass properties of aircraft to get weight distribution
     vehicle_0         = results.segments[0].analyses.weights.vehicle
     payload_breakdown = results.segments[0].analyses.weights.vehicle.mass_properties.weight_breakdown.payload
-    
-    PLD   =  payload_breakdown.total
+     
     CARGO =  payload_breakdown.cargo 
+    BAG   =  payload_breakdown.baggage 
+    PAX   =  payload_breakdown.passengers 
     MTOW  =  vehicle_0.mass_properties.max_takeoff
-    MLW   =  estimate_maximum_landing_weight(MTOW)
-    
-    counter = 0
-    for i in range(len(percent_payload)):
+    MLW   =  estimate_maximum_landing_weight(MTOW)   
+     
+    total_sims = len(percent_cargo) * len(percent_fuel)
+    counter    = 0
+    for i in range(len(percent_cargo)):
         for j in range(len(percent_fuel)):
 
             # -------------------------------------------------------------------------
             # Aircraft-Level Properties 
             # -------------------------------------------------------------------------  
             vehicle.mass_properties.takeoff  = None # this ensures that the takeoff weight is computed 
-            vehicle.mass_properties.payload  = percent_payload[i] *PLD 
-            vehicle.mass_properties.cargo    = percent_payload[i] * CARGO
-            vehicle.number_of_passengers     = 1 if i == 0 else int(vehicle_0.number_of_passengers * percent_payload[i])
+            vehicle.mass_properties.payload  = percent_cargo[i] *CARGO  +  (BAG + PAX) * percent_pax[i]
+            vehicle.mass_properties.cargo    = percent_cargo[i] * CARGO
+            vehicle.number_of_passengers     = 1 if i == 0 else int(vehicle_0.number_of_passengers * percent_pax[i])
 
             # -------------------------------------------------------------------------
             # Update Passengers 
@@ -165,13 +162,13 @@ def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis
                 for cabin in fuselage.cabins:
                     cabin.filled_seats_arrangement  = 'descending'  
                     for cabin_class in cabin.classes:
-                        cabin_class.number_of_passengers =  1 if i == 0 else int(percent_payload[i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
+                        cabin_class.number_of_passengers =  1 if i == 0 else int(percent_pax[i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     for cabin in wing.cabins:    
                         cabin.filled_seats_arrangement  = 'descending'  
                         for cabin_class in cabin.classes:
-                            cabin_class.number_of_passengers =  1 if i == 0 else int(percent_payload[i] * vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers)    
+                            cabin_class.number_of_passengers =  1 if i == 0 else int(percent_pax[i] * vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers)    
             
             # -------------------------------------------------------------------------
             # Update Fuel 
@@ -198,36 +195,41 @@ def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis
             aerodynamic_moment[i,j]  = segment.state.conditions.frames.inertial.total_moment_vector[0][1]
             neutral_point[i,j]       = segment.state.conditions.static_stability.neutral_point[0][0]  
             static_margin[i,j]       = segment.state.conditions.static_stability.static_margin[0][0]
-            weight[i,j]              = mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff 
-
-            # -------------------------------------------------------------------------
-            # Static Margins 
-            # -------------------------------------------------------------------------
-            for k in range(len(static_margins)): 
-                # calculate CG based on static margin 
-                x_cg = neutral_point[i,j]  -  static_margins[k] * reference_chord
-                
-                # update vehicle
-                segment.analyses.geometry.vehicle.mass_properties.center_of_gravity[0][0] = x_cg
-                    
-                #  run mission
-                configs  = configs_setup(vehicle) 
-                analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_center_of_gravity = False) 
-                mission  = mission_setup(analyses, altitude, airspeed) 
-                missions = missions_setup(mission)    
-                results = missions.base_mission.evaluate()
-                
-                # store results
-                segment = results.segments['cruise'] 
+            mass[i,j]                = mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff
             
-                aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
-                aero_moment.append(segment.state.conditions.frames.inertial.total_moment_vector[0][1])
-                aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
+            counter += 1
+            print('***************************************')
+            print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
+            print('***************************************')            
+
+            ## -------------------------------------------------------------------------
+            ## Static Margins 
+            ## -------------------------------------------------------------------------
+            #for k in range(len(static_margins)): 
+                ## calculate CG based on static margin 
+                #x_cg = neutral_point[i,j]  -  static_margins[k] * reference_chord
                 
-                counter += 1
-                print('***************************************')
-                print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
-                print('***************************************')
+                ## update vehicle
+                #segment.analyses.geometry.vehicle.mass_properties.center_of_gravity[0][0] = x_cg
+                    
+                ##  run mission
+                #configs  = configs_setup(vehicle) 
+                #analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_center_of_gravity = False) 
+                #mission  = mission_setup(analyses, altitude, airspeed) 
+                #missions = missions_setup(mission)    
+                #results = missions.base_mission.evaluate()
+                
+                ## store results
+                #segment = results.segments['cruise'] 
+            
+                #aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
+                #aero_moment.append(segment.state.conditions.frames.inertial.total_moment_vector[0][1])
+                #aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
+                
+                #counter += 1
+                #print('***************************************')
+                #print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
+                #print('***************************************')
 
  
     RES = Data(lift_coefficient    = lift_coefficient,
@@ -237,15 +239,9 @@ def aircraft_loading_diagram(vehicle, number_of_points = 4, aerodynamic_analysis
                static_margin       = static_margin,
                number_of_points    = number_of_points, 
                aerodynamic_moment  = aerodynamic_moment,   
-               weight              = weight,               
-               aero_weight         = aero_weight,          
-               aero_moment         = aero_moment,       
-               aero_static_margin  = aero_static_margin, 
-               percent_payload     = percent_payload, 
-               percent_fuel        = percent_fuel,
+               mass                = mass,               
                MTOW                = MTOW, 
-               MLW                 = MLW, 
-               static_margins      =  static_margins, 
+               MLW                 = MLW,  
                )
     
     return RES  

@@ -53,27 +53,25 @@ def vehicle_setup():
     vehicle.reference_area                            = 92.
     vehicle.number_of_passengers                      = 106
     vehicle.systems.control                           = "fully powered"
-    vehicle.systems.accessories                       = "medium range"
-
-
+    vehicle.systems.accessories                       = "medium range" 
 
     # ------------------------------------------------------------------
     # Carbo Bays 
     # ------------------------------------------------------------------ 
     forward_cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
     forward_cargo_bay.cargo.mass_properties.mass  = 1850
-    forward_cargo_bay.origin  = [[6.82, 0, -0.5]]
-    forward_cargo_bay.length  =  7.82
-    forward_cargo_bay.width   = 1.57  
-    forward_cargo_bay.height  =  0.88 
+    forward_cargo_bay.origin                      = [[6.82, 0, -0.5]]
+    forward_cargo_bay.length                      = 7.82
+    forward_cargo_bay.width                       = 1.57  
+    forward_cargo_bay.height                      = 0.88 
     vehicle.cargo_bays.append(forward_cargo_bay) 
  
     aft_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
     aft_cargo_bay.cargo.mass_properties.mass  = 1440
-    aft_cargo_bay.origin  = [[23.43, 0, -0.5]]
-    aft_cargo_bay.length  =  5.5
-    aft_cargo_bay.width   =  1.57 
-    aft_cargo_bay.height  =  0.88 
+    aft_cargo_bay.origin                      = [[23.43, 0, -0.5]]
+    aft_cargo_bay.length                      =  5.5
+    aft_cargo_bay.width                       =  1.57 
+    aft_cargo_bay.height                      =  0.88 
     vehicle.cargo_bays.append(aft_cargo_bay)
 
 
@@ -88,7 +86,8 @@ def vehicle_setup():
     main_gear.strut_length                   = 1.8  * Units.m  
     main_gear.wheels                         = 4   
     main_gear.number_of_gear_types_in_tandem = 1
-    main_gear.number_of_wheels_in_gear_type  = 2  
+    main_gear.number_of_wheels_in_gear_type  = 2
+    main_gear.origin                         = [[17.96, 0, 0]]
     main_gear.symmetric                      = True
     vehicle.append_component(main_gear)  
 
@@ -99,7 +98,8 @@ def vehicle_setup():
     nose_gear.strut_length                   = 1.8   * Units.m  
     nose_gear.wheels                         = 2   
     nose_gear.number_of_gear_types_in_tandem = 1
-    nose_gear.number_of_wheels_in_gear_type  = 2    
+    nose_gear.number_of_wheels_in_gear_type  = 2   
+    nose_gear.origin                         = [[2.49, 0, 0]] 
     vehicle.append_component(nose_gear)
     
 
@@ -239,8 +239,8 @@ def vehicle_setup():
     wing.symmetric               = True       
     wing.high_lift               = False   
     wing.areas.exposed           = 0.9 * wing.areas.wetted 
-    wing.twists.root             = 2.0 * Units.degrees
-    wing.twists.tip              = 2.0 * Units.degrees    
+    wing.twists.root             = 0.0 * Units.degrees
+    wing.twists.tip              = 0.0 * Units.degrees    
     wing.dynamic_pressure_ratio  = 0.90
 
     # add to vehicle
@@ -486,6 +486,8 @@ def vehicle_setup():
     turbofan.design_altitude                        = 35000.0*Units.ft
     turbofan.design_mach_number                     = 0.8   
     turbofan.design_thrust                          = 35000.0* Units.N#/2 
+    turbofan.origin                                 = [[12.0,4.38,-2.1]]
+    turbofan.mass_properties.center_of_gravity      = [[turbofan.length /2,0,0 ]]
      
     # Nacelle 
     nacelle                                         = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
@@ -494,6 +496,7 @@ def vehicle_setup():
     nacelle.tag                                     = 'nacelle_1'
     nacelle.inlet_diameter                          = 2.0
     nacelle.origin                                  = [[12.0,4.38,-2.1]] 
+    nacelle.mass_properties.center_of_gravity       = [[nacelle.length /2,0,0 ]]
     nacelle.areas.wetted                            = 1.1*np.pi*nacelle.diameter*nacelle.length
     nacelle_airfoil                                 = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
     nacelle_airfoil.NACA_4_Series_code              = '2410'

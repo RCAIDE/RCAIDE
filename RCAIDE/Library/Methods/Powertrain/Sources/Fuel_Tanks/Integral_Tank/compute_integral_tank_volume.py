@@ -73,10 +73,8 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
         for i in range(len(seg_tags)-1):
             inner_segment = fuselage.segments[seg_tags[i]]
             outer_segment = fuselage.segments[seg_tags[i+1]]
-            if inner_segment.has_fuel_tank == True:
-
-                h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location)
-                
+            if inner_segment.has_fuel_tank == True: 
+                h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location) 
                 # volume of truncated cylinder 
                 A_1_o    = np.pi * inner_segment.height /2  *  inner_segment.width/2
                 A_2_o    = np.pi * outer_segment.height/2   *  outer_segment.width/2
@@ -160,7 +158,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             if inner_segment.has_fuel_tank == True:
 
                 # compute volume of fuel in wing
-                volume = compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment)
+                volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment)
                 
                 fuel_tank.volume_properties.internal  += volume
                 fuel_tank.volume_properties.external  += volume
@@ -173,18 +171,16 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         fuel_tank.mass_properties.center_of_gravity   = list(tank_c_g)
     else:  
         # assume whole wing has fuel 
-        volume  = compute_wing_integral_tank_fuel_volume(fuel_tank,wing)
+        volume  = compute_wing_integral_tank_fuel_volume(wing)
         fuel_tank.volume_properties.internal            = volume
         fuel_tank.volume_properties.external            = volume
         fuel_tank.volume_properties.volume              = fuel_tank.volume_properties.internal  * fuel_tank.percent_filled
         fuel_tank.mass_properties.mass                  = fuel_tank.volume_properties.volume * fuel_tank.fuel.density  
         fuel_tank.mass_properties.center_of_gravity     = wing.aerodynamic_center  
     
-    return
+    return 
 
-
-
-def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):     
+def compute_wing_integral_tank_fuel_volume(wing):     
     """
     Computes the fuel volume for an integral fuel tank in a single-segment wing.
 
@@ -193,9 +189,7 @@ def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):
     along with the fuel tank's chord-wise location specifications.
 
     Parameters
-    ----------
-    fuel_tank : Fuel_Tank
-        The fuel tank object containing fuel properties and chord location specifications
+    ---------- 
     wing : Wing
         The wing object containing chord dimensions, span, and fuel tank specifications
 
@@ -255,7 +249,7 @@ def compute_wing_integral_tank_fuel_volume(fuel_tank,wing):
     return volume
 
 
-def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment):   
+def compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment):   
     """
     Computes the fuel volume for an integral fuel tank between two wing segments in a multi-segment wing.
 
@@ -264,9 +258,7 @@ def compute_segmented_wing_integral_tank_fuel_volume(fuel_tank,wing,inner_segmen
     dimensions and fuel tank specifications of each segment.
 
     Parameters
-    ----------
-    fuel_tank : Fuel_Tank
-        The fuel tank object containing fuel properties and chord location specifications
+    ---------- 
     wing : Wing
         The wing object containing overall geometry and symmetry properties
     inner_segment : Wing_Segment

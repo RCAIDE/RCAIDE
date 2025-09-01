@@ -108,9 +108,9 @@ def compute_systems_weight(vehicle):
     NENG = 0
     FNEW = 0
     FNEF = 0
-    NPF  = vehicle.number_of_first_class_passengers      
-    NPB  = vehicle.number_of_business_class_passengers   
-    NPE  = vehicle.number_of_economy_class_passengers  
+    NPF  = vehicle.number_of_first_class_seats      
+    NPB  = vehicle.number_of_business_class_seats   
+    NPE  = vehicle.number_of_economy_class_seats  
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             NENG += 1

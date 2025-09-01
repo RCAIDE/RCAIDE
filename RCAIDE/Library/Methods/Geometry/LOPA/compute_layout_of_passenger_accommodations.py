@@ -98,14 +98,14 @@ def compute_fuselage_dimensions(fuselage,update_fuselage_properties):
     
     LOPA.cabin_area_coordinates = np.vstack((starboard_x_points[None,:],starboard_y_points[None, :])).T 
     LOPA.cabin_length = max(starboard_x_points)
-    LOPA.cabin_wdith = 2*max(starboard_y_points) 
-    
+    LOPA.cabin_width = 2*max(starboard_y_points) 
+     
+    fuselage.number_of_seats  = np.sum(LOPA_coords[:,10])    
     if update_fuselage_properties:
-        fuselage.lengths.nose     = fuselage.fineness.nose*LOPA.cabin_wdith
-        fuselage.lengths.tail     = fuselage.fineness.tail*LOPA.cabin_wdith   
+        fuselage.lengths.nose     = fuselage.fineness.nose*LOPA.cabin_width
+        fuselage.lengths.tail     = fuselage.fineness.tail*LOPA.cabin_width   
         fuselage.lengths.total    = fuselage.lengths.nose + fuselage.lengths.tail + LOPA.cabin_length
-        fuselage.width            = LOPA.cabin_wdith
-        fuselage.number_of_seats  = np.sum(LOPA_coords[:,10])
+        fuselage.width            = LOPA.cabin_width
     
     return  
 

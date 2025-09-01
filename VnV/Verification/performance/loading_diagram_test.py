@@ -19,6 +19,8 @@ import os
 import numpy as np  
 import pickle
 import sys 
+import numpy as np
+import matplotlib.pyplot as plt
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
@@ -29,7 +31,10 @@ from Embraer_190    import vehicle_setup as E190_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
     
+    
     vehicle    = E190_vehicle_setup()
+    
+    vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
     
     new_sim = False
     
@@ -60,24 +65,23 @@ def main():
                                               altitude = 35000*Units.feet, 
                                               airspeed =450 * Units['knots'])
         
-        save_data(load_data,'loading_results')
-    else:
-        
-        RES = load_data('loading_results')
+        save_results(load_data,'loading_results')
+    else: 
+        load_data = load_results('loading_results')
  
     plot_load_diagram(load_data) 
         
     return
 
 
-def save_data(data,filename): 
+def save_results(data,filename): 
     pickle_file  = filename + '.pkl'
     with open(pickle_file, 'wb') as file:
         pickle.dump(data, file) 
     return 
 
 
-def load_data(filename):  
+def load_results(filename):  
     load_file = filename + '.pkl' 
     with open(load_file, 'rb') as file:
         results = pickle.load(file) 

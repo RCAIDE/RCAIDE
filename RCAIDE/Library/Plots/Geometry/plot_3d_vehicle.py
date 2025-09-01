@@ -210,8 +210,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
                                       fuselage_alpha              = 1.0,
                                       nacelle_alpha               = 1.0,
                                       fuel_tank_alpha             = 1.0,
-                                      rotor_alpha                 = 1.0,
-                                      overwrite_geometry          = True, 
+                                      rotor_alpha                 = 1.0,  
                                       ):
     """
     Generates plot data for all vehicle components.
@@ -261,27 +260,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
         - Fuselages (using plot_3d_fuselage)
         - Booms (using plot_3d_fuselage)
         - Energy networks (using plot_3d_energy_network)
-    """ 
-
-
-    # -------------------------------------------------------------------------
-    # Run Geoemtry Analysis
-    # ------------------------------------------------------------------------- 
-    if overwrite_geometry:
-        for fuselage in vehicle.fuselages:
-            compute_layout_of_passenger_accommodations(fuselage)
-            fuselage_planform(fuselage) 
-
-    for wing in vehicle.wings:  
-        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            if overwrite_geometry: 
-                bwb_wing_planform(wing)
-                vehicle.reference_area = wing.areas.reference 
-        else:
-            if overwrite_geometry:
-                wing_planform(wing) 
-                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
-                    vehicle.reference_area = wing.areas.reference
+    """  
 
     compute_fuel_volume(vehicle, update_max_fuel=False)
 

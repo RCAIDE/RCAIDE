@@ -59,9 +59,9 @@ def compute_operating_items_weight(vehicle):
             N/A
     """ 
     NENG =  0 
-    NPF  = vehicle.number_of_first_class_passengers      
-    NPB  = vehicle.number_of_business_class_passengers   
-    NPE  = vehicle.number_of_economy_class_passengers   
+    NPF  = vehicle.number_of_first_class_seats      
+    NPB  = vehicle.number_of_business_class_seats   
+    NPE  = vehicle.number_of_economy_class_seats   
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan)\

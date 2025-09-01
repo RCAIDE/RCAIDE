@@ -66,6 +66,7 @@ def evaluate_surrogate(state,settings,vehicle):
                                          h_sub,h_sup,Mach, pts_alpha)      
     Clift_alpha             = results_alpha.Clift   
     Cdrag_induced_alpha     = results_alpha.Cdrag
+    CM                      = results_alpha.CM
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
     
@@ -165,7 +166,7 @@ def evaluate_surrogate(state,settings,vehicle):
      
     conditions.static_stability.coefficients.Y      = conditions.static_stability.derivatives.CY_beta * Beta
     conditions.static_stability.coefficients.L      = conditions.static_stability.derivatives.CL_beta * Beta 
-    conditions.static_stability.coefficients.M      = conditions.static_stability.coefficients.M_0 + conditions.static_stability.derivatives.CM_alpha * AoA 
+    conditions.static_stability.coefficients.M      = CM # conditions.static_stability.coefficients.M_0 + conditions.static_stability.derivatives.CM_alpha * AoA 
     conditions.static_stability.coefficients.N      = conditions.static_stability.derivatives.CN_beta * Beta
  
     # -----------------------------------------------------------------------------------------------------------------------
