@@ -65,9 +65,9 @@ def compute_structural_performance(fuel_tank):
 
     # Initial fuel volume guess
     if fuel_tank.symmetric:
-        V_guess = deepcopy(fuel_tank.volume_properties.external  * 0.45)
+        V_guess = deepcopy(fuel_tank.volume_properties.external_volume  * 0.45)
     else:
-        V_guess = deepcopy(fuel_tank.volume_properties.external * 0.75)
+        V_guess = deepcopy(fuel_tank.volume_properties.external_volume * 0.75)
 
     # Iterative solver loop
     tol       = 1e-5
@@ -106,12 +106,12 @@ def compute_structural_performance(fuel_tank):
 
     # Store results
     fuel_tank.inner_diameter              = 2 * r_inner
-    fuel_tank.volume_properties.internal  = V_total
+    fuel_tank.volume_properties.internal_volume  = V_total
     fuel_tank.inner_length                = L_inner
     
     if fuel_tank.symmetric:
         fuel_tank.volume_properties.volume *= 2
-        fuel_tank.volume_properties.internal   = V_total * 2
+        fuel_tank.volume_properties.internal_volume   = V_total * 2
 
     return
 

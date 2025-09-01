@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_fuel_volume 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_fuel_volume(vehicle, update_max_fuel=True):
+def compute_fuel_volume(vehicle):
     """
     Computes the total fuel volume and mass for all fuel tanks in a vehicle.
 
@@ -25,8 +25,6 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
                 Collection of wing objects for volume calculations
             - fuselages : list
                 Collection of fuselage objects for volume calculations
-    update_max_fuel : bool, optional
-        Currently unused (default: True)
 
     Returns
     -------
@@ -80,7 +78,7 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
                     # if no error getting the method, run it normally
                     compute_fuel_tank_volume(wings, fuselages)
 
-                total_fuel_volume += fuel_tank.volume_properties.volume
-                total_fuel_mass   += fuel_tank.mass_properties.mass
+                total_fuel_volume += fuel_tank.volume_properties.initial_fuel_volume
+                total_fuel_mass   += fuel_tank.fuel.mass_properties.mass
                 
     return total_fuel_mass,total_fuel_volume

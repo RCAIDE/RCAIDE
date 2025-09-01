@@ -84,11 +84,16 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
                 A_2_i    = np.pi * outer_segment.height/2   *  outer_segment.width/2 
                 volume_i = (1 /3) * ( A_1_i + A_2_i + np.sqrt(A_1_i*A_2_i)) *h
                 
-                fuel_tank.volume_properties.external        = volume_o
-                fuel_tank.volume_properties.internal        = volume_i 
-                fuel_tank.volume_properties.volume          = volume_i * fuel_tank.percent_filled
-                fuel_tank.mass_properties.fuel              = fuel_tank.volume_properties.volume * fuel_tank.fuel.density  
-                fuel_tank.mass_properties.center_of_gravity = [[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]]
+                fuel_tank.volume_properties.external_volume        = volume_o
+                fuel_tank.volume_properties.internal_volume        = volume_i
+                
+                if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+                    if volume_i < fuel_tank.volume_properties.initial_fuel_volume:
+                        raise AttributeError('Initial fuel volume greater than internal volume of tank')
+                    else:
+                        fuel_tank.volume_properties.initial_fuel_volume = volume_i 
+                fuel_tank.mass_properties.fuel                     = fuel_tank.volume_properties.initial_fuel_volume * fuel_tank.fuel.density  
+                fuel_tank.fuel.mass_properties.center_of_gravity = [[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]]
        
     return 
 
@@ -143,8 +148,8 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     compute_wing_integral_tank_fuel_volume : Calculates volume for single-segment wings
     compute_segmented_wing_integral_tank_fuel_volume : Calculates volume for wing segments
     """
-    tank_c_g    =  [[0, 0, 0]]
-    tank_mass   = 0
+    fuel_c_g    =  [[0, 0, 0]]
+    fuel_mass   = 0
 
     # get orgin of fuel tank     
     fuel_tank.origin = wing.origin
@@ -160,23 +165,34 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
                 # compute volume of fuel in wing
                 volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment)
                 
-                fuel_tank.volume_properties.internal  += volume
-                fuel_tank.volume_properties.external  += volume
-                fuel_tank.volume_properties.volume    = fuel_tank.volume_properties.internal  * fuel_tank.percent_filled  
-                tank_mass                             = fuel_tank.volume_properties.volume  * fuel_tank.fuel.density
-                segment_tank_moment                   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * tank_mass 
+                fuel_tank.volume_properties.internal_volume  += volume
+                fuel_tank.volume_properties.external_volume  += volume
+                
+                if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+                    if volume < fuel_tank.volume_properties.initial_fuel_volume:
+                        raise AttributeError('Initial fuel volume greater than internal volume of tank')
+                    else:
+                        fuel_tank.volume_properties.initial_fuel_volume = volume 
+                fuel_mass                             = fuel_tank.volume_properties.initial_fuel_volume  * fuel_tank.fuel.density
+                segment_tank_moment                   += np.array(inner_segment.mass_properties.center_of_gravity)[0] * fuel_mass 
             
-        tank_c_g = list(segment_tank_moment / tank_mass) 
-        fuel_tank.mass_properties.mass                = tank_mass
-        fuel_tank.mass_properties.center_of_gravity   = list(tank_c_g)
+        fuel_c_g = list(segment_tank_moment / fuel_mass) 
+        fuel_tank.fuel.mass_properties.mass           = fuel_mass
+        fuel_tank.fuel.mass_properties.center_of_gravity   = list(fuel_c_g)
     else:  
         # assume whole wing has fuel 
         volume  = compute_wing_integral_tank_fuel_volume(wing)
-        fuel_tank.volume_properties.internal            = volume
-        fuel_tank.volume_properties.external            = volume
-        fuel_tank.volume_properties.volume              = fuel_tank.volume_properties.internal  * fuel_tank.percent_filled
-        fuel_tank.mass_properties.mass                  = fuel_tank.volume_properties.volume * fuel_tank.fuel.density  
-        fuel_tank.mass_properties.center_of_gravity     = wing.aerodynamic_center  
+        fuel_tank.volume_properties.internal_volume     = volume
+        fuel_tank.volume_properties.external_volume     = volume
+
+        # Fuel Properties
+        if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+            if fuel_tank.volume_properties.internal_volume < fuel_tank.volume_properties.initial_fuel_volume:
+                raise AttributeError('Initial fuel volume greater than internal volume of tank')
+            else:
+                fuel_tank.volume_properties.initial_fuel_volume = fuel_tank.volume_properties.internal_volume 
+        fuel_tank.fuel.mass_properties.mass   = fuel_tank.volume_properties.initial_fuel_volume  * fuel_tank.fuel.density 
+        fuel_tank.fuel.mass_properties.center_of_gravity= wing.aerodynamic_center  
     
     return 
 

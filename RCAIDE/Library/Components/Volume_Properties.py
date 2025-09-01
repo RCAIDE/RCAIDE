@@ -54,7 +54,6 @@ class Volume_Properties(Data):
     def __defaults__(self):
         """
         Sets default values for mass property attributes.
-        """          
-        self.volume    = 0.0
-        self.internal  = 0.0 
-        self.external  = 0.0 
+        """           
+        self.internal_volume  = 0.0 
+        self.external_volume  = 0.0 
