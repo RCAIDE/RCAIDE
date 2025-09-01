@@ -203,7 +203,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
     segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
                                                                                         'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
-    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
+    #segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
      
     mission.append_segment(segment)
    
