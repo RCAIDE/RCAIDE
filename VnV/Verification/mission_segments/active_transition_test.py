@@ -20,22 +20,16 @@ import os
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
-from Tiltrotor         import vehicle_setup as  vehicle_setup 
-from Tiltrotor         import configs_setup as  configs_setup 
+from Tiltrotor_EVTOL         import vehicle_setup as  vehicle_setup 
+from Tiltrotor_EVTOL         import configs_setup as  configs_setup 
 
 # ----------------------------------------------------------------------
 #   Main
 # ----------------------------------------------------------------------
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
-    update_regression_values = True
-     
-    # TEST 1
-    active_transition_test(update_regression_values)
-    
-    return 
-
-def active_transition_test(update_regression_values):    
+    update_regression_values = False
+         
     TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values) 
 
     # plot vehicle 
@@ -70,7 +64,7 @@ def active_transition_test(update_regression_values):
             print(val)
     
     # Truth values 
-    transition_throttle_truth              = 0.7651704611740368
+    transition_throttle_truth              = 0.5150143546115612
     
     # Store errors 
     error = Data() 
