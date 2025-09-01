@@ -46,7 +46,6 @@ class Numerics(Conditions):
         self.tag                              = 'numerics' 
         self.number_of_control_points         = 16
         self.discretization_method            = chebyshev_data
-        #self.solver                           = Data()
         self.solver                           = Conditions()
         self.solver.type                      = "optimize" # options: "optimize", "root_finder"
         self.solver.method                    = "SLSQP"    
