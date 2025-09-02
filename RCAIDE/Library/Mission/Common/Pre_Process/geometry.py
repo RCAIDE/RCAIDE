@@ -76,8 +76,11 @@ def geometry_preprocess_routine(geometry_analysis):
     # ================================================================================================================================================  
     total_seats = 0
     for fuselage in vehicle.fuselages: 
-        compute_layout_of_passenger_accommodations(fuselage) 
-        compute_fuselage_dimensions(fuselage,settings.update_fuselage_properties) 
+        compute_layout_of_passenger_accommodations(fuselage)
+        if len(fuselage.layout_of_passenger_accommodations.object_coordinates) == 0:
+            pass
+        else:
+            compute_fuselage_dimensions(fuselage,settings.update_fuselage_properties) 
         fuselage_planform(fuselage) 
         vehicle.length = np.maximum(vehicle.length, fuselage.lengths.total)
         A_fuselage     = np.maximum(A_fuselage,fuselage.areas.front_projected) 
@@ -115,7 +118,10 @@ def geometry_preprocess_routine(geometry_analysis):
         # --------------------------------------------------------------------------------------------------------------------
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
             compute_layout_of_passenger_accommodations(wing) 
-            compute_fuselage_dimensions(wing,settings.update_fuselage_properties)
+            if len(wing.layout_of_passenger_accommodations.object_coordinates) == 0:
+                pass
+            else:
+                compute_fuselage_dimensions(wing,settings.update_fuselage_properties) 
             
             # compute planform properties 
             bwb_wing_planform(wing)
