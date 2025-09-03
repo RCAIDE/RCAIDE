@@ -7,10 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
-import  RCAIDE
-from RCAIDE.Framework.Mission.Common     import   Conditions
-from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments 
-
+import  RCAIDE 
+from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments  
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry,  compute_naca_4series 
 
 #Python Imports 
@@ -24,7 +22,6 @@ import os
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
 # ----------------------------------------------------------------------------------------------------------------------  
-
 def compute_bwb_aft_tank_volume(fuel_tank, wing):
     """
     Computes the volume of an aft fuel tank for a Blended Wing Body (BWB) aircraft configuration.
@@ -200,18 +197,23 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     fuel_tank.inner_diameter = maximum_circle_coordinates[max_volume_index,0]  -  fuel_tank.radial_offset - 2 * fuel_tank.wall_thickness
 
     # Outer Volume
-    fuel_tank.outer_length   = 2*(r[max_volume_index]+l[max_volume_index]) # Length of whole tank with rounded edges
-    fuel_tank.outer_volume   = volume[max_volume_index]
-    fuel_tank.aspect_ratio   = fuel_tank.outer_length/fuel_tank.outer_diameter
+    fuel_tank.outer_length               = 2*(r[max_volume_index]+l[max_volume_index]) # Length of whole tank with rounded edges
+    fuel_tank.volume_properties.external_volume = volume[max_volume_index]
+    fuel_tank.aspect_ratio               = fuel_tank.outer_length/fuel_tank.outer_diameter
 
     # Inner Volume
-    r_in                   = fuel_tank.inner_diameter/2
-    fuel_tank.inner_length = fuel_tank.aspect_ratio * fuel_tank.inner_diameter
-    fuel_tank.inner_volume = (np.pi * ( r_in** 2) * fuel_tank.inner_length +  4 / 3 * np.pi * ( r_in** 3))*2 
+    r_in                                 = fuel_tank.inner_diameter/2
+    fuel_tank.inner_length               = fuel_tank.aspect_ratio * fuel_tank.inner_diameter
+    fuel_tank.volume_properties.internal_volume = (np.pi * ( r_in** 2) * fuel_tank.inner_length +  4 / 3 * np.pi * ( r_in** 3))*2 
    
     # Fuel Properties
-    fuel_tank.fuel_volume          = fuel_tank.inner_volume
-    fuel_tank.mass_properties.fuel = fuel_tank.fuel_volume  * fuel_tank.fuel.density  
+    if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+        if fuel_tank.volume_properties.internal_volume < fuel_tank.volume_properties.initial_fuel_volume:
+            raise AttributeError('Initial fuel volume greater than internal volume of tank')
+        else:
+            fuel_tank.volume_properties.initial_fuel_volume = fuel_tank.volume_properties.internal_volume 
+    fuel_tank.fuel.mass_properties.mass   = fuel_tank.volume_properties.initial_fuel_volume  * fuel_tank.fuel.density
+      
 
     fuel_tank.origin[0][0]  += maximum_circle_coordinates[max_volume_index,1] - fuel_tank.outer_diameter/2
     fuel_tank.origin[0][1]  += -(r[max_volume_index]+l[max_volume_index]) # Start of roudned edge of the tank
@@ -222,6 +224,49 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
         fuel_tank.origin[0][1]   = fuel_tank.origin[0][1] + (r[max_volume_index]+l[max_volume_index])
         fuel_tank.origin[0][2]   = fuel_tank.origin[0][2]
     return 
+
+def compute_generic_fuel_tank_volume(fuel_tank):
+    """
+    Computes the volume of a generic non-integral fuel tanks.
+ 
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing tank specifications
+            - fuel : Fuel
+                Fuel properties including density 
+            - length : float
+                Length of the tank (computed) 
+            - width : float
+                Width of the tank (computed) 
+            - height : float
+                Height of the tank (computed)  
+
+    Returns
+    -------
+    volume : float
+        Internal volume of the non-integral fuel tank 
+    """
+    
+    l = fuel_tank.length
+    w = fuel_tank.width
+    h = fuel_tank.height
+    t = fuel_tank.wall_thickness 
+    
+    volume_o = l * w * h
+    volume_i = (l - 2 * t) * (w - 2 * t) * (h - 2 * t)  
+    
+    fuel_tank.volume_properties.internal_volume = volume_i
+    fuel_tank.volume_properties.external_volume = volume_o
+
+    if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+        if volume_i < fuel_tank.volume_properties.initial_fuel_volume:
+            raise AttributeError('Initial fuel volume greater than internal volume of tank')
+        else:
+            fuel_tank.volume_properties.initial_fuel_volume = volume_i 
+    fuel_tank.fuel.mass_properties.mass   = fuel_tank.volume_properties.initial_fuel_volume  * fuel_tank.fuel.density 
+    
+    return
 
 def compute_wing_non_integral_tank_volume(fuel_tank, wing):
     """
@@ -284,9 +329,15 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
                     outer_segment = wing.segments[seg_tags[i+2]]
                     inner_segment.tank_percent_span_location = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
 
-                fuel_tank.fuel_volume                        = fuel_tank.inner_volume 
-                fuel_tank.mass_properties.fuel               = fuel_tank.fuel_volume * fuel_tank.fuel.density  
-                fuel_tank.mass_properties.center_of_gravity  = [[fuel_tank.outer_length /2, 0, fuel_tank.outer_diameter / 2]]             
+                
+                # Fuel Properties
+                if fuel_tank.volume_properties.initial_fuel_volume !=  None:
+                    if fuel_tank.volume_properties.internal_volume < fuel_tank.volume_properties.initial_fuel_volume:
+                        raise AttributeError('Initial fuel volume greater than internal volume of tank')
+                    else:
+                        fuel_tank.volume_properties.initial_fuel_volume = fuel_tank.volume_properties.internal_volume 
+                fuel_tank.fuel.mass_properties.mass   = fuel_tank.volume_properties.initial_fuel_volume  * fuel_tank.fuel.density 
+                fuel_tank.fuel.mass_properties.center_of_gravity  = [[fuel_tank.outer_length /2, 0, fuel_tank.outer_diameter / 2]]             
     
     return 
 
@@ -482,8 +533,8 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
         outer_volume *= 2
         inner_volume *= 2
 
-    fuel_tank.outer_volume = outer_volume
-    fuel_tank.inner_volume = inner_volume
+    fuel_tank.volume_properties.external_volume = outer_volume
+    fuel_tank.volume_properties.internal_volume = inner_volume
 
     return tank_percent_span_location
 

@@ -2,28 +2,12 @@
 # 
 # 
 # Created:  Jul 2024, M. Clarke 
-# Modified: Aug 2025, S. Shekar
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
-# ---------------------------------------------------------------------------------------------------------------------- 
-import RCAIDE 
-from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry,  compute_naca_4series  
-from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments 
-from RCAIDE.Framework.Core import Units
-import matplotlib.pyplot as plt
-
-# python imports 
-import numpy as np   
-from scipy.interpolate import interp1d
-from shapely.geometry import Polygon, Point
-from copy import  deepcopy
-import os 
+# Modified: Aug 2025, S. Shekar 
 
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_fuel_volume 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_fuel_volume(vehicle, update_max_fuel=True):
+def compute_fuel_volume(vehicle):
     """
     Computes the total fuel volume and mass for all fuel tanks in a vehicle.
 
@@ -41,8 +25,6 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
                 Collection of wing objects for volume calculations
             - fuselages : list
                 Collection of fuselage objects for volume calculations
-    update_max_fuel : bool, optional
-        Currently unused (default: True)
 
     Returns
     -------
@@ -81,19 +63,22 @@ def compute_fuel_volume(vehicle, update_max_fuel=True):
     --------
     Vehicle : RCAIDE.Vehicle
     """
-    wings     = vehicle.wings
-    fuselages = vehicle.fuselages
-    
+    wings             = vehicle.wings
+    fuselages         = vehicle.fuselages 
+    total_fuel_volume = 0
+    total_fuel_mass   = 0
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks: 
                 try:
-                    compute_fuel_volume = fuel_tank.compute_volume
+                    compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:
                     pass
                 else:
                     # if no error getting the method, run it normally
-                    compute_fuel_volume(wings, fuselages)
+                    compute_fuel_tank_volume(wings, fuselages)
 
-                vehicle.total_fuel_volume += fuel_tank.fuel_volume
-                vehicle.total_fuel_mass   += fuel_tank.mass_properties.fuel
+                total_fuel_volume += fuel_tank.volume_properties.initial_fuel_volume
+                total_fuel_mass   += fuel_tank.fuel.mass_properties.mass
+                
+    return total_fuel_mass,total_fuel_volume
