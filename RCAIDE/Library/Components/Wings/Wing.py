@@ -165,7 +165,7 @@ class Wing(Component):
                                                     
         self.symmetric                              = True
         self.vertical                               = False
-        self.t_tail                                 = False
+        self.t_tail                                 = False 
         self.taper                                  = 0.0
         self.dihedral                               = 0.0
         self.aspect_ratio                           = 0.0

@@ -54,11 +54,10 @@ class Stability(Analysis):
         self.settings                                                    = Data()
         self.settings.unique_segment_surrogate                           = False
         self.settings.maximum_lift_coefficient                           = np.inf 
-        self.settings.fuselage_lift_correction                           = 1.14
-        self.settings.trim_drag_correction_factor                        = 1.05
-        self.settings.wing_parasite_drag_form_factor                     = 1.2  
-        self.settings.fuselage_parasite_drag_form_factor                 = 2.3  
-
+        self.settings.fuselage_lift_correction                           = 1.20
+        self.settings.trim_drag_correction_factor                        = 1.02
+        self.settings.wing_parasite_drag_form_factor                     = 1.1  
+        self.settings.fuselage_parasite_drag_form_factor                 = 2.1   
         self.settings.drag_reduction_factors                             = Data()
         self.settings.drag_reduction_factors.parasite_drag               = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)
         self.settings.drag_reduction_factors.induced_drag                = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)
@@ -72,9 +71,9 @@ class Stability(Analysis):
 
         self.settings.supersonic                                         = Data() 
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.95
-        self.settings.supersonic.end_drag_rise_mach_number               = 1.15  
+        self.settings.supersonic.end_drag_rise_mach_number               = 1.15    
         self.settings.supersonic.fuselage_parasite_drag_begin_blend_mach = 0.91
-        self.settings.supersonic.fuselage_parasite_drag_end_blend_mach   = 0.99       
+        self.settings.supersonic.fuselage_parasite_drag_end_blend_mach   = 0.99        
     
         # Stability derivatives. If these are not user defined, then they will be calculated. 
         self.stability_derivatives                                       = Data()   
