@@ -188,23 +188,23 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
     
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
-    Clift_res = VLM_results.CLift
-    Cdrag_res = VLM_results.CDrag_induced
-    CX_res    = VLM_results.CX
-    CY_res    = VLM_results.CY
-    CZ_res    = VLM_results.CZ
-    CL_res    = VLM_results.CL
-    CM_res    = VLM_results.CM
-    CN_res    = VLM_results.CN
+    Clift_res   = VLM_results.CLift
+    Cdrag_res   = VLM_results.CDrag_induced
+    CX_res      = VLM_results.CX
+    CY_res      = VLM_results.CY
+    CZ_res      = VLM_results.CZ
+    CL_res      = VLM_results.CL
+    CM_res      = VLM_results.CM
+    CN_res      = VLM_results.CN
     
-    Clift_beta =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
+    Clift_beta         =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
     Cdrag_induced_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
-    CX_beta    =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
-    CY_beta    =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
-    CZ_beta    =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
-    CL_beta    = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0)  
-    CM_beta    =    np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
-    CN_beta    =    np.reshape(CN_res,(len_Mach,len_Beta)).T    - CN_alpha_0  
+    CX_beta            =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
+    CY_beta            =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
+    CZ_beta            =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
+    CL_beta            = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0)  
+    CM_beta            =    np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
+    CN_beta            =    np.reshape(CN_res,(len_Mach,len_Beta)).T    - CN_alpha_0  
  
     # -------------------------------------------------------      
     # Velocity u 
@@ -236,7 +236,7 @@ def train_model(aerodynamics, Mach):
     conditions.freestream.velocity                  = Machs * 343 # speed of sound   
     
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
-    CM_res    = VLM_results.CM  
+    CM_res      = VLM_results.CM  
     CM_q        = np.reshape(CM_res,(len_Mach,len_q)).T    - CM_alpha_0    
     CZ_q        = np.reshape(CZ_res,(len_Mach,len_q)).T    - CZ_alpha_0
 
@@ -252,9 +252,9 @@ def train_model(aerodynamics, Mach):
     conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s 
     conditions.freestream.velocity                  = Machs * 343 # speed of sound           
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
-    CL_res    = VLM_results.CL
-    CN_res    = VLM_results.CN
-    CY_res    = VLM_results.CY
+    CL_res      = VLM_results.CL
+    CN_res      = VLM_results.CN
+    CY_res      = VLM_results.CY
     CL_p        = -1*(np.reshape(CL_res,(len_Mach,len_p)).T    - CL_alpha_0   ) # Note negative sign correction
     CN_p        = -1*(np.reshape(CN_res,(len_Mach,len_p)).T    - CN_alpha_0   ) # Note negative sign correction
     CY_p        = -1*(np.reshape(CY_res,(len_Mach,len_p)).T    - CY_alpha_0   ) # Note negative sign correction
@@ -263,7 +263,7 @@ def train_model(aerodynamics, Mach):
     # Yaw Rate 
     # -------------------------------------------------------        
     r_s     = np.atleast_2d(np.tile(yaw_rate, len_Mach).T.flatten()).T 
-    Machs         = np.atleast_2d(np.repeat(Mach,len_r)).T
+    Machs   = np.atleast_2d(np.repeat(Mach,len_r)).T
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*1E-2 
