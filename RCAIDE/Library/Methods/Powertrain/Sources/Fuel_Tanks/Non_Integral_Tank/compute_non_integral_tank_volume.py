@@ -222,7 +222,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
         fuel_tank.origin[0][0]   = fuel_tank.origin[0][0] + fuel_tank.outer_diameter/2
         fuel_tank.origin[0][1]   = fuel_tank.origin[0][1] + (r[max_volume_index]+l[max_volume_index])
-        fuel_tank.origin[0][2]   = fuel_tank.origin[0][2]
+        fuel_tank.origin[0][2]   = fuel_tank.origin[0][2] - fuel_tank.outer_diameter/2
     return 
 
 def compute_generic_fuel_tank_volume(fuel_tank):
