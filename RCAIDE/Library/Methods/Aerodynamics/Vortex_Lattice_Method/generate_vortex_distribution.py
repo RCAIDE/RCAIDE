@@ -412,7 +412,7 @@ def generate_control_point_vortex_distribution(geometry,settings):
     VD.counter     = 0
     
     #reformat/preprocess wings and control surfaces for VLM panelization
-    VLM_wings = make_VLM_wings(geometry, settings)
+    VLM_wings    = make_VLM_wings(geometry, settings)
     VD.VLM_wings = VLM_wings
     
     #generate panelization for each wing. Wings first, then control surface wings
