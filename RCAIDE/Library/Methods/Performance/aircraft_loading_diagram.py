@@ -133,13 +133,13 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
     
     # compute mass properties of aircraft to get weight distribution
     vehicle_0         = results.segments[0].analyses.weights.vehicle
-    payload_breakdown = results.segments[0].analyses.weights.vehicle.mass_properties.weight_breakdown.payload
+    weight_breakdown = results.segments[0].analyses.weights.vehicle.mass_properties.weight_breakdown
      
-    CARGO =  payload_breakdown.cargo 
-    BAG   =  payload_breakdown.baggage 
-    PAX   =  payload_breakdown.passengers 
+    CARGO =  weight_breakdown.payload.cargo 
+    BAG   =  weight_breakdown.payload.baggage 
+    PAX   =  weight_breakdown.payload.passengers 
     MTOW  =  vehicle_0.mass_properties.max_takeoff
-    OEW   =  payload_breakdown.empty.total
+    OEW   =  weight_breakdown.empty.total
     MLW   =  estimate_maximum_landing_weight(MTOW)   
      
     total_sims = len(percent_cargo) * len(percent_fuel)

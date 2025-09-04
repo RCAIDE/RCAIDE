@@ -78,7 +78,7 @@ def compute_fuel_volume(vehicle):
                     # if no error getting the method, run it normally
                     compute_fuel_tank_volume(wings, fuselages)
 
-                total_fuel_volume += fuel_tank.volume_properties.initial_fuel_volume
                 total_fuel_mass   += fuel_tank.fuel.mass_properties.mass
+                total_fuel_volume = fuel_tank.fuel.mass_properties.mass / fuel_tank.fuel.density  
                 
     return total_fuel_mass,total_fuel_volume

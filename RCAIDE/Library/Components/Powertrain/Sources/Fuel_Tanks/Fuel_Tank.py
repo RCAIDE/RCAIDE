@@ -67,9 +67,13 @@ class Fuel_Tank(Component):
         self.fuel                                  = None
         self.symmetric                             = True
         self.wing_tag                              = None
-        self.fuselage_tag                          = None
-        self.inner_length                          = 0.0
+        self.fuselage_tag                          = None    
         self.outer_length                          = 0.0
+        self.outer_width                           = 0.0
+        self.outer_height                          = 0.0   
+        self.inner_length                          = None 
+        self.inner_width                           = None
+        self.inner_height                          = None 
         self.inner_diameter                        = 0.0
         self.outer_diameter                        = 0.0
  

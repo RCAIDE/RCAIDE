@@ -467,9 +467,9 @@ def vehicle_setup():
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank() 
     fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    fuel_tank.length                            = 2
-    fuel_tank.width                             = 2 
-    fuel_tank.height                            = 0.5
+    fuel_tank.outer_length                      = 2
+    fuel_tank.outer_width                       = 2 
+    fuel_tank.outer_height                      = 0.5
     fuel_tank.origin                            = [[15,0, 0]]
     fuel_tank.fuel                              = fuel
     fuel_line.fuel_tanks.append(fuel_tank)     
