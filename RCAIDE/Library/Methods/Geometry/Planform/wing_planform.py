@@ -390,7 +390,7 @@ def segment_properties(wing):
                 wing_root     = chord_root + percent_span_unexposed*((chord_tip - chord_root)/span_seg)
                 taper         = chord_tip/wing_root  
                 mac_seg       = wing_root  * 2/3 * (( 1 + taper  + taper**2 )/( 1 + taper))  
-                Sref_seg      = span_seg*(chord_root+chord_tip)*0.5 
+                Sref_seg      = span_seg*(wing_root+chord_tip)*0.5 
                 S_exposed_seg = (span_seg-percent_span_unexposed)*(wing_root+chord_tip)*0.5                    
             
             else: 

@@ -59,7 +59,15 @@ def make_VLM_wings(geometry, settings):
     N/A
     """ 
     # unpack inputs 
-    wings         = copy_wings(geometry.wings)
+    wings         = copy_wings(geometry.wings) 
+
+    # ------------------------------------------------------------------
+    # Remove wings (necessary for some cases of vertical tails that intersect main body)
+    # ------------------------------------------------------------------
+    for wing in wings:
+        for segment in wing.segments: 
+            if segment.ignore_segment:
+                wing.segments.pop(segment.tag) 
     
     # ------------------------------------------------------------------
     # Reformat original wings to have at least 2 segments and additional values for processing later
@@ -341,7 +349,7 @@ def get_paths(type_str):
                 'sweeps.leading_edge',
                 'twists.root',
                 'twists.tip',
-                'vortex_lift',
+                'vortex_lift', 
                 'airfoil',
                 'segments',
                 'control_surfaces',
@@ -364,7 +372,8 @@ def get_paths(type_str):
                  'twist',
                  'root_chord_percent',  
                  'dihedral_outboard',     
-                 'thickness_to_chord',     
+                 'thickness_to_chord',
+                 'ignore_segment', 
                  'sweeps.quarter_chord',         
                  'sweeps.leading_edge', 
                  'airfoil', 

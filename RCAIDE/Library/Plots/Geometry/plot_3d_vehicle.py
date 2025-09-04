@@ -33,13 +33,10 @@ def plot_3d_vehicle(vehicle,
                     axis_limit                  = 35,
                     top_view                    = False, 
                     side_view                   = False, 
-                    front_view                  = False, 
-                    camera_eye_x                = - 0.75, # -1.5,
-                    camera_eye_y                = - 0.75,#-1.5,
-                    camera_eye_z                =  0.75 ,# 1.0,
+                    front_view                  = False,  
                     camera_center_x             = 0.,
                     camera_center_y             = 0.,
-                    camera_center_z             = -0.5,
+                    camera_center_z             = -0.4,
                     wing_color                  = 'greys', 
                     fuselage_color              = 'teal', 
                     nacelle_color               = 'darkmint', 
@@ -118,9 +115,9 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z
 
     elif side_view:
-        camera_eye_x  = 0  
+        camera_eye_x  =  0  
         camera_eye_y  = -1 
-        camera_eye_z  = 0 
+        camera_eye_z  =  0 
         camera_center_x  = camera_center_x 
         camera_center_y  = camera_center_y 
         camera_center_z  = camera_center_z 
@@ -134,9 +131,9 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z 
 
     else: 
-        camera_eye_x  = - 0.5 
-        camera_eye_y  = - 0.5 
-        camera_eye_z  =   0.5 
+        camera_eye_x  = - 1 
+        camera_eye_y  = - 1 
+        camera_eye_z  =   0.75 
         camera_center_x  = camera_center_x 
         camera_center_y  = camera_center_y 
         camera_center_z  = camera_center_z

@@ -54,6 +54,7 @@ nosetests.xml
 *.gz
 *.zip
 *.tar
+*.pkl
 
 # Mac
 .DS_Store

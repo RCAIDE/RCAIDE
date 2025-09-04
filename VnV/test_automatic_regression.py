@@ -37,6 +37,7 @@ modules = [
     'Verification/geometry/fuel_tank_volume_test.py',
     'Verification/future_capability_coverage/coverage_test.py',    
     'Verification/mission_segments/transition_segment_test.py', 
+    'Verification/mission_segments/active_transition_test.py',
     'Verification/network_electric/battery_electric_aircraft_test.py',
     'Verification/network_electric/electric_ducted_fan_aircraft_test.py',
     'Verification/network_fuel_cell/hydrogen_fuel_cell_aircraft_test.py', 
@@ -121,6 +122,9 @@ def run_module_test(module_path):
         print(f'# Test Duration: {elapsed:.4f} min\n')
         sys.stdout.flush()
         sys.stderr.flush()
+        for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
+            if fname.endswith(".pkl"):
+                os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
 
     return passed
 
