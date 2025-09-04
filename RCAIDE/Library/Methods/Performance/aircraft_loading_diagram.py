@@ -42,11 +42,11 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
                 Evaluated Mach numbers
             * alpha : ndarray
                 Evaluated angles of attack [rad]
-            * lift_coefficient : ndarray
+            * loading_lift_coefficient : ndarray
                 Computed lift coefficients
-            * drag_coefficient : ndarray
+            * loading_drag_coefficient : ndarray
                 Computed drag coefficients
-            * moment_coefficient : ndarray
+            * loading_moment_coefficient : ndarray
                 Computed Y-moment coefficients
  
     Notes
@@ -123,13 +123,13 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
     percent_fuel         =  np.linspace(0, 1, number_of_points) 
     
     # create empty data structures 
-    lift_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
-    drag_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
-    moment_coefficient   = np.zeros((len(percent_cargo),len(percent_fuel)))
-    neutral_point        = np.zeros((len(percent_cargo),len(percent_fuel)))
-    static_margin        = np.zeros((len(percent_cargo),len(percent_fuel)))
-    aerodynamic_moment   = np.zeros((len(percent_cargo),len(percent_fuel)))
-    mass                 = np.zeros((len(percent_cargo),len(percent_fuel)))  
+    loading_lift_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_drag_coefficient     = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_moment_coefficient   = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_neutral_point        = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_static_margin        = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_aerodynamic_moment   = np.zeros((len(percent_cargo),len(percent_fuel)))
+    loading_mass                 = np.zeros((len(percent_cargo),len(percent_fuel)))  
     
     # compute mass properties of aircraft to get weight distribution
     vehicle_0         = results.segments[0].analyses.weights.vehicle
@@ -139,6 +139,7 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
     BAG   =  payload_breakdown.baggage 
     PAX   =  payload_breakdown.passengers 
     MTOW  =  vehicle_0.mass_properties.max_takeoff
+    OEW   =  payload_breakdown.empty.total
     MLW   =  estimate_maximum_landing_weight(MTOW)   
      
     total_sims = len(percent_cargo) * len(percent_fuel)
@@ -176,7 +177,7 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
             for network in  vehicle.networks:
                 for fuel_line in  network.fuel_lines: 
                     for fuel_tank in fuel_line.fuel_tanks:
-                        fuel_tank.percent_filled = percent_fuel[j]  
+                        fuel_tank.fuel.mass_properties.mass = percent_fuel[j] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
         
             #  run mission
             configs  = configs_setup(vehicle) 
@@ -187,61 +188,61 @@ def aircraft_loading_diagram(vehicle, number_of_points = 3, aerodynamic_analysis
             
             segment = results.segments['cruise'] 
             
-            # store results
-            reference_chord          = segment.analyses.aerodynamics.vehicle.reference_chord
-            lift_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.lift.total[0][0]  
-            drag_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.drag.total[0][0]  
-            moment_coefficient[i,j]  = segment.state.conditions.static_stability.coefficients.M[0][0]         
-            aerodynamic_moment[i,j]  = segment.state.conditions.frames.inertial.total_moment_vector[0][1]
-            neutral_point[i,j]       = segment.state.conditions.static_stability.neutral_point[0][0]  
-            static_margin[i,j]       = segment.state.conditions.static_stability.static_margin[0][0]
-            mass[i,j]                = mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff
+            # store results 
+            loading_lift_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.lift.total[0][0]  
+            loading_drag_coefficient[i,j]    = segment.state.conditions.aerodynamics.coefficients.drag.total[0][0]  
+            loading_moment_coefficient[i,j]  = segment.state.conditions.static_stability.coefficients.M[0][0]         
+            loading_aerodynamic_moment[i,j]  = segment.state.conditions.frames.inertial.total_moment_vector[0][1]
+            loading_neutral_point[i,j]       = segment.state.conditions.static_stability.loading_neutral_point[0][0]  
+            loading_static_margin[i,j]       = segment.state.conditions.static_stability.loading_static_margin[0][0]
+            loading_mass[i,j]                = mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff
             
             counter += 1
             print('***************************************')
             print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
             print('***************************************')            
 
-            ## -------------------------------------------------------------------------
-            ## Static Margins 
-            ## -------------------------------------------------------------------------
-            #for k in range(len(static_margins)): 
-                ## calculate CG based on static margin 
-                #x_cg = neutral_point[i,j]  -  static_margins[k] * reference_chord
-                
-                ## update vehicle
-                #segment.analyses.geometry.vehicle.mass_properties.center_of_gravity[0][0] = x_cg
-                    
-                ##  run mission
-                #configs  = configs_setup(vehicle) 
-                #analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_center_of_gravity = False) 
-                #mission  = mission_setup(analyses, altitude, airspeed) 
-                #missions = missions_setup(mission)    
-                #results = missions.base_mission.evaluate()
-                
-                ## store results
-                #segment = results.segments['cruise'] 
+    ## -------------------------------------------------------------------------
+    ## Static Margins 
+    ## -------------------------------------------------------------------------
+    #for k in range(len(loading_static_margins)): 
+        ## calculate CG based on static margin 
+        #x_cg = loading_neutral_point[i,j]  -  loading_static_margins[k] * reference_chord
+        
+        ## update vehicle
+        #segment.analyses.geometry.vehicle.mass_properties.center_of_gravity[0][0] = x_cg
             
-                #aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
-                #aero_moment.append(segment.state.conditions.frames.inertial.total_moment_vector[0][1])
-                #aero_static_margin.append(segment.state.conditions.static_stability.static_margin[0][0])
-                
-                #counter += 1
-                #print('***************************************')
-                #print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
-                #print('***************************************')
+        ##  run mission
+        #configs  = configs_setup(vehicle) 
+        #analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_center_of_gravity = False) 
+        #mission  = mission_setup(analyses, altitude, airspeed) 
+        #missions = missions_setup(mission)    
+        #results = missions.base_mission.evaluate()
+        
+        ## store results
+        #segment = results.segments['cruise'] 
+    
+        #aero_weight.append(mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff)
+        #aero_moment.append(segment.state.conditions.frames.inertial.total_moment_vector[0][1])
+        #aero_loading_static_margin.append(segment.state.conditions.static_stability.loading_static_margin[0][0])
+        
+        #counter += 1
+        #print('***************************************')
+        #print('Loading Diagram Run:' + str(counter) + ' of ' +  str(total_sims))
+        #print('***************************************')
 
  
-    RES = Data(lift_coefficient    = lift_coefficient,
-               drag_coefficient    = drag_coefficient,
-               moment_coefficient  = moment_coefficient, 
-               neutral_point       = neutral_point,         
-               static_margin       = static_margin,
-               number_of_points    = number_of_points, 
-               aerodynamic_moment  = aerodynamic_moment,   
-               mass                = mass,               
-               MTOW                = MTOW, 
-               MLW                 = MLW,  
+    RES = Data(loading_lift_coefficient    = loading_lift_coefficient,
+               loading_drag_coefficient    = loading_drag_coefficient,
+               loading_moment_coefficient  = loading_moment_coefficient, 
+               loading_neutral_point       = loading_neutral_point,         
+               loading_static_margin       = loading_static_margin,
+               number_of_points            = number_of_points, 
+               loading_aerodynamic_moment  = loading_aerodynamic_moment,   
+               loading_mass                = loading_mass,               
+               MTOW                        = MTOW,          
+               OEW                         = OEW, 
+               MLW                         = MLW,  
                )
     
     return RES  

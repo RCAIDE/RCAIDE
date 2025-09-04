@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 from scipy.spatial import ConvexHull
 from shapely.geometry import Polygon
 import matplotlib.cm as cm
+from scipy.interpolate import griddata
+import matplotlib.tri as tri
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -37,19 +39,15 @@ def plot_load_diagram(results):
     
     # ------------------------------------------------------------------------
     # fuel loading line
-    # ------------------------------------------------------------------------
-    fuel_mass            = results.mass[0, :]
-    fuel_moment_forward  = results.aerodynamic_moment[0, :]  
-    #axis.plot( fuel_moment_forward, fuel_mass, 'go-', linewidth=3, label = "Fuel")
+    # ------------------------------------------------------------------------ 
+    fuel_moment_forward  = results.loading_moment[0, :]   
     min_range =  np.minimum( min(fuel_moment_forward), min_range)
     max_range =  np.maximum( max(fuel_moment_forward), max_range)
 
     # ------------------------------------------------------------------------    
     # payload loading line
-    # ------------------------------------------------------------------------ 
-    payload_mass          = results.mass[:, 0] 
-    payload_moment_forward  = results.aerodynamic_moment[:, 0] 
-    #axis.plot( payload_moment_forward, payload_mass, 'bo-', linewidth=3, label = "Payload") 
+    # ------------------------------------------------------------------------  
+    payload_moment_forward  = results.loading_moment[:, 0]  
     min_range =  np.minimum( min(payload_moment_forward), min_range)
     max_range =  np.maximum( max(payload_moment_forward), max_range)
 
@@ -58,7 +56,7 @@ def plot_load_diagram(results):
     # ------------------------------------------------------------------------ 
     
     # 1. Generate sample scattered data 
-    points =  np.hstack((   np.atleast_2d(results.aerodynamic_moment.flatten()).T,  np.atleast_2d(results.mass.flatten()).T ))
+    points =  np.hstack((   np.atleast_2d(results.loading_moment.flatten()).T,  np.atleast_2d(results.loading_mass.flatten()).T ))
     
     # 2. Compute the convex hull
     hull = ConvexHull(points)
@@ -91,30 +89,25 @@ def plot_load_diagram(results):
     y_pts_MLW = np.ones_like(x_pts_MLW)  * results.MLW
     axis.plot(x_pts_MLW, y_pts_MLW, 'r--', label = 'MLW') 
     
+          
 
-    # ------------------------------------------------------------------------    
-    # Maximum Landing Weight line
-    # ------------------------------------------------------------------------    
-    #n = results.number_of_points
-    #x = np.array(results.aero_mass).resultshape(n*n, n)
-    #y = np.array(results.aero_moment).resultshape(n*n, n)
-    #z = np.array(results.aero_static_margin).resultshape(n*n, n) 
-     
-    #axis.contourf(y, x, z) 
-    ##fig.colorbar(cntr1, ax=axis)  
-     
-     
-
+    # ------------------------------------------------------------------------
+    # Stability Contours 
+    # ------------------------------------------------------------------------ 
+    
+    #axis.contourf(results.aerodynamic_moment, results.aerodynamic_mass, results.aerodynamic_static_margin, levels=20, cmap='viridis')
+    
     # ------------------------------------------------------------------------    
     # Axis Items
     # ------------------------------------------------------------------------        
     axis.legend(loc='upper right')
-    axis.set_xlabel(r'$X_{CG}$ (%MAC)')
+    #axis.set_xlabel(r'$X_{CG}$ (%MAC)')
+    #axis.set_xlabel(r'Moment')
     axis.set_ylabel('Weight')
-    axis.set_xticklabels([])
+    #axis.set_xticklabels([])
     #set_axes(axis)
     axis.grid(True)
-    axis.xaxis.grid(False)
+    #axis.xaxis.grid(False)
     fig.tight_layout()       
                                   
     return

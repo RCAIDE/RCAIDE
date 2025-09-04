@@ -59,8 +59,7 @@ class Fuel_Tank(Component):
         self.mass_properties.empty_mass            = 0.0   
         self.mass_properties.fuel                  = 0.0
         self.volume_properties.internal_volume     = 0.0
-        self.volume_properties.external_volume     = 0.0 
-        self.volume_properties.initial_fuel_volume = None
+        self.volume_properties.external_volume     = 0.0  
         self.secondary_fuel_flow_rate              = 0.0
         self.fuel_selector_ratio                   = 1.0    
         self.wall_clearance                        = 0.0
