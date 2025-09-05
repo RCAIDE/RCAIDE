@@ -8,6 +8,7 @@
 
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
+from RCAIDE.Library.Components import Volume_Properties
 from .Mass_Properties import Mass_Properties
 
 # package imports 
@@ -52,9 +53,10 @@ class Component(Data):
         """
         Sets default values for the component attributes.
         """         
-        self.tag             = 'Component' 
-        self.mass_properties = Mass_Properties()
-        self.origin          = np.array([[0.0,0.0,0.0]])
+        self.tag               = 'Component' 
+        self.mass_properties   = Mass_Properties()
+        self.volume_properties = Volume_Properties()
+        self.origin            = np.array([[0.0,0.0,0.0]])
     
         
 # ----------------------------------------------------------------------------------------------------------------------

@@ -62,7 +62,6 @@ class Mass_Properties(Data):
         Sets default values for mass property attributes.
         """         
         self.mass   = 0.0
-        self.volume = 0.0
         self.center_of_gravity = np.array([[0.0,0.0,0.0]])
         
         self.moments_of_inertia = Data()
