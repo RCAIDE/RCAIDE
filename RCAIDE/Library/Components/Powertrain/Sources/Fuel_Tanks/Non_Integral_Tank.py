@@ -76,6 +76,8 @@ class Non_Integral_Tank(Fuel_Tank):
     commonly used in aircraft where integral wing tanks are not feasible or
     additional fuel capacity is required.
 
+
+
     **Definitions**
 
     'Non-integral Tank'
@@ -166,8 +168,8 @@ class Non_Integral_Tank(Fuel_Tank):
         RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume
         """
         if self.geometry_type == 'prismatic':
-            compute_generic_fuel_tank_volume()
-        else:
+            compute_prismatic_fuel_tank_volume(self)
+        elif self.geometry_type == 'cylinrical':
             if self.wing_tag != None:
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self,wing)
