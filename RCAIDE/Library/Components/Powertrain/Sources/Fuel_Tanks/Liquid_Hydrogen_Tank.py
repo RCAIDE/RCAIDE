@@ -133,7 +133,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_thermal_performance  
             Thermal solver for cryogenic hydrogen tanks.  
         """
-        if self.geometry_type == 'cylinrical':
+        if self.geometry_type == 'cylindrical':
             if self.wing_tag != None:
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self, wing)

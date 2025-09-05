@@ -8,7 +8,7 @@
 
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Components import Volume_Properties
+from .Volume_Properties import Volume_Properties
 from .Mass_Properties import Mass_Properties
 
 # package imports 
