@@ -163,6 +163,6 @@ def geometry(mission):
         # Compute fuel volume  
         # --------------------------------------------------------------------------------------------------------------------
         if settings.update_fuel_volume: 
-            compute_fuel_volume(vehicle, update_max_fuel=settings.update_fuel_volume) 
+            compute_fuel_volume(vehicle) 
                    
     return 
