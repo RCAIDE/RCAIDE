@@ -279,8 +279,9 @@ def generate_3d_vehicle_geometry_data(plot_data,
                 wing_planform(wing) 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
                     vehicle.reference_area = wing.areas.reference
-
-    compute_fuel_volume(vehicle, update_max_fuel=False)
+                    
+    if overwrite_geometry:
+        compute_fuel_volume(vehicle)
 
     # -------------------------------------------------------------------------
     # PLOT WING

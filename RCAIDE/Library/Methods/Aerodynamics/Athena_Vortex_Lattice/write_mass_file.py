@@ -69,7 +69,7 @@ rho = {2}
         density = run_conditions.freestream.density[0][0] 
         gravity = run_conditions.freestream.gravity[0][0] 
         
-        if aircraft.mass_properties.mass == 0:
+        if aircraft.mass_properties.mass == None:
             mass = aircraft.mass_properties.max_takeoff
         elif aircraft.mass_properties.max_takeoff == 0:
             mass = aircraft.mass_properties.mass

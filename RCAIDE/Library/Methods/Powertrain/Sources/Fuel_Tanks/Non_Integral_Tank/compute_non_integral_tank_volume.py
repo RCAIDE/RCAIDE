@@ -213,10 +213,10 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
         if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-        fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     else:
         fuel_tank.fuel.mass_properties.mass = tank_volume_i *  fuel_tank.fuel.density
-        fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
  
     # fuel tank origin 
     fuel_tank.origin[0][0]  += maximum_circle_coordinates[max_volume_index,1] - fuel_tank.outer_diameter/2
@@ -285,7 +285,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
     else:
         fuel_tank.fuel.mass_properties.mass     = tank_volume_i *  fuel_tank.fuel.density
-        fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
 
     
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]] 
@@ -363,10 +363,10 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-            fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
         else:
             fuel_tank.fuel.mass_properties.mass = tank_volume_i *  fuel_tank.fuel.density
-            fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
              
     return 
 

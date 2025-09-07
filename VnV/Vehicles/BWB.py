@@ -536,18 +536,14 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------- 
     #  Energy Source: Fuel Tank
     #-------------------------------------------------------------------------------------------------------------------------  
-    # fuel tank
-    fuel_tank                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank.tag = 'inner_tank'
-    fuel_tank.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()
-    fuel_tank.wall_thickness = 2 * Units.inches 
-    fuel_line.fuel_tanks.append(fuel_tank) 
-
-    fuel_tank                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(vehicle.wings.main_wing) 
-    fuel_tank.tag = 'outer_tank'
-    fuel_tank.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()
-    fuel_tank.wall_thickness = 2 * Units.inches 
-    fuel_line.fuel_tanks.append(fuel_tank)  
+   # fuel tank
+    fuel_tank_1                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(vehicle.wings.main_wing)
+    fuel_tank_1.tag                                    = 'H2_Fuel_Tank_1' 
+    fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
+    fuel_tank_1.material                               = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
+    fuel_tank_1.insulation_material                    = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_1.fuel.gravimetric_efficiency            = 0.5
+    fuel_line.fuel_tanks.append(fuel_tank_1)
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to fuel line to network      
     fuel_line.assigned_propulsors =  [['propulsor_1', 'propulsor_2']]
