@@ -108,7 +108,8 @@ class Non_Integral_Tank(Fuel_Tank):
         self.aft_tank_end_rood_chord     = None
         self.aft_tank_end_segment_tag    = None 
         self.wing_root_tag               = None 
-        self.radial_offset               = 0.0
+        self.radial_offset               = None
+        self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank.
 
 
     def __init__ (self, compoment=None):

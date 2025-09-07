@@ -65,9 +65,9 @@ def compute_structural_performance(fuel_tank):
 
     # Initial fuel volume guess
     if fuel_tank.symmetric:
-        V_guess = deepcopy(fuel_tank.volume_properties.external_volume  * 0.45)
+        V_guess = deepcopy(fuel_tank.volume_properties.gross_volume  * 0.45)
     else:
-        V_guess = deepcopy(fuel_tank.volume_properties.external_volume * 0.75)
+        V_guess = deepcopy(fuel_tank.volume_properties.gross_volume * 0.75)
 
     # Iterative solver loop
     tol       = 1e-5
@@ -79,8 +79,8 @@ def compute_structural_performance(fuel_tank):
     while abs(error) > tol and iteration < max_iter:
         # Compute internal tank geometry
         V_total = V_guess / (1 - fuel_tank.ullage_volume_fraction)  
-        r_inner = (V_total / (np.pi * (2 * fuel_tank.aspect_ratio - 2/3)))**(1/3)
-        L_inner = 2 * r_inner * fuel_tank.aspect_ratio  
+        r_inner = ( V_total/(2*np.pi*(fuel_tank.aspect_ratio-1/3)) )**(1/3)
+        L_inner = (2 * r_inner * fuel_tank.aspect_ratio)-2*r_inner
 
         # Optimize wall thickness ratio (ro/ri) using von Mises criterion
         ro_ri = minimize(
@@ -93,25 +93,26 @@ def compute_structural_performance(fuel_tank):
 
         r_outer = ro_ri * r_inner
 
-        # Tank mass from external volume - internal volume
-        V_material = np.pi * (ro_ri * r_inner)**2 * ((4/3) * (ro_ri * r_inner) + L_inner - 2 * r_inner) - V_total
-        fuel_tank.mass = V_material * fuel_tank.material.density  
-
         # Convergence check
-        error                              = fuel_tank.outer_diameter / 2 - r_outer
-        rel_error                          = error / (fuel_tank.outer_diameter / 2)
-        fuel_tank.volume_properties.volume = V_guess
-        V_guess                           += alpha * rel_error
-        iteration                         += 1
+        error                                          = fuel_tank.outer_diameter / 2 - r_outer
+        rel_error                                      = error / (fuel_tank.outer_diameter / 2)
+        fuel_tank.fuel.volume_properties.net_volume    = V_guess
+        V_guess                                       += alpha * rel_error
+        iteration                                     += 1
 
     # Store results
-    fuel_tank.inner_diameter              = 2 * r_inner
-    fuel_tank.volume_properties.internal_volume  = V_total
-    fuel_tank.inner_length                = L_inner
+    fuel_tank.inner_diameter                 = 2 * r_inner
+    fuel_tank.volume_properties.net_volume   = V_total
+    fuel_tank.inner_length                   = L_inner
+    fuel_tank.wall_thickness                 = fuel_tank.outer_diameter - fuel_tank.inner_diameter   
     
     if fuel_tank.symmetric:
-        fuel_tank.volume_properties.volume *= 2
-        fuel_tank.volume_properties.internal_volume   = V_total * 2
+        fuel_tank.volume_properties.net_volume      *= 2
+        fuel_tank.fuel.volume_properties.net_volume *= 2
+    
+    V_material = fuel_tank.volume_properties.gross_volume - fuel_tank.volume_properties.net_volume
+    
+    fuel_tank.mass_properties.mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
 
     return
 
