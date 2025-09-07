@@ -9,9 +9,7 @@
 # RCAIDE imports   
 import RCAIDE 
 from RCAIDE.Library.Components import Component   
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.mass_and_intertia_functions import * 
-from RCAIDE.Library.Methods.Geometry.Planform import compute_span_location_from_chord_length
-from RCAIDE.Library.Methods.Geometry.Planform import compute_chord_length_from_span_location   
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.mass_and_intertia_functions import *   
 
 # package imports 
 import numpy as np  
@@ -99,31 +97,31 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     for cargo_bay in vehicle.cargo_bays:
         if cargo_bay.origin[0][0] == 0: 
             cargo_bay.origin[0][0] = 0.51 * length_scale  
-        cargo_bay.mass_properties.center_of_gravity = [[cargo_bay.length / 2 ,0,cargo_bay.height / 2 ]]
-         
+        cargo_bay.mass_properties.center_of_gravity = [[cargo_bay.length / 2 ,0,cargo_bay.height / 2 ]] 
     
     #---------------------------------------------------------------------------------
     # Finally, compute aircraft center of gravity  
     #---------------------------------------------------------------------------------     
     # compute total aircraft center of grabity 
-    total_moment = np.array([[0.0,0.0,0.0]])
-    total_mass   = 0
+    aircraft_total_moment = np.array([[0.0,0.0,0.0]])
+    aircraft_total_mass   = 0
 
     for key in vehicle.keys():
         item = vehicle[key]
         if isinstance(item,Component.Container):
-            Moment, Mass  = sum_moment(item)
-            if Mass != 0: 
-                total_moment += Moment
-                total_mass   += Mass         
+            Moment = np.array([[0.0,0.0,0.0]])
+            Mass   = 0
+            Moment, Mass  = sum_moment(item, Mass, Moment) 
+            aircraft_total_moment += Moment
+            aircraft_total_mass   += Mass 
     
-    if update_center_of_gravity and total_mass != 0.0:
-        vehicle.mass_properties.center_of_gravity = total_moment/total_mass 
+    if update_center_of_gravity and aircraft_total_mass != 0.0:
+        CG = aircraft_total_moment/aircraft_total_mass 
+        vehicle.mass_properties.center_of_gravity = CG.tolist() 
      
-    return vehicle.mass_properties.center_of_gravity, total_mass 
+    return vehicle.mass_properties.center_of_gravity, aircraft_total_moment, aircraft_total_mass 
 
-def compute_cabin_center_of_gravity(cabin, comp,length_scale): 
-    cabin.origin[0][0] = comp.lengths.nose 
+def compute_cabin_center_of_gravity(cabin, comp,length_scale):  
     num_seats          = cabin.number_of_seats
     num_pax            = cabin.number_of_passengers
     cabin_mass         = cabin.mass_properties.mass
@@ -138,7 +136,7 @@ def compute_cabin_center_of_gravity(cabin, comp,length_scale):
         elif arr == 'ascending':
             idxs = np.arange(0,num_pax) 
         elif  arr == 'descending':
-            idxs = np.arange(num_seats,num_seats-num_pax)  
+            idxs = np.arange(num_seats-num_pax, num_seats)  
         
         # Apply the mask to filter seats 
         seat_mask = LOPA[:, 10] == 1
@@ -150,7 +148,7 @@ def compute_cabin_center_of_gravity(cabin, comp,length_scale):
         
         # find center of gravity 
         cg_x       = np.sum(LOPA_sorted_seats[idxs,2]*point_mass)/cabin_mass
-        cg_y       = np.sum(LOPA_sorted_seats[idxs,3]*point_mass)/cabin_mass
+        cg_y       = 0
         cg_z       = np.sum(LOPA_sorted_seats[idxs,4]*point_mass)/cabin_mass                    
         cabin.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]]
     return 

@@ -210,8 +210,7 @@ def wing_planform(wing):
         wing.sweeps.quarter_chord           = c_4_sweep
         wing.sweeps.leading_edge            = le_sweep_total
         wing.thickness_to_chord             = t_c
-        wing.aerodynamic_center             = aerodynamic_center
-        wing.single_side_aerodynamic_center = single_side_aerodynamic_center
+        wing.aerodynamic_center             = aerodynamic_center 
         wing.total_length                   = total_length  
         wing.aspect_ratio                   = AR
             
@@ -231,11 +230,19 @@ def wing_planform(wing):
             v_seg =  segment_volume(wing,inner_segment,outer_segment)
             m_seg =  v_seg * 1
             total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
-            total_mass   += m_seg
-        cg_wing = total_moment / total_mass 
-        wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
-        wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[0][1]
-        wing.mass_properties.center_of_gravity[0][2] = cg_wing[0][2]
+            total_mass   += m_seg 
+                 
+        cg_wing = total_moment / total_mass
+        
+        if vertical:
+            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
+            wing.mass_properties.center_of_gravity[0][1] = cg_wing[0][2] 
+            wing.mass_properties.center_of_gravity[0][2] = 0 if sym ==True else cg_wing[0][1]
+            
+        else:
+            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
+            wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[0][1]
+            wing.mass_properties.center_of_gravity[0][2] = cg_wing[0][2]
         
     else: 
         # unpack
@@ -258,6 +265,7 @@ def wing_planform(wing):
         
         # calculate
         span       = (ar*sref)**.5
+        semispan   = span/(1+sym)
         span_total = span/np.cos(dihedral)
         chord_root = 2*sref/span/(1+taper)
         chord_tip  = taper * chord_root
@@ -298,16 +306,25 @@ def wing_planform(wing):
         wing.spans.projected            = span
         wing.spans.total                = span_total
         wing.aerodynamic_center         = [x_coord , y_coord, z_coord]
-        wing.total_length               = total_length
-        
-        # estimate empty wing center of gravity
+        wing.total_length               = total_length 
 
-        semispan  = span/(1+sym)   
+        # estimate LEMAC
+        x_0        =  wing.origin[0][0] 
+        dy         = (mac -  wing.chords.root) / ((wing.chords.tip - wing.chords.root) / semispan)
+        LEMAC      =  x_0 + np.tan(wing.sweeps.leading_edge) *dy   
+        wing.LEMAC =  LEMAC
+
+        # estimate empty wing center of gravity        
         cg_wing   =  segment_centroid(le_sweep,semispan,0,0,0,taper,dihedral,chord_root,chord_tip) 
-        wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
-        wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[1]
-        wing.mass_properties.center_of_gravity[0][2] = cg_wing[2]
-        
+        if vertical:
+            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
+            wing.mass_properties.center_of_gravity[0][1] = cg_wing[2]  
+            wing.mass_properties.center_of_gravity[0][2] = 0 if sym ==True else cg_wing[1]
+        else: 
+            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
+            wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[1]
+            wing.mass_properties.center_of_gravity[0][2] = cg_wing[2]
+      
     # control surface  
     taper = wing.taper 
     Sw    = wing.areas.reference                
@@ -329,7 +346,8 @@ def wing_planform(wing):
         cs.tip_chord            = cs_chord_end 
                  
     return wing
-
+ 
+     
 def bwb_wing_planform(wing):
 
     wing_planform(wing) 
@@ -442,7 +460,16 @@ def segment_properties(wing):
             segment.aspect_ratio            = (span_seg **2) / Sref_seg
             segment.areas.exposed           = S_exposed_seg
             segment.areas.wetted            = Swet_seg 
-            total_wetted_area               += Swet_seg 
+            total_wetted_area               += Swet_seg
+            
+
+            MAC = wing.chords.mean_aerodynamic
+            if (MAC < chord_root) and   (MAC > chord_tip):
+                x_0        = segments[segment_names[i_segs]].origin[0][0]  +  wing.origin[0][0]
+                dy         = ( MAC -  chord_root) / ( (chord_tip - chord_root) / span_seg)
+                LEMAC      =  x_0 + np.tan(wing.sweeps.leading_edge) *dy
+                wing.LEMAC = LEMAC  
+            
             if isinstance(segments[segment_names[i_segs+1]], RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                 
                 # center body 

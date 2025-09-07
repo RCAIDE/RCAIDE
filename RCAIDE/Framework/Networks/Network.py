@@ -123,7 +123,7 @@ class Network(Component):
                         total_mech_power  += P   
         
                         # compute total mass flow rate
-                        conditions.energy.fuel_lines[fuel_line.tag].fuel_flow_rate += conditions.energy.propulsors[propulsor.tag].fuel_flow_rate
+                        conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate += conditions.energy.propulsors[propulsor.tag].fuel_mass_flow_rate
                 
         # 1.2 Electric Propulsors         
         for bus in busses:            
@@ -186,12 +186,12 @@ class Network(Component):
                                 state.conditions.energy.converters[generator.tag].outputs.power  =  total_elec_power*(1 - state.conditions.energy.hybrid_power_split_ratio ) 
                                 P_mech, P_elec, stored_results_flag,stored_propulsor_tag         = converter.compute_performance(state,fuel_line,bus)  
                                 conditions.energy.busses[bus.tag].power_draw                     -= P_elec/bus.efficiency
-                                conditions.energy.fuel_lines[fuel_line.tag].fuel_flow_rate       += conditions.energy.converters[converter.tag].fuel_flow_rate   
+                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate  += conditions.energy.converters[converter.tag].fuel_mass_flow_rate   
                  
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Turboshaft):   
-                                state.conditions.energy.converters[converter.tag].power     = total_mech_power*(1 - state.conditions.energy.hybrid_power_split_ratio )   
-                                P_mech, P_elec,stored_results_flag,stored_propulsor_tag     = converter.compute_performance(state)   
-                                conditions.energy.fuel_lines[fuel_line.tag].fuel_flow_rate  += conditions.energy.converters[converter.tag].fuel_flow_rate  
+                                state.conditions.energy.converters[converter.tag].power          = total_mech_power*(1 - state.conditions.energy.hybrid_power_split_ratio )   
+                                P_mech, P_elec,stored_results_flag,stored_propulsor_tag          = converter.compute_performance(state)   
+                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate  += conditions.energy.converters[converter.tag].fuel_mass_flow_rate  
                     
         # 2.1 Electric Converters                            
         for bus in busses: 
@@ -219,7 +219,7 @@ class Network(Component):
             if fuel_line.active:
     
                 # Update total mass flow of system   
-                total_mdot  += conditions.energy.fuel_lines[fuel_line.tag].fuel_flow_rate
+                total_mdot  += conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate
                                 
                 # Determine mass flow from each tank
                 for tank in fuel_line.fuel_tanks:
@@ -268,7 +268,7 @@ class Network(Component):
                                 fuel_cell_stack.reuse_stored_data(state,bus,stored_results_flag, stored_fuel_cell_tag)
                              
                         # compute mass flow rate                    
-                        conditions.energy.busses[bus.tag].fuel_flow_rate[t_idx]  = state.conditions.energy.busses[bus.tag].fuel_cell_stacks[fuel_cell_stack.tag].H2_mass_flow_rate[t_idx]      
+                        conditions.energy.busses[bus.tag].fuel_mass_flow_rate[t_idx]  = state.conditions.energy.busses[bus.tag].fuel_cell_stacks[fuel_cell_stack.tag].H2_mass_flow_rate[t_idx]      
                           
                        
                     # Step 3: Compute bus properties          
@@ -283,7 +283,7 @@ class Network(Component):
                                 reservoir.compute_reservior_coolant_temperature(state,coolant_line,delta_t[t_idx],t_idx)
                                 
                 # Update total mass flow of system   
-                total_mdot   += conditions.energy.busses[bus.tag].fuel_flow_rate
+                total_mdot   += conditions.energy.busses[bus.tag].fuel_mass_flow_rate
                                
                 # Determine mass flow from each tank
                 for tank in bus.fuel_tanks:  

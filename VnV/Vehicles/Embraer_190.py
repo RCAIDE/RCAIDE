@@ -51,7 +51,7 @@ def vehicle_setup():
     
     # basic parameters
     vehicle.reference_area                            = 92.
-    vehicle.number_of_passengers                      = 106
+    vehicle.number_of_passengers                      = 112
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "medium range" 
 
@@ -120,7 +120,7 @@ def vehicle_setup():
     wing.taper                   = 0.28
     wing.dihedral                = 5.00 * Units.deg
     wing.spans.projected         = 28.72
-    wing.origin                  = [[13.0,0,-1.]]
+    wing.origin                  = [[13.3,0,-1.]]
     wing.vertical                = False
     wing.symmetric               = True       
     wing.high_lift               = True
@@ -286,7 +286,8 @@ def vehicle_setup():
     economy_class.number_of_passengers                = 106
     economy_class.galley_lavatory_percent_x_locations = [0, 1]      
     economy_class.emergency_exit_percent_x_locations  = [0.5, 0.5]      
-    economy_class.type_A_exit_percent_x_locations     = [0, 1]     
+    economy_class.type_A_exit_percent_x_locations     = [0, 1]
+    cabin.origin                                      = [[4.65, 0, 0]]
     cabin.append_cabin_class(economy_class)
     fuselage.append_cabin(cabin) 
 
@@ -460,18 +461,17 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    wing_fuel_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
-    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()    
-    wing_fuel_tank.fuel                         = fuel
+    wing_fuel_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    wing_fuel_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()    
     fuel_line.fuel_tanks.append(wing_fuel_tank)
 
-    fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank() 
-    fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank()  
     fuel_tank.outer_length                      = 2
     fuel_tank.outer_width                       = 2 
     fuel_tank.outer_height                      = 0.5
-    fuel_tank.origin                            = [[15,0, 0]]
-    fuel_tank.fuel                              = fuel
+    fuel_tank.origin                            = [[15.0,0.0, 0.0]]
+    fuel_tank.fuel                              = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    fuel_tank.fuel.origin                       = [[15.0,0.0, 0.0]]
     fuel_line.fuel_tanks.append(fuel_tank)     
     
 
@@ -486,16 +486,16 @@ def vehicle_setup():
     turbofan.design_altitude                        = 35000.0*Units.ft
     turbofan.design_mach_number                     = 0.8   
     turbofan.design_thrust                          = 35000.0* Units.N#/2 
-    turbofan.origin                                 = [[12.0,4.38,-2.1]]
-    turbofan.mass_properties.center_of_gravity      = [[turbofan.length /2,0,0 ]]
+    turbofan.origin                                 = [[13.15,4.38,-0.5]]
+    turbofan.mass_properties.center_of_gravity      = [[turbofan.length /2,0,0]]
      
     # Nacelle 
     nacelle                                         = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
     nacelle.diameter                                = 2.05
-    nacelle.length                                  = 2.71
+    nacelle.length                                  = 2.66
     nacelle.tag                                     = 'nacelle_1'
     nacelle.inlet_diameter                          = 2.0
-    nacelle.origin                                  = [[12.0,4.38,-2.1]] 
+    nacelle.origin                                  = [[12.15,4.38, -0.5]] 
     nacelle.mass_properties.center_of_gravity       = [[nacelle.length /2,0,0 ]]
     nacelle.areas.wetted                            = 1.1*np.pi*nacelle.diameter*nacelle.length
     nacelle_airfoil                                 = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
@@ -592,8 +592,8 @@ def vehicle_setup():
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
     turbofan_2.tag                         = 'port_propulsor'  
-    turbofan_2.origin                      = [[12.0,-4.38,-1.1]]  # change origin  
-    turbofan_2.nacelle.origin              = [[12.0,-4.38,-2.1]]   
+    turbofan_2.origin                      = [[13.15,-4.38,-0.5]]  # change origin  
+    turbofan_2.nacelle.origin              = [[12.15,-4.38,-0.5]]   
     
     # append propulsor to network
     net.propulsors.append(turbofan_2)

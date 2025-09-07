@@ -65,12 +65,13 @@ class Vehicle(Data):
         self.costs                                                         = Data()      
         self.reference_area                                                = 0.0      
         self.reference_span                                                = 0.0      
-        self.reference_chord                                               = 0.0   
+        self.reference_chord                                               = 0.0      
+        self.neutral_point                                                 = None
         self.number_of_passengers                                          = 0 
         self.number_of_seats                                               = 0 
-        self.number_of_first_class_seats                              = 0 
-        self.number_of_business_class_seats                           = 0 
-        self.number_of_economy_class_seats                            = 0 
+        self.number_of_first_class_seats                                   = 0 
+        self.number_of_business_class_seats                                = 0 
+        self.number_of_economy_class_seats                                 = 0 
         self.maximum_cross_sectional_area                                  = 0.0
         self.length                                                        = 0.0 
         

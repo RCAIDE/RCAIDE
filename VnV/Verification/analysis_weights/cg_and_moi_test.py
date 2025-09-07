@@ -53,7 +53,7 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------
     #   CG Location
     # ------------------------------------------------------------------    
-    CG_location, _ = compute_vehicle_center_of_gravity( weight_analysis.vehicle)  
+    CG_location, _, _ = compute_vehicle_center_of_gravity( weight_analysis.vehicle)  
 
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
@@ -99,7 +99,7 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------
     #   CG Location
     # ------------------------------------------------------------------    
-    CG_location, _ = compute_vehicle_center_of_gravity(weight_analysis.vehicle)  
+    CG_location, _ , _= compute_vehicle_center_of_gravity(weight_analysis.vehicle)  
 
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
@@ -154,7 +154,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     # ------------------------------------------------------------------
     #   CG Location
     # ------------------------------------------------------------------    
-    CG_location, _ =  compute_vehicle_center_of_gravity( weight_analysis.vehicle)  
+    CG_location, _ , _=  compute_vehicle_center_of_gravity( weight_analysis.vehicle)  
 
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI

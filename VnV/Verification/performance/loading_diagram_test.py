@@ -9,7 +9,7 @@
 # RCAIDE imports  
 import RCAIDE
 from RCAIDE.Framework.Core import Units  , Container
-from RCAIDE.Library.Methods.Performance.aircraft_loading_diagram        import aircraft_loading_diagram
+from RCAIDE.Library.Methods.Performance.compute_load_and_trim_diagram        import compute_load_and_trim_diagram
 from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt
 from RCAIDE.Library.Plots import  * 
@@ -36,7 +36,7 @@ def main():
     
     vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
     
-    new_sim = True
+    new_sim = False 
     
     if new_sim:
         # take out control surfaces to make regression run faster
@@ -55,10 +55,9 @@ def main():
         #  Stability Analysis
         stability     = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
         stability.settings.number_of_spanwise_vortices   = 5
-        stability.settings.number_of_chordwise_vortices  = 2        
+        stability.settings.number_of_chordwise_vortices  = 2       
         
-        
-        load_data =  aircraft_loading_diagram(vehicle,
+        load_data =  compute_load_and_trim_diagram(vehicle,
                                               aerodynamic_analysis=aerodynamics,
                                               weights_analysis=weights,
                                               stability_analysis=stability,

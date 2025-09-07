@@ -47,9 +47,8 @@ class Stability(Analysis):
         Properties Used:
         N/A
         """   
-        self.tag      = 'stability'
-        self.vehicle  = Data()
-        self.settings = Data() 
+        self.tag                                                         = 'stability'
+        self.vehicle                                                     = Data() 
         
         self.settings                                                    = Data()
         self.settings.unique_segment_surrogate                           = False

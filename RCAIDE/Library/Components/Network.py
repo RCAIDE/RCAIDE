@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Container as ContainerBase
+from RCAIDE.Framework.Core import Container  
 from RCAIDE.Framework.Core import Data
 
 # package imports 
@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Network
 # ----------------------------------------------------------------------------------------------------------------------        
-class Network(Data):
+class Network(Container):
     """
     Base class for component networks that manage connections and interactions between 
     system components.
@@ -58,31 +58,31 @@ class Network(Data):
         self.inputs          = Data()
         self.outputs         = Data()
         
-# ----------------------------------------------------------------------------------------------------------------------
-#  Network Container
-# ----------------------------------------------------------------------------------------------------------------------     
-class Container(ContainerBase):
-    """
-    Container class for managing collections of networks.
+## ----------------------------------------------------------------------------------------------------------------------
+##  Network Container
+## ----------------------------------------------------------------------------------------------------------------------     
+#class Container(ContainerBase):
+    #"""
+    #Container class for managing collections of networks.
 
-    Notes
-    -----
-    The Container class provides organization and mass calculation functionality 
-    for groups of networks. Key features include:
+    #Notes
+    #-----
+    #The Container class provides organization and mass calculation functionality 
+    #for groups of networks. Key features include:
     
-    * Recursive mass summation
-    * Moment calculation about reference points
-    * Network hierarchy management
+    #* Recursive mass summation
+    #* Moment calculation about reference points
+    #* Network hierarchy management
 
-    See Also
-    --------
-    RCAIDE.Framework.Core.Container
-        Parent class providing base container functionality
-    """
-    pass
+    #See Also
+    #--------
+    #RCAIDE.Framework.Core.Container
+        #Parent class providing base container functionality
+    #"""
+    #pass
     
 # ------------------------------------------------------------
 #  Handle Linking
 # ------------------------------------------------------------
 
-Network.Container = Container
+#Network.Container = Container

@@ -9,12 +9,13 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from RCAIDE.Framework.Core import Data
+from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Components.Mass_Properties import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propellant
 # ----------------------------------------------------------------------------------------------------------------------  
-class Propellant(Data):
+class Propellant(Component):
     """
     Base class for defining propellant properties and characteristics in propulsion systems.
 
@@ -147,4 +148,8 @@ class Propellant(Data):
         self.global_warming_potential_100.CO        = 1    
         self.global_warming_potential_100.NOx       = 0
         self.global_warming_potential_100.Soot      = 0  
-        self.global_warming_potential_100.Contrails = 0        
+        self.global_warming_potential_100.Contrails = 0
+
+
+    def append_operating_conditions(self,segment,energy_conditions,noise_conditions=None ):  
+        return         

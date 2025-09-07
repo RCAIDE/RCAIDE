@@ -24,8 +24,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
                                   angle_of_attacks                 = None,
                                   mach_numbers                     = None,
                                   non_dimensional_reynolds_numbers = None,
-                                  temperatures                     = None,
-                                  update_fuselage_properties       = True, 
+                                  temperatures                     = None, 
                                   overwrite_reference              = True,  
                                   altitude = None ):
     """
@@ -80,8 +79,7 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     # Preprocess Geometry 
     #------------------------------------------------------------------------
     geometry_analysis          = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry_analysis.vehicle  = deepcopy(aerodynamics_analysis.vehicle)
-    geometry_analysis.settings.update_fuselage_properties = update_fuselage_properties
+    geometry_analysis.vehicle  = deepcopy(aerodynamics_analysis.vehicle) 
     geometry_preprocess_routine(geometry_analysis)
     aerodynamics_analysis.vehicle = geometry_analysis.vehicle
     

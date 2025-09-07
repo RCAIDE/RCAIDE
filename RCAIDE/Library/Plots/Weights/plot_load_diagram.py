@@ -34,20 +34,25 @@ def plot_load_diagram(results):
     axis = fig.add_subplot(1,1,1)
     
     min_range = 0
-    max_range = 0
-    n = results.number_of_points
+    max_range = 0 
     
     # ------------------------------------------------------------------------
     # fuel loading line
-    # ------------------------------------------------------------------------ 
-    fuel_moment_forward  = results.loading_moment[0, :]   
+    # ------------------------------------------------------------------------
+    fuel_weight          = results.loading_mass[0, :]
+    fuel_moment_forward  = results.loading_LEMAC_location[0, :]
+    axis.plot( fuel_moment_forward, fuel_weight, 'go-', linewidth=3, label = "Fuel")
     min_range =  np.minimum( min(fuel_moment_forward), min_range)
     max_range =  np.maximum( max(fuel_moment_forward), max_range)
 
     # ------------------------------------------------------------------------    
     # payload loading line
-    # ------------------------------------------------------------------------  
-    payload_moment_forward  = results.loading_moment[:, 0]  
+    # ------------------------------------------------------------------------
+    payload_moment_forward  = results.loading_LEMAC_location[:, 0]
+    payload_weight          = results.loading_mass[:, 0]
+    split =  int( len(payload_moment_forward) / 2)
+    axis.plot( payload_moment_forward[:split], payload_weight[:split], color = 'blue', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Ascending") 
+    axis.plot( payload_moment_forward[split:], payload_weight[split:], color = 'cyan', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Descending") 
     min_range =  np.minimum( min(payload_moment_forward), min_range)
     max_range =  np.maximum( max(payload_moment_forward), max_range)
 
@@ -56,7 +61,7 @@ def plot_load_diagram(results):
     # ------------------------------------------------------------------------ 
     
     # 1. Generate sample scattered data 
-    points =  np.hstack((   np.atleast_2d(results.loading_moment.flatten()).T,  np.atleast_2d(results.loading_mass.flatten()).T ))
+    points =  np.hstack((   np.atleast_2d(results.loading_LEMAC_location.flatten()).T,  np.atleast_2d(results.loading_mass.flatten()).T ))
     
     # 2. Compute the convex hull
     hull = ConvexHull(points)
@@ -87,27 +92,26 @@ def plot_load_diagram(results):
     # ------------------------------------------------------------------------
     x_pts_MLW = x_pts_MTOW
     y_pts_MLW = np.ones_like(x_pts_MLW)  * results.MLW
-    axis.plot(x_pts_MLW, y_pts_MLW, 'r--', label = 'MLW') 
-    
-          
+    axis.plot(x_pts_MLW, y_pts_MLW, 'r--', label = 'MLW')  
 
     # ------------------------------------------------------------------------
     # Stability Contours 
-    # ------------------------------------------------------------------------ 
-    
-    #axis.contourf(results.aerodynamic_moment, results.aerodynamic_mass, results.aerodynamic_static_margin, levels=20, cmap='viridis')
+    # ------------------------------------------------------------------------
+    SM_levels = np.linspace(-5, 100, 22)
+    CS   =  axis.contourf(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, cmap='viridis') 
+    CS2  =  axis.contour(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, colors='black') 
+    cbar = fig.colorbar(CS, ax=axis)
+    axis.clabel(CS2, fontsize=10)
+    cbar.ax.set_ylabel('Static Margin', rotation =  90)    
     
     # ------------------------------------------------------------------------    
     # Axis Items
-    # ------------------------------------------------------------------------        
+    # ------------------------------------------------------------------------     
+    axis.set_xlim(min_range, max_range)
     axis.legend(loc='upper right')
-    #axis.set_xlabel(r'$X_{CG}$ (%MAC)')
-    #axis.set_xlabel(r'Moment')
-    axis.set_ylabel('Weight')
-    #axis.set_xticklabels([])
-    #set_axes(axis)
+    axis.set_xlabel(r'$X_{CG}$ (%MAC)')
+    axis.set_ylabel('Mass (kg)')
     axis.grid(True)
-    #axis.xaxis.grid(False)
     fig.tight_layout()       
                                   
     return

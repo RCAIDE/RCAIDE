@@ -62,7 +62,7 @@ def design_turboprop(turboprop):
                 Non-dimensional thrust at design point [-]
             - design_core_mass_flow_rate : float
                 Core mass flow rate at design point [kg/s]
-            - design_fuel_flow_rate : float
+            - design_fuel_mass_flow_rate : float
                 Fuel flow rate at design point [kg/s]
             - design_power : float
                 Power output at design point [W]
@@ -265,7 +265,7 @@ def design_turboprop(turboprop):
     turboprop.design_thrust_specific_fuel_consumption = turboprop_conditions.thrust_specific_fuel_consumption  
     turboprop.design_non_dimensional_thrust           = turboprop_conditions.non_dimensional_thrust            
     turboprop.design_core_mass_flow_rate              = turboprop_conditions.core_mass_flow_rate               
-    turboprop.design_fuel_flow_rate                   = turboprop_conditions.fuel_flow_rate                           
+    turboprop.design_fuel_mass_flow_rate              = turboprop_conditions.fuel_mass_flow_rate                           
     turboprop.design_specific_power                   = turboprop_conditions.specific_power                    
     turboprop.design_power_specific_fuel_consumption  = turboprop_conditions.power_specific_fuel_consumption   
     turboprop.design_thermal_efficiency               = turboprop_conditions.thermal_efficiency                

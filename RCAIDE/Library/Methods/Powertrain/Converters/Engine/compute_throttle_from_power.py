@@ -113,13 +113,13 @@ def compute_throttle_from_power(engine,conditions):
     P[P<0.] = 0. 
 
     # Compute fuel flow rate
-    SFC             = PSFC* Units['lb/hp/hr']
-    a               = np.zeros_like(altitude)
-    fuel_flow_rate  = np.fmax(P*SFC,a)
+    SFC   = PSFC* Units['lb/hp/hr']
+    a     = np.zeros_like(altitude)
+    mdot  = np.fmax(P*SFC,a)
     
     # Store outputs 
     engine_conditions.power_specific_fuel_consumption = PSFC
-    engine_conditions.fuel_flow_rate                  = fuel_flow_rate
+    engine_conditions.fuel_mass_flow_rate             = mdot
     engine_conditions.throttle                        = throttle
 
     return

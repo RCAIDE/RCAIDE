@@ -6,9 +6,8 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Framework.Core                                               import Data 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM       import VLM
-from RCAIDE.Library.Methods.Utilities                                    import Cubic_Spline_Blender  
+from RCAIDE.Framework.Core     import Data   
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity     import compute_vehicle_center_of_gravity
 
 # package imports
 import numpy   as np
@@ -17,7 +16,7 @@ from copy      import  deepcopy
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
 # ---------------------------------------------------------------------------------------------------------------------- 
-def evaluate_surrogate(state,settings,vehicle):
+def evaluate(state,settings,vehicle):
     """Evaluates static margin and neutral point using built surrogates 
     
     Assumptions: 
@@ -33,148 +32,42 @@ def evaluate_surrogate(state,settings,vehicle):
         
     Returns: 
         None  
-    """          
-    conditions    = state.conditions
-    stability     = state.analyses.stability   
-    delta_cg      = stability.training.center_of_gravity_purtubation  
-    sub_sur       = stability.surrogates.subsonic
-    sup_sur       = stability.surrogates.supersonic
-    trans_sur     = stability.surrogates.transonic  
-    hsub_min      = stability.hsub_min
-    hsub_max      = stability.hsub_max
-    hsup_min      = stability.hsup_min
-    hsup_max      = stability.hsup_max
-    AoA           = np.atleast_2d(conditions.aerodynamics.angles.alpha)    
-    Mach          = np.atleast_2d(conditions.freestream.mach_number)   
-
-    # Spline for Subsonic-to-Transonic-to-Supersonic Regimes
-    sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)
-    h_sub            = lambda M:sub_trans_spline.compute(M)          
-    sup_trans_spline = Cubic_Spline_Blender(hsup_max, hsup_min) 
-    h_sup            = lambda M:sup_trans_spline.compute(M) 
-
-    # --------------------------------------------------------------------------------------------    
-    # Vehicle Properties  
-    # --------------------------------------------------------------------------------------------  
-    CG            = vehicle.mass_properties.center_of_gravity[0][0]
-    c_ref         = vehicle.reference_chord
-
-    # --------------------------------------------------------------------------------------------            
-    # CM at 0 aoa 
-    # --------------------------------------------------------------------------------------------  
-    CM_0        = conditions.static_stability.coefficients.M_0
-
-    # --------------------------------------------------------------------------------------------         
-    # Alpha Purtubation       
-    # --------------------------------------------------------------------------------------------  
-    delta_angle       = AoA  # let the AoA be the shift in AoA so that the previously comuted CM is the response 
-    CM_alpha_prime    = conditions.static_stability.coefficients.M  
-
-    # --------------------------------------------------------------------------------------------      
-    # Center of Gravity Purtubation
-    # --------------------------------------------------------------------------------------------   
-    CM_cg_prime  = compute_stability_derivative(sub_sur.CM_0_shifted_CG   ,trans_sur.CM_0_shifted_CG    ,sup_sur.CM_0_shifted_CG    ,h_sub,h_sup,Mach)
-
-    # --------------------------------------------------------------------------------------------      
-    # Neutral Point and Static Margin Calculation 
-    # --------------------------------------------------------------------------------------------
-    shifted_CG     = CG + delta_cg  
-    dCM_dalpha_cg  = (CM_cg_prime     - CM_0) / (delta_angle)    
-    dCM_dalpha     = (CM_alpha_prime  - CM_0) / (delta_angle)      
-    m              =  (dCM_dalpha_cg[0] - dCM_dalpha[0]) /delta_cg 
-    b              =  dCM_dalpha_cg[0]  - (m * shifted_CG)
-    NP             =  -b / m  
-
-    # --------------------------------------------------------------------------------------------      
-    # Store Results 
-    # --------------------------------------------------------------------------------------------           
-    conditions.static_stability.neutral_point[:,0] = NP 
-    conditions.static_stability.static_margin[:,0] = (NP - CG) / c_ref
-    
-    return
-
-def evaluate_no_surrogate(state,settings,vehicle):
-    """Evaluates static marging and neutral point directly using VLM.
-    
-    Assumptions:
-        
-    Source:
-        None
-
-    Args:
-        stability  : VLM analysis  [unitless]
-        state      : flight conditions     [unitless]
-        settings   : VLM analysis settings [unitless]
-        vehicle    : vehicle configuration [unitless] 
-        
-    Returns: 
-        None  
-    """          
+    """ 
+  
 
     # unpack 
     conditions    = state.conditions 
-    stability     = state.analyses.stability   
-    delta_angle   = stability.training.angle_purtubation
-    delta_cg      = stability.training.center_of_gravity_purtubation  
-    n_cpts        = len(conditions.aerodynamics.angles.alpha)
+
+    # --------------------------------------------------------------------------       
+    # update center of gravity 
+    # --------------------------------------------------------------------------   
+    
+    # run c.g. function to get total mass  and moment without updating C.G.
+    #CG , Mom_0, Mass_0 = compute_vehicle_center_of_gravity(vehicle, update_center_of_gravity= False) 
+    
+    # determine original fuel mass and moment and remove it from total mass and moment 
+    
+    
+    # recompute mass and moment of fuel
+    
+    # update total mass and moment
+    
+    # compute updated C.G.
+   
+
+    CG            = vehicle.mass_properties.center_of_gravity[0][0] # will change in future    
+
+    # --------------------------------------------------------------------------       
+    # update moment of intertia 
+    # --------------------------------------------------------------------------
+    
 
     # --------------------------------------------------------------------------------------------      
     # Vehicle Properties 
     # --------------------------------------------------------------------------------------------      
-    CG            = vehicle.mass_properties.center_of_gravity[0][0]
-    c_ref         = vehicle.reference_chord  
-            
-    # --------------------------------------------------------------------------------------------      
-    # Equilibrium Condition 
-    # --------------------------------------------------------------------------------------------  
-    atmosphere                                                         = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmo_data                                                          = atmosphere.compute_values(altitude = conditions.freestream.altitude)  
-    equilibrium_conditions                                             = RCAIDE.Framework.Mission.Common.Results()
-    equilibrium_conditions.expand_rows(n_cpts,override=False)
-    equilibrium_conditions.energy                                      = deepcopy(conditions.energy)
-    equilibrium_conditions.freestream.density[:,0]                     = atmo_data.density[:,0]
-    equilibrium_conditions.freestream.gravity[:,0]                     = conditions.freestream.gravity[:,0]
-    equilibrium_conditions.freestream.speed_of_sound[:,0]              = atmo_data.speed_of_sound[:,0]
-    equilibrium_conditions.freestream.dynamic_viscosity[:,0]           = atmo_data.dynamic_viscosity[:,0]
-    equilibrium_conditions.aerodynamics.angles.alpha[:,0]              = 1E-12
-    equilibrium_conditions.freestream.temperature[:,0]                 = atmo_data.temperature[:,0]
-    equilibrium_conditions.freestream.velocity[:,0]                    = conditions.freestream.velocity[:,0]          
-    equilibrium_conditions.frames.inertial.velocity_vector[:,0]        = conditions.frames.inertial.velocity_vector[:,0]
-    equilibrium_conditions.freestream.mach_number                      = equilibrium_conditions.freestream.velocity/equilibrium_conditions.freestream.speed_of_sound
-    equilibrium_conditions.freestream.dynamic_pressure                 = 0.5 * equilibrium_conditions.freestream.density *  (equilibrium_conditions.freestream.velocity ** 2)
-    equilibrium_conditions.freestream.reynolds_number                  = equilibrium_conditions.freestream.density * equilibrium_conditions.freestream.velocity * c_ref/ equilibrium_conditions.freestream.dynamic_viscosity  
+    c_ref         = vehicle.reference_chord   
+    NP            = vehicle.neutral_point
     
-    VLM_results = VLM(equilibrium_conditions,settings,vehicle)  
-    CM_0        = VLM_results.CM  
- 
-    # --------------------------------------------------------------------------------------------      
-    # Alpha Purtubation  
-    # --------------------------------------------------------------------------------------------   
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)   
-    pertubation_conditions.aerodynamics.angles.alpha   += delta_angle 
-    VLM_results       = VLM(pertubation_conditions,settings,vehicle) 
-    CM_alpha_prime    = VLM_results.CM 
-
-    # --------------------------------------------------------------------------------------------      
-    # Center of Gravity Purtubation
-    # -------------------------------------------------------------------------------------------- 
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)  
-    pertubation_conditions.aerodynamics.angles.alpha   += delta_angle 
-    vehicle_shifted_CG = deepcopy(vehicle) 
-    vehicle_shifted_CG.mass_properties.center_of_gravity[0][0] +=delta_cg  
-    VLM_results        = VLM(pertubation_conditions,settings,vehicle_shifted_CG)  
-    CM_cg_prime        = VLM_results.CM       
-      
-    # --------------------------------------------------------------------------------------------      
-    # Neutral Point and Static Margin Calculation 
-    # --------------------------------------------------------------------------------------------   
-    shifted_CG     = CG + delta_cg   
-    dCM_dalpha_cg  = (CM_cg_prime   - CM_0) / (delta_angle)    
-    dCM_dalpha     = (CM_alpha_prime     - CM_0) / (delta_angle)      
-    m              =  (dCM_dalpha_cg[0] - dCM_dalpha[0]) /delta_cg 
-    b              =  dCM_dalpha_cg[0]  - (m * shifted_CG)
-    NP             =  -b / m  
-
     # --------------------------------------------------------------------------------------------      
     # Store Results 
     # --------------------------------------------------------------------------------------------           

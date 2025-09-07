@@ -8,8 +8,10 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports 
-from RCAIDE.Library.Components          import Component
+# RCAIDE imports
+
+from RCAIDE.Library.Components                 import Component
+from RCAIDE.Library.Components.Component       import Container    
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks  import * 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank import compute_generic_fuel_tank_volume
 
@@ -60,11 +62,11 @@ class Fuel_Tank(Component):
         self.mass_properties.fuel                  = 0.0
         self.volume_properties.internal_volume     = 0.0
         self.volume_properties.external_volume     = 0.0  
-        self.secondary_fuel_flow_rate              = 0.0
+        self.secondary_mass_flow_rate              = 0.0
         self.fuel_selector_ratio                   = 1.0    
         self.wall_clearance                        = 0.0
         self.wall_thickness                        = 0.0
-        self.fuel                                  = None
+        self.fuel                                  = Container()
         self.symmetric                             = True
         self.wing_tag                              = None
         self.fuselage_tag                          = None    

@@ -44,7 +44,6 @@ def compute_fuel_tank_properties(tank,state,distributor):
          
         tank_conditions.boil_off_flow_rate =  m_dot_boil_off 
                     
-    tank_conditions.mass_flow_rate  = tank.fuel_selector_ratio*distributor_conditions.fuel_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_fuel_flow_rate
-    tank_conditions.mass -= tank_conditions.mass_flow_rate 
+    tank_conditions.fuel_mass_flow_rate  = tank.fuel_selector_ratio*distributor_conditions.fuel_mass_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_mass_flow_rate
   
     return 

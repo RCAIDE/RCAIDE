@@ -46,7 +46,7 @@ class Aerodynamics(Analysis):
         N/A
         """           
         self.tag                                                         = 'aerodynamics'  
-        self.vehicle                                                     = Data()  
+        self.vehicle                                                     = Data()   
         
         self.settings                                                    = Data()
         self.settings.unique_segment_surrogate                           = False
