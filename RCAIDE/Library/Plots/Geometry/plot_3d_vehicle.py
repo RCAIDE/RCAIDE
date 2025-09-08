@@ -48,6 +48,7 @@ def plot_3d_vehicle(vehicle,
                     fuel_tank_alpha             = 1.0,
                     rotor_alpha                 = 1.0,
                     overwrite_geometry          = True, 
+                    plot_tank_geometry          = False,
                     show_figure                 = True):
     """
     Creates a complete 3D visualization of an aircraft including all major components.
@@ -161,6 +162,7 @@ def plot_3d_vehicle(vehicle,
                                                     fuel_tank_alpha,
                                                     rotor_alpha,
                                                     overwrite_geometry, 
+                                                    plot_tank_geometry
                                                     )
 
 

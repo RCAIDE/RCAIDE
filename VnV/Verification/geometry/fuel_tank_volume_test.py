@@ -27,7 +27,7 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    #integral_fuel_tank_volume_test()
+    integral_fuel_tank_volume_test()
     non_integral_fuel_tank_volume_test()
     return 
 def integral_fuel_tank_volume_test():
@@ -55,7 +55,8 @@ def integral_fuel_tank_volume_test():
                     axis_limit                  = 100, 
                     top_view                    = False,  
                     front_view                  = True, 
-                    show_figure=False)    
+                    show_figure=False,
+                    plot_tank_geometry=True)    
     
     error = (fuel_volume_true[0]- vehicle.volume_properties.fuel)/fuel_volume_true[0]
     print(error)
@@ -90,7 +91,8 @@ def integral_fuel_tank_volume_test():
                     top_view                    = False, 
                     side_view                   = True, 
                     front_view                  = False, 
-                    show_figure=False)    
+                    show_figure=False,
+                    plot_tank_geometry=True)    
 
 
     error = (fuel_volume_true[1]- vehicle.volume_properties.fuel)/fuel_volume_true[1]
@@ -162,7 +164,8 @@ def non_integral_fuel_tank_volume_test():
                     axis_limit                  = 100, 
                     top_view                    = False,  
                     front_view                  = True, 
-                    show_figure=False)    
+                    show_figure=False,
+                    plot_tank_geometry=True)    
     
     error = (fuel_volume_true- vehicle.volume_properties.fuel)/vehicle.volume_properties.fuel
     print(error)
