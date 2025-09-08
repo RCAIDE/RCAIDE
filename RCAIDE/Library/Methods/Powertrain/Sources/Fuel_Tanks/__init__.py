@@ -16,6 +16,7 @@ RCAIDE.Library.Methods.Powertrain.Sources.Cryogenic_Tanks
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from .append_fuel_tank_conditions  import append_fuel_tank_conditions
+from .compute_fuel_tank_properties import compute_fuel_tank_properties
 
 from . import Integral_Tank
 from . import Non_Integral_Tank
