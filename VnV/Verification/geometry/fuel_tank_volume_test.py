@@ -27,7 +27,7 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    integral_fuel_tank_volume_test()
+    #integral_fuel_tank_volume_test()
     non_integral_fuel_tank_volume_test()
     return 
 def integral_fuel_tank_volume_test():
@@ -102,7 +102,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 147.27250895047393
+    fuel_volume_true = 147.99762785837794
     
     vehicle = BWB_vehicle_setup()
 
@@ -122,12 +122,23 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_1                                 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(vehicle.wings.main_wing)
     fuel_tank_1.tag                             = 'H2_Fuel_Tank_1' 
     fuel_tank_1.fuel                            = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
-    fuel_tank_1.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
-    fuel_tank_1.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_1.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_1.fuel                            = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
+    fuel_tank_1.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
+    fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_1.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_1.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
+     # fuel tank
+    fuel_tank_2                                 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()
+    fuel_tank_2.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()  
+    fuel_tank_2.tag                             = 'H2_Fuel_Tank_2' 
+    fuel_tank_2.geometry_type                   = 'prismatic'
+    fuel_tank_2.outer_length                    = 1
+    fuel_tank_2.outer_width                     = 1
+    fuel_tank_2.outer_height                    = 1
+    fuel_tank_2.wall_thickness                  = 2*Units.inches
+    fuel_line.fuel_tanks.append(fuel_tank_2)
+
 
     fuel_tank_4                               = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(())
     fuel_tank_4.tag                           = 'H2_Fuel_Tank_4' 

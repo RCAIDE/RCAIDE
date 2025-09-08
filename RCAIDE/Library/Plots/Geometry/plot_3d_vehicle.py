@@ -209,6 +209,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
                                       fuel_tank_alpha             = 1.0,
                                       rotor_alpha                 = 1.0,
                                       overwrite_geometry          = True, 
+                                      plot_tank_geometry          = False,
                                       ):
     """
     Generates plot data for all vehicle components.
@@ -280,7 +281,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
                     vehicle.reference_area = wing.areas.reference
                     
-    if overwrite_geometry:
+    if overwrite_geometry and plot_tank_geometry:
         compute_fuel_volume(vehicle)
 
     # -------------------------------------------------------------------------

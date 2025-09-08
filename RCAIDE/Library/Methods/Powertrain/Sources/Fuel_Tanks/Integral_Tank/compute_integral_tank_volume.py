@@ -99,7 +99,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
         fuel_tank.volume_properties.net_volume       = tank_volume_i
         fuel_tank.volume_properties.gross_volume     = tank_volume_o
     
-        if fuel_tank.fuel.mass_properties.mass != None:
+        if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
@@ -184,7 +184,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          
-        if fuel_tank.fuel.mass_properties.mass != None:
+        if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
@@ -200,7 +200,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         fuel_tank.volume_properties.external_volume       = total_fuel_volume 
         fuel_tank.fuel.mass_properties.center_of_gravity  = wing.mass_properties.center_of_gravity
 
-    if fuel_tank.fuel.mass_properties.mass != None:
+    if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
         if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
             raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 

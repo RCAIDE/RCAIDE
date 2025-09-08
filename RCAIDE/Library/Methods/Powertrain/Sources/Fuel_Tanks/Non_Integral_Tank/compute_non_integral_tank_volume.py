@@ -209,7 +209,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     fuel_tank.volume_properties.net_volume         = tank_volume_i
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
 
-    if fuel_tank.fuel.mass_properties.mass != None:
+    if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
         if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
@@ -264,13 +264,13 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
     h = fuel_tank.outer_height
     t = fuel_tank.wall_thickness
     
-    if fuel_tank.inner_length == None:
+    if not hasattr(fuel_tank, "inner_length") or fuel_tank.inner_length in (None, 0.0):
         fuel_tank.inner_length = l - 2 * t
     
-    if fuel_tank.inner_width == None:
+    if not hasattr(fuel_tank, "inner_width") or fuel_tank.inner_width in (None, 0.0):
         fuel_tank.inner_width = w - 2 * t 
     
-    if fuel_tank.inner_height == None:
+    if not hasattr(fuel_tank, "inner_height") or fuel_tank.inner_height in (None, 0.0): 
         fuel_tank.inner_height = h - 2 * t            
 
     tank_volume_o = l * w * h
@@ -279,7 +279,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
     fuel_tank.volume_properties.net_volume         = tank_volume_i
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
 
-    if fuel_tank.fuel.mass_properties.mass != None:
+    if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
         if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
@@ -359,7 +359,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
         fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
         fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]   
     
-        if fuel_tank.fuel.mass_properties.mass != None:
+        if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
