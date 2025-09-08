@@ -32,9 +32,10 @@ def evaluate(state,settings,vehicle):
     Returns: 
         None  
     """ 
-  
-
+   
+    # --------------------------------------------------------------------------
     # unpack 
+    # --------------------------------------------------------------------------
     conditions    = state.conditions 
     AoA           = conditions.aerodynamics.angles.alpha  
 
