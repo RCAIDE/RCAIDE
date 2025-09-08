@@ -318,7 +318,8 @@ def vehicle_setup(new_regression=True):
         design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
         for key,item in prop_rotor_propulsor.rotor.items():
-            prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
+            if key != "volume_properties":
+                prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
                
         prop_rotor_propulsor.rotor.airfoils.airfoil.coordinate_file  =  local_path + 'Airfoils' + separator + 'NACA_4412.txt'
         prop_rotor_propulsor.rotor.airfoils.airfoil.polar_files      = [local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_50000.txt' ,
@@ -331,7 +332,8 @@ def vehicle_setup(new_regression=True):
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
        
         for key,item in prop_rotor_propulsor.motor.items():
-            prop_rotor_propulsor.motor[key] = loaded_propulsor.motor[key] 
+            if key != "volume_properties":
+                prop_rotor_propulsor.motor[key] = loaded_propulsor.motor[key] 
          
     # Front Rotors Locations 
     origins = [[-0.2, 1.347, 0.0], [-0.2, 3.2969999999999997, 0.0], [-0.2, -1.347, 0.0], [-0.2, -3.2969999999999997, 0.0],\
