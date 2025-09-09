@@ -28,6 +28,9 @@ class Component(Data):
         
     mass_properties : Mass_Properties
         Mass and inertia properties, initialized empty
+    
+     volume_properties : Volume_Properties
+        Volume Properties, initialized empty
         
     origin : ndarray
         3D coordinates [x, y, z] defining component's reference point, 
