@@ -45,7 +45,7 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.climb.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = -1.3038869012039258
+    elevator_deflection_true   = -1.294710196924449
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
     print('Error1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
@@ -172,7 +172,7 @@ def mission_setup(analyses):
     segment.air_speed                                                           = 120 * Units['mph']
     segment.climb_rate                                                          = 1000* Units['ft/min']
     segment.sideslip_angle                                                      = 1 * Units.degrees
-                          
+                     
     # define flight dynamics to model                       
     segment.flight_dynamics.force_x                                             = True    
     segment.flight_dynamics.force_z                                             = True    
@@ -187,6 +187,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.elevator_deflection.active               = True    
     segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
     segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0.02]]
+    segment.assigned_control_variables.elevator_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
    
     # Lateral Flight Mechanics 
     segment.flight_dynamics.force_y                                             = True     
@@ -195,11 +196,19 @@ def mission_setup(analyses):
     segment.assigned_control_variables.aileron_deflection.active                = True
     segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
     segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[0]]
+    segment.assigned_control_variables.aileron_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
     segment.assigned_control_variables.rudder_deflection.active                 = True
     segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
     segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[0]]
+    segment.assigned_control_variables.rudder_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
     segment.assigned_control_variables.bank_angle.active                        = True    
     segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]
+    segment.assigned_control_variables.bank_angle.bounds                        = [[-90 *Units.degree, 90 *Units.degree]]
+
+    segment.assigned_control_variables.acceleration.active                      = True
+    segment.assigned_control_variables.acceleration.bounds                      = [[-20, 60]]
+    
+
     mission.append_segment(segment) 
 
     return mission 

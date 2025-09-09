@@ -178,7 +178,6 @@ def geometry_preprocess_routine(geometry_analysis):
     # Compute fuel volume  
     # --------------------------------------------------------------------------------------------------------------------
     if settings.update_fuel_volume: 
-        total_fuel_mass,total_fuel_volume = compute_fuel_volume(vehicle)
-        vehicle.mass_properties.fuel = total_fuel_mass  
+        compute_fuel_volume(vehicle)
                
     return 

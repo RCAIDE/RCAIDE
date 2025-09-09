@@ -75,14 +75,13 @@ def aircraft_aerodynamic_analysis(aerodynamics_analysis            = None,
     RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976
     """
 
-    #------------------------------------------------------------------------  
+    #------------------------------------------------------------------------   
     # Preprocess Geometry 
     #------------------------------------------------------------------------
     geometry_analysis          = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry_analysis.vehicle  = deepcopy(aerodynamics_analysis.vehicle) 
     geometry_preprocess_routine(geometry_analysis)
-    aerodynamics_analysis.vehicle = geometry_analysis.vehicle
-    
+    aerodynamics_analysis.vehicle = geometry_analysis.vehicle 
     #------------------------------------------------------------------------  
     # Check size of arrays 
     #------------------------------------------------------------------------

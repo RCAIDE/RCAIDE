@@ -52,7 +52,8 @@ def compute_systems_weight(vehicle, V_fuel, V_int, N_tank, N_eng):
 
     TOW        = vehicle.mass_properties.max_takeoff
     Nult       = vehicle.flight_envelope.ultimate_load 
-    num_seats  = vehicle.number_of_passengers
+    num_seats  = vehicle.first_class_passengers + vehicle.business_class_passengers + vehicle.economy_class_passengers
+
     mach_number = vehicle.flight_envelope.design_mach_number
     span        = vehicle.wings.main_wing.spans.projected
 

@@ -26,7 +26,7 @@ def plot_2D_noise_contour(noise_data,
                        show_figure = True,
                        save_filename = "2D_Noise_Contour",
                        show_elevation = False,
-                       use_lat_long_coordinates = True,  
+                       use_lat_long_coordinates = False,  
                        colormap = 'jet',
                        file_type = ".png",
                        width = 10, 
@@ -128,7 +128,7 @@ def plot_2D_noise_contour(noise_data,
     noise_cmap     = plt.get_cmap('turbo')
     noise_new_cmap = truncate_colormap(noise_cmap,0.0, 1.0) 
      
-    if use_lat_long_coordinates and (noise_data.topography_file != None ):
+    if use_lat_long_coordinates:
         LAT  = noise_data.microphone_coordinates[:,:,0]
         LONG = noise_data.microphone_coordinates[:,:,1]
         axis.set_xlabel('Longitude [°]')

@@ -33,13 +33,10 @@ def plot_3d_vehicle(vehicle,
                     axis_limit                  = 35,
                     top_view                    = False, 
                     side_view                   = False, 
-                    front_view                  = False, 
-                    camera_eye_x                = - 0.75, # -1.5,
-                    camera_eye_y                = - 0.75,#-1.5,
-                    camera_eye_z                =  0.75 ,# 1.0,
+                    front_view                  = False,  
                     camera_center_x             = 0.,
                     camera_center_y             = 0.,
-                    camera_center_z             = -0.5,
+                    camera_center_z             = -0.4,
                     wing_color                  = 'greys', 
                     fuselage_color              = 'teal', 
                     nacelle_color               = 'darkmint', 
@@ -51,6 +48,7 @@ def plot_3d_vehicle(vehicle,
                     fuel_tank_alpha             = 1.0,
                     rotor_alpha                 = 1.0,
                     overwrite_geometry          = True, 
+                    plot_tank_geometry          = False,
                     show_figure                 = True):
     """
     Creates a complete 3D visualization of an aircraft including all major components.
@@ -118,9 +116,9 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z
 
     elif side_view:
-        camera_eye_x  = 0  
+        camera_eye_x  =  0  
         camera_eye_y  = -1 
-        camera_eye_z  = 0 
+        camera_eye_z  =  0 
         camera_center_x  = camera_center_x 
         camera_center_y  = camera_center_y 
         camera_center_z  = camera_center_z 
@@ -134,9 +132,9 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z 
 
     else: 
-        camera_eye_x  = - 0.5 
-        camera_eye_y  = - 0.5 
-        camera_eye_z  =   0.5 
+        camera_eye_x  = - 1 
+        camera_eye_y  = - 1 
+        camera_eye_z  =   0.75 
         camera_center_x  = camera_center_x 
         camera_center_y  = camera_center_y 
         camera_center_z  = camera_center_z
@@ -164,6 +162,7 @@ def plot_3d_vehicle(vehicle,
                                                     fuel_tank_alpha,
                                                     rotor_alpha,
                                                     overwrite_geometry, 
+                                                    plot_tank_geometry
                                                     )
 
 
@@ -210,7 +209,9 @@ def generate_3d_vehicle_geometry_data(plot_data,
                                       fuselage_alpha              = 1.0,
                                       nacelle_alpha               = 1.0,
                                       fuel_tank_alpha             = 1.0,
-                                      rotor_alpha                 = 1.0,  
+                                      rotor_alpha                 = 1.0,
+                                      overwrite_geometry          = True, 
+                                      plot_tank_geometry          = False,
                                       ):
     """
     Generates plot data for all vehicle components.
@@ -260,9 +261,30 @@ def generate_3d_vehicle_geometry_data(plot_data,
         - Fuselages (using plot_3d_fuselage)
         - Booms (using plot_3d_fuselage)
         - Energy networks (using plot_3d_energy_network)
-    """  
+    """ 
 
-    compute_fuel_volume(vehicle, update_max_fuel=False)
+
+    # -------------------------------------------------------------------------
+    # Run Geoemtry Analysis
+    # ------------------------------------------------------------------------- 
+    if overwrite_geometry:
+        for fuselage in vehicle.fuselages:
+            compute_layout_of_passenger_accommodations(fuselage)
+            fuselage_planform(fuselage) 
+
+    for wing in vehicle.wings:  
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+            if overwrite_geometry: 
+                bwb_wing_planform(wing)
+                vehicle.reference_area = wing.areas.reference 
+        else:
+            if overwrite_geometry:
+                wing_planform(wing) 
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
+                    vehicle.reference_area = wing.areas.reference
+                    
+    if overwrite_geometry and plot_tank_geometry:
+        compute_fuel_volume(vehicle)
 
     # -------------------------------------------------------------------------
     # PLOT WING
@@ -354,8 +376,8 @@ def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):
             wing = wings[fuel_tank.wing_tag]
             if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
                 plot_3d_integral_wing_tank(plot_data,wing, fuel_tank, tessellation, color_map = 'oranges') 
-            elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
-                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')   
+        if issubclass(type(fuel_tank),RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
+            plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')   
         elif fuel_tank.fuselage_tag != None:
             fuselage = fuselages[fuel_tank.fuselage_tag]
             if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 

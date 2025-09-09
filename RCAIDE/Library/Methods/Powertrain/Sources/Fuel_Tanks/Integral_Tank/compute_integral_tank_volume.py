@@ -68,14 +68,9 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     'Truncated Cone'
         A cone with the top cut off by a plane parallel to the base
     """
-    total_fuel_mass      = 0
-    total_fuel_volume_o  = 0
-    total_fuel_volume_i  = 0
-    
-    origin_x = 100
-    origin_y = 0
-    origin_z = 0
-
+    total_fuel_mass  = 0
+    tank_volume_o    = 0
+    tank_volume_i    = 0
     if len(fuselage.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
         seg_tags = list(fuselage.segments.keys())
@@ -96,29 +91,21 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
                   
                 total_fuel_mass        += volume_i * fuel_tank.fuel.density  
                 segment_cg             = np.array([[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]])
-                segment_tank_moment    += segment_cg * volume_i * fuel_tank.fuel.density  
-                total_fuel_volume_i    += volume_i
-                total_fuel_volume_o    += volume_o
-                                 
-                if fuselage.lengths.total * inner_segment.percent_x_location < origin_x: 
-                    origin_x = fuselage.lengths.total * inner_segment.percent_x_location 
-                    origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
-                    origin_z = inner_segment.percent_z_location *fuselage.lengths.total    
-                
+                segment_tank_moment    += segment_cg[0] * volume_i * fuel_tank.fuel.density  
+                tank_volume_i    += volume_i
+                tank_volume_o    += volume_o
+            
         fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)  
-        fuel_tank.volume_properties.internal_volume       = total_fuel_volume_i
-        fuel_tank.volume_properties.external_volume       = total_fuel_volume_o
+        fuel_tank.volume_properties.net_volume       = tank_volume_i
+        fuel_tank.volume_properties.gross_volume     = tank_volume_o
     
-        if fuel_tank.fuel.mass_properties.mass != None:
+        if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.internal_volume :
+            if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
-            fuel_tank.fuel.mass_properties.mass = total_fuel_volume_i *  fuel_tank.fuel.density
-
-    # update orign of tank 
-    fuel_tank.origin      = [[origin_x, origin_y, origin_z]]             
-    fuel_tank.fuel.origin = [[origin_x, origin_y, origin_z]]             
+            fuel_tank.fuel.mass_properties.mass = tank_volume_i *  fuel_tank.fuel.density    
+            fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i    
     return 
 
 def compute_wing_integral_tank_volume(fuel_tank,wing):
@@ -176,8 +163,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     total_fuel_volume  = 0
 
     # get orgin of fuel tank     
-    fuel_tank.origin = wing.origin 
-    fuel_tank.fuel.origin = wing.origin 
+    fuel_tank.origin = wing.origin
     
     if len(wing.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
@@ -195,12 +181,12 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
                 total_fuel_volume    += volume
                  
         fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)
-        fuel_tank.volume_properties.internal_volume       = total_fuel_volume
-        fuel_tank.volume_properties.external_volume       = total_fuel_volume
+        fuel_tank.volume_properties.net_volume            = total_fuel_volume
+        fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          
-        if fuel_tank.fuel.mass_properties.mass != None:
+        if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.internal_volume :
+            if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
             fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density  
@@ -208,19 +194,20 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     else:  
         # assume whole wing has fuel 
         total_fuel_volume                                 = compute_wing_integral_tank_fuel_volume(wing) 
-        total_fuel_mass                                   = volume * fuel_tank.fuel.density
+        total_fuel_mass                                   = total_fuel_volume  * fuel_tank.fuel.density
         
         fuel_tank.volume_properties.internal_volume       = total_fuel_volume
         fuel_tank.volume_properties.external_volume       = total_fuel_volume 
         fuel_tank.fuel.mass_properties.center_of_gravity  = wing.mass_properties.center_of_gravity
 
-        if fuel_tank.fuel.mass_properties.mass != None:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.internal_volume :
-                raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-        else:
-            fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density
-                       
+    if fuel_tank.fuel.mass_properties.mass != 0:
+        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+            raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+        fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
+    else:
+        fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density  
+        fuel_tank.fuel.volume_properties.net_volume = total_fuel_volume    
     return 
 
 def compute_wing_integral_tank_fuel_volume(wing):     

@@ -62,6 +62,7 @@ class Vehicle(Data):
         self.landing_gears                                                 = Components.Landing_Gear.Landing_Gear.Container()  
         self.cargo_bays                                                    = Components.Cargo_Bays.Cargo_Bay.Container() 
         self.mass_properties                                               = Vehicle_Mass_Container()
+        self.volume_properties                                             = Vehicle_Volume_Container()
         self.costs                                                         = Data()      
         self.reference_area                                                = 0.0      
         self.reference_span                                                = 0.0      
@@ -311,6 +312,44 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
         
     def append(self,value,key=None):
         """ Appends the vehicle mass, but only let's one ever exist. Keeps the newest one
+        
+            Assumptions:
+                None
+    
+            Source:
+                None
+        """      
+        self.clear()
+        for key in value.keys():
+            self[key] = value[key]
+
+class Vehicle_Volume_Properties(Components.Mass_Properties): 
+    """ The vehicle's mass properties.
+        
+            Assumptions:
+                None
+    
+            Source:
+                None
+    """
+
+    def __defaults__(self):
+        """This sets the default values.
+        
+            Assumptions:
+                None
+    
+            Source:
+                None
+            """         
+
+        self.tag                         = 'volume_properties'
+        self.fuel
+        
+class Vehicle_Volume_Container(Components.Component.Container,Vehicle_Volume_Properties):
+        
+    def append(self,value,key=None):
+        """ Appends the vehicle volume, but only let's one ever exist. Keeps the newest one
         
             Assumptions:
                 None

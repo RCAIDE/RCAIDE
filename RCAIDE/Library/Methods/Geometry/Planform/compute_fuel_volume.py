@@ -73,12 +73,20 @@ def compute_fuel_volume(vehicle):
                 try:
                     compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:
-                    pass
+                    net_volume = getattr(fuel_tank.fuel.volume_properties, "net_volume", None)
+                    if net_volume is None:
+                        raise ValueError("Net volume is not defined for this fuel tank")
+
+                    mass = getattr(fuel_tank.fuel.mass_properties, "mass", None)
+                    if mass is None:
+                        raise ValueError("Mass is not defined for this fuel tank")
                 else:
                     # if no error getting the method, run it normally
                     compute_fuel_tank_volume(wings, fuselages)
-
-                total_fuel_mass   += fuel_tank.fuel.mass_properties.mass
-                total_fuel_volume = fuel_tank.fuel.mass_properties.mass / fuel_tank.fuel.density  
-                
-    return total_fuel_mass,total_fuel_volume
+                    total_fuel_volume += fuel_tank.fuel.volume_properties.net_volume 
+                    total_fuel_mass   += fuel_tank.fuel.mass_properties.mass 
+                    
+    # Assign Total Fuel Volume and Mass to Vehicle 
+    vehicle.volume_properties.fuel = total_fuel_volume
+    vehicle.mass_properties.fuel   =total_fuel_mass
+    return 

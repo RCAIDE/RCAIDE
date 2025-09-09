@@ -109,9 +109,6 @@ class Wing(Component):
             Root section twist angle, defaults to 0.0
         - tip : float
             Tip section twist angle, defaults to 0.0
-            
-    high_lift : bool
-        Flag indicating presence of high-lift devices, defaults to False
         
     symbolic : bool
         Flag for symbolic computation mode, defaults to False 
@@ -168,7 +165,7 @@ class Wing(Component):
                                                     
         self.symmetric                              = True
         self.vertical                               = False
-        self.t_tail                                 = False
+        self.t_tail                                 = False 
         self.taper                                  = 0.0
         self.dihedral                               = 0.0
         self.aspect_ratio                           = 0.0
@@ -205,8 +202,7 @@ class Wing(Component):
         self.twists                                 = Data()
         self.twists.root                            = 0.0
         self.twists.tip                             = 0.0
-                                                    
-        self.high_lift                              = False
+                                                     
         self.symbolic                               = False  
         self.vortex_lift                            = False
                                                     

@@ -192,14 +192,14 @@ def train_model(aerodynamics, Mach):
     conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
     
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
-    Clift_res = VLM_results.CLift
-    Cdrag_res = VLM_results.CDrag_induced
-    CX_res    = VLM_results.CX
-    CY_res    = VLM_results.CY
-    CZ_res    = VLM_results.CZ
-    CL_res    = VLM_results.CL
-    CM_res    = VLM_results.CM
-    CN_res    = VLM_results.CN
+    Clift_res   = VLM_results.CLift
+    Cdrag_res   = VLM_results.CDrag_induced
+    CX_res      = VLM_results.CX
+    CY_res      = VLM_results.CY
+    CZ_res      = VLM_results.CZ
+    CL_res      = VLM_results.CL
+    CM_res      = VLM_results.CM
+    CN_res      = VLM_results.CN
     
     Clift_beta         =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
     Cdrag_induced_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
@@ -240,7 +240,7 @@ def train_model(aerodynamics, Mach):
     conditions.freestream.velocity                  = Machs * 343 # speed of sound   
     
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
-    CM_res    = VLM_results.CM  
+    CM_res      = VLM_results.CM  
     CM_q        = np.reshape(CM_res,(len_Mach,len_q)).T    - CM_alpha_0    
     CZ_q        = np.reshape(CZ_res,(len_Mach,len_q)).T    - CZ_alpha_0
 
