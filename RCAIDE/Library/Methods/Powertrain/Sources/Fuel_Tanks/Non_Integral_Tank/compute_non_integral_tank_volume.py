@@ -221,7 +221,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     # fuel tank origin 
     fuel_tank.origin[0][0]  += maximum_circle_coordinates[max_volume_index,1] - fuel_tank.outer_diameter/2
     fuel_tank.origin[0][1]  += -(r[max_volume_index]+l[max_volume_index]) # Start of roudned edge of the tank
-    fuel_tank.origin[0][2]  += maximum_circle_coordinates[max_volume_index,3]
+    fuel_tank.origin[0][2]  += maximum_circle_coordinates[max_volume_index,3] - fuel_tank.outer_diameter/2
     
     # fuel tank C.G.
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]]   

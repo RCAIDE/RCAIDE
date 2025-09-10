@@ -160,6 +160,7 @@ def plot_3d_vehicle(geometry,
                                                     fuel_tank_alpha,
                                                     rotor_alpha,
                                                     overwrite_geometry, 
+                                                    plot_tank_geometry
                                                     )
 
 
