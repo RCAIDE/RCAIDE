@@ -170,7 +170,7 @@ class Non_Integral_Tank(Fuel_Tank):
         """
         if self.geometry_type == 'prismatic':
             compute_prismatic_fuel_tank_volume(self)
-        elif self.geometry_type == 'cylinrical':
+        elif self.geometry_type == 'cylindrical':
             if self.wing_tag != None:
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self,wing)

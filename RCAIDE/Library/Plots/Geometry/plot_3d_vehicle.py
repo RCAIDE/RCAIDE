@@ -162,7 +162,6 @@ def plot_3d_vehicle(vehicle,
                                                     fuel_tank_alpha,
                                                     rotor_alpha,
                                                     overwrite_geometry, 
-                                                    plot_tank_geometry
                                                     )
 
 
@@ -210,9 +209,8 @@ def generate_3d_vehicle_geometry_data(plot_data,
                                       nacelle_alpha               = 1.0,
                                       fuel_tank_alpha             = 1.0,
                                       rotor_alpha                 = 1.0,
-                                      overwrite_geometry          = True, 
-                                      plot_tank_geometry          = False,
-                                      ):
+                                      overwrite_geometry          = True,  
+                                     ):
     """
     Generates plot data for all vehicle components.
 
@@ -273,7 +271,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
             if overwrite_geometry:
                 wing_planform(wing)  
                     
-    if overwrite_geometry and plot_tank_geometry:
+    if overwrite_geometry:
         compute_fuel_volume(vehicle)
 
     # -------------------------------------------------------------------------

@@ -38,7 +38,7 @@ def main():
     # plot vehicle 
     plot_3d_vehicle(vehicle, 
                     axis_limit                  = 50, 
-                    show_figure                 = False 
+                    show_figure                 = False
                     )
 
     # plot vehicle 
