@@ -7,18 +7,17 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Library.Plots.Geometry.plot_3d_fuselage             import plot_3d_fuselage
-from RCAIDE.Library.Plots.Geometry.plot_3d_wing                 import plot_3d_wing 
-from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle              import plot_3d_nacelle
-from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import plot_3d_rotor
-from RCAIDE.Library.Plots.Geometry.plot_3d_fuel_tank            import plot_3d_non_integral_fuel_tank, plot_3d_integral_wing_tank, plot_3d_integral_fuselage_tank
-
-from RCAIDE.Library.Methods.Geometry.LOPA      import  compute_layout_of_passenger_accommodations 
-from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume
+from RCAIDE.Library.Plots.Geometry.plot_3d_fuselage     import plot_3d_fuselage
+from RCAIDE.Library.Plots.Geometry.plot_3d_wing         import plot_3d_wing 
+from RCAIDE.Library.Plots.Geometry.plot_3d_nacelle      import plot_3d_nacelle
+from RCAIDE.Library.Plots.Geometry.plot_3d_rotor        import plot_3d_rotor
+from RCAIDE.Library.Plots.Geometry.plot_3d_fuel_tank    import plot_3d_non_integral_fuel_tank, plot_3d_integral_wing_tank, plot_3d_integral_fuselage_tank 
+from RCAIDE.Library.Methods.Geometry.Planform           import  wing_planform, bwb_wing_planform , compute_fuel_volume
 
 # python imports 
 import numpy as np 
-import plotly.graph_objects as go  
+import plotly.graph_objects as go
+from copy import deepcopy
 import os
 import sys
 
@@ -147,9 +146,10 @@ def plot_3d_vehicle(vehicle,
     )   
 
     plot_data     = []
-
+    
+    geometry =  deepcopy(vehicle)
     plot_data = generate_3d_vehicle_geometry_data(plot_data,
-                                                  vehicle,
+                                                  geometry,
                                                     alpha,   
                                                     wing_color,
                                                     fuselage_color,
@@ -261,27 +261,17 @@ def generate_3d_vehicle_geometry_data(plot_data,
         - Fuselages (using plot_3d_fuselage)
         - Booms (using plot_3d_fuselage)
         - Energy networks (using plot_3d_energy_network)
-    """ 
-
-
+    """  
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
-    # ------------------------------------------------------------------------- 
-    if overwrite_geometry:
-        for fuselage in vehicle.fuselages:
-            compute_layout_of_passenger_accommodations(fuselage)
-            fuselage_planform(fuselage) 
-
+    # -------------------------------------------------------------------------   
     for wing in vehicle.wings:  
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             if overwrite_geometry: 
-                bwb_wing_planform(wing)
-                vehicle.reference_area = wing.areas.reference 
+                bwb_wing_planform(wing) 
         else:
             if overwrite_geometry:
-                wing_planform(wing) 
-                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing) and overwrite_geometry:
-                    vehicle.reference_area = wing.areas.reference
+                wing_planform(wing)  
                     
     if overwrite_geometry and plot_tank_geometry:
         compute_fuel_volume(vehicle)
