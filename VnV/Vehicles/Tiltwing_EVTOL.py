@@ -311,7 +311,7 @@ def vehicle_setup(new_regression=True):
      
             
     if new_regression:
-        design_electric_rotor(prop_rotor_propulsor,solver_sense_step=1E-5, solver_tolerance=1E-4, print_iterations=True)
+        design_electric_rotor(prop_rotor_propulsor)
         save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        

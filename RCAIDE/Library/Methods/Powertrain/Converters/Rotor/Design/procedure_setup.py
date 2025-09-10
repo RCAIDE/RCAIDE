@@ -427,11 +427,11 @@ def post_process(nexus):
     gamma                           = rotor.optimization_parameters.multiobjective_acoustic_weight
     ideal_SPL                       = rotor.optimization_parameters.ideal_SPL_dBA  
     ideal_efficiency                = rotor.optimization_parameters.ideal_efficiency      
-    ideal_FoM                       = rotor.optimization_parameters.ideal_figure_of_merit  
+    ideal_FoM                       = rotor.optimization_parameters.ideal_figure_of_merit
     print_iter                      = nexus.print_iterations  
     mean_CL_hover                   = nexus.results.hover.mean_CL
     omega_hover                     = nexus.results.hover.omega
-    FM_hover                        = nexus.results.hover.figure_of_merit  
+    FM_hover                        = np.nan_to_num(nexus.results.hover.figure_of_merit)  
     
     # q to p ratios 
     summary                                 = nexus.summary 

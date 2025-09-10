@@ -31,7 +31,7 @@ from Stopped_Rotor_EVTOL    import configs_setup as  SR_configs_setup
 # ----------------------------------------------------------------------
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
-    update_regression_values = True
+    update_regression_values = False
      
     # TEST 1
     tiltwing_transition_test(update_regression_values)
