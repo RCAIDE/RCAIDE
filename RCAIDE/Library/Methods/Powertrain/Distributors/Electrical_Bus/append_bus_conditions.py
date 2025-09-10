@@ -70,7 +70,7 @@ def append_bus_conditions(bus,segment):
     segment.state.conditions.energy.busses[bus.tag].temperature                         = 0 * ones_row(1)
     segment.state.conditions.energy.busses[bus.tag].energy                              = 0 * ones_row(1)
     segment.state.conditions.energy.busses[bus.tag].regenerative_power                  = 0 * ones_row(1) 
-    segment.state.conditions.energy.busses[bus.tag].fuel_flow_rate                      = 0 * ones_row(1) 
+    segment.state.conditions.energy.busses[bus.tag].fuel_mass_flow_rate                 = 0 * ones_row(1) 
 
      # first segment  
     if 'initial_battery_state_of_charge' in segment:  
@@ -121,10 +121,10 @@ def append_bus_segment_conditions(bus,segment):
     RCAIDE.Library.Methods.Powertrain.Distributors.Electrical_Bus.append_bus_conditions
     RCAIDE.Library.Methods.Powertrain.Distributors.Electrical_Bus.compute_bus_conditions
     """    
-    bus_conditions                        = segment.state.conditions.energy.busses[bus.tag]
-    ones_row                              = segment.state.ones_row
-    bus_conditions.power_draw             = 0 * ones_row(1) 
-    bus_conditions.fuel_flow_rate[:,0]    = 0
+    bus_conditions                          = segment.state.conditions.energy.busses[bus.tag]
+    ones_row                                = segment.state.ones_row
+    bus_conditions.power_draw               = 0 * ones_row(1) 
+    bus_conditions.fuel_mass_flow_rate[:,0] = 0
     
     # Thermal power draw
     if segment.state.initials:

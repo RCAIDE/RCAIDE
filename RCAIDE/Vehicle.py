@@ -325,7 +325,7 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
         for key in value.keys():
             self[key] = value[key]
 
-class Vehicle_Volume_Properties(Components.Mass_Properties): 
+class Vehicle_Volume_Properties(Components.Volume_Properties): 
     """ The vehicle's mass properties.
         
             Assumptions:

@@ -94,7 +94,7 @@ def compute_turboelectric_generator_performance(turboelectric_generator, state, 
         
          # run the generator 
         compute_generator_performance(generator,conditions)   
-        turboelectric_generator_conditions.fuel_flow_rate =  turboshaft_conditions.fuel_flow_rate  
+        turboelectric_generator_conditions.fuel_mass_flow_rate =  turboshaft_conditions.fuel_mass_flow_rate  
          
     else:
         # here , we know the electric power produced by the generator and we want to determine how much fuel was used to produce said power
@@ -112,7 +112,7 @@ def compute_turboelectric_generator_performance(turboelectric_generator, state, 
         
         # run the turboshaft 
         P_mech,stored_results_flag,stored_propulsor_tag = compute_turboshaft_performance(turboshaft,state,turboelectric_generator,fuel_line) 
-        turboelectric_generator_conditions.fuel_flow_rate =  turboshaft_conditions.fuel_flow_rate   
+        turboelectric_generator_conditions.fuel_mass_flow_rate =  turboshaft_conditions.fuel_mass_flow_rate   
     
     P_elec                      = generator_conditions.outputs.power       
     

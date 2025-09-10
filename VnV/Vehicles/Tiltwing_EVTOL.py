@@ -304,22 +304,21 @@ def vehicle_setup(new_regression=True):
     nacelle.length                    = 0.45
     nacelle.diameter                  = 0.3 
     nacelle.flow_through              = False    
-    prop_rotor_propulsor.nacelle      =  nacelle       
+    prop_rotor_propulsor.nacelle      = nacelle       
     
     current_dir = os.path.abspath(os.path.dirname(__file__))
     test_dir = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'mission_segments'))
      
             
     if new_regression:
-        design_electric_rotor(prop_rotor_propulsor)
+        design_electric_rotor(prop_rotor_propulsor,solver_sense_step=1E-5, solver_tolerance=1E-4, print_iterations=True)
         save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        
         design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
-        for key,item in prop_rotor_propulsor.rotor.items():
-            if key != "volume_properties":
-                prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
+        for key,item in prop_rotor_propulsor.rotor.items(): 
+            prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
                
         prop_rotor_propulsor.rotor.airfoils.airfoil.coordinate_file  =  local_path + 'Airfoils' + separator + 'NACA_4412.txt'
         prop_rotor_propulsor.rotor.airfoils.airfoil.polar_files      = [local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_50000.txt' ,
@@ -331,9 +330,8 @@ def vehicle_setup(new_regression=True):
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_5000000.txt',
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
        
-        for key,item in prop_rotor_propulsor.motor.items():
-            if key != "volume_properties":
-                prop_rotor_propulsor.motor[key] = loaded_propulsor.motor[key] 
+        for key,item in prop_rotor_propulsor.motor.items(): 
+            prop_rotor_propulsor.motor[key] = loaded_propulsor.motor[key] 
          
     # Front Rotors Locations 
     origins = [[-0.2, 1.347, 0.0], [-0.2, 3.2969999999999997, 0.0], [-0.2, -1.347, 0.0], [-0.2, -3.2969999999999997, 0.0],\

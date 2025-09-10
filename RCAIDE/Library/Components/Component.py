@@ -8,8 +8,8 @@
 
 from RCAIDE.Framework.Core import Container as ContainerBase
 from RCAIDE.Framework.Core import Data
-from .Volume_Properties import Volume_Properties
-from .Mass_Properties import Mass_Properties
+from .Mass_Properties      import Mass_Properties
+from .Volume_Properties    import Volume_Properties
 
 # package imports 
 import numpy as np

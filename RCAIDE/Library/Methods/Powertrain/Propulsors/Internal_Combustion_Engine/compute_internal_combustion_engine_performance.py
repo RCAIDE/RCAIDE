@@ -115,7 +115,7 @@ def compute_internal_combustion_engine_performance(propulsor, state, center_of_g
     moment                  =  np.cross(moment_vector, conditions.energy.converters[propeller.tag].thrust)       
     
     # Create the outputs
-    ice_conditions.fuel_flow_rate            = conditions.energy.converters[engine.tag].fuel_flow_rate  
+    ice_conditions.fuel_mass_flow_rate       = conditions.energy.converters[engine.tag].fuel_mass_flow_rate  
     stored_results_flag                      = True
     stored_propulsor_tag                     = propulsor.tag  
 
