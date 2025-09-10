@@ -69,6 +69,9 @@ class Non_Integral_Tank(Fuel_Tank):
     fuel : Component, optional
         Fuel type stored in tank (default: None)
 
+    radial_offset : float
+        Reduction in radius for a tank (default: None)
+
     Notes
     -----
     Non-integral tanks provide flexibility in fuel storage placement and can be

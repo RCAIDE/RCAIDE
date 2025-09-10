@@ -38,7 +38,8 @@ def main():
     # plot vehicle 
     plot_3d_vehicle(vehicle, 
                     axis_limit                  = 50, 
-                    show_figure                 = False
+                    show_figure                 = False,
+                    plot_tank_geometry         = True,
                     )
 
     # plot vehicle 
@@ -48,6 +49,7 @@ def main():
                     top_view                    = True, 
                     side_view                   = False, 
                     front_view                  = False, 
+                    plot_tank_geometry         = True,
                     show_figure=False)
     
 
@@ -57,6 +59,7 @@ def main():
                     top_view                    = False, 
                     side_view                   = True, 
                     front_view                  = False, 
+                    plot_tank_geometry         = True,
                     show_figure=False)
     
    
@@ -67,6 +70,7 @@ def main():
                     side_view                   = False, 
                     front_view                  = True,
                     wing_alpha                  = 0.2, 
+                    plot_tank_geometry         = True,
                     show_figure=False)       
     
     # Set up vehicle configs
