@@ -33,7 +33,7 @@ from Test_Rotor        import Test_Rotor
 def main():
     
     #propeller_test()
-    rotor_test(new_regression=True)
+    rotor_test(new_regression=False)
     
     return
 
