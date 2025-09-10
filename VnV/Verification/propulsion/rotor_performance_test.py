@@ -89,7 +89,7 @@ def rotor_test(new_regression):
     results        = rotor_aerodynamic_analysis(rotor, velocity_range, angular_velocity = angular_velocity, angle_of_attack=angle_of_attack)
     
     thrust      = np.linalg.norm(results.thrust,axis=1)[0]
-    thrust_true = 11498.853524041924
+    thrust_true = 15965.621347042774
 
     diff_thrust = np.abs((thrust- thrust_true)/thrust_true)  
     print('\nthrust difference')

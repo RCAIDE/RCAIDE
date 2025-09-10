@@ -24,7 +24,7 @@ import sys
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------  
-def plot_3d_vehicle(vehicle,
+def plot_3d_vehicle(geometry,
                     show_axis                   = False,
                     save_figure                 = False,
                     save_filename               = "Vehicle_Geometry",
@@ -54,8 +54,8 @@ def plot_3d_vehicle(vehicle,
 
     Parameters
     ----------
-    vehicle : Vehicle
-        RCAIDE vehicle data structure containing all component geometries
+    geometry : geometry
+        RCAIDE geometry data structure containing all component geometries
 
     show_axis : bool, optional
         Flag to display coordinate axes (default: False)
@@ -139,15 +139,13 @@ def plot_3d_vehicle(vehicle,
         camera_center_z  = camera_center_z
 
 
-    print("\nPlotting vehicle") 
+    print("\nPlotting geometry") 
     camera = dict(
         eye=dict(x=camera_eye_x, y=camera_eye_y, z=camera_eye_z), 
         center=dict(x=camera_center_x, y=camera_center_y, z=camera_center_z)
     )   
 
     plot_data     = []
-    
-    geometry =  deepcopy(vehicle)
     plot_data = generate_3d_vehicle_geometry_data(plot_data,
                                                   geometry,
                                                     alpha,   
@@ -197,7 +195,7 @@ def plot_3d_vehicle(vehicle,
     return      
 
 def generate_3d_vehicle_geometry_data(plot_data,
-                                      vehicle, 
+                                      geometry, 
                                       alpha                       = 1.0,   
                                       wing_color                  = 'greys', 
                                       fuselage_color              = 'teal', 
@@ -210,17 +208,18 @@ def generate_3d_vehicle_geometry_data(plot_data,
                                       fuel_tank_alpha             = 1.0,
                                       rotor_alpha                 = 1.0,
                                       overwrite_geometry          = True,  
+                                      plot_tank_geometry          = False,  
                                      ):
     """
-    Generates plot data for all vehicle components.
+    Generates plot data for all geometry components.
 
     Parameters
     ----------
     plot_data : list
         Collection of plot vertices to be rendered
 
-    vehicle : Vehicle
-        RCAIDE vehicle data structure containing all component geometries
+    geometry : geometry
+        RCAIDE geometry data structure containing all component geometries
 
     alpha : float, optional
         Transparency value between 0 and 1 (default: 1.0)
@@ -263,7 +262,7 @@ def generate_3d_vehicle_geometry_data(plot_data,
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
     # -------------------------------------------------------------------------   
-    for wing in vehicle.wings:  
+    for wing in geometry.wings:  
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             if overwrite_geometry: 
                 bwb_wing_planform(wing) 
@@ -271,41 +270,41 @@ def generate_3d_vehicle_geometry_data(plot_data,
             if overwrite_geometry:
                 wing_planform(wing)  
                     
-    if overwrite_geometry:
-        compute_fuel_volume(vehicle)
+    if overwrite_geometry and plot_tank_geometry:
+        compute_fuel_volume(geometry)
 
     # -------------------------------------------------------------------------
     # PLOT WING
     # ------------------------------------------------------------------------- 
     number_of_airfoil_points = 21
-    for wing in vehicle.wings:
+    for wing in geometry.wings:
         plot_data       = plot_3d_wing(plot_data,wing,number_of_airfoil_points , color_map=wing_color,alpha=wing_alpha) 
 
     # -------------------------------------------------------------------------
     # PLOT FUSELAGE
     # ------------------------------------------------------------------------- 
-    for fus in vehicle.fuselages:
+    for fus in geometry.fuselages:
         plot_data = plot_3d_fuselage(plot_data,fus,color_map =fuselage_color,alpha=fuselage_alpha)
 
 
     # -------------------------------------------------------------------------
     # PLOT FUSELAGES AND BOOMS
     # ------------------------------------------------------------------------- 
-    for boom in vehicle.booms:
+    for boom in geometry.booms:
         plot_data = plot_3d_fuselage(plot_data,boom,color_map =fuselage_color,alpha=fuselage_alpha) 
 
     # -------------------------------------------------------------------------
     # PLOT ENERGY NETWORK
     # ------------------------------------------------------------------------- 
     number_of_airfoil_points = 11
-    for network in vehicle.networks:
-        plot_data = plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha) 
+    for network in geometry.networks:
+        plot_data = plot_3d_energy_network(plot_data,geometry,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha, plot_tank_geometry) 
 
     return plot_data
 
-def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha):
+def plot_3d_energy_network(plot_data,geometry,network,number_of_airfoil_points,nacelle_color, nacelle_alpha, rotor_color, rotor_alpha, plot_tank_geometry):
     """
-    Generates plot data for vehicle energy network components.
+    Generates plot data for geometry energy network components.
 
     Parameters
     ----------
@@ -348,17 +347,17 @@ def plot_3d_energy_network(plot_data,vehicle,network,number_of_airfoil_points,na
             plot_data = plot_3d_rotor(propulsor.rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
         if 'propeller' in propulsor:
             plot_data = plot_3d_rotor(propulsor.propeller,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
-
-    for fuel_line in network.fuel_lines:
-        plot_fuel_tanks(vehicle, fuel_line,plot_data,tessellation) 
-    for bus in network.busses:
-        plot_fuel_tanks(vehicle, bus,plot_data,tessellation)
+    if plot_tank_geometry:
+        for fuel_line in network.fuel_lines:
+            plot_fuel_tanks(geometry, fuel_line,plot_data,tessellation) 
+        for bus in network.busses:
+            plot_fuel_tanks(geometry, bus,plot_data,tessellation)
 
     return plot_data
 
-def plot_fuel_tanks(vehicle, distributor,plot_data,tessellation):  
-    wings         = vehicle.wings
-    fuselages     = vehicle.fuselages
+def plot_fuel_tanks(geometry, distributor,plot_data,tessellation):  
+    wings         = geometry.wings
+    fuselages     = geometry.fuselages
     for fuel_tank in distributor.fuel_tanks:   
         if fuel_tank.wing_tag != None:
             wing = wings[fuel_tank.wing_tag]
