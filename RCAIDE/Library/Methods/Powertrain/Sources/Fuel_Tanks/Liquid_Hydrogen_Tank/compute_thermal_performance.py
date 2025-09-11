@@ -102,9 +102,9 @@ def compute_thermal_performance(fuel_tank):
         tank_volume_i *= 2 
         fuel_volume   *=2
 
-    fuel_tank.volume_properties.net_volume = tank_volume_i
+    fuel_tank.volume_properties.net_volume      = tank_volume_i
     fuel_tank.fuel.volume_properties.net_volume = deepcopy(fuel_volume)
-    fuel_tank.fuel.mass_properties.mass = deepcopy(fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density)
+    fuel_tank.fuel.mass_properties.mass         = deepcopy(fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density)
 
     return 
 

@@ -218,7 +218,7 @@ def compute_thrust(turboprop, conditions):
 
     # fuel flow rate
     a                                              = np.array([0.]) 
-    mdot_fuel                                      = np.fmax(FD2*TSFC/g,a)*1./Units.hour    
+    m_dot_fuel                                     = np.fmax(FD2*TSFC/g,a)*1./Units.hour    
 
     # computing the power 
     power                                          = FD2*V0 
@@ -228,7 +228,7 @@ def compute_thrust(turboprop, conditions):
     turboprop_conditions.thrust_specific_fuel_consumption  = TSFC
     turboprop_conditions.non_dimensional_thrust            = Fsp 
     turboprop_conditions.core_mass_flow_rate               = mdot_core
-    turboprop_conditions.fuel_mass_flow_rate               = mdot_fuel    
+    turboprop_conditions.fuel_mass_flow_rate               = m_dot_fuel    
     turboprop_conditions.power                             = power  
     turboprop_conditions.specific_power                    = W_dot_mdot0  
     turboprop_conditions.power_specific_fuel_consumption   = PSFC 

@@ -205,7 +205,7 @@ def compute_thrust(turbofan,conditions):
     power   = FD2*u0    
 
     # Compute fuel flow rate 
-    mdot_fuel   = np.fmax(FD2*TSFC/g,np.array([0.]))*1./Units.hour
+    m_dot_fuel   = np.fmax(FD2*TSFC/g,np.array([0.]))*1./Units.hour
 
     # Pack turbofan outouts  
     turbofan_conditions.thrust                            = FD2 
@@ -216,6 +216,6 @@ def compute_thrust(turbofan,conditions):
     turbofan_conditions.power                             = power   
     turbofan_conditions.specific_impulse                  = Isp
     turbofan_conditions.core_mass_flow_rate               = mdot_core
-    turbofan_conditions.fuel_mass_flow_rate               = mdot_fuel   
+    turbofan_conditions.fuel_mass_flow_rate               = m_dot_fuel   
     
     return  

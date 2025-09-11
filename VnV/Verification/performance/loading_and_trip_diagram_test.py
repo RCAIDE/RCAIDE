@@ -36,7 +36,7 @@ def main():
     
     vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
     
-    new_sim = False 
+    new_sim = True 
     
     if new_sim:
         # take out control surfaces to make regression run faster

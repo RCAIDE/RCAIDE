@@ -154,6 +154,7 @@ class Vehicle(Data):
             Components.Landing_Gear.Landing_Gear       : self['landing_gears']    ,
             Components.Cargo_Bays.Cargo_Bay            : self['cargo_bays']       , 
             Vehicle_Mass_Properties                    : self['mass_properties']  ,
+            Vehicle_Volume_Properties                  : self['volume_properties'],
         }
          
         self._energy_network_root_map= {
@@ -161,6 +162,7 @@ class Vehicle(Data):
             }    
         
         self.append_component(Vehicle_Mass_Properties())
+        self.append_component(Vehicle_Volume_Properties())
          
         return
     
@@ -323,7 +325,7 @@ class Vehicle_Mass_Container(Components.Component.Container,Vehicle_Mass_Propert
         for key in value.keys():
             self[key] = value[key]
 
-class Vehicle_Volume_Properties(Components.Mass_Properties): 
+class Vehicle_Volume_Properties(Components.Volume_Properties): 
     """ The vehicle's mass properties.
         
             Assumptions:
@@ -344,7 +346,7 @@ class Vehicle_Volume_Properties(Components.Mass_Properties):
             """         
 
         self.tag                         = 'volume_properties'
-        self.fuel
+        self.fuel                        = 0.0
         
 class Vehicle_Volume_Container(Components.Component.Container,Vehicle_Volume_Properties):
         

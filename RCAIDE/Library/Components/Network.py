@@ -5,16 +5,16 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Container  
-from RCAIDE.Framework.Core import Data
-
+from RCAIDE.Framework.Core import Container as ContainerBase
+from RCAIDE.Framework.Core import Data 
+from RCAIDE.Library.Components import Component
 # package imports 
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Network
 # ----------------------------------------------------------------------------------------------------------------------        
-class Network(Container):
+class Network(Component):
     """
     Base class for component networks that manage connections and interactions between 
     system components.
@@ -22,7 +22,7 @@ class Network(Container):
     Attributes
     ----------
     tag : str
-        Unique identifier for the network, defaults to 'Network'
+        Unique identifier for the network, defaults to 'Network' 
         
     origin : ndarray
         3D coordinates [x, y, z] defining network's reference point, 
@@ -45,7 +45,7 @@ class Network(Container):
     * Container functionality for sub-networks
 
     See Also
-    --------
+    -------- 
     RCAIDE.Framework.Core.Data
         Parent class providing data structure functionality
     """
@@ -53,36 +53,35 @@ class Network(Container):
         """
         Sets default values for the network attributes.
         """         
-        self.tag             = 'Network' 
-        self.origin          = np.array([[0.0,0.0,0.0]]) 
+        self.tag             = 'Network'
         self.inputs          = Data()
         self.outputs         = Data()
         
-## ----------------------------------------------------------------------------------------------------------------------
-##  Network Container
-## ----------------------------------------------------------------------------------------------------------------------     
-#class Container(ContainerBase):
-    #"""
-    #Container class for managing collections of networks.
+# ----------------------------------------------------------------------------------------------------------------------
+#  Network Container
+# ----------------------------------------------------------------------------------------------------------------------     
+class Container(ContainerBase):
+    """
+    Container class for managing collections of networks.
 
-    #Notes
-    #-----
-    #The Container class provides organization and mass calculation functionality 
-    #for groups of networks. Key features include:
+    Notes
+    -----
+    The Container class provides organization and mass calculation functionality 
+    for groups of networks. Key features include:
     
-    #* Recursive mass summation
-    #* Moment calculation about reference points
-    #* Network hierarchy management
+    * Recursive mass summation
+    * Moment calculation about reference points
+    * Network hierarchy management
 
-    #See Also
-    #--------
-    #RCAIDE.Framework.Core.Container
-        #Parent class providing base container functionality
-    #"""
-    #pass
+    See Also
+    --------
+    RCAIDE.Framework.Core.Container
+        Parent class providing base container functionality
+    """
+    pass
     
 # ------------------------------------------------------------
 #  Handle Linking
 # ------------------------------------------------------------
 
-#Network.Container = Container
+Network.Container = Container

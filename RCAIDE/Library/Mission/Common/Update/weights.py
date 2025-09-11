@@ -11,7 +11,6 @@ import RCAIDE
 # package imports 
 import numpy as np  
     
-
 # ----------------------------------------------------------------------------------------------------------------------
 # Update Weights
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -44,8 +43,7 @@ def weights(segment):
     I              = segment.state.numerics.time.integrate  
     m_0_vehicle    = conditions.weights.total_mass[0,0]
     m_dot_vehicle  = conditions.weights.vehicle_mass_rate
-    g              = conditions.freestream.gravity   
-    vehicle        = segment.analyses.weights.vehicle.networks   
+    g              = conditions.freestream.gravity    
 
     # --------------------------------------------------------------------------       
     # update mass 
@@ -57,16 +55,7 @@ def weights(segment):
         
         W = m_0_vehicle*g 
         conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
-        
-    else: 
-        for network in vehicle.networks: 
-            for fuel_line in network.fuel_lines:  
-                fuel_line_results   = conditions.energy.fuel_lines[fuel_line.tag]
-                for fuel_tank in fuel_line.fuel_tanks:
-                    m_0_fuel   = fuel_line_results.fuel_tanks[fuel_tank.tag].fuel_mass[0,0]  
-                    m_dot_fuel = fuel_line_results.fuel_tanks[fuel_tank.tag].mass_flow_rate[:,0]
-                    fuel_line_results.fuel_tanks[fuel_tank.tag].fuel_mass[:,0]  = m_0_fuel +  np.dot(I, -m_dot_fuel)
-          
+         
         m = m_0_vehicle + np.dot(I, -m_dot_vehicle)
     
         # weight

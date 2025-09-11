@@ -186,11 +186,11 @@ class Network(Component):
                                 state.conditions.energy.converters[generator.tag].outputs.power  =  total_elec_power*(1 - state.conditions.energy.hybrid_power_split_ratio ) 
                                 P_mech, P_elec, stored_results_flag,stored_propulsor_tag         = converter.compute_performance(state,fuel_line,bus)  
                                 conditions.energy.busses[bus.tag].power_draw                     -= P_elec/bus.efficiency
-                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate  += conditions.energy.converters[converter.tag].fuel_mass_flow_rate   
+                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate       += conditions.energy.converters[converter.tag].fuel_mass_flow_rate   
                  
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Turboshaft):   
-                                state.conditions.energy.converters[converter.tag].power          = total_mech_power*(1 - state.conditions.energy.hybrid_power_split_ratio )   
-                                P_mech, P_elec,stored_results_flag,stored_propulsor_tag          = converter.compute_performance(state)   
+                                state.conditions.energy.converters[converter.tag].power     = total_mech_power*(1 - state.conditions.energy.hybrid_power_split_ratio )   
+                                P_mech, P_elec,stored_results_flag,stored_propulsor_tag     = converter.compute_performance(state)   
                                 conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate  += conditions.energy.converters[converter.tag].fuel_mass_flow_rate  
                     
         # 2.1 Electric Converters                            
