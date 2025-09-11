@@ -147,35 +147,37 @@ def reuse_stored_turboelectric_generator_data(turboelectric_generator, state, ne
     conditions                  = state.conditions 
     generator                   = turboelectric_generator.generator
     turboshaft                  = turboelectric_generator.turboshaft
+    ram                         = turboelectric_generator.turboshaft.ram 
     inlet_nozzle                = turboelectric_generator.turboshaft.inlet_nozzle 
     compressor                  = turboelectric_generator.turboshaft.compressor
-    high_pressure_compressor    = turboelectric_generator.turboshaft.high_pressure_compressor
-    combustor                   = turboelectric_generator.turboshaft.combustor 
     low_pressure_turbine        = turboelectric_generator.turboshaft.low_pressure_turbine
+    high_pressure_turbine       = turboelectric_generator.turboshaft.high_pressure_turbine 
+    combustor                   = turboelectric_generator.turboshaft.combustor
     core_nozzle                 = turboelectric_generator.turboshaft.core_nozzle
-    generator_0                 = network.converters[stored_converter_tag].generator 
-    turboshaft_0                = network.converters[stored_converter_tag].turboshaft
-    ram_0                       = network.converters[stored_converter_tag].ram
-    inlet_nozzle_0              = network.converters[stored_converter_tag].inlet_nozzle 
-    compressor_0                = network.converters[stored_converter_tag].compressor
-    high_pressure_compressor_0  = network.converters[stored_converter_tag].high_pressure_compressor
-    combustor_0                 = network.converters[stored_converter_tag].combustor
-    low_pressure_turbine_0      = network.converters[stored_converter_tag].low_pressure_turbine
-    core_nozzle_0               = network.converters[stored_converter_tag].core_nozzle
+
+    generator_0                = network.converters[stored_converter_tag].generator 
+    turboshaft_0               = network.converters[stored_converter_tag].turboshaft
+    ram_0                      = network.converters[stored_converter_tag][turboshaft_0.tag].ram
+    inlet_nozzle_0             = network.converters[stored_converter_tag][turboshaft_0.tag].inlet_nozzle 
+    compressor_0               = network.converters[stored_converter_tag][turboshaft_0.tag].compressor
+    high_pressure_turbine_0    = network.converters[stored_converter_tag][turboshaft_0.tag].high_pressure_turbine
+    combustor_0                = network.converters[stored_converter_tag][turboshaft_0.tag].combustor
+    low_pressure_turbine_0     = network.converters[stored_converter_tag][turboshaft_0.tag].low_pressure_turbine
+    core_nozzle_0              = network.converters[stored_converter_tag][turboshaft_0.tag].core_nozzle
 
     # deep copy results 
-    conditions.energy.converters[generator.tag]                = deepcopy(conditions.energy.converters[generator_0.tag]              ) 
-    conditions.energy.converters[turboshaft.tag]               = deepcopy(conditions.energy.converters[turboshaft_0.tag]             )
-    conditions.energy.converters[turboelectric_generator.tag]  = deepcopy(conditions.energy.converters[turboelectric_generator.tag]) 
-    conditions.energy.converters[inlet_nozzle.tag]             = deepcopy(conditions.energy.converters[inlet_nozzle_0.tag]            ) 
-    conditions.energy.converters[compressor.tag]               = deepcopy(conditions.energy.converters[compressor_0.tag] )
-    conditions.energy.converters[high_pressure_compressor.tag] = deepcopy(conditions.energy.converters[high_pressure_compressor_0.tag])
-    conditions.energy.converters[combustor.tag]                = deepcopy(conditions.energy.converters[combustor_0.tag]               )
-    conditions.energy.converters[low_pressure_turbine.tag]     = deepcopy(conditions.energy.converters[low_pressure_turbine_0.tag]    ) 
-    conditions.energy.converters[core_nozzle.tag]              = deepcopy(conditions.energy.converters[core_nozzle_0.tag]             ) 
+    conditions.energy.converters[generator.tag]             = deepcopy(conditions.energy.converters[generator_0.tag]            )
+    conditions.energy.converters[turboshaft.tag]            = deepcopy(conditions.energy.converters[turboshaft_0.tag]           )
+    conditions.energy.converters[ram.tag]                   = deepcopy(conditions.energy.converters[ram_0.tag]                  )
+    conditions.energy.converters[inlet_nozzle.tag]          = deepcopy(conditions.energy.converters[inlet_nozzle_0.tag]         )
+    conditions.energy.converters[compressor.tag]            = deepcopy(conditions.energy.converters[compressor_0.tag]           )
+    conditions.energy.converters[low_pressure_turbine.tag]  = deepcopy(conditions.energy.converters[low_pressure_turbine_0.tag] )
+    conditions.energy.converters[high_pressure_turbine.tag] = deepcopy(conditions.energy.converters[high_pressure_turbine_0.tag])
+    conditions.energy.converters[combustor.tag]             = deepcopy(conditions.energy.converters[combustor_0.tag]            )
+    conditions.energy.converters[core_nozzle.tag]           = deepcopy(conditions.energy.converters[core_nozzle_0.tag]          )
  
     P_elec         = conditions.energy.converters[generator.tag].outputs.power 
-    P_mech         = conditions.energy.converters[turboshaft.tag].outputs.power  
+    P_mech         = conditions.energy.converters[turboshaft.tag].power  
     
     return P_mech, P_elec
  
