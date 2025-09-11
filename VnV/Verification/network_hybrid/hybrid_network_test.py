@@ -34,8 +34,8 @@ def main():
     
     solver_type      = "optimize"
     solver_objective = None  
-    conventional     = True
-    all_electric     = True
+    conventional     = False
+    all_electric     = False
     series_hybrid    = True
     parallel_hybrid  = True
     

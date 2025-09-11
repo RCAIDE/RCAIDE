@@ -122,7 +122,7 @@ def compute_turboelectric_generator_performance(turboelectric_generator, state, 
     
     return P_mech,P_elec,stored_results_flag,stored_propulsor_tag
 
-def reuse_stored_turboelectric_generator_data(turboelectric_generator,state,fuel_line,bus,stored_converter_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
+def reuse_stored_turboelectric_generator_data(turboelectric_generator, state, fuel_line=None, bus=None):
     '''Reuses results from one turboelectric_generator for identical propulsors
     
     Assumptions: 
@@ -147,28 +147,26 @@ def reuse_stored_turboelectric_generator_data(turboelectric_generator,state,fuel
     conditions                  = state.conditions 
     generator                   = turboelectric_generator.generator
     turboshaft                  = turboelectric_generator.turboshaft
-    ram                         = turboelectric_generator.ram
     inlet_nozzle                = turboelectric_generator.inlet_nozzle 
     compressor                  = turboelectric_generator.compressor
     high_pressure_compressor    = turboelectric_generator.high_pressure_compressor
     combustor                   = turboelectric_generator.combustor 
     low_pressure_turbine        = turboelectric_generator.low_pressure_turbine
     core_nozzle                 = turboelectric_generator.core_nozzle
-    generator_0                 = fuel_line.converters[stored_converter_tag].generator 
-    turboshaft_0                = fuel_line.converters[stored_converter_tag].turboshaft
-    ram_0                       = fuel_line.converters[stored_converter_tag].ram
-    inlet_nozzle_0              = fuel_line.converters[stored_converter_tag].inlet_nozzle 
-    compressor_0                = fuel_line.converters[stored_converter_tag].compressor
-    high_pressure_compressor_0  = fuel_line.converters[stored_converter_tag].high_pressure_compressor
-    combustor_0                 = fuel_line.converters[stored_converter_tag].combustor
-    low_pressure_turbine_0      = fuel_line.converters[stored_converter_tag].low_pressure_turbine
-    core_nozzle_0               = fuel_line.converters[stored_converter_tag].core_nozzle
+    generator_0                 = fuel_line.converters[turboelectric_generator.tag].generator 
+    turboshaft_0                = fuel_line.converters[turboelectric_generator.tag].turboshaft
+    ram_0                       = fuel_line.converters[turboelectric_generator.tag].ram
+    inlet_nozzle_0              = fuel_line.converters[turboelectric_generator.tag].inlet_nozzle 
+    compressor_0                = fuel_line.converters[turboelectric_generator.tag].compressor
+    high_pressure_compressor_0  = fuel_line.converters[turboelectric_generator.tag].high_pressure_compressor
+    combustor_0                 = fuel_line.converters[turboelectric_generator.tag].combustor
+    low_pressure_turbine_0      = fuel_line.converters[turboelectric_generator.tag].low_pressure_turbine
+    core_nozzle_0               = fuel_line.converters[turboelectric_generator.tag].core_nozzle
 
     # deep copy results 
     conditions.energy.converters[generator.tag]                = deepcopy(conditions.energy.converters[generator_0.tag]              ) 
     conditions.energy.converters[turboshaft.tag]               = deepcopy(conditions.energy.converters[turboshaft_0.tag]             )
-    conditions.energy.converters[turboelectric_generator.tag]  = deepcopy(conditions.energy.converters[stored_converter_tag]) 
-    conditions.energy.converters[ram.tag]                      = deepcopy(conditions.energy.converters[ram_0.tag]                     )
+    conditions.energy.converters[turboelectric_generator.tag]  = deepcopy(conditions.energy.converters[turboelectric_generator.tag]) 
     conditions.energy.converters[inlet_nozzle.tag]             = deepcopy(conditions.energy.converters[inlet_nozzle_0.tag]            ) 
     conditions.energy.converters[compressor.tag]               = deepcopy(conditions.energy.converters[compressor_0.tag] )
     conditions.energy.converters[high_pressure_compressor.tag] = deepcopy(conditions.energy.converters[high_pressure_compressor_0.tag])
