@@ -192,7 +192,7 @@ class Network(Component):
                                 else:
                                     generator             = converter.generator   
                                     state.conditions.energy.converters[generator.tag].outputs.power  =  total_elec_power*(1 - state.conditions.energy.hybrid_power_split_ratio ) 
-                                    P_mech, P_elec, stored_results_flag,stored_conveter_tag         = converter.reuse_stored_data(state,fuel_line,bus)  
+                                    P_mech, P_elec, stored_results_flag,stored_conveter_tag         = converter.reuse_stored_data(state,network,stored_conveter_tag,fuel_line,bus)  
                                     conditions.energy.busses[bus.tag].power_draw                     -= P_elec/bus.efficiency
                                     conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate       += conditions.energy.converters[converter.tag].fuel_mass_flow_rate   
 
