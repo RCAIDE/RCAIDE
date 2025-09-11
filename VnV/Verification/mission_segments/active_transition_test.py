@@ -28,7 +28,7 @@ from Tiltrotor_EVTOL         import configs_setup as  configs_setup
 # ----------------------------------------------------------------------
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
-    update_regression_values = True
+    update_regression_values = False
          
     TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values) 
 
