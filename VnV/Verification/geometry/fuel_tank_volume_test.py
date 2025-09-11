@@ -34,7 +34,7 @@ def main():
     return 
 def integral_fuel_tank_volume_test():
 
-    fuel_volume_true = [19.363771803419546,66.80630333093801]
+    fuel_volume_true = [19.363771803419546,33.40339556790803]
     vehicle = B737_vehicle_setup()
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
@@ -79,21 +79,21 @@ def integral_fuel_tank_volume_test():
     refueling_tank_1a                      = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
     refueling_tank_1a.fuel_selector_ratio  = 0.5
     refueling_tank_1a.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    refueling_tank_1a.fuel.mass_properties.mass = 0
+    refueling_tank_1a.fuel.mass_properties.mass = 0.1
     fuel_line.fuel_tanks.append(refueling_tank_1a)
     
     refueling_tank_2                      = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage) 
     refueling_tank_2.tag                  = 'refueling_tank_2'# for regression, aircraft has two tanks 
     refueling_tank_2.fuel_selector_ratio  = 0
     refueling_tank_2.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    refueling_tank_2.fuel.mass_properties.mass = 0
+    refueling_tank_2.fuel.mass_properties.mass = 0.1
     fuel_line.fuel_tanks.append(refueling_tank_2)     
  
     refueling_tank_2a                      = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
     refueling_tank_2a.tag                  = 'refueling_tank_2a'# for regression, aircraft has two tanks 
     refueling_tank_2a.fuel_selector_ratio  = 0
     refueling_tank_2a.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    refueling_tank_2a.fuel.mass_properties.mass = 0
+    refueling_tank_2a.fuel.mass_properties.mass = 0.1
     fuel_line.fuel_tanks.append(refueling_tank_2a)     
  
     
@@ -163,7 +163,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_2a.outer_width                     = 1
     fuel_tank_2a.outer_height                    = 1
     fuel_tank_2a.wall_thickness                  = 2*Units.inches
-    fuel_tank_2a.fuel.mass_properties.mass       = 0 
+    fuel_tank_2a.fuel.mass_properties.mass       = 0.1
     fuel_line.fuel_tanks.append(fuel_tank_2a)
 
 
@@ -194,21 +194,21 @@ def non_integral_fuel_tank_volume_test():
 
     fuel_line.fuel_tanks.append(fuel_tank_4)
 
-    fuel_tank_4                               = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(())
-    fuel_tank_4.tag                           = 'H2_Fuel_Tank_4a' 
-    fuel_tank_4.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
-    fuel_tank_4.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
-    fuel_tank_4.fuel.gravimetric_efficiency   = 0.5
-    fuel_tank_4.symmetric                     = False
-    fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
-    fuel_tank_4.bwb_aft_tank                  = True
-    fuel_tank_4.aft_tank_start_root_chord     = 0.6
-    fuel_tank_4.aft_tank_end_rood_chord       = 0.8
-    fuel_tank_4.aft_tank_end_segment_tag      = 'cabin_wall' 
-    fuel_tank_4.wing_root_tag                 = 'main_wing' 
-    fuel_tank_4.radial_offset                 = 0.2
-    fuel_line.fuel_tanks.append(fuel_tank_4)
+    fuel_tank_4a                               = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(())
+    fuel_tank_4a.tag                           = 'H2_Fuel_Tank_4a' 
+    fuel_tank_4a.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
+    fuel_tank_4a.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
+    fuel_tank_4a.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_4a.fuel.gravimetric_efficiency   = 0.5
+    fuel_tank_4a.symmetric                     = False
+    fuel_tank_4a.orientation_euler_angles      = [0,0,np.pi/2]
+    fuel_tank_4a.bwb_aft_tank                  = True
+    fuel_tank_4a.aft_tank_start_root_chord     = 0.6
+    fuel_tank_4a.aft_tank_end_rood_chord       = 0.8
+    fuel_tank_4a.aft_tank_end_segment_tag      = 'cabin_wall' 
+    fuel_tank_4a.wing_root_tag                 = 'main_wing' 
+    fuel_tank_4a.radial_offset                 = 0.2
+    fuel_line.fuel_tanks.append(fuel_tank_4a)
 
     fuel_tank_5                               = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(())
     fuel_tank_5.tag                           = 'H2_Fuel_Tank_5' 
@@ -224,7 +224,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_5.aft_tank_end_segment_tag      = 'cabin_wall' 
     fuel_tank_5.wing_root_tag                 = 'main_wing' 
     fuel_tank_5.radial_offset                 = 0.5
-    fuel_tank_5.fuel.mass_properties.mass     = 0
+    fuel_tank_5.fuel.mass_properties.mass     = 0.1
 
     fuel_line.fuel_tanks.append(fuel_tank_5)
 
@@ -236,7 +236,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_6.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_6.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_6.wall_thickness                  = 2*Units.inches
-    fuel_tank_6.fuel.mass_properties.mass       = 0
+    fuel_tank_6.fuel.mass_properties.mass       = 0.1
     fuel_line.fuel_tanks.append(fuel_tank_6)
  
     
