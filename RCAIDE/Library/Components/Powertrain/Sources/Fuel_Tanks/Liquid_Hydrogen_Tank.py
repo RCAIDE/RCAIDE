@@ -91,7 +91,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.tag                      = 'Liquid_Hydrogen_Tank'
         self.material                 = None
         self.insulation_material      = None
-        self.design_inlet_temperature = 15
+        self.design_inlet_temperature = 20
         self.design_altitiude         = 0
         self.acceptable_heat_leak     = 20
         self.design_altitude          = 30000 * Units.ft
