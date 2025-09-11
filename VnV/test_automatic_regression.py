@@ -11,11 +11,11 @@ sys.path.append(os.path.join(sys.path[0], 'Vehicles'))
 sys.path.append(os.path.join(sys.path[0], 'Vehicles', 'Rotors'))
 
 modules = [ 
-    # 'Verification/analysis_aerodynamics/airfoil_panel_method_test.py',    
-    # 'Verification/analysis_aerodynamics/airfoil_panel_method_convergence.py',
-    # 'Verification/analysis_aerodynamics/VLM_control_surface_test.py',    
-    # 'Verification/analysis_aerodynamics/VLM_moving_surface_test.py',   
-    # 'Verification/analysis_aerodynamics/AVL_test.py',  
+    'Verification/analysis_aerodynamics/airfoil_panel_method_test.py',    
+    'Verification/analysis_aerodynamics/airfoil_panel_method_convergence.py',
+    'Verification/analysis_aerodynamics/VLM_control_surface_test.py',    
+    'Verification/analysis_aerodynamics/VLM_moving_surface_test.py',   
+    'Verification/analysis_aerodynamics/AVL_test.py',  
     # 'Verification/analysis_aerodynamics/blended_wing_body_aerodynamics_test.py',
     # 'Verification/atmosphere/atmosphere.py',
     # 'Verification/atmosphere/constant_temperature.py',
@@ -36,8 +36,8 @@ modules = [
     # 'Verification/geometry/fuselage_planform_compute.py',   
     'Verification/geometry/fuel_tank_volume_test.py',
     # 'Verification/future_capability_coverage/coverage_test.py',    
-    # 'Verification/mission_segments/transition_segment_test.py', 
-    # 'Verification/mission_segments/active_transition_test.py',
+    'Verification/mission_segments/transition_segment_test.py', 
+    'Verification/mission_segments/active_transition_test.py',
     # 'Verification/network_electric/battery_electric_aircraft_test.py',
     # 'Verification/network_electric/electric_ducted_fan_aircraft_test.py',
     # 'Verification/network_fuel_cell/hydrogen_fuel_cell_aircraft_test.py', 
@@ -67,7 +67,7 @@ modules = [
     # 'Validation/converters/test_pmsm_motor_validation.py',
     # 'Validation/converters/test_rotor_validation.py',
     # 'Validation/propulsors/test_turbofan_validation.py',
-    'Validation/aircraft_performance/test_Boeing_787_payload_range.py'
+    # 'Validation/aircraft_performance/test_Boeing_787_payload_range.py'
 ]
 
 def run_module_test(module_path):
