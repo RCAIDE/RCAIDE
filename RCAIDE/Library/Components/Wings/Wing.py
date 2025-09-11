@@ -160,7 +160,6 @@ class Wing(Component):
         Sets default values for the wing attributes.
         """         
         self.tag                                    = 'wing'
-        self.mass_properties                        = Mass_Properties()
         self.origin                                 = np.array([[0.0,0.0,0.0]])
                                                     
         self.symmetric                              = True

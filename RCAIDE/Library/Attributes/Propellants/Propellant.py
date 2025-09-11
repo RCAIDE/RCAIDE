@@ -9,7 +9,8 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 
 from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Components.Mass_Properties import Mass_Properties
+from RCAIDE.Library.Components.Volume_Properties import Volume_Properties
+from RCAIDE.Library.Components.Mass_Properties   import Mass_Properties
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propellant
@@ -114,6 +115,7 @@ class Propellant(Data):
         self.energy_density            = 0.0                       # MJ/m^3
         self.lower_heating_value       = 0.0                       # MJ/kg
         self.mass_properties           = Mass_Properties()
+        self.volume_properties         = Volume_Properties()
         self.max_mass_fraction         = Data({'Air' : 0.0, 'O2' : 0.0}) # kg propellant / kg oxidizer
         self.temperatures              = Data()
         self.temperatures.flash        = 0.0                       # K

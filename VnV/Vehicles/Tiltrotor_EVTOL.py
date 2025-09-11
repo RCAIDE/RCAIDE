@@ -539,7 +539,7 @@ def vehicle_setup(redesign_rotors=True) :
         regression_prop_rotor_propulsor = deepcopy(propulsor)        
         design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'proprotor_propulsor.res'))  
-        for key,item in propulsor.rotor.items():
+        for key,item in propulsor.rotor.items(): 
             propulsor.rotor[key] = loaded_propulsor.rotor[key] 
                
         propulsor.rotor.airfoils.airfoil.coordinate_file  =  local_path + 'Airfoils' + separator + 'NACA_4412.txt'
@@ -552,7 +552,7 @@ def vehicle_setup(redesign_rotors=True) :
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_5000000.txt',
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
        
-        for key,item in propulsor.motor.items():
+        for key,item in propulsor.motor.items(): 
             propulsor.motor[key] = loaded_propulsor.motor[key] 
          
     # Front Rotors Locations 

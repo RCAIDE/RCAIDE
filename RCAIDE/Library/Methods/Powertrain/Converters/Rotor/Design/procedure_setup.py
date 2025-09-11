@@ -427,11 +427,11 @@ def post_process(nexus):
     gamma                           = rotor.optimization_parameters.multiobjective_acoustic_weight
     ideal_SPL                       = rotor.optimization_parameters.ideal_SPL_dBA  
     ideal_efficiency                = rotor.optimization_parameters.ideal_efficiency      
-    ideal_FoM                       = rotor.optimization_parameters.ideal_figure_of_merit  
+    ideal_FoM                       = rotor.optimization_parameters.ideal_figure_of_merit
     print_iter                      = nexus.print_iterations  
     mean_CL_hover                   = nexus.results.hover.mean_CL
     omega_hover                     = nexus.results.hover.omega
-    FM_hover                        = nexus.results.hover.figure_of_merit  
+    FM_hover                        = np.nan_to_num(nexus.results.hover.figure_of_merit)  
     
     # q to p ratios 
     summary                                 = nexus.summary 
@@ -489,32 +489,34 @@ def post_process(nexus):
         print("Blade Taper                  : " + str(summary.blade_taper_constraint_1))
         print("Hover RPM                    : " + str(omega_hover/Units.rpm))     
         if rotor.hover.design_thrust == None: 
-            print("Hover Power                  : " + str(nexus.results.hover.power))  
+            print("Hover Power Actual          : " + str(nexus.results.hover.power))  
+            print("Hover Power Design           : " + str( rotor.hover.design_power))  
         if rotor.hover.design_power == None: 
-            print("Hover Thrust                 : " + str(nexus.results.hover.thrust))  
+            print("Hover Thrust Actual          : " + str(nexus.results.hover.thrust))  
+            print("Hover Thrust Design          : " + str(rotor.hover.design_thrust))  
         print("Hover Average SPL            : " + str(nexus.results.hover.mean_SPL))    
-        print("Hover Tip Mach               : " + str(rotor.hover.design_tip_mach)) 
-        print("Hover Thrust/Power Residual  : " + str(summary.hover_thrust_power_residual)) 
+        print("Hover Tip Mach               : " + str(rotor.hover.design_tip_mach))  
         print("Hover Figure of Merit        : " + str(FM_hover))  
         print("Hover Max Sectional Cl       : " + str(summary.max_sectional_cl_hover)) 
         print("Hover Blade CL               : " + str(mean_CL_hover))    
-        print("OEI Thrust                   : " + str(nexus.results.oei.thrust)) 
-        print("OEI Thrust/Power Residual    : " + str(summary.OEI_hover_thrust_power_residual)) 
+        print("OEI Thrust Actual            : " + str(nexus.results.oei.thrust))  
+        print("OEI Thrust Design            : " + str(rotor.oei.design_thrust))  
         print("OEI Tip Mach                 : " + str(rotor_oei.oei.design_tip_mach))  
         print("OEI Collective (deg)         : " + str(rotor_oei.hover.design_blade_pitch_command/Units.degrees)) 
         if nexus.prop_rotor_flag:    
             print("Cruise RPM                   : " + str(nexus.results.cruise.omega/Units.rpm))    
             print("Cruise Collective (deg)      : " + str(rotor_cru.cruise.design_blade_pitch_command/Units.degrees)) 
             if rotor_cru.cruise.design_thrust == None:  
-                print("Cruise Power                 : " + str(nexus.results.cruise.power)) 
+                print("Cruise Power Actual          : " + str(nexus.results.cruise.power)) 
+                print("Cruise Power Design          : " + str(rotor.cruise.design_power)) 
             if rotor_cru.cruise.design_power == None:  
-                print("Cruise Thrust                : " + str(nexus.results.cruise.thrust))   
-            print("Cruise Tip Mach              : " + str(rotor_cru.cruise.design_tip_mach))  
-            print("Cruise Thrust/Power Residual : " + str(summary.cruise_thrust_power_residual))
+                print("Cruise Thrust Actual         : " + str(nexus.results.cruise.thrust))   
+                print("Cruise Thrust Design         : " + str(rotor.cruise.design_thrust))  
+            print("Cruise Tip Mach              : " + str(rotor_cru.cruise.design_tip_mach))   
             print("Cruise Efficiency            : " + str(nexus.results.cruise.efficiency)) 
             print("Cruise Max Sectional Cl      : " + str(summary.max_sectional_cl_cruise))  
             print("Cruise Blade CL              : " + str(nexus.results.cruise.mean_CL))  
         print("\n\n") 
 
    
-    return nexus    
+    return nexus  

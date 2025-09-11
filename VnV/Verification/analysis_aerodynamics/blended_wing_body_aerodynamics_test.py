@@ -18,13 +18,6 @@ from BWB    import vehicle_setup  ,  configs_setup
 def main():
     
     vehicle  = vehicle_setup() 
-
-    # plot vehicle 
-    plot_3d_vehicle(vehicle,
-                    save_filename               = "BWB_Top_View", 
-                    axis_limit                  = 100,  
-                    show_figure=False)
-    
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
     mission  = mission_setup(analyses)

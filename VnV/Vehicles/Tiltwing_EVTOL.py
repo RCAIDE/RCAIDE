@@ -304,20 +304,20 @@ def vehicle_setup(new_regression=True):
     nacelle.length                    = 0.45
     nacelle.diameter                  = 0.3 
     nacelle.flow_through              = False    
-    prop_rotor_propulsor.nacelle      =  nacelle       
+    prop_rotor_propulsor.nacelle      = nacelle       
     
     current_dir = os.path.abspath(os.path.dirname(__file__))
     test_dir = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'mission_segments'))
      
             
     if new_regression:
-        design_electric_rotor(prop_rotor_propulsor)
+        design_electric_rotor(prop_rotor_propulsor,print_iterations=True)
         save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        
-        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
+        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2,print_iterations=True)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
-        for key,item in prop_rotor_propulsor.rotor.items():
+        for key,item in prop_rotor_propulsor.rotor.items(): 
             prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
                
         prop_rotor_propulsor.rotor.airfoils.airfoil.coordinate_file  =  local_path + 'Airfoils' + separator + 'NACA_4412.txt'
@@ -330,7 +330,7 @@ def vehicle_setup(new_regression=True):
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_5000000.txt',
                                                                         local_path + 'Airfoils' + separator + 'Polars' + separator + 'NACA_4412_polar_Re_7500000.txt' ]
        
-        for key,item in prop_rotor_propulsor.motor.items():
+        for key,item in prop_rotor_propulsor.motor.items(): 
             prop_rotor_propulsor.motor[key] = loaded_propulsor.motor[key] 
          
     # Front Rotors Locations 
