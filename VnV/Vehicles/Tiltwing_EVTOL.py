@@ -311,11 +311,11 @@ def vehicle_setup(new_regression=True):
      
             
     if new_regression:
-        design_electric_rotor(prop_rotor_propulsor)
+        design_electric_rotor(prop_rotor_propulsor,print_iterations=True)
         save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        
-        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
+        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2,print_iterations=True)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
         for key,item in prop_rotor_propulsor.rotor.items(): 
             prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
