@@ -50,7 +50,7 @@ def plot_load_diagram(results):
     # ------------------------------------------------------------------------
     payload_moment_forward  = results.loading_LEMAC_location[:, 0]
     payload_weight          = results.loading_mass[:, 0]
-    split =  int( len(payload_moment_forward) / 2)
+    split                   =  int( len(payload_moment_forward) / 2)
     axis.plot( payload_moment_forward[:split], payload_weight[:split], color = 'blue', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Ascending") 
     axis.plot( payload_moment_forward[split:], payload_weight[split:], color = 'cyan', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Descending") 
     min_range =  np.minimum( min(payload_moment_forward), min_range)

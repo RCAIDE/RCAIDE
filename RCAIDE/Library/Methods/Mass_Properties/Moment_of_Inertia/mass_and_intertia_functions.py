@@ -43,7 +43,7 @@ def sum_moment(component, total_mass, total_moment):
                 item = Comp[key]
                 if isinstance(item,Component.Container):
                     total_moment , total_mass  = sum_moment(item, total_mass, total_moment)
-                if 'fuel' == key:
+                if isinstance(item,Component): 
                     total_mass, total_moment = update_mass_and_moment(total_mass,total_moment,item) 
             
     return total_moment , total_mass

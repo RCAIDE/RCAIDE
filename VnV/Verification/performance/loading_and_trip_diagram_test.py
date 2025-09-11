@@ -58,11 +58,11 @@ def main():
         stability.settings.number_of_chordwise_vortices  = 2       
         
         load_data =  compute_load_and_trim_diagram(vehicle,
-                                              aerodynamic_analysis=aerodynamics,
-                                              weights_analysis=weights,
-                                              stability_analysis=stability,
-                                              altitude = 35000*Units.feet, 
-                                              airspeed =450 * Units['knots'])
+                                              aerodynamic_analysis = aerodynamics,
+                                              weights_analysis     = weights,
+                                              stability_analysis   = stability,
+                                              altitude             = 35000*Units.feet, 
+                                              airspeed             = 450 * Units['knots'])
         
         save_results(load_data,'loading_results')
     else: 

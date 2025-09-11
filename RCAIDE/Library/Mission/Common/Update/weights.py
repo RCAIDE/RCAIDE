@@ -55,7 +55,9 @@ def weights(segment):
         
         W = m_0_vehicle*g 
         conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
-         
+        
+    else:
+        
         m = m_0_vehicle + np.dot(I, -m_dot_vehicle)
     
         # weight

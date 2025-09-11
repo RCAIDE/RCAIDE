@@ -19,7 +19,7 @@ import numpy as np
 #------------------------------------------------------------------------------
 # compute_load_and_trim_diagram
 #------------------------------------------------------------------------------  
-def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
+def compute_load_and_trim_diagram(vehicle, number_of_points = 5, aerodynamic_analysis = None, stability_analysis = None,  weights_analysis = None, altitude = None, airspeed = None):
     """
     Computes the loading dragram of an aircraft 
  
@@ -157,7 +157,7 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
             vehicle.mass_properties.takeoff  = None # this ensures that the takeoff weight is computed
             vehicle.mass_properties.payload  = (BAG + PAX) * percent_pax[i] +  percent_cargo[i] *CARGO 
             vehicle.mass_properties.cargo    = percent_cargo[i] * CARGO
-            pax = int(vehicle_0.number_of_passengers * percent_pax[i])
+            pax                              = int(vehicle_0.number_of_passengers * percent_pax[i])
             vehicle.number_of_passengers     = np.maximum(1,pax)
  
             # Update Passengers           
@@ -197,10 +197,11 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
             
             print('***************************************')
             print('Loading Diagram Data: ' + str(counter+1) + ' of ' +  str(total_sims))
-            print('Percent Fuel   : ', percent_fuel[j]*100 )
-            print('Percent Cargo  : ', percent_cargo[i]*100 )
-            print('Percent Pax    : ', percent_pax[i]*100 )
-            print('LEMAC          : ', loading_LEMAC_location[i,j] )
+            print('Mass                : ', loading_mass[i,j])
+            print('Percent Fuel        : ', percent_fuel[j]*100 )
+            print('Percent Cargo       : ', percent_cargo[i]*100 )
+            print('Percent Pax         : ', percent_pax[i]*100 )
+            print('LEMAC               : ', loading_LEMAC_location[i,j] )
             print('***************************************')
              
 
@@ -209,8 +210,8 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
     # -------------------------------------------------------------------------
     # Trim Diagram Data
     # ------------------------------------------------------------------------- 
-    percent_mass         = np.linspace(0,1, number_of_points)
-    percent_cg_shift     = np.linspace(0.8,1.2, number_of_points)
+    percent_mass                     = np.linspace(0,1, number_of_points)
+    percent_cg_shift                 = np.linspace(0.8,1.2, number_of_points)
     aerodynamic_lift_coefficient     = np.zeros((len(percent_mass),len(percent_cg_shift)))
     aerodynamic_drag_coefficient     = np.zeros((len(percent_mass),len(percent_cg_shift)))
     aerodynamic_moment_coefficient   = np.zeros((len(percent_mass),len(percent_cg_shift)))
@@ -224,7 +225,7 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
     counter    = 0        
     for k in range(len(percent_mass)):
         for l in range(len(percent_cg_shift)):
-
+    
             # Aircraft-Level Properties  
             vehicle.mass_properties.takeoff                 = None # this ensures that the takeoff weight is computed 
             vehicle.mass_properties.payload                 = (BAG + PAX) * percent_mass[k] +  percent_mass[k] *CARGO 
@@ -233,7 +234,7 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
             
             pax = int(vehicle_0.number_of_passengers *  percent_mass[k])
             vehicle.number_of_passengers     = np.maximum(1,pax)
- 
+    
             # Update Passengers           
             for fuselage in  vehicle.fuselages: 
                 for cabin in fuselage.cabins:
@@ -257,10 +258,10 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
             
             #  run mission
             configs  = configs_setup(vehicle) 
-            analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_fuel_volume = True, update_center_of_gravity = False,neutral_point= neutral_point_0) 
+            analyses = analyses_setup(configs, aerodynamic_analysis, stability_analysis, weights_analysis, update_fuel_volume = False, update_center_of_gravity = False,neutral_point= neutral_point_0) 
             mission  = mission_setup(analyses, altitude, airspeed) 
             missions = missions_setup(mission) 
-            results = missions.base_mission.evaluate()
+            results  = missions.base_mission.evaluate()
             
             # store results
             segment = results.segments['cruise']
@@ -281,9 +282,11 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 4, aerodynamic_ana
             print('Center of Gravity : ',vehicle.mass_properties.center_of_gravity[0][0])
             print('Neutral Point     : ',aerodynamic_neutral_point[k,l])
             print('Static Margin     : ',aerodynamic_static_margin[k,l])
+            print('Percent Mass      : ',percent_mass[k]*100 ) 
+            print('Mass              : ', aerodynamic_mass[k,l] ) 
             print('***************************************')
-
  
+  
     RES = Data(
                number_of_points                = number_of_points,
                loading_CG_location             = loading_CG_location, 
@@ -337,11 +340,11 @@ def base_analysis(vehicle, aerodynamics,stability, weights,update_fuel_volume, u
 
      # ------------------------------------------------------------------
     #  Weights 
-    weights.vehicle                 = vehicle 
-    weights.settings.FLOPS.fidelity = 'Complex' 
+    weights.vehicle                              = vehicle 
+    weights.settings.FLOPS.fidelity              = 'Complex' 
     weights.settings.update_moment_of_inertia    = update_center_of_gravity 
     weights.settings.update_center_of_gravity    = update_center_of_gravity
-    weights.print_weight_analysis_report = False
+    weights.print_weight_analysis_report         = False
     analyses.append(weights)
 
     # ------------------------------------------------------------------
@@ -352,8 +355,9 @@ def base_analysis(vehicle, aerodynamics,stability, weights,update_fuel_volume, u
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis  
-    stability.vehicle  = vehicle
-    stability.vehicle.neutral_point = neutral_point
+    stability.vehicle                            = vehicle
+    stability.vehicle.neutral_point              = neutral_point
+    stability.settings.update_center_of_gravity  = update_center_of_gravity
     analyses.append(stability)       
 
     # ------------------------------------------------------------------

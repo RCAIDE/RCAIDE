@@ -59,12 +59,14 @@ class Fuel_Tank(Component):
         self.secondary_mass_flow_rate              = 0.0
         self.fuel_selector_ratio                   = 1.0    
         self.wall_clearance                        = 0.0
-        self.wall_thickness                        = 0.0
+        self.wall_thickness                        = 1E-3
         self.symmetric                             = True
         self.wing_tag                              = None
         self.fuselage_tag                          = None
         self.inner_length                          = 0.0
-        self.outer_length                          = 0.0
+        self.outer_length                          = 0.0 
+        self.outer_width                           = 0.0
+        self.outer_height                          = 0.0
         self.inner_diameter                        = 0.0
         self.outer_diameter                        = 0.0
  

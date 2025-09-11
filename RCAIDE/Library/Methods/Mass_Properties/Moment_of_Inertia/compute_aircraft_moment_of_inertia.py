@@ -127,11 +127,23 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_moment_of_in
                                  
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks:
-                if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank) or  isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
+                if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
+                    if fuel_tank.geometry_type == 'prismatic': 
+                        I, mass = compute_cuboid_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.outer_length, fuel_tank.outer_width, fuel_tank.outer_height,\
+                                                                   fuel_tank.outer_length- 2*fuel_tank.wall_thickness, fuel_tank.outer_width- 2*fuel_tank.wall_thickness, fuel_tank.outer_height- 2*fuel_tank.wall_thickness, CG_location)
+                        I_network += I
+                        MOI_mass += mass
+                    else: 
+                        I, mass = compute_rounded_end_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.outer_length,
+                                                                                 fuel_tank.outer_diameter/2, fuel_tank.outer_length - 2*fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
+                        I_network += I                    
+                                                
+                    
+                if  isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
+                                       
                     I, mass = compute_rounded_end_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.length,
-                                                                             fuel_tank.outer_diameter/2, fuel_tank.length - fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
-                    I_network += I
-                    MOI_mass += mass
+                                                                             fuel_tank.outer_diameter/2, fuel_tank.length - 2*fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
+                    I_network += I                    
                     
                 if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Integral_Tank):
                     I, mass =  compute_wing_moment_of_inertia(vehicle.wings["main_wing"], mass=fuel_tank.fuel.mass_properties.mass, center_of_gravity = CG_location, fuel_flag=True)
