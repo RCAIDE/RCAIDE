@@ -74,7 +74,8 @@ def geometry_preprocess_routine(geometry_analysis):
     # ================================================================================================================================================  
     total_seats = 0
     for fuselage in vehicle.fuselages: 
-        compute_layout_of_passenger_accommodations(fuselage) 
+        if fuselage.cabins == None:
+            compute_layout_of_passenger_accommodations(fuselage) 
         fuselage_planform(fuselage) 
         vehicle.length = np.maximum(vehicle.length, fuselage.lengths.total)
         A_fuselage     = np.maximum(A_fuselage,fuselage.areas.front_projected) 
