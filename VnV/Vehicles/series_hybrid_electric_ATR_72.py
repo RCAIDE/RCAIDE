@@ -736,7 +736,11 @@ def vehicle_setup():
     design_turboelectric_generator(turboelectric_generator)
     
     net.converters.append(turboelectric_generator)
-    fuel_line.assigned_converters = [[turboelectric_generator.tag]]
+  
+    turboelectric_generator_2 = deepcopy(turboelectric_generator)
+    turboelectric_generator_2.tag  = 'turboelectric_generator_2' 
+    net.converters.append(turboelectric_generator_2)
+    fuel_line.assigned_converters = [[turboelectric_generator.tag,turboelectric_generator_2.tag]]
 
     #------------------------------------------------------------------------------------------------------------------------- 
     #  Energy Source: Fuel Tank

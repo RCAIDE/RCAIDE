@@ -88,7 +88,9 @@ def compute_thermal_performance(fuel_tank):
     fuel_tank.wall_thickness += t_ins[0]
 
     # add the insulation mass to the tank weight
-    fuel_tank.mass_properties.mass += mass_ins[0]
+    fuel_tank.mass_properties.mass +=  mass_ins[0]
+    if fuel_tank.symmetric:
+        fuel_tank.mass_properties.mass *= 2
 
     # Recompute net tank volume based on the updated thickness
     r_in   = (fuel_tank.outer_diameter -  2 * fuel_tank.wall_thickness ) / 2

@@ -104,7 +104,7 @@ def compute_structural_performance(fuel_tank):
     fuel_tank.inner_diameter                 = 2 * r_inner
     fuel_tank.volume_properties.net_volume   = V_total
     fuel_tank.inner_length                   = L_inner
-    fuel_tank.wall_thickness                 += fuel_tank.outer_diameter - fuel_tank.inner_diameter   
+    fuel_tank.wall_thickness                 = (fuel_tank.outer_diameter - fuel_tank.inner_diameter) / 2   
     
     if fuel_tank.symmetric:
         fuel_tank.volume_properties.net_volume      *= 2

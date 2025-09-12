@@ -212,6 +212,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         
         fuel_tank.volume_properties.internal_volume       = total_fuel_volume
         fuel_tank.volume_properties.external_volume       = total_fuel_volume 
+        fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.fuel.mass_properties.center_of_gravity  = wing.mass_properties.center_of_gravity
 
     if fuel_tank.fuel.mass_properties.mass != 0:

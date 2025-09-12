@@ -73,6 +73,6 @@ class Turboelectric_Generator(Converter):
         P_mech,P_elec,stored_results_flag,stored_propulsor_tag =  compute_turboelectric_generator_performance(self,state,fuel_line, bus)
         return P_mech,P_elec,stored_results_flag,stored_propulsor_tag
     
-    def reuse_stored_data(turboelectric_generator,state,stored_propulsor_tag):
-        power  = reuse_stored_turboelectric_generator_data(turboelectric_generator,state,stored_propulsor_tag)
-        return power 
+    def reuse_stored_data(self,state, network,stored_conveter_tag,fuel_line, bus):
+        P_mech,P_elec  = reuse_stored_turboelectric_generator_data(self,state,network,stored_conveter_tag,fuel_line, bus)
+        return  P_mech,P_elec 
