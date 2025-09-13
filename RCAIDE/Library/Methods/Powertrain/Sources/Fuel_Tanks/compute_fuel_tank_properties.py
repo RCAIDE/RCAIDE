@@ -54,5 +54,5 @@ def compute_fuel_tank_properties(tank,state,distributor):
     mass_flow_rate                                 = tank.fuel_selector_ratio*distributor_conditions.fuel_mass_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_mass_flow_rate             
     tank_conditions.mass_flow_rate                 = mass_flow_rate
     if len(mass_flow_rate) > 1: 
-        tank_conditions.mass_flow_rate.fuel_mass[:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate)    
+        tank_conditions.fuel_mass[:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten()   
     return 

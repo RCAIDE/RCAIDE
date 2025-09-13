@@ -126,7 +126,7 @@ def compute_cabin_center_of_gravity(cabin, comp,length_scale):
     num_pax            = cabin.number_of_passengers
     cabin_mass         = cabin.mass_properties.mass
     arr                = cabin.filled_seats_arrangement
-    if len(comp.layout_of_passenger_accommodations) == 0:
+    if comp.layout_of_passenger_accommodations == None:
         cabin.mass_properties.center_of_gravity[0][0] = 0.51 * length_scale
     else: 
         LOPA       = comp.layout_of_passenger_accommodations.object_coordinates
