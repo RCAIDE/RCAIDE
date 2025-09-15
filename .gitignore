@@ -77,3 +77,7 @@ nosetests.xml
 .rst
 .png  
 
+# Ignore environment files
+.vscode
+.idea
+*venv*
