@@ -64,9 +64,10 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_moment_of_in
         MOI_mass   += mass
 
         if isinstance(wing, C.Wings.Blended_Wing_Body): 
-            I, mass = cabin.compute_moment_of_inertia(center_of_gravity = CG_location)
-            MOI_tensor += I
-            MOI_mass   += mass 
+            for cabin in wing.cabins:
+                I, mass = cabin.compute_moment_of_inertia(center_of_gravity = CG_location)
+                MOI_tensor += I
+                MOI_mass   += mass 
     
     # ------------------------------------------------------------------        
     # Cargo Bay
@@ -141,8 +142,8 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_moment_of_in
                     
                 if  isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
                                        
-                    I, mass = compute_rounded_end_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.length,
-                                                                             fuel_tank.outer_diameter/2, fuel_tank.length - 2*fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
+                    I, mass = compute_rounded_end_cylinder_moment_of_inertia(fuel_tank.origin, fuel_tank.fuel.mass_properties.mass, fuel_tank.outer_length,
+                                                                             fuel_tank.outer_diameter/2, fuel_tank.outer_length - 2*fuel_tank.wall_thickness, fuel_tank.inner_diameter/2, CG_location)
                     I_network += I                    
                     
                 if isinstance(fuel_tank,C.Powertrain.Sources.Fuel_Tanks.Integral_Tank):

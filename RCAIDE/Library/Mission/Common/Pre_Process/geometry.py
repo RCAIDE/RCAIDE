@@ -74,8 +74,7 @@ def geometry_preprocess_routine(geometry_analysis):
     # ================================================================================================================================================  
     total_seats = 0
     for fuselage in vehicle.fuselages: 
-        if fuselage.cabins == None:
-            compute_layout_of_passenger_accommodations(fuselage) 
+        compute_layout_of_passenger_accommodations(fuselage) 
         fuselage_planform(fuselage) 
         vehicle.length = np.maximum(vehicle.length, fuselage.lengths.total)
         A_fuselage     = np.maximum(A_fuselage,fuselage.areas.front_projected) 
@@ -83,16 +82,16 @@ def geometry_preprocess_routine(geometry_analysis):
         for cabin in fuselage.cabins: 
             defined_cabins = True
             for cabin_class in cabin.classes: 
-                cabin.number_of_passengers += cabin_class.number_of_passengers
+                # cabin.number_of_passengers += cabin_class.number_of_passengers
                 if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
                     NPE +=  cabin_class.number_of_seats
-                    cabin.number_of_seats += cabin_class.number_of_seats
-                elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business:
+                    # cabin.number_of_seats += cabin_class.number_of_seats
+                elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business: 
                     NPB +=  cabin_class.number_of_seats
-                    cabin.number_of_seats += cabin_class.number_of_seats
+                    # cabin.number_of_seats += cabin_class.number_of_seats
                 elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.First:
                     NPF +=  cabin_class.number_of_seats 
-                    cabin.number_of_seats += cabin_class.number_of_seats
+                    # cabin.number_of_seats += cabin_class.number_of_seats
             total_seats += cabin.number_of_seats 
         for cabin in fuselage.cabins:     
             if cabin.number_of_passengers == 0: # if cabin class  passengers are not defined, use ratio of cabin to aircraft

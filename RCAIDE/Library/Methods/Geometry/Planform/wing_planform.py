@@ -309,10 +309,7 @@ def wing_planform(wing):
         wing.total_length               = total_length 
 
         # estimate LEMAC
-        x_0        =  wing.origin[0][0] 
-        dy         = (mac -  wing.chords.root) / ((wing.chords.tip - wing.chords.root) / semispan)
-        LEMAC      =  x_0 + np.tan(wing.sweeps.leading_edge) *dy   
-        wing.LEMAC =  LEMAC
+        wing.LEMAC =  wing.origin[0][0] + np.tan(wing.sweeps.leading_edge) * y_coord 
 
         # estimate empty wing center of gravity        
         cg_wing   =  segment_centroid(le_sweep,semispan,0,0,0,taper,dihedral,chord_root,chord_tip) 

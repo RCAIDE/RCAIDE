@@ -69,7 +69,7 @@ def main():
             print(val)
     
     # Truth values 
-    L_D_truth         = 6.802091030523417
+    L_D_truth         = 7.316724771146543
     
     # Store errors 
     error = Data() 

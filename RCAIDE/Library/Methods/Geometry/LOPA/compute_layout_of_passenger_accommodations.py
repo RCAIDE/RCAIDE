@@ -25,12 +25,15 @@ def compute_layout_of_passenger_accommodations(fuselage):
     #  [ x, y, z , length, width, first-cl flag, business-cl flag, economy-cl flag, seat, emergency-row flag, galley/lav flag, type-A exit flag]    
     LOPA = np.empty(( 0, 14)) 
     side_cabin_offset = 0
+
     for cabin in fuselage.cabins: 
+        cabin_number_of_seats = 0
         cabin_class_origin  = [0, 0, 0]
         for cabin_class in cabin.classes: 
-            seat_data ,cabin_class_origin  = create_class_seating_map_layout(cabin, cabin_class,cabin_class_origin, side_cabin_offset)
+            seat_data ,cabin_class_origin,cabin_number_of_seats  = create_class_seating_map_layout(cabin, cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats)
             side_cabin_offset = cabin.width / 2
             LOPA = np.vstack((LOPA,seat_data))  
+        cabin.number_of_seats = cabin_number_of_seats
             
     for cabin in fuselage.cabins: 
         for cabin_class in cabin.classes: 
@@ -96,7 +99,7 @@ def compute_layout_of_passenger_accommodations(fuselage):
 
     return   
 
-def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_cabin_offset):  
+def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats):  
     
     s_y_coord, cabin_class_origin = get_seat_y_coords(cabin, cabin_class,cabin_class_origin)
     s_x_coord,object_type, cabin_class_origin = get_seat_x_coords(cabin, cabin_class,cabin_class_origin) 
@@ -141,8 +144,8 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
         seat_data         = np.vstack((seat_data,seat_data_))
           
     cabin_class.number_of_seats = int(np.sum(seat_data[:,10]))
-    cabin.number_of_seats       += int(cabin_class.number_of_seats)
-    return seat_data ,cabin_class_origin 
+    cabin_number_of_seats       += int(cabin_class.number_of_seats)
+    return seat_data ,cabin_class_origin,cabin_number_of_seats
 
 
     

@@ -106,7 +106,7 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
             cabin.mass_properties.mass = W_pax* (cabin.number_of_passengers / vehicle.number_of_passengers )              
     for wing in vehicle.wings:
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            for cabin in fuselage.cabins:  
+            for cabin in wing.cabins:  
                 cabin.mass_properties.mass = W_pax * (cabin.number_of_passengers / vehicle.number_of_passengers )                          
         
     
