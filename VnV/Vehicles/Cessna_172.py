@@ -220,6 +220,18 @@ def vehicle_setup():
     fuselage.areas.front_projected              = fuselage.width* fuselage.heights.maximum
     fuselage.effective_diameter                 = 50. * Units.inches
 
+    cabin                                              = RCAIDE.Library.Components.Fuselages.Cabins.Cabin() 
+    economy_class = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
+    economy_class.number_of_seats_abrest              = 2
+    economy_class.number_of_rows                      = 2
+    economy_class.galley_lavatory_percent_x_locations = [0]      
+    economy_class.emergency_exit_percent_x_locations  = [0.0] 
+    economy_class.type_A_exit_percent_x_locations     = [0.0]
+    economy_class.number_of_seats                     = economy_class.number_of_rows  * economy_class.number_of_seats_abrest 
+    cabin.append_cabin_class(economy_class)
+    
+    fuselage.append_cabin(cabin)          
+
 
 
     # Segment  
