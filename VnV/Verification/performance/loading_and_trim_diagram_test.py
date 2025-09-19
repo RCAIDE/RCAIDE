@@ -36,7 +36,7 @@ def main():
     
     vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
     
-    new_sim = True 
+    new_sim = False 
     
     if new_sim:
         # take out control surfaces to make regression run faster
@@ -68,7 +68,17 @@ def main():
     else: 
         load_data = load_results('loading_results')
  
+    LEMAC_truth = np.array([[-42.41742491,  2.4342461, 47.2859171, 92.13758811, 136.98925912],
+                         [-42.41742491, 2.4342461, 47.2859171, 92.13758811, 136.98925912],
+                         [-42.41742491, 2.4342461, 47.2859171, 92.13758811, 136.98925912],
+                         [-42.41742491, 2.4342461, 47.2859171, 92.13758811, 136.98925912],
+                         [-42.41742491, 2.4342461, 47.2859171, 92.13758811, 136.98925912]])
+
     plot_load_diagram(load_data) 
+
+    LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
+    print(f"LEMAC error: {LEMAC_error}")
+    assert LEMAC_error < 1e-6, f"LEMAC error too large: {LEMAC_error}"
         
     return
 

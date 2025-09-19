@@ -41,10 +41,10 @@ def update_center_of_gravity(vehicle, conditions):
         for fuel_line in network.fuel_lines:  
             fuel_line_results   = conditions.energy.fuel_lines[fuel_line.tag]
             for fuel_tank in fuel_line.fuel_tanks: 
-                m_fuel        = fuel_line_results.fuel_tanks[fuel_tank.tag].fuel_mass 
+                m_fuel        = fuel_line_results.fuel_tanks[fuel_tank.tag].fuel_mass[0] 
                 global_cg_loc = np.array(fuel_tank.fuel.mass_properties.center_of_gravity) + np.array(fuel_tank.fuel.origin)  
                 M_fuel        += m_fuel
-                Mom_fuel      += np.multiply(m_fuel[:, 0], global_cg_loc)               
+                Mom_fuel      += np.multiply(m_fuel, global_cg_loc)               
     
     # recompute mass and moment of fuel
     Mom_aircraft = Mom_0 + Mom_fuel

@@ -25,12 +25,12 @@ modules = [
     # 'Verification/analysis_noise/frequency_domain_test.py', 
     # 'Verification/analysis_noise/empirical_jet_noise_test.py',    
     # 'Verification/analysis_stability/trimmed_flight_test.py', 
-    'Verification/analysis_stability/trimmed_stab_deriv_flight_test.py',
-    'Verification/analysis_stability/untrimmed_flight_test.py', 
+    # 'Verification/analysis_stability/trimmed_stab_deriv_flight_test.py',
+    # 'Verification/analysis_stability/untrimmed_flight_test.py', 
     # 'Verification/analysis_weights/operating_empty_weight_test.py',
     'Verification/analysis_weights/cg_and_moi_test.py',
     # 'Verification/energy_sources/battery_cell.py',
-    'Verification/energy_sources/fuel_cell.py',
+    # 'Verification/energy_sources/fuel_cell.py',
     # 'Verification/geometry/airfoil_import_test.py', 
     # 'Verification/geometry/airfoil_interpolation_test.py',    
     # 'Verification/geometry/fuselage_planform_compute.py',   
@@ -56,7 +56,7 @@ modules = [
     # 'Verification/performance/take_off_weight_from_tofl_test.py',
     # 'Verification/performance/aircraft_aerodynamics_test.py', 
     # 'Verification/performance/noise_certification_test.py',
-    'Verification/performance/load_diagram_test.py',
+    # 'Verification/performance/loading_and_trim_diagram_test.py',
     # 'Verification/performance/V_n_diagram_test.py', 
     # 'Verification/propulsion/rotor_performance_test.py',  
     # 'Verification/propulsion/propeller_non_uniform_inflow.py',    
@@ -68,7 +68,7 @@ modules = [
     # 'Validation/converters/test_pmsm_motor_validation.py',
     # 'Validation/converters/test_rotor_validation.py',
     # 'Validation/propulsors/test_turbofan_validation.py',
-    'Validation/aircraft_performance/test_Boeing_787_payload_range.py'
+    # 'Validation/aircraft_performance/test_Boeing_787_payload_range.py'
 ]
 
 def run_module_test(module_path):

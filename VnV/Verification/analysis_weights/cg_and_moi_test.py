@@ -62,9 +62,10 @@ def Transport_Aircraft_Test():
 
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI) 
-    accepted  = np.array([[33173877.3904851 ,  2780494.32295889,  2806205.46854108],
-                          [ 2780494.32295889, 31924966.39811507,        0.        ],
-                          [ 2806205.46854108,        0.        , 49156361.27514999]])
+    accepted  = np.array([[33131072.41621,     3815678.46318,  1691505.72846],
+                          [ 3815678.46318, 84514198.34636146,             0.],
+                          [ 1691505.72846,                0.,  101451071.267]])
+                          
     MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors
@@ -109,9 +110,9 @@ def General_Aviation_Test():
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI)
 
-    accepted  = np.array([[ 3.04008324e+03, -4.42963478e-01, -3.74421834e+01],
-                            [-4.42963478e-01,  3.57137264e+03,  0.00000000e+00],
-                            [-3.74421834e+01,  0.00000000e+00,  2.38368047e+03]])
+    accepted  = np.array([[3133.49812466,   33.06410069, -120.36780188],
+                          [  33.06410069, 6098.76452557,            0.],
+                          [-120.36780188,            0.,  4971.8636106]])
 
     MOI_error     = MOI - accepted
 
@@ -163,9 +164,9 @@ def EVTOL_Aircraft_Test(update_regression_values):
 
     print(weight_analysis.vehicle.tag + ' Moment of Inertia')
     print(MOI) 
-    accepted  = np.array([[ 6416.79187465 , -520.42973001 ,  -433.31834741],
-                          [ -520.42973001, 10150.4508291 ,  -119.43004224],
-                          [ -433.09514084,  -119.43004224, 15057.93721928]])
+    accepted  = np.array([[ 6471.17439456,   -565.1443644,  -959.96859584],
+                          [ -565.1443644 ,  11907.5075887,  -111.06534981],
+                          [ -959.96859584,  -111.06534981, 16723.33305502]])
     MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors

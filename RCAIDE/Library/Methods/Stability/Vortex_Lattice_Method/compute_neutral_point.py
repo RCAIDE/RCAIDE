@@ -33,6 +33,7 @@ def compute_neutral_point(stability):
         Machs                                           = np.atleast_2d(np.repeat(Mach,len_AoA)).T      
         conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
         conditions.freestream.mach_number               = Machs
+        conditions.freestream.velocity                  = np.ones_like(Machs) * 1e-6
         conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
            
         
