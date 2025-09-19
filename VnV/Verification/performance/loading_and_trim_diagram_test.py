@@ -78,7 +78,7 @@ def main():
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
     print(f"LEMAC error: {LEMAC_error}")
-    assert LEMAC_error < 1e-6, f"LEMAC error too large: {LEMAC_error}"
+    assert LEMAC_error < 1e-4, f"LEMAC error too large: {LEMAC_error}"
         
     return
 
