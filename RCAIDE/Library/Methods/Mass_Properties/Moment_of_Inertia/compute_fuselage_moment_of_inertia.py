@@ -65,6 +65,8 @@ def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]):
     I[2][2] = 2 * mass_hemisphere / 5 *  (outer_radius ** 5 - inner_radius ** 5) /(outer_radius **3 -inner_radius **3) # Izz
 
     # global system
+    print(f"Origin: {origin_hemisphere}")
+    print(f"CG: {center_of_gravity}")
     s        = np.array(center_of_gravity) - np.array(origin_hemisphere)
     I_global = np.array(I) + mass_hemisphere * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s*np.transpose(s)) # global inertia tensor for hemisphere
     
