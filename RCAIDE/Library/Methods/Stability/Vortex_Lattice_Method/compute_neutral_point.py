@@ -18,7 +18,53 @@ from scipy.optimize import minimize
 #  compute_neutral_point
 # ---------------------------------------------------------------------------------------------------------------------- 
 def compute_neutral_point(stability):
-    """ 
+    """
+    Computes the neutral point of an aircraft using Vortex Lattice Method optimization.
+
+    Parameters
+    ----------
+    stability : RCAIDE.Framework.Analyses.Stability
+        Stability analysis object containing:
+            - vehicle : RCAIDE.Library.Components.Vehicle
+                Vehicle object with geometry and mass properties
+            - settings : RCAIDE.Framework.Analyses.Stability.Settings
+                Stability analysis settings
+            - training : Data
+                Training data for analysis
+                - angle_of_attack : numpy.ndarray
+                    Array of angle of attack values [radians]
+                - Mach : numpy.ndarray
+                    Array of Mach numbers [unitless]
+
+    Returns
+    -------
+    None
+        The neutral point is stored in stability.vehicle.neutral_point
+
+    Notes
+    -----
+    This function computes the neutral point of an aircraft by finding the center
+    of gravity location where the pitching moment coefficient derivative with respect
+    to angle of attack is zero. It uses an optimization approach with the Vortex
+    Lattice Method to evaluate aerodynamic characteristics. It specifically uses the
+    Scipy SLSQP solver.
+    
+    **Major Assumptions**
+        * Linear aerodynamics within the analysis range
+        * Control surfaces are removed for clean configuration analysis
+        * Vortex Lattice Method accurately represents the aerodynamics
+        * Small angle approximations apply
+    
+    **Theory**
+
+    The neutral point is defined as the center of gravity location where:
+    :math:`\\frac{\\partial C_M}{\\partial \\alpha} = 0`
+
+    **Definitions**
+
+    'Neutral Point'
+        Center of gravity location where the aircraft has neutral static stability (i.e. Cm_alpha = 0).
+
     """
   
     vehicle        = deepcopy(stability.vehicle)
@@ -53,7 +99,40 @@ def compute_neutral_point(stability):
     return 
 
 def neutral_point_objective(cg_location,conditions,settings,clean_wing_vehicle_np,Mach,AoA):
+    """
+    Objective function for neutral point optimization.
 
+    Parameters
+    ----------
+    cg_location : list
+        Center of gravity location [m]
+    conditions : RCAIDE.Framework.Mission.Common.Results
+        Flight conditions for VLM analysis
+    settings : RCAIDE.Framework.Analyses.Stability.Settings
+        Stability analysis settings
+    clean_wing_vehicle_np : RCAIDE.Library.Components.Vehicle
+        Clean wing vehicle configuration (no control surfaces)
+    Mach : numpy.ndarray
+        Array of Mach numbers [unitless]
+    AoA : numpy.ndarray
+        Array of angle of attack values [radians]
+
+    Returns
+    -------
+    float
+        Absolute value of pitching moment coefficient derivative with respect to angle of attack
+
+    Notes
+    -----
+    This function serves as the objective function for the neutral point optimization.
+    It updates the vehicle center of gravity, runs VLM analysis, and computes the
+    pitching moment coefficient derivative to minimize.
+    
+    **Major Assumptions**
+        * VLM analysis is valid for the given conditions
+        * Pitching moment coefficient varies linearly with angle of attack
+        * Clean wing configuration represents the neutral point condition
+    """
     len_Mach       = len(Mach)        
     len_AoA        = len(AoA)
     

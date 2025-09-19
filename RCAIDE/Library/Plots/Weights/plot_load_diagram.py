@@ -20,6 +20,63 @@ import numpy as np
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
 def plot_load_diagram(results):
+    """
+    Creates a comprehensive aircraft loading diagram showing mass and center of gravity relationships.
+
+    Parameters
+    ----------
+    results : RCAIDE.Framework.Core.Data
+        Results from load and trim diagram analysis containing:
+            - loading_mass : numpy.ndarray
+                Aircraft mass for loading diagram [kg]
+            - loading_LEMAC_location : numpy.ndarray
+                LEMAC location as percentage of reference chord [%]
+            - aerodynamic_LEMAC_location : numpy.ndarray
+                LEMAC location for trim diagram [%]
+            - aerodynamic_mass : numpy.ndarray
+                Aircraft mass for trim diagram [kg]
+            - aerodynamic_static_margin : numpy.ndarray
+                Static margin values [unitless]
+            - MTOW : float
+                Maximum takeoff weight [kg]
+            - MLW : float
+                Maximum landing weight [kg]
+
+    Returns
+    -------
+    None
+        Creates and displays a matplotlib figure with the loading diagram
+
+    Notes
+    -----
+    This function generates a comprehensive aircraft loading diagram that visualizes
+    the relationship between aircraft mass, loading, and center of gravity position. The diagram
+    includes fuel loading curves, payload loading curves, weight limits, and stability
+    contours to provide a complete view of the aircraft's loading envelope.
+    
+    **Major Assumptions**
+        * Convex hull calculation is valid for the data points
+    
+    **Definitions**
+
+    'Loading Diagram'
+        Plot showing aircraft mass versus center of gravity position for different loading conditions.
+    
+    'Convex Hull'
+        Smallest convex polygon that contains all the data points.
+    
+    'Static Margin'
+        Distance between center of gravity and neutral point as percentage of reference chord.
+    
+    'LEMAC'
+        Leading Edge Mean Aerodynamic Chord reference point for center of gravity calculations.
+
+    See Also
+    --------
+    matplotlib.pyplot
+    scipy.spatial.ConvexHull
+    shapely.geometry.Polygon
+    """
     
     # get plotting style 
     ps      = plot_style()  
