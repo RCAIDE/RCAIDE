@@ -464,7 +464,7 @@ def segment_properties(wing):
             if (MAC < chord_root) and   (MAC > chord_tip):
                 x_0        = segments[segment_names[i_segs]].origin[0][0]  +  wing.origin[0][0]
                 dy         = ( MAC -  chord_root) / ( (chord_tip - chord_root) / span_seg)
-                LEMAC      =  x_0 + np.tan(wing.sweeps.leading_edge) *dy
+                LEMAC      =  x_0 + np.tan(segments[segment_names[i_segs]].sweeps.leading_edge) *dy
                 wing.LEMAC = LEMAC  
             
             if isinstance(segments[segment_names[i_segs+1]], RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
