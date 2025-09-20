@@ -47,7 +47,7 @@ def plot_3d_vehicle(geometry,
                     fuel_tank_alpha             = 1.0,
                     rotor_alpha                 = 1.0,
                     overwrite_geometry          = True, 
-                    plot_tank_geometry          = False,
+                    plot_tank_geometry          = True,
                     show_figure                 = True):
     """
     Creates a complete 3D visualization of an aircraft including all major components.
@@ -347,33 +347,22 @@ def plot_3d_energy_network(plot_data,geometry,network,number_of_airfoil_points,n
         if 'rotor' in propulsor: 
             plot_data = plot_3d_rotor(propulsor.rotor,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
         if 'propeller' in propulsor:
-            plot_data = plot_3d_rotor(propulsor.propeller,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha) 
+            plot_data = plot_3d_rotor(propulsor.propeller,save_filename,save_figure,plot_data,show_figure,show_axis,0,number_of_airfoil_points,rotor_color,rotor_alpha)
+            
     if plot_tank_geometry:
-        for fuel_line in network.fuel_lines:
-            plot_fuel_tanks(geometry, fuel_line,plot_data,tessellation) 
-        for bus in network.busses:
-            plot_fuel_tanks(geometry, bus,plot_data,tessellation)
+        for fuel_line in network.fuel_lines: 
+            wings         = geometry.wings
+            fuselages     = geometry.fuselages
+            for fuel_tank in fuel_line.fuel_tanks:   
+                if fuel_tank.wing_tag != None:
+                    wing = wings[fuel_tank.wing_tag]
+                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
+                        plot_3d_integral_wing_tank(plot_data,wing, fuel_tank, tessellation, color_map = 'oranges')  
+                elif fuel_tank.fuselage_tag != None:
+                    fuselage = fuselages[fuel_tank.fuselage_tag]
+                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
+                        plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation, color_map = 'oranges')  
+                elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
+                        plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges') 
 
-    return plot_data
-
-def plot_fuel_tanks(geometry, distributor,plot_data,tessellation):  
-    wings         = geometry.wings
-    fuselages     = geometry.fuselages
-    for fuel_tank in distributor.fuel_tanks:   
-        if fuel_tank.wing_tag != None:
-            wing = wings[fuel_tank.wing_tag]
-            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-                plot_3d_integral_wing_tank(plot_data,wing, fuel_tank, tessellation, color_map = 'oranges') 
-        if issubclass(type(fuel_tank),RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
-            plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')   
-        elif fuel_tank.fuselage_tag != None:
-            fuselage = fuselages[fuel_tank.fuselage_tag]
-            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-                plot_3d_integral_fuselage_tank(plot_data, fuselage, fuel_tank, tessellation, color_map = 'oranges') 
-            elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
-                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
-        else:
-            if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
-                plot_3d_non_integral_fuel_tank(plot_data, fuel_tank, tessellation, color_map = 'oranges')
-
-    return 
+    return plot_data 
