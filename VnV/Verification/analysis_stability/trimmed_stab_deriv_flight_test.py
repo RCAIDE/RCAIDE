@@ -123,6 +123,7 @@ def base_analysis(vehicle, configs):
      
     stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     stability.vehicle                               = vehicle
+    stability.settings.update_center_of_gravity     = False
     analyses.append(stability)
 
     # ------------------------------------------------------------------

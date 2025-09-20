@@ -35,38 +35,34 @@ def main():
     vehicle    = E190_vehicle_setup()
     
     vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
-    
-    new_sim = False 
-    
-    if new_sim:
-        # take out control surfaces to make regression run faster
-        for wing in vehicle.wings:
-            wing.control_surfaces  = Container()
-            
-        #  Weights Analysis
-        weights = RCAIDE.Framework.Analyses.Weights.Conventional() 
-        weights.settings.FLOPS.fidelity = 'Complex'  
      
-        #  Aerodynamics Analysis 
-        aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-        aerodynamics.settings.number_of_spanwise_vortices   = 5
-        aerodynamics.settings.number_of_chordwise_vortices  = 2  
+    # take out control surfaces to make regression run faster
+    for wing in vehicle.wings:
+        wing.control_surfaces  = Container()
         
-        #  Stability Analysis
-        stability     = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
-        stability.settings.number_of_spanwise_vortices   = 5
-        stability.settings.number_of_chordwise_vortices  = 2       
-        
-        load_data =  compute_load_and_trim_diagram(vehicle,
-                                              aerodynamic_analysis = aerodynamics,
-                                              weights_analysis     = weights,
-                                              stability_analysis   = stability,
-                                              altitude             = 35000*Units.feet, 
-                                              airspeed             = 450 * Units['knots'])
-        
-        save_results(load_data,'loading_results')
-    else: 
-        load_data = load_results('loading_results')
+    #  Weights Analysis
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional() 
+    weights.settings.FLOPS.fidelity = 'Complex'  
+ 
+    #  Aerodynamics Analysis 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
+    aerodynamics.settings.number_of_spanwise_vortices   = 5
+    aerodynamics.settings.number_of_chordwise_vortices  = 2  
+    
+    #  Stability Analysis
+    stability     = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
+    stability.settings.number_of_spanwise_vortices   = 5
+    stability.settings.number_of_chordwise_vortices  = 2       
+    
+    load_data =  compute_load_and_trim_diagram(vehicle,
+                                          aerodynamic_analysis = aerodynamics,
+                                          weights_analysis     = weights,
+                                          stability_analysis   = stability,
+                                          altitude             = 35000*Units.feet,
+                                          airspeed             = 450 * Units['knots'],
+                                          number_of_points     = 3)
+    
+    save_results(load_data,'loading_results') 
  
     LEMAC_truth = np.array([[-43.39227155,   1.33754363,  46.06735881,  90.79717399,       135.52698916],
                             [-43.39227155,   1.33754363,  46.06735881,  90.79717399,        135.52698916],
