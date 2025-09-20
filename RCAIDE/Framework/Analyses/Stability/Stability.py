@@ -51,7 +51,6 @@ class Stability(Analysis):
         self.vehicle                                                     = Data() 
         
         self.settings                                                    = Data()
-        self.settings.unique_segment_surrogate                           = False
         self.settings.maximum_lift_coefficient                           = np.inf 
         self.settings.fuselage_lift_correction                           = 1.20
         self.settings.trim_drag_correction_factor                        = 1.02

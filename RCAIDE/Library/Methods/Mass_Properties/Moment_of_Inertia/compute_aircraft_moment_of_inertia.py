@@ -90,7 +90,7 @@ def compute_aircraft_moment_of_inertia(vehicle, CG_location, update_moment_of_in
             landing_gear.width  = landing_gear.strut_length* 1.1
             landing_gear.height = landing_gear.tire_diameter* 1.1
             
-        I, mass = landing_gear.compute_moment_of_inertia(landing_gear, CG_location)
+        I, mass = landing_gear.compute_moment_of_inertia()
         MOI_tensor += I
         MOI_mass   += mass
             

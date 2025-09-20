@@ -96,7 +96,7 @@ class Landing_Gear(Component):
         self.fairing                         = False
         
 
-    def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]]): 
+    def compute_moment_of_inertia(self): 
         """
         Computes the moment of inertia tensor for the landing gear.
 

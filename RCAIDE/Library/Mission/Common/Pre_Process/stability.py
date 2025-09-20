@@ -71,20 +71,13 @@ def stability(mission):
            type(segment) ==  RCAIDE.Framework.Mission.Segments.Vertical_Flight.Descent:
             pass
         else:    
-            if segment.analyses.stability !=  None:
-                stab             = segment.analyses.stability
-                aero             = segment.analyses.aerodynamics
-                if last_tag!=  None:
-                    if segment.analyses.stability.settings.unique_segment_surrogate: 
-                        stab.surrogates             = aero.surrogates   
-                        stab.initialize()   
-                        last_tag = tag
-                    elif 'compute' in mission.segments[last_tag].analyses.stability.process.keys():  
-                        stab.surrogates                       = mission.segments[last_tag].analyses.aerodynamics.surrogates    
-                        stab.process.compute.static_stability = mission.segments[last_tag].analyses.stability.process.compute.static_stability
-                        stab.vehicle.neutral_point            = mission.segments[last_tag].analyses.stability.vehicle.neutral_point
+            if segment.analyses.stability !=  None: 
+                if last_tag!=  None and 'compute' in mission.segments[last_tag].analyses.stability.process.keys():  
+                    segment.analyses.stability.surrogates                       = mission.segments[last_tag].analyses.aerodynamics.surrogates    
+                    segment.analyses.stability.process.compute.static_stability = mission.segments[last_tag].analyses.stability.process.compute.static_stability
+                    segment.analyses.stability.vehicle.neutral_point            = mission.segments[last_tag].analyses.stability.vehicle.neutral_point
                 else: 
-                    stab.surrogates   = aero.surrogates  
-                    stab.initialize() 
+                    segment.analyses.stability.surrogates   = segment.analyses.aerodynamics.surrogates  
+                    segment.analyses.stability.initialize() 
                     last_tag = tag 
     return 

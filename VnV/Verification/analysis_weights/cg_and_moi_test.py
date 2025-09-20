@@ -62,9 +62,9 @@ def Transport_Aircraft_Test():
 
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI) 
-    accepted  = np.array([[33131072.41621,     3815678.46318,  1691505.72846],
-                          [ 3815678.46318, 84514198.34636146,             0.],
-                          [ 1691505.72846,                0.,  101451071.267]])
+    accepted  = np.array([[ 3.29634304e+07, 3.99803159e+06, 2.22870433e+06],
+                          [ 3.99803159e+06, 9.86677632e+07,-3.52133374e+03],
+                          [ 2.22870433e+06,-3.52133374e+03, 1.15776270e+08]])
                           
     MOI_error     = (MOI - accepted) / accepted
 
@@ -110,9 +110,9 @@ def General_Aviation_Test():
     print(weight_analysis.vehicle.tag + ' Moment of Intertia')
     print(MOI)
 
-    accepted  = np.array([[3133.49812466,   33.06410069, -120.36780188],
-                          [  33.06410069, 6098.76452557,            0.],
-                          [-120.36780188,            0.,  4971.8636106]])
+    accepted  = np.array([[3324.17527381, 459.36753169, -86.8899328 ], 
+                          [ 459.36753169,6770.16505484,  -8.98623559], 
+                          [ -86.8899328 ,  -8.98623559,5845.74117634]])
 
     MOI_error     = MOI - accepted
 

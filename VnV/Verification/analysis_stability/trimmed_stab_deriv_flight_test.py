@@ -184,7 +184,7 @@ def sideslip_cruise_mission_setup(analyses):
     segment.analyses.extend( analyses.base )   
     segment.altitude                                                            = 1000. * Units.feet
     segment.air_speed                                                           = 50.00
-    segment.sideslip_angle                                                      = 10.0 * Units.deg   
+    segment.sideslip_angle                                                      = 10.0 * Units.deg  
     
     # equations of motion
     segment.flight_dynamics.force_x                                             = True    
@@ -219,7 +219,7 @@ def sideslip_cruise_mission_setup(analyses):
     segment.analyses.extend( analyses.base )   
     segment.altitude                                                            = 1000. * Units.feet
     segment.air_speed                                                           = 50.00
-    segment.sideslip_angle                                                      = 10.0 * Units.deg   
+    segment.sideslip_angle                                                      = 10.0 * Units.deg    
     
     # equations of motion
     segment.flight_dynamics.force_x                                             = True    
@@ -240,8 +240,7 @@ def sideslip_cruise_mission_setup(analyses):
     segment.analyses.extend( analyses.base )   
     segment.altitude                                                            = 1000. * Units.feet
     segment.air_speed                                                           = 50.00
-    segment.sideslip_angle                                                      = 10.0 * Units.deg   
-    segment.analyses.stability.settings.unique_segment_surrogate                = True
+    segment.sideslip_angle                                                      = 10.0 * Units.deg    
 
     # equations of motion
     segment.flight_dynamics.force_x                                             = True    
