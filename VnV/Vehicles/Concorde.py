@@ -47,7 +47,7 @@ def vehicle_setup():
   
     # basic parameters  
     vehicle.reference_area                 = 358.25      
-    vehicle.passengers                     = 100
+    vehicle.number_of_passengers                     = 100
     vehicle.systems.control                = "fully powered" 
     vehicle.systems.accessories            = "sst"
     vehicle.maximum_cross_sectional_area   = 13.9

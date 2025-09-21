@@ -42,7 +42,7 @@ def vehicle_setup():
     vehicle.flight_envelope.design_cruise_altitude    = 35000*Units.feet
     vehicle.flight_envelope.design_range              = 3500 * Units.nmi
     vehicle.reference_area                            = 124.862 * Units['meters**2']   
-    vehicle.passengers                                = 170
+    vehicle.number_of_passengers                                = 170
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "medium range"
 
@@ -318,7 +318,7 @@ def vehicle_setup():
     # ################################################# Fuselage ################################################################ 
     
     fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage() 
-    fuselage.number_coach_seats                 = vehicle.passengers 
+    fuselage.number_coach_seats                 = vehicle.number_of_passengers 
     fuselage.seats_abreast                      = 6
     fuselage.seat_pitch                         = 1     * Units.meter 
     fuselage.fineness.nose                      = 1.6
@@ -346,19 +346,22 @@ def vehicle_setup():
     first_class.number_of_rows                         = 3
     first_class.galley_lavatory_percent_x_locations    = [0]       
     first_class.type_A_exit_percent_x_locations        = [0.01]
+    first_class.number_of_seats                      = first_class.number_of_rows  * first_class.number_of_seats_abrest 
     cabin.append_cabin_class(first_class) 
 
     business_class = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business() 
     business_class.number_of_seats_abrest              = 6
-    business_class.number_of_rows                      = 3  
+    business_class.number_of_rows                      = 5  
+    business_class.number_of_seats                     = business_class.number_of_rows  * business_class.number_of_seats_abrest 
     cabin.append_cabin_class(business_class) 
     
     economy_class = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     economy_class.number_of_seats_abrest              = 6
-    economy_class.number_of_rows                      = 17
+    economy_class.number_of_rows                      = 22
     economy_class.galley_lavatory_percent_x_locations = [1]      
     economy_class.emergency_exit_percent_x_locations  = [0.1,0.15] 
     economy_class.type_A_exit_percent_x_locations     = [0.99]
+    economy_class.number_of_seats                     = economy_class.number_of_rows  * economy_class.number_of_seats_abrest 
     cabin.append_cabin_class(economy_class)
     
     fuselage.append_cabin(cabin)          

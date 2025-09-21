@@ -43,7 +43,7 @@ def vehicle_setup(new_regression=True) :
     vehicle.mass_properties.operating_empty     = vehicle.mass_properties.max_takeoff
     vehicle.flight_envelope.ultimate_load       = 5.7   
     vehicle.flight_envelope.positive_limit_load = 3.  
-    vehicle.passengers                          = 5 
+    vehicle.number_of_passengers                          = 5 
         
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  

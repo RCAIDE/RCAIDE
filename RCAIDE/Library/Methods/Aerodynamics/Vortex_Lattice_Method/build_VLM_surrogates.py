@@ -89,7 +89,7 @@ def build_surrogate(aerodynamics, training):
         surrogates.Clift_wing_alpha[wing.tag] = RegularGridInterpolator((AoA_data ,mach_data),training.Clift_wing_alpha[wing.tag],method = 'linear',   bounds_error=False, fill_value=None) 
         surrogates.Cdrag_induced_wing_alpha[wing.tag] = RegularGridInterpolator((AoA_data ,mach_data),training.Cdrag_induced_wing_alpha[wing.tag],method = 'linear',   bounds_error=False, fill_value=None) 
      
-    # coefficients 
+    # Pack the outputs
     surrogates.Clift_alpha        = RegularGridInterpolator((AoA_data ,mach_data),training.Clift_alpha        ,method = 'linear',   bounds_error=False, fill_value=None)      
     surrogates.Cdrag_induced_alpha= RegularGridInterpolator((AoA_data ,mach_data),training.Cdrag_induced_alpha,method = 'linear',   bounds_error=False, fill_value=None)      
     surrogates.CM_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CM_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)  
@@ -109,9 +109,8 @@ def build_surrogate(aerodynamics, training):
     surrogates.CM_beta            = RegularGridInterpolator((Beta_data ,mach_data),training.CM_beta           ,method = 'linear',   bounds_error=False, fill_value=None) 
 
 
-    # stability derivatives
-    surrogates.CM_0             = interpolate.interp1d(mach_data, training.CM_0, kind='linear', bounds_error=False, fill_value='extrapolate')     
-    surrogates.CM_0_shifted_CG  = interpolate.interp1d(mach_data, training.CM_0_shifted_CG, kind='linear', bounds_error=False, fill_value='extrapolate')       
+    # Use interpolat.interp1d below
+    surrogates.CM_0             = interpolate.interp1d(mach_data, training.CM_0, kind='linear', bounds_error=False, fill_value='extrapolate')         
     surrogates.dClift_dalpha    = interpolate.interp1d(mach_data, training.dClift_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')      
     surrogates.dCX_dalpha       = interpolate.interp1d(mach_data, training.dCX_dalpha, kind='linear', bounds_error=False, fill_value='extrapolate')      
     surrogates.dCX_du           = interpolate.interp1d(mach_data, training.dCX_du, kind='linear', bounds_error=False, fill_value='extrapolate')      
@@ -196,7 +195,6 @@ def no_surrogate(aerodynamics, training):
     surrogates.CN_alpha               = None    
     surrogates.CN_beta                = None    
     surrogates.CM_0                   = None  
-    surrogates.CM_0_shifted_CG        = None
     
     surrogates.dClift_dalpha          = None      
     surrogates.dCX_dalpha             = None      

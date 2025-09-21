@@ -45,7 +45,7 @@ def vehicle_setup(rotor_type):
     vehicle.flight_envelope.design_mach_number        = 0.228
     
     vehicle.reference_area                            = 14.76
-    vehicle.passengers                                = 4
+    vehicle.number_of_passengers                                = 4
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "commuter"
     
