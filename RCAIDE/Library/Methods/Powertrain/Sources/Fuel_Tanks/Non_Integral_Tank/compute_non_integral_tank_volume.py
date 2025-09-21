@@ -265,18 +265,13 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
     w = fuel_tank.outer_width
     h = fuel_tank.outer_height
     t = fuel_tank.wall_thickness
-    
-    if not hasattr(fuel_tank, "inner_length") or fuel_tank.inner_length in (None, 0.0):
-        fuel_tank.inner_length = l - 2 * t
-    
-    if not hasattr(fuel_tank, "inner_width") or fuel_tank.inner_width in (None, 0.0):
-        fuel_tank.inner_width = w - 2 * t 
-    
-    if not hasattr(fuel_tank, "inner_height") or fuel_tank.inner_height in (None, 0.0): 
-        fuel_tank.inner_height = h - 2 * t            
+     
+    inner_length = l - 2 * t 
+    inner_width  = w - 2 * t  
+    inner_height = h - 2 * t            
 
     tank_volume_o = l * w * h
-    tank_volume_i = fuel_tank.inner_length * fuel_tank.inner_width *  fuel_tank.inner_height
+    tank_volume_i = inner_length * inner_width *  inner_height
  
     fuel_tank.volume_properties.net_volume         = tank_volume_i
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
@@ -287,12 +282,11 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
     else:
         fuel_tank.fuel.mass_properties.mass     = tank_volume_i *  fuel_tank.fuel.density
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i 
     
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]] 
     fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.outer_length /2, 0, 0]]
-    fuel_tank.fuel.origin = fuel_tank.origin
+    fuel_tank.fuel.origin                             = fuel_tank.origin
          
     return
 

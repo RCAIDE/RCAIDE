@@ -47,17 +47,16 @@ class Stability(Analysis):
         Properties Used:
         N/A
         """   
-        self.tag      = 'stability'
-        self.vehicle  = Data()
-        self.settings = Data() 
+        self.tag                                                         = 'stability'
+        self.vehicle                                                     = Data() 
         
         self.settings                                                    = Data()
-        self.settings.unique_segment_surrogate                           = False
         self.settings.maximum_lift_coefficient                           = np.inf 
         self.settings.fuselage_lift_correction                           = 1.20
         self.settings.trim_drag_correction_factor                        = 1.02
         self.settings.wing_parasite_drag_form_factor                     = 1.1  
-        self.settings.fuselage_parasite_drag_form_factor                 = 2.1   
+        self.settings.fuselage_parasite_drag_form_factor                 = 2.1
+        self.settings.update_center_of_gravity                           = True
         self.settings.drag_reduction_factors                             = Data()
         self.settings.drag_reduction_factors.parasite_drag               = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)
         self.settings.drag_reduction_factors.induced_drag                = 0.0  # Reduction factors are proportional (.1 is a 10% weight reduction)

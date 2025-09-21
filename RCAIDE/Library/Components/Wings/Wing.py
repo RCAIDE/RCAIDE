@@ -272,14 +272,12 @@ class Wing(Component):
 
         return
     
-    def compute_moment_of_inertia(self, mass, center_of_gravity=[[0, 0, 0]], fuel_flag=False): 
+    def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]], fuel_flag=False): 
         """
         Computes the moment of inertia tensor for the wing.
 
         Parameters
-        ----------
-        mass : float
-            Wing mass
+        ---------- 
         center_of_gravity : list, optional
             Reference point coordinates, defaults to [[0, 0, 0]]
         fuel_flag : bool, optional
@@ -290,6 +288,7 @@ class Wing(Component):
         ndarray
             3x3 moment of inertia tensor
         """
+        mass= self.mass_properties.mass 
         I = compute_wing_moment_of_inertia(self, mass, center_of_gravity, fuel_flag) 
         return I   
     

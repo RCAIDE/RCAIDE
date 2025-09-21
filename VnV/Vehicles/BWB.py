@@ -46,7 +46,7 @@ def vehicle_setup():
     vehicle.flight_envelope.design_cruise_altitude    = 45000.0*Units.feet 
     vehicle.flight_envelope.design_range              = 5000.0 * Units.nmi
     vehicle.reference_area                            = 592.6575476422672 # 2424.9 * Units['feet**2']    
-    vehicle.passengers                                = 248 # Single class. 242 in dual class (24 business, 21 economy) 
+    vehicle.number_of_passengers                                = 248 # Single class. 242 in dual class (24 business, 21 economy) 
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "long range"  
      

@@ -74,7 +74,7 @@ def append_bus_conditions(bus,segment):
 
      # first segment  
     if 'initial_battery_state_of_charge' in segment:  
-        initial_battery_energy                                             = segment.initial_battery_state_of_charge*bus.maximum_energy   
+        initial_battery_energy                                                    = segment.initial_battery_state_of_charge*bus.maximum_energy   
         segment.state.conditions.energy.busses[bus.tag].maximum_initial_energy    = initial_battery_energy
         segment.state.conditions.energy.busses[bus.tag].energy                    = initial_battery_energy* ones_row(1)
         segment.state.conditions.energy.busses[bus.tag].state_of_charge           = segment.initial_battery_state_of_charge* ones_row(1) 

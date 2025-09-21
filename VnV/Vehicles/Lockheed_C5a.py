@@ -535,10 +535,8 @@ def vehicle_setup():
     fuel                                        = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel.mass_properties.mass                   = fuel_percentage * vehicle.mass_properties.max_fuel
     fuel.origin                                 = [[23.0,0,3.913]]# vehicle.wings.main_wing.origin    
-    fuel.mass_properties.center_of_gravity      = [[23.0,0,3.913]] #vehicle.wings.main_wing.mass_properties.center_of_gravity
-    fuel.internal_volume                        = fuel.mass_properties.mass/fuel.density  
-    fuel_tank.fuel                              = fuel
-    fuel_tank.internal_volume                  = fuel.internal_volume
+    fuel.mass_properties.center_of_gravity      = [[23.0,0,3.913]] #vehicle.wings.main_wing.mass_properties.center_of_gravity 
+    fuel_tank.fuel                              = fuel 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
 

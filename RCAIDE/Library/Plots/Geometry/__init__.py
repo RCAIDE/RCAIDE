@@ -30,7 +30,12 @@ from .plot_3d_nacelle                         import generate_3d_stack_nacelle_p
 from .plot_3d_fuel_tank                       import plot_3d_non_integral_fuel_tank
 from .plot_3d_fuel_tank                       import plot_3d_integral_fuselage_tank
 from .plot_3d_fuel_tank                       import plot_3d_integral_wing_tank
+from .plot_3d_fuel_tank                       import generate_non_integral_fuel_tank_points
+from .plot_3d_fuel_tank                       import generate_integral_fuel_tank_points
+from .plot_3d_fuel_tank                       import generate_integral_wing_tank_points
 from .plot_3d_wing                            import plot_3d_wing
+from .plot_3d_fuselage                        import plot_3d_fuselage
+from .plot_3d_fuselage                        import generate_3d_fuselage_points
 from .plot_3d_wing                            import generate_3d_wing_points
 from .plot_3d_vehicle_vlm_panelization        import plot_3d_vehicle_vlm_panelization
 from .plot_layout_of_passenger_accommodations import plot_layout_of_passenger_accommodations

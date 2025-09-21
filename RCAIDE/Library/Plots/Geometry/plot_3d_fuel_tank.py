@@ -14,7 +14,6 @@ from RCAIDE.Library.Plots.Geometry.Common.contour_surface_slice import contour_s
 
 # python imports
 import numpy as np
-from numpy.ma import mask_cols      
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  plot_3d_non_integral_fuel_tank

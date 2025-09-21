@@ -187,8 +187,7 @@ def TW_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle = vehicle
-    aerodynamics.settings.unique_segment_surrogate = True
+    aerodynamics.vehicle = vehicle 
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
