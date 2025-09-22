@@ -371,22 +371,6 @@ def make_object(renderer, GEOM,  rgb_color, opacity):
     
     return
 
-def make_wireframe(renderer, GEOM,  rgb_color, opacity): 
-
-    actor = generate_vtk_object(GEOM.PTS)
-
-    # Set color of fuselage
-    mapper = actor.GetMapper()
-    mapper.ScalarVisibilityOff() 
-    actor.GetProperty().SetRepresentationToWireframe()
-    actor.GetProperty().SetColor(rgb_color[0], rgb_color[1], rgb_color[2])  # Set wing color to Light Grey
-    actor.GetProperty().SetDiffuse(1.0)  # Set diffuse reflection
-    actor.GetProperty().SetSpecular(0.0)  # Set specular reflection
-    actor.GetProperty().SetOpacity(opacity)
-    renderer.AddActor(actor)
-    
-    return
-
 def make_actuator_disc(renderer, inner_radius, outer_radius, origin, rot_x,rot_y,rot_z, rgb_color, opacity): 
     
     disk_source = vtk.vtkDiskSource()

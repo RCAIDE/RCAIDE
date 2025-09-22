@@ -153,6 +153,8 @@ def VLM(conditions,settings,geometry):
     settings.vortex_distribution.ZB1                      = VD.ZB1
     settings.vortex_distribution.ZB2                      = VD.ZB2 
     settings.vortex_distribution.X                        = VD.X
+    settings.vortex_distribution.Y                        = VD.Y
+    settings.vortex_distribution.Z                        = VD.Z
     settings.vortex_distribution.XC                       = VD.XC
     settings.vortex_distribution.YC                       = VD.YC
     settings.vortex_distribution.ZC                       = VD.ZC

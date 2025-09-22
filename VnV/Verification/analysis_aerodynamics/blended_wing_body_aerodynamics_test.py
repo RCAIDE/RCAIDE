@@ -28,12 +28,12 @@ def main():
     plot_3d_vehicle_vlm_panelization(vortex_distribution=vortex_distribution,
                     save_filename               = "BWB_Top_View", 
                     show_wing_control_points    = False,  
-                    show_figure=False)
+                    show_figure                 =False)
 
     plot_3d_vehicle_vlm_panelization(vortex_distribution=vortex_distribution,
                     save_filename               = "BWB_Top_View",
                     show_wing_control_points    = True,  
-                    show_figure=False)
+                    show_figure                 =False)
 
     Cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
     Cruise_CL_true   = 0.3841007724387933
