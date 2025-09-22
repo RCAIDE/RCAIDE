@@ -57,11 +57,13 @@ def plot_3d_vehicle(vehicle,
                     front_view                  = False,   
                     wing_color                  = 'grey', 
                     fuselage_color              = 'grey', 
+                    boom_color                  = 'grey', 
                     nacelle_color               = 'grey', 
                     fuel_tank_color             = 'orange', 
                     rotor_color                 = 'black', 
                     wing_opacity                = 0.5, 
-                    fuselage_opacity            = 0.5,
+                    fuselage_opacity            = 1.0,
+                    boom_opacity                = 1.0,
                     nacelle_opacity             = 1.0,
                     fuel_tank_opacity           = 0.5,
                     rotor_opacity               = 0.6, 
@@ -155,6 +157,7 @@ def plot_3d_vehicle(vehicle,
     fuselage_rgb_color   = mcolors.to_rgb(fuselage_color) 
     nacelle_rgb_color    = mcolors.to_rgb(nacelle_color) 
     rotor_rgb_color      = mcolors.to_rgb(rotor_color)
+    boom_rgb_color       = mcolors.to_rgb(boom_color)
      
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
@@ -208,7 +211,7 @@ def plot_3d_vehicle(vehicle,
     # -------------------------------------------------------------------------  
     for boom in geometry.booms:
         GEOM = generate_3d_fuselage_points(boom, tessellation)
-        make_object(renderer, GEOM, fuselage_rgb_color,fuselage_opacity)
+        make_object(renderer, GEOM, boom_rgb_color,boom_opacity)
 
     # -------------------------------------------------------------------------  
     # Plot Nacelle, Rotors and Fuel Tanks 
