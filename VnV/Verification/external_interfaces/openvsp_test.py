@@ -41,11 +41,7 @@ def Transport_Aircraft_Test():
 
         
 def BWB_Aircraft_Test(): 
-    vehicle  = bwb_setup()
-     
-    plot_3d_vehicle(vehicle,
-                    save_filename = "BWB",  
-                    show_figure=False)                 
+    vehicle  = bwb_setup()                
     
     export_vsp_vehicle(vehicle, 'BWB')
 

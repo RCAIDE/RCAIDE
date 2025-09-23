@@ -18,28 +18,7 @@ import matplotlib.colors as mcolors
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
-# ------------------------- ---------------------------------------------------------------------------------------------    
-class CustomInteractorStyle(vtk.vtkInteractorStyleTrackballCamera):
-    def __init__(self, parent=None):
-        super().__init__()
-        self.AddObserver("KeyPressEvent", self.on_key_press)  # type: ignore
-
-    def on_key_press(self, obj, event):
-        key = self.GetInteractor().GetKeySym()
-        camera = self.GetInteractor().GetRenderWindow(
-        ).GetRenderers().GetFirstRenderer().GetActiveCamera()
-
-        # Example custom camera controls
-        if key == "Down":
-            camera.Pitch(10)  # Pitch up by 10 degrees
-        elif key == "Up":
-            camera.Pitch(-10)  # Pitch down by 10 degrees
-        elif key == "Left":
-            camera.Yaw(-10)  # Yaw left by 10 degrees
-        elif key == "Right":
-            camera.Yaw(10)  # Yaw right by 10 degrees
-
-        self.GetInteractor().GetRenderWindow().Render()  # Render the changes
+# ------------------------- ---------------------------------------------------------------------------------------------     
 def plot_3d_rotor(rotor,
                   save_filename            = "rotor",
                   save_figure              = False,
@@ -129,7 +108,7 @@ def plot_3d_rotor(rotor,
     renderWindowInteractor.SetRenderWindow(renderWindow)
 
     # Use the custom interactor style
-    custom_style = CustomInteractorStyle()
+    custom_style = vtk.vtkInteractorStyleTrackballCamera()  
     renderWindowInteractor.SetInteractorStyle(custom_style)
     
     if save_figure:

@@ -58,6 +58,7 @@ modules = [
     'Verification/performance/noise_certification_test.py',
     'Verification/performance/loading_and_trim_diagram_test.py',
     'Verification/performance/V_n_diagram_test.py', 
+    'Verification/plots/plot_test.py', 
     'Verification/propulsion/rotor_performance_test.py',  
     'Verification/propulsion/propeller_non_uniform_inflow.py',    
     'Verification/propulsion/propeller_wing_interaction_test.py', 

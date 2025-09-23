@@ -33,41 +33,7 @@ def main():
     # -----------------------------------------
 
     # vehicle data
-    vehicle  = vehicle_setup()
-    
-    # plot vehicle 
-    plot_3d_vehicle(vehicle,  
-                    show_figure                 = False,
-                    plot_tank_geometry         = True,
-                    )
-
-    # plot vehicle 
-    plot_3d_vehicle(vehicle,
-                    save_filename               = "Boeing_737_Top_View", 
-                    top_view                    = True, 
-                    side_view                   = False, 
-                    front_view                  = False, 
-                    plot_tank_geometry         = True,
-                    show_figure=False)
-    
-
-    plot_3d_vehicle(vehicle,
-                    save_filename               = "Boeing_737_Side_View", 
-                    top_view                    = False, 
-                    side_view                   = True, 
-                    front_view                  = False, 
-                    plot_tank_geometry         = True,
-                    show_figure=False)
-    
-   
-    plot_3d_vehicle(vehicle,
-                    save_filename               = "Boeing_737_Front_View", 
-                    top_view                    = False, 
-                    side_view                   = False, 
-                    front_view                  = True,
-                    wing_opacity               = 0.2, 
-                    plot_tank_geometry         = True,
-                    show_figure=False)       
+    vehicle  = vehicle_setup() 
     
     # Set up vehicle configs
     configs  = configs_setup(vehicle)

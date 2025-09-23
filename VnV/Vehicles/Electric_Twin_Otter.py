@@ -126,7 +126,7 @@ def vehicle_setup(cell_chemistry, btms_type):
     segment.tag                           = 'tip'
     segment.percent_span_location         = 1.
     segment.twist                         = 0
-    segment.root_chord_percent            = 0.12
+    segment.root_chord_percent            = 1.0
     segment.dihedral_outboard             = 0.
     segment.sweeps.quarter_chord          = 0.
     segment.thickness_to_chord            = 0.12
@@ -498,7 +498,7 @@ def vehicle_setup(cell_chemistry, btms_type):
     nacelle.length             = 4
     nacelle.diameter           = 0.73480616 
     nacelle.areas.wetted       = 0.01*(2*np.pi*0.01/2)
-    nacelle.origin             = [[3.5,2.8129,1]]
+    nacelle.origin             = [[2.81, 2.8129 ,1.22]]
     nacelle.flow_through       = False  
     
     nac_segment                    = RCAIDE.Library.Components.Nacelles.Segments.Segment()
@@ -601,7 +601,7 @@ def vehicle_setup(cell_chemistry, btms_type):
 
               
     nacelle_2                                    = deepcopy(nacelle)
-    nacelle_2.origin                             =  [[4.0, -2.8129,1.22 ]]        
+    nacelle_2.origin                             =  [[2.81, -2.8129 ,1.22]]        
     port_propulsor.nacelle                       = nacelle_2
     
     # append propulsor to distribution line 

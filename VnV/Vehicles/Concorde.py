@@ -511,7 +511,7 @@ def vehicle_setup():
     nac_segment.percent_x_location              = 0.0  
     nac_segment.height                          = 2.12
     nac_segment.width                           = 1.5
-    nac_segment.curvature                       = 1
+    nac_segment.curvature                       = 10
     nacelle.append_segment(nac_segment)         
 
     nac_segment                                 = RCAIDE.Library.Components.Nacelles.Segments.Rounded_Rectangle_Segment()
@@ -519,7 +519,7 @@ def vehicle_setup():
     nac_segment.percent_x_location              = 1.0
     nac_segment.height                          = 1.5
     nac_segment.width                           = 1.5
-    nac_segment.curvature                       = 1
+    nac_segment.curvature                       = 10
     nacelle.append_segment(nac_segment)      
     outer_right_turbojet.nacelle = nacelle  
     net.propulsors.append(outer_right_turbojet) 

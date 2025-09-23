@@ -42,15 +42,7 @@ def main():
     return 
 
 def tiltwing_transition_test(update_regression_values):    
-    TW_vehicle  = TW_vehicle_setup(update_regression_values) 
-
-    # plot vehicle 
-    plot_3d_vehicle(TW_vehicle,   
-                    wing_opacity                = 0.2,
-                    front_view                  = True, 
-                    show_figure                 = False 
-                    )
-    
+    TW_vehicle  = TW_vehicle_setup(update_regression_values)  
         
     # Set up configs
     TW_configs  = TW_configs_setup(TW_vehicle)

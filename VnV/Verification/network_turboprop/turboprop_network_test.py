@@ -77,8 +77,7 @@ def main():
         assert(np.abs(v)<1e-3)
     
     # plt the old results
-    plot_mission(results)  
-    plot_3d_vehicle(vehicle, show_figure=False)
+    plot_mission(results)   
     return 
 
 def analyses_setup(configs):

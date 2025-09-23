@@ -248,8 +248,7 @@ def non_integral_fuel_tank_volume_test():
     
     error = (fuel_volume_true- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true
     
-    assert(abs(error)<5e-2)
-    plot_3d_vehicle(vehicle,plot_tank_geometry=True, show_figure=False)
+    assert(abs(error)<5e-2) 
 
     return
 

@@ -18,7 +18,7 @@ import os
 # ----------------------------------------------------------------------------------------------------------------------
 #   Build the Vehicle
 # ----------------------------------------------------------------------------------------------------------------------
-def vehicle_setup(fuel_cell_model):     
+def vehicle_setup(fuel_cell_model= 'PEM'):     
 
     #------------------------------------------------------------------------------------------------------------------------------------
     #   Initialize the Vehicle
@@ -124,7 +124,7 @@ def vehicle_setup(fuel_cell_model):
     segment.tag                           = 'tip'
     segment.percent_span_location         = 1.
     segment.twist                         = 0
-    segment.root_chord_percent            = 0.12
+    segment.root_chord_percent            = 1.
     segment.dihedral_outboard             = 0.
     segment.sweeps.quarter_chord          = 0.
     segment.thickness_to_chord            = 0.12
@@ -445,7 +445,7 @@ def vehicle_setup(fuel_cell_model):
     nacelle.length             = 4
     nacelle.diameter           = 0.73480616 
     nacelle.areas.wetted       = 0.01*(2*np.pi*0.01/2)
-    nacelle.origin             = [[3.5,2.8129,1]]
+    nacelle.origin             = [[2.81,2.8129 ,1.22]]
     nacelle.flow_through       = False  
     
     nac_segment                    = RCAIDE.Library.Components.Nacelles.Segments.Segment()
@@ -548,7 +548,7 @@ def vehicle_setup(fuel_cell_model):
 
     nacelle_2                                  = deepcopy(nacelle)
     nacelle_2.tag                              = 'nacelle_2'
-    nacelle_2.origin                           = [[ 2.81, -3.34 ,1.22]]
+    nacelle_2.origin                           = [[ 2.81, -2.8129 ,1.22]]
     port_propulsor.nacelle                     = nacelle_2         
     
     # append propulsor to distribution line 
