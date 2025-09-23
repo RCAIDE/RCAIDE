@@ -78,7 +78,7 @@ def main():
     
     # plt the old results
     plot_mission(results)  
-    plot_3d_vehicle(vehicle)
+    plot_3d_vehicle(vehicle, show_figure=False)
     return 
 
 def analyses_setup(configs):
