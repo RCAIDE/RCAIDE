@@ -141,7 +141,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_1.tag                             = 'H2_Fuel_Tank_1' 
     fuel_tank_1.fuel                            = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()  
     fuel_tank_1.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_1.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_1.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
@@ -172,7 +172,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_3.tag                             = 'H2_Fuel_Tank_3' 
     fuel_tank_3.fuel                            = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_3.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_3.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_3.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_3.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_3.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_3)
@@ -182,7 +182,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.tag                           = 'H2_Fuel_Tank_4' 
     fuel_tank_4.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
     fuel_tank_4.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_4.fuel.gravimetric_efficiency   = 0.5
     fuel_tank_4.xz_plane_symmetric            = False
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
@@ -199,7 +199,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4a.tag                           = 'H2_Fuel_Tank_4a' 
     fuel_tank_4a.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
     fuel_tank_4a.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_4a.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_4a.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_4a.fuel.gravimetric_efficiency   = 0.5
     fuel_tank_4a.xz_plane_symmetric            = False
     fuel_tank_4a.orientation_euler_angles      = [0,0,np.pi/2]
@@ -215,7 +215,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_5.tag                           = 'H2_Fuel_Tank_5' 
     fuel_tank_5.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
     fuel_tank_5.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_5.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_5.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_5.fuel.gravimetric_efficiency   = 0.5
     fuel_tank_5.xz_plane_symmetric            = False
     fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
@@ -234,7 +234,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_6.tag                             = 'H2_Fuel_Tank_6' 
     fuel_tank_6.fuel                            = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()  
     fuel_tank_6.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_6.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
+    fuel_tank_6.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_6.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_6.wall_thickness                  = 2*Units.inches
     fuel_tank_6.fuel.mass_properties.mass       = 0.1
