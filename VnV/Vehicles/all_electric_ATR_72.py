@@ -98,7 +98,7 @@ def vehicle_setup():
     wing.origin                           = [[11.52756129,0,2.009316366]]  
     wing.aerodynamic_center               = [11.52756129 + 0.25*wing.chords.root ,0,2.009316366]  
     wing.vertical                         = False   
-    wing.symmetric                        = True  
+    wing.xz_plane_symmetric               = True  
     wing.dynamic_pressure_ratio           = 1.0 
  
 
@@ -156,7 +156,7 @@ def vehicle_setup():
     wing.origin                  = [[25.505088,0,5.510942426]]  
     wing.aerodynamic_center      = [25.505088+ 0.25*wing.chords.root,0,2.009316366] 
     wing.vertical                = False  
-    wing.symmetric               = True  
+    wing.xz_plane_symmetric      = True  
     wing.dynamic_pressure_ratio  = 1.0 
 
     # add to vehicle
@@ -184,7 +184,7 @@ def vehicle_setup():
     wing.origin                            = [[17.34807199,0,1.3]]  
     wing.aerodynamic_center                = [17.34807199,0,1.3+ 0.25*wing.chords.root]   
     wing.vertical                          = True  
-    wing.symmetric                         = False  
+    wing.xz_plane_symmetric                = False  
     wing.t_tail                            = True  
     wing.dynamic_pressure_ratio            = 1.0  
  

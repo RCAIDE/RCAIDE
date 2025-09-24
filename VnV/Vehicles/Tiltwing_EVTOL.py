@@ -62,7 +62,7 @@ def vehicle_setup(new_regression=True):
     wing.origin                                 = [[0.1,  0.0 , 0.0]]  
     wing.aerodynamic_center                     = [0., 0., 0.]     
     wing.winglet_fraction                       = 0.0 
-    wing.symmetric                              = True
+    wing.xz_plane_symmetric                     = True
     
     ospath                                      = os.path.abspath(__file__) 
     separator                                   = os.path.sep
@@ -95,7 +95,7 @@ def vehicle_setup(new_regression=True):
     wing.origin                                 = [[ 5.138, 0.0  ,  1.323 ]]  # for images 1.54
     wing.aerodynamic_center                     = [0., 0., 0.]     
     wing.winglet_fraction                       = 0.0  
-    wing.symmetric                              = True  
+    wing.xz_plane_symmetric                     = True  
     vehicle.reference_area                      = 2*wing.areas.reference 
     wing.append_airfoil(airfoil)
 

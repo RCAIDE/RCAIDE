@@ -92,7 +92,7 @@ def vehicle_setup():
     wing.origin                           = [[13.61,0,-0.5]]
     wing.aerodynamic_center               = [0,0,0] 
     wing.vertical                         = False
-    wing.symmetric                        = True
+    wing.xz_plane_symmetric               = True
     wing.high_lift                        = True
     wing.twists.root                      = 2.5 * Units.degrees 
     wing.twists.tip                       = 3.5  * Units.degrees 
@@ -216,7 +216,7 @@ def vehicle_setup():
     wing.origin                  = [[33.02,0,1.466]]
     wing.aerodynamic_center      = [0,0,0]  
     wing.vertical                = False
-    wing.symmetric               = True     
+    wing.xz_plane_symmetric      = True     
 
 
     # Wing Segments
@@ -275,7 +275,7 @@ def vehicle_setup():
     wing.origin                           = [[30.299,0,2.25]]
     wing.aerodynamic_center               = [0,0,0] 
     wing.vertical                         = True
-    wing.symmetric                        = False
+    wing.xz_plane_symmetric               = False
     wing.t_tail                           = False 
     wing.dynamic_pressure_ratio           = 1.0
     wing.transition_x_upper               = 0.5

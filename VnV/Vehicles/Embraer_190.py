@@ -122,7 +122,7 @@ def vehicle_setup():
     wing.spans.projected         = 28.72
     wing.origin                  = [[13.3,0,-1.]]
     wing.vertical                = False
-    wing.symmetric               = True       
+    wing.xz_plane_symmetric      = True       
     wing.high_lift               = True
     wing.areas.exposed           = 0.80 * wing.areas.wetted        
     wing.twists.root             = 2.0 * Units.degrees
@@ -236,7 +236,7 @@ def vehicle_setup():
     wing.dihedral                = 8.4 * Units.degrees
     wing.origin                  = [[31,0,1.5]]
     wing.vertical                = False
-    wing.symmetric               = True       
+    wing.xz_plane_symmetric      = True       
     wing.high_lift               = False   
     wing.areas.exposed           = 0.9 * wing.areas.wetted 
     wing.twists.root             = 0.0 * Units.degrees
@@ -263,7 +263,7 @@ def vehicle_setup():
     wing.dihedral                = 0.00
     wing.origin                  = [[30.4,0,1.675]]
     wing.vertical                = True
-    wing.symmetric               = False       
+    wing.xz_plane_symmetric      = False       
     wing.high_lift               = False 
     wing.areas.exposed           = 0.9 * wing.areas.wetted
     wing.twists.root             = 0.0 * Units.degrees

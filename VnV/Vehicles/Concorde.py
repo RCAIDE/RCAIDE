@@ -121,7 +121,7 @@ def vehicle_setup():
     wing.aerodynamic_center        = [35,0,0] 
     
     wing.vertical                  = False
-    wing.symmetric                 = True
+    wing.xz_plane_symmetric        = True
     wing.high_lift                 = True
     wing.vortex_lift               = True
     wing.high_mach                 = True 
@@ -247,7 +247,7 @@ def vehicle_setup():
     wing.origin                  = [[42.,0,1.]]
     wing.aerodynamic_center      = [50,0,0]     
     wing.vertical                = True 
-    wing.symmetric               = False
+    wing.xz_plane_symmetric      = False
     wing.t_tail                  = False
     wing.high_mach               = True     
     

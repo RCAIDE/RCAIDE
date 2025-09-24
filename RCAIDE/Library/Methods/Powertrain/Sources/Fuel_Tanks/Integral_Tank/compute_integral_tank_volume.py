@@ -113,7 +113,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
-            fuel_tank.fuel.mass_properties.mass = tank_volume_i *  fuel_tank.fuel.density    
+            fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)    
             fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
             
     # update orign of tank 
@@ -203,7 +203,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
-            fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density  
+            fuel_tank.fuel.mass_properties.mass = float(total_fuel_volume *  fuel_tank.fuel.density)  
             
     else:  
         # assume whole wing has fuel 
@@ -221,7 +221,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
     else:
-        fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density  
+        fuel_tank.fuel.mass_properties.mass = float(total_fuel_volume *  fuel_tank.fuel.density)  
         fuel_tank.fuel.volume_properties.net_volume = total_fuel_volume    
     return 
 
@@ -365,7 +365,7 @@ def compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_se
     h   =  (outer_segment.percent_span_location -  inner_segment.percent_span_location) *  wing.spans.projected /2    # assumes wing is symmetric
     volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *h
 
-    if wing.symmetric:
+    if wing.xz_plane_symmetric:
         volume *= 2    
  
     return volume

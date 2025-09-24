@@ -70,7 +70,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     wing.aerodynamic_center               = [0,0,0] 
     wing.vertical                         = False
     wing.dihedral                         = 9.0 * Units.degrees 
-    wing.symmetric                        = True 
+    wing.xz_plane_symmetric               = True 
     wing.high_lift                        = True 
     wing.dynamic_pressure_ratio           = 1.0
         
@@ -191,7 +191,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     wing.origin                  = [[46.961, 0, 1.639]]
     wing.aerodynamic_center      = [0,0,0] 
     wing.vertical                = False
-    wing.symmetric               = True 
+    wing.xz_plane_symmetric      = True 
     wing.dynamic_pressure_ratio  = 0.9
 
 
@@ -249,7 +249,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     wing.origin                  = [[43.31, 0, 3.115]]
     wing.aerodynamic_center      = [0,0,0] 
     wing.vertical                = True
-    wing.symmetric               = False
+    wing.xz_plane_symmetric      = False
     wing.t_tail                  = False 
     wing.dynamic_pressure_ratio  = 1.0
 

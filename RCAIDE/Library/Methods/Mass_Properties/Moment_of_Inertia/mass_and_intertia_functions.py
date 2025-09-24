@@ -51,7 +51,7 @@ def sum_moment(component, total_mass, total_moment):
 def update_mass_and_moment(total_mass,total_moment,C): 
     global_cg_loc = np.array(C.mass_properties.center_of_gravity) + np.array(C.origin) 
     if isinstance(C,RCAIDE.Library.Components.Landing_Gear.Landing_Gear) or isinstance(C,RCAIDE.Library.Components.Wings.Wing):
-        if C.symmetric:
+        if C.xz_plane_symmetric:
             global_cg_loc[0][1] = 0
     if global_cg_loc[0][0] == 0:
         pass

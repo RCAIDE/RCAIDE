@@ -62,7 +62,7 @@ def generate_3d_wing_points(wing, n_points, dim):
     """    
     # unpack  
     # obtain the geometry for each segment in a loop                                            
-    symm                 = wing.symmetric
+    symm                 = wing.xz_plane_symmetric
     semispan             = wing.spans.projected*0.5 * (2 - symm) 
     root_chord           = wing.chords.root
     segments             = wing.segments

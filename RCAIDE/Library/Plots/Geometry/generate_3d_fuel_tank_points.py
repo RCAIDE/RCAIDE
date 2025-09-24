@@ -63,7 +63,7 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
     """    
     # unpack  
     # obtain the geometry for each segment in a loop                                            
-    symm                 = wing.symmetric
+    symm                 = wing.xz_plane_symmetric
     semispan             = wing.spans.projected*0.5 * (2 - symm)  
     segments             = wing.segments
     n_segments           = len(segment_list) 

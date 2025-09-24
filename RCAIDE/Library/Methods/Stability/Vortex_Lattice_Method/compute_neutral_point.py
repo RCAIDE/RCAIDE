@@ -6,7 +6,6 @@
 
 # RCAIDE imports  
 import RCAIDE 
-from RCAIDE.Framework.Core import  Data 
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM   import VLM 
 from copy import deepcopy 
 
@@ -73,28 +72,26 @@ def compute_neutral_point(stability):
     Mach           = stability.training.Mach   
     len_Mach       = len(Mach)        
     len_AoA        = len(AoA)
+     
+    AoAs                                            = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
+    Machs                                           = np.atleast_2d(np.repeat(Mach,len_AoA)).T      
+    conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+    conditions.freestream.mach_number               = Machs
+    conditions.freestream.velocity                  = np.ones_like(Machs) * 1e-6
+    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs  
     
-    if stability.vehicle.neutral_point == None:  
-        AoAs                                            = np.atleast_2d(np.tile(AoA,len_Mach).T.flatten()).T 
-        Machs                                           = np.atleast_2d(np.repeat(Mach,len_AoA)).T      
-        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
-        conditions.freestream.mach_number               = Machs
-        conditions.freestream.velocity                  = np.ones_like(Machs) * 1e-6
-        conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
-           
-        
-        # --------------------------------------------------------------------------------------------------------------
-        # Neutral Point 
-        # --------------------------------------------------------------------------------------------------------------   
-        clean_wing_vehicle_np = deepcopy(vehicle) # Double check this is correct
-        for wing in clean_wing_vehicle_np.wings:
-            wing.control_surfaces = []
-        # use center of gravity as inital guess
-        cg     =  vehicle.mass_properties.center_of_gravity[0][0]
-        bnds   = [[0, 100]]
-        sol = minimize(neutral_point_objective, [cg], args=(conditions,settings,clean_wing_vehicle_np,Mach,AoA) , method='SLSQP', bounds=bnds, tol=1e-4)
-         
-        stability.vehicle.neutral_point  =  sol.x[0]  
+    # --------------------------------------------------------------------------------------------------------------
+    # Neutral Point 
+    # --------------------------------------------------------------------------------------------------------------   
+    clean_wing_vehicle_np = deepcopy(vehicle) # Double check this is correct
+    for wing in clean_wing_vehicle_np.wings:
+        wing.control_surfaces = []
+    # use center of gravity as inital guess
+    cg     =  vehicle.mass_properties.center_of_gravity[0][0]
+    bnds   = [[0, 100]]
+    sol = minimize(neutral_point_objective, [cg], args=(conditions,settings,clean_wing_vehicle_np,Mach,AoA) , method='SLSQP', bounds=bnds, tol=1e-4)
+     
+    stability.vehicle.neutral_point  =  sol.x[0]  
    
     return 
 

@@ -483,7 +483,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     
     # get geometry of wing  
     span          = wing.spans.projected
-    sym_para      = wing.symmetric 
+    sym_para      = wing.xz_plane_symmetric 
     vertical_wing = wing.vertical
     wing_origin   = wing.origin[0]
     VD.vortex_lift.append(wing.vortex_lift)

@@ -33,7 +33,7 @@ from Navion                         import vehicle_setup as Navion_vehicle_setup
 #   Main
 # ----------------------------------------------------------------------
 def main():
-    show_figure = False # must be false for C.I. on github
+    show_figure = True # must be false for C.I. on github
     evtol_aircraft_geometry_test(show_figure)
     conventional_turbofan_aircraft_geometry_test(show_figure)
     conventional_turboprop_aircraft_geometry_test(show_figure)

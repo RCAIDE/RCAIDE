@@ -44,8 +44,8 @@ def plot_3d_vehicle(vehicle,
                     nacelle_opacity             = 1.0,
                     fuel_tank_opacity           = 0.5,
                     rotor_opacity               = 0.6, 
-                    number_of_airfoil_points    = 101,
-                    tessellation                = 96,  
+                    number_of_airfoil_points    = 51,
+                    tessellation                = 48,  
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """
@@ -98,6 +98,14 @@ def plot_3d_vehicle(vehicle,
 
     Notes
     -----
+                elif issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
+                    GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation ) 
+                    make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
+
+                    if wing.xz_plane_symmetric: 
+                        GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                        make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity)
+                        
     Creates an interactive 3D visualization showing:
         - Wings and control surfaces
         - Fuselage sections
@@ -149,7 +157,6 @@ def plot_3d_vehicle(vehicle,
                      
     compute_fuel_volume(geometry, update_fuel_volume=True) 
     
-    
     for fuselage in  geometry.fuselages:               
         compute_layout_of_passenger_accommodations(fuselage)
         fuselage_planform(fuselage) 
@@ -167,11 +174,14 @@ def plot_3d_vehicle(vehicle,
         dim        = n_segments if n_segments > 0 else 2
         GEOM       = generate_3d_wing_points(wing, number_of_airfoil_points, dim)
         make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
-        if wing.symmetric:
-            if wing.vertical:
-                GEOM.PTS[:, :, 2] = -GEOM.PTS[:, :, 2]
-            else:
-                GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1]
+        if wing.yz_plane_symmetric: 
+            GEOM.PTS[:, :, 0] = -GEOM.PTS[:, :, 0]
+            make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
+        if wing.xz_plane_symmetric: 
+            GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1]
+            make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
+        if wing.xy_plane_symmetric: 
+            GEOM.PTS[:, :, 2] = -GEOM.PTS[:, :, 2]
             make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
 
     # -------------------------------------------------------------------------  
@@ -235,6 +245,15 @@ def plot_3d_vehicle(vehicle,
             for fuel_tank in fuel_line.fuel_tanks:   
                 if fuel_tank.wing_tag != None:
                     wing = geometry.wings[fuel_tank.wing_tag]
+                    
+                    if issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
+                        GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation ) 
+                        make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
+    
+                        if wing.xz_plane_symmetric: 
+                            GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                            make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity)
+                        
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
                         segment_list = [] 
                         segment_tags = list(wing.segments.keys())     
@@ -257,7 +276,7 @@ def plot_3d_vehicle(vehicle,
                         else:   
                             GEOM = generate_integral_wing_tank_points(wing,5,dim,segment_list)
                             make_object(renderer, GEOM, fuel_tank_rgb_color, fuel_tank_opacity)  
-                            if wing.symmetric:
+                            if wing.xz_plane_symmetric:
                                 GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
                                 make_object(renderer, GEOM,fuel_tank_rgb_color, fuel_tank_opacity) 
 
@@ -277,11 +296,11 @@ def plot_3d_vehicle(vehicle,
                         GEOM  = generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list,tessellation )
                         make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 
-                elif type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank:
+                elif issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
                     GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation ) 
                     make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 
-                    if wing.symmetric: 
+                    if wing.xz_plane_symmetric: 
                         GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
                         make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 

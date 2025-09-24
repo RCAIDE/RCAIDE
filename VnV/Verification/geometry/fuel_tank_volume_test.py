@@ -35,7 +35,7 @@ def main():
 
 def integral_fuel_tank_volume_test():
 
-    fuel_volume_true = [19.363771803419546,33.40339556790803]
+    fuel_volume_true = [19.363771803419546,38.2338699410805]
     vehicle = B737_vehicle_setup()
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
@@ -120,7 +120,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 354.70463689887043
+    fuel_volume_true = 499.0697733708775
     
     vehicle = BWB_vehicle_setup()
 
