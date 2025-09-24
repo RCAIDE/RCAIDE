@@ -33,7 +33,7 @@ from Navion                         import vehicle_setup as Navion_vehicle_setup
 #   Main
 # ----------------------------------------------------------------------
 def main():
-    show_figure = True # must be false for C.I. on github
+    show_figure = False # must be false for C.I. on github
     evtol_aircraft_geometry_test(show_figure)
     conventional_turbofan_aircraft_geometry_test(show_figure)
     conventional_turboprop_aircraft_geometry_test(show_figure)
@@ -256,7 +256,7 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_4.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_4.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_4.fuel.gravimetric_efficiency   = 0.5
-    fuel_tank_4.symmetric                     = False
+    fuel_tank_4.xz_plane_symmetric            = False
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
     fuel_tank_4.aft_tank_start_root_chord     = 0.6
@@ -273,7 +273,7 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_4a.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_4a.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_4a.fuel.gravimetric_efficiency   = 0.5
-    fuel_tank_4a.symmetric                     = False
+    fuel_tank_4a.xz_plane_symmetric            = False
     fuel_tank_4a.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4a.bwb_aft_tank                  = True
     fuel_tank_4a.aft_tank_start_root_chord     = 0.6
@@ -289,7 +289,7 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_5.material                      = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_5.insulation_material           = RCAIDE.Library.Attributes.Materials.Vacuum_Gap_Multilayer_Insulation()
     fuel_tank_5.fuel.gravimetric_efficiency   = 0.5
-    fuel_tank_5.symmetric                     = False
+    fuel_tank_5.xz_plane_symmetric            = False
     fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_5.bwb_aft_tank                  = True
     fuel_tank_5.aft_tank_start_root_chord     = 0.4

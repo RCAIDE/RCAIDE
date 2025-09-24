@@ -56,7 +56,7 @@ def vehicle_setup():
     main_gear.number_of_gear_types_in_tandem = 1
     main_gear.number_of_wheels_in_gear_type  = 2
     main_gear.fairing                        = True
-    main_gear.symmetric                      = True
+    main_gear.xz_plane_symmetric             = True
     main_gear.gear_extended                  = True
     vehicle.append_component(main_gear)  
 

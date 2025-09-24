@@ -44,8 +44,8 @@ def plot_3d_vehicle(vehicle,
                     nacelle_opacity             = 1.0,
                     fuel_tank_opacity           = 0.5,
                     rotor_opacity               = 0.6, 
-                    number_of_airfoil_points    = 51,
-                    tessellation                = 48,  
+                    number_of_airfoil_points    = 101,
+                    tessellation                = 96,  
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """

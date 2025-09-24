@@ -536,7 +536,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     main_gear.wheels                         = 8   
     main_gear.number_of_gear_types_in_tandem = 2
     main_gear.number_of_wheels_in_gear_type  = 2  
-    main_gear.symmetric                      = True
+    main_gear.xz_plane_symmetric             = True
     vehicle.append_component(main_gear)  
 
     nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   

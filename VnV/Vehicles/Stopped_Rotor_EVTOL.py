@@ -333,7 +333,7 @@ def vehicle_setup(new_regression=True) :
     boom.areas.front_projected              = 0.018 
     boom.effective_diameter                 = 0.15  
     boom.differential_pressure              = 0.  
-    boom.symmetric                          = True 
+    boom.xz_plane_symmetric                 = True 
     boom.index                              = 1
     
     # Segment  
