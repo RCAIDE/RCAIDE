@@ -487,7 +487,7 @@ def vehicle_setup():
     turbofan.design_altitude                        = 35000.0*Units.ft
     turbofan.design_mach_number                     = 0.8   
     turbofan.design_thrust                          = 35000.0* Units.N#/2 
-    turbofan.origin                                 = [[13.15,4.38,-0.5]]
+    turbofan.origin                                 = [[13.15,4.38,-2.1]]
     turbofan.mass_properties.center_of_gravity      = [[turbofan.length /2,0,0]]
      
     # Nacelle 
@@ -496,7 +496,7 @@ def vehicle_setup():
     nacelle.length                                  = 2.66
     nacelle.tag                                     = 'nacelle_1'
     nacelle.inlet_diameter                          = 2.0
-    nacelle.origin                                  = [[12.15,4.38, -0.5]] 
+    nacelle.origin                                  = [[12.15,4.38, -2.1]] 
     nacelle.mass_properties.center_of_gravity       = [[nacelle.length /2,0,0 ]]
     nacelle.areas.wetted                            = 1.1*np.pi*nacelle.diameter*nacelle.length
     nacelle_airfoil                                 = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
@@ -593,8 +593,8 @@ def vehicle_setup():
     # copy turbofan
     turbofan_2                             = deepcopy(turbofan)
     turbofan_2.tag                         = 'port_propulsor'  
-    turbofan_2.origin                      = [[13.15,-4.38,-0.5]]  # change origin  
-    turbofan_2.nacelle.origin              = [[12.15,-4.38,-0.5]]   
+    turbofan_2.origin                      = [[13.15,-4.38,-2.1]]  # change origin  
+    turbofan_2.nacelle.origin              = [[12.15,-4.38,-2.1]]   
     
     # append propulsor to network
     net.propulsors.append(turbofan_2)

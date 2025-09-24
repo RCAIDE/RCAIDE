@@ -68,9 +68,6 @@ def plot_3d_vehicle(vehicle,
     alpha : float, optional
         Transparency value between 0 and 1 (default: 1.0)
 
-    axis_limit : float, optional
-        Minimum plot limit (default: 20) 
-
     camera_eye_x : float, optional
         Camera eye x-position (default: -1.5)
 
