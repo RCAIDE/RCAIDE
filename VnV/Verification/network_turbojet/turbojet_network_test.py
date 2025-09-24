@@ -28,19 +28,9 @@ from Concorde    import configs_setup as configs_setup
 #   Main
 # ----------------------------------------------------------------------------------------------------------------------
 
-def main():
-    
-
+def main(): 
     # vehicle data
-    vehicle  = vehicle_setup() 
-
-    # plot vehicle 
-    plot_3d_vehicle(vehicle, 
-                            axis_limit            = 50,  
-                            wing_alpha            = 0.2,
-                            front_view            = True, 
-                            show_figure           = False 
-                            )    
+    vehicle  = vehicle_setup()
     
     # Set up vehicle configs
     configs  = configs_setup(vehicle)

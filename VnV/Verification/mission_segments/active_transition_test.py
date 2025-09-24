@@ -30,16 +30,7 @@ def main():
     # make true only when resizing aircraft. should be left false for regression
     update_regression_values = False
          
-    TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values) 
-
-    # plot vehicle 
-    plot_3d_vehicle(TW_vehicle,  
-                            axis_limit                  = 50, 
-                            wing_alpha                  = 0.2,
-                            front_view                  = True, 
-                            show_figure                 = False 
-                            )
-    
+    TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values)  
         
     # Set up configs
     configs  = configs_setup(TW_vehicle)

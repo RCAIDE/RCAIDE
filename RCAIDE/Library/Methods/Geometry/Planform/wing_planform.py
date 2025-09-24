@@ -52,7 +52,7 @@ def wing_planform(wing):
     Properties Used:
     N/A
     """ 
-    sym      = wing.symmetric
+    sym      = wing.xz_plane_symmetric
     if len(wing.segments) > 1: 
         # Unpack
         RC       = wing.chords.root
@@ -202,17 +202,18 @@ def wing_planform(wing):
                 wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][1] = 0 if sym ==True else Cxys[i][1]
                 wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][2] = Cxys[i][2]
             
-        wing.spans.total                    = total_len
-        wing.chords.mean_geometric          = mgc
-        wing.chords.mean_aerodynamic        = MAC
-        wing.chords.tip                     = ct
-        wing.taper                          = lamda
-        wing.sweeps.quarter_chord           = c_4_sweep
-        wing.sweeps.leading_edge            = le_sweep_total
-        wing.thickness_to_chord             = t_c
-        wing.aerodynamic_center             = aerodynamic_center 
-        wing.total_length                   = total_length  
-        wing.aspect_ratio                   = AR
+        wing.spans.total                     = total_len
+        wing.chords.mean_geometric           = mgc
+        wing.chords.mean_aerodynamic         = MAC
+        wing.chords.tip                      = ct
+        wing.taper                           = lamda
+        wing.sweeps.quarter_chord            = c_4_sweep
+        wing.sweeps.leading_edge             = le_sweep_total
+        wing.thickness_to_chord              = t_c
+        wing.aerodynamic_center              = aerodynamic_center 
+        wing.total_length                    = total_length  
+        wing.aspect_ratio                    = AR
+        wing.fuel_tank.percent_span_location = 0
             
         # update remainder segment properties
         segment_properties(wing)
@@ -252,7 +253,7 @@ def wing_planform(wing):
         ar          = wing.aspect_ratio
         dihedral    = wing.dihedral 
         vertical    = wing.vertical
-        symmetric   = wing.symmetric  
+        symmetric   = wing.xz_plane_symmetric  
         if wing.airfoil != None: 
             if type(wing.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
                 wing.airfoil.geometry = compute_naca_4series(wing.airfoil.NACA_4_Series_code) 
@@ -405,7 +406,7 @@ def segment_properties(wing):
         
     # Unpack wing
     percent_span_unexposed    = wing.percent_span_unexposed
-    symm                      = wing.symmetric
+    symm                      = wing.xz_plane_symmetric
     semispan                  = wing.spans.projected*0.5 * (2 - symm)
     segments                  = wing.segments
     segment_names             = list(segments.keys())
@@ -441,7 +442,7 @@ def segment_properties(wing):
                 Sref_seg      = span_seg*(chord_root+chord_tip)*0.5
                 S_exposed_seg = Sref_seg
 
-            if wing.symmetric:
+            if wing.xz_plane_symmetric:
                 Sref_seg = Sref_seg*2
                 S_exposed_seg = S_exposed_seg*2
             
@@ -451,13 +452,14 @@ def segment_properties(wing):
             else:
                 Swet_seg = (1.977 + 0.52*t_c_w) * S_exposed_seg
                 
-            segment.taper                   = taper 
-            segment.chords.mean_aerodynamic = mac_seg 
-            segment.areas.reference         = Sref_seg
-            segment.aspect_ratio            = (span_seg **2) / Sref_seg
-            segment.areas.exposed           = S_exposed_seg
-            segment.areas.wetted            = Swet_seg 
-            total_wetted_area               += Swet_seg
+            segment.taper                          = taper 
+            segment.chords.mean_aerodynamic        = mac_seg 
+            segment.areas.reference                = Sref_seg
+            segment.aspect_ratio                   = (span_seg **2) / Sref_seg
+            segment.areas.exposed                  = S_exposed_seg
+            segment.areas.wetted                   = Swet_seg
+            segment.fuel_tank.percent_span_location = 0.0
+            total_wetted_area                      += Swet_seg
             
 
             MAC = wing.chords.mean_aerodynamic
@@ -479,7 +481,7 @@ def segment_properties(wing):
                 aft_center_body_chord_tip     = wing.aft_center_body.length
                 aft_center_body_Sref_seg      = span_seg*(aft_center_body_chord_root+aft_center_body_chord_tip)*0.5 
                
-                if wing.symmetric:
+                if wing.xz_plane_symmetric:
                     center_body_Sref_seg = center_body_Sref_seg*2 
                     aft_center_body_Sref_seg = aft_center_body_Sref_seg*2  
                 

@@ -167,7 +167,7 @@ def vehicle_setup(redesign_rotors=True) :
     main_gear.number_of_gear_types_in_tandem = 1
     main_gear.number_of_wheels_in_gear_type  = 2
     main_gear.fairing                        = True
-    main_gear.symmetric                      = True
+    main_gear.xz_plane_symmetric             = True
     main_gear.gear_extended                  = True
     vehicle.append_component(main_gear)  
 
@@ -207,7 +207,7 @@ def vehicle_setup(redesign_rotors=True) :
     wing.origin                               = [[ 1.778,0 , 1.0 ]]
     wing.aerodynamic_center                   = [ 1.8 ,0 , 1.0 ]    
     wing.winglet_fraction                     = 0.0  
-    wing.symmetric                            = True
+    wing.xz_plane_symmetric                   = True
     wing.vertical                             = False
 
     ospath                                = os.path.abspath(__file__)
@@ -288,7 +288,7 @@ def vehicle_setup(redesign_rotors=True) :
     wing.origin                               = [[ 5.167, 0.0 ,0.470 ]]
     wing.aerodynamic_center                   = [  5.267,  0., 0.470  ]  
     wing.winglet_fraction                     = 0.0 
-    wing.symmetric                            = True    
+    wing.xz_plane_symmetric                   = True    
 
     elevator                              = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()
     elevator.tag                          = 'elevator'
