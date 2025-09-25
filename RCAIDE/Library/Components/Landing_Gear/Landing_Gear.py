@@ -89,7 +89,9 @@ class Landing_Gear(Component):
         self.length                          = 0 
         self.width                           = 0 
         self.height                          = 0
-        self.symmetric                       = False
+        self.xz_plane_symmetric              = False
+        self.xy_plane_symmetric              = False
+        self.yz_plane_symmetric              = False
         self.number_of_gear_types_in_tandem  = None
         self.number_of_wheels_in_gear_type   = None  
         self.gear_extended                   = False

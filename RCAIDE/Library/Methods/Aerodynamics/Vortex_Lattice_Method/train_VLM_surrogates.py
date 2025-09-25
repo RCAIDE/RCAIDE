@@ -12,7 +12,6 @@ from copy import deepcopy
 
 # package imports
 import numpy  as np
-from scipy.optimize import minimize 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
@@ -164,21 +163,7 @@ def train_model(aerodynamics, Mach):
     Cdrag_induced_wing_alpha = Data() 
     for wing in vehicle.wings: 
         Clift_wing_alpha[wing.tag] = np.reshape(VLM_results.CLift_wings[wing.tag],(len_Mach,len_AoA)).T    
-        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T   
-            
-    
-    # --------------------------------------------------------------------------------------------------------------
-    # Neutral Point 
-    # --------------------------------------------------------------------------------------------------------------            
-   
-    clean_wing_vehicle_np = deepcopy(vehicle) # Double check this is correct
-    for wing in clean_wing_vehicle_np.wings:
-        wing.control_surfaces = []
-    # use center of gravity as inital guess
-    cg     =  vehicle.mass_properties.center_of_gravity[0][0]
-    bnds   = [[cg * 0.5, cg * 1.5]]
-    sol = minimize(neutral_point_objective, [cg], args=(conditions,settings,clean_wing_vehicle_np,Mach,AoA) , method='SLSQP', bounds=bnds, tol=1e-4)
-    vehicle.mass_properties.neutral_point  =  sol.x 
+        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T
         
     # --------------------------------------------------------------------------------------------------------------
     # Beta 

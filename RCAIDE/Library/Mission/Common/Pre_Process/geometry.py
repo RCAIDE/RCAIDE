@@ -81,17 +81,13 @@ def geometry_preprocess_routine(geometry_analysis):
           
         for cabin in fuselage.cabins: 
             defined_cabins = True
-            for cabin_class in cabin.classes: 
-                # cabin.number_of_passengers += cabin_class.number_of_passengers
+            for cabin_class in cabin.classes:  
                 if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
-                    NPE +=  cabin_class.number_of_seats
-                    # cabin.number_of_seats += cabin_class.number_of_seats
+                    NPE +=  cabin_class.number_of_seats 
                 elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business: 
-                    NPB +=  cabin_class.number_of_seats
-                    # cabin.number_of_seats += cabin_class.number_of_seats
+                    NPB +=  cabin_class.number_of_seats 
                 elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.First:
-                    NPF +=  cabin_class.number_of_seats 
-                    # cabin.number_of_seats += cabin_class.number_of_seats
+                    NPF +=  cabin_class.number_of_seats  
             total_seats += cabin.number_of_seats 
         for cabin in fuselage.cabins:     
             if cabin.number_of_passengers == 0: # if cabin class  passengers are not defined, use ratio of cabin to aircraft
@@ -101,7 +97,7 @@ def geometry_preprocess_routine(geometry_analysis):
     for landing_gear in  vehicle.landing_gears:
         if (landing_gear.number_of_gear_types_in_tandem != None) and  (landing_gear.number_of_wheels_in_gear_type != None):
             landing_gear.wheels = landing_gear.number_of_gear_types_in_tandem * landing_gear.number_of_wheels_in_gear_type
-            if landing_gear.symmetric:
+            if landing_gear.xz_plane_symmetric:
                 landing_gear.wheels *= 2
                 
     vehicle.maximum_cross_sectional_area  =  A_fuselage

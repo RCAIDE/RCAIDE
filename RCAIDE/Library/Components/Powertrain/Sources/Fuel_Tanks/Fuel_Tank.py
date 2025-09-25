@@ -60,7 +60,7 @@ class Fuel_Tank(Component):
         self.fuel_selector_ratio                   = 1.0    
         self.wall_clearance                        = 0.0
         self.wall_thickness                        = 1E-3
-        self.symmetric                             = True
+        self.xz_plane_symmetric                    = True
         self.wing_tag                              = None
         self.fuselage_tag                          = None
         self.inner_length                          = 0.0

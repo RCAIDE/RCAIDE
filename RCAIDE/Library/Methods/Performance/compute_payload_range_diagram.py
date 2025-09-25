@@ -291,7 +291,6 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     payload_range.fuel                     = np.array(FUEL)
     payload_range.takeoff_weight           = np.array(TOW)
     payload_range.fuel_reserve_percentage  = fuel_reserve_percentage
-     
     if plot_diagram:  
         # get plotting style 
         ps      = plot_style()  
@@ -385,7 +384,7 @@ def electric_payload_range_diagram(vehicle,mission,cruise_segment_tag,plot_diagr
     payload_range.range             = np.array(R)
     payload_range.payload           = np.array(PLD)
     payload_range.takeoff_weight    = np.array(TOW)
-
+    
     if plot_diagram: 
         # get plotting style 
         ps      = plot_style()  

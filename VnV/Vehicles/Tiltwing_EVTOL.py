@@ -62,7 +62,7 @@ def vehicle_setup(new_regression=True):
     wing.origin                                 = [[0.1,  0.0 , 0.0]]  
     wing.aerodynamic_center                     = [0., 0., 0.]     
     wing.winglet_fraction                       = 0.0 
-    wing.symmetric                              = True
+    wing.xz_plane_symmetric                     = True
     
     ospath                                      = os.path.abspath(__file__) 
     separator                                   = os.path.sep
@@ -95,7 +95,7 @@ def vehicle_setup(new_regression=True):
     wing.origin                                 = [[ 5.138, 0.0  ,  1.323 ]]  # for images 1.54
     wing.aerodynamic_center                     = [0., 0., 0.]     
     wing.winglet_fraction                       = 0.0  
-    wing.symmetric                              = True  
+    wing.xz_plane_symmetric                     = True  
     vehicle.reference_area                      = 2*wing.areas.reference 
     wing.append_airfoil(airfoil)
 
@@ -311,11 +311,11 @@ def vehicle_setup(new_regression=True):
      
             
     if new_regression:
-        design_electric_rotor(prop_rotor_propulsor,print_iterations=True)
+        design_electric_rotor(prop_rotor_propulsor)
         save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        
-        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2,print_iterations=True)
+        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
         for key,item in prop_rotor_propulsor.rotor.items(): 
             prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 

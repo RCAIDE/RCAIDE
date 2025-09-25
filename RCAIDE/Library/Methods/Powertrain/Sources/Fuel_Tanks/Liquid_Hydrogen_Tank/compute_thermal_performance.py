@@ -89,7 +89,7 @@ def compute_thermal_performance(fuel_tank):
 
     # add the insulation mass to the tank weight
     fuel_tank.mass_properties.mass +=  mass_ins[0]
-    if fuel_tank.symmetric:
+    if fuel_tank.xz_plane_symmetric:
         fuel_tank.mass_properties.mass *= 2
 
     # Recompute net tank volume based on the updated thickness
@@ -100,13 +100,13 @@ def compute_thermal_performance(fuel_tank):
     tank_volume_i = np.pi * ( r_in** 2) * (fuel_tank.inner_length )  +  4 / 3 * np.pi * ( r_in** 3) 
     fuel_volume = (1 - fuel_tank.ullage_volume_fraction)  * tank_volume_i
     
-    if fuel_tank.symmetric:
+    if fuel_tank.xz_plane_symmetric:
         tank_volume_i *= 2 
         fuel_volume   *=2
 
-    fuel_tank.volume_properties.net_volume      = tank_volume_i
-    fuel_tank.fuel.volume_properties.net_volume = deepcopy(fuel_volume)
-    fuel_tank.fuel.mass_properties.mass         = deepcopy(fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density)
+    fuel_tank.volume_properties.net_volume      = float(tank_volume_i)
+    fuel_tank.fuel.volume_properties.net_volume = float(deepcopy(fuel_volume))
+    fuel_tank.fuel.mass_properties.mass         = float(deepcopy(fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density))
 
     return 
 

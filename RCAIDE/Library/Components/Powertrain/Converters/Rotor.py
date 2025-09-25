@@ -205,7 +205,7 @@ class Rotor(Component):
         self.cruise.design_acoustics           = None
         self.cruise.design_performance         = None
         self.cruise.design_SPL_dBA             = None
-        self.cruise.design_blade_pitch_command       = 0.0     
+        self.cruise.design_blade_pitch_command = 0.0     
 
         # operating conditions 
         self.induced_power_factor              = 1.48        # accounts for interference effects
