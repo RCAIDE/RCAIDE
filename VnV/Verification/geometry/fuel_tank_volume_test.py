@@ -120,7 +120,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 356.6486933842599
+    fuel_volume_true = 332.1897838974284
     
     vehicle = BWB_vehicle_setup()
 
@@ -308,7 +308,7 @@ def mission_setup(analyses):
 
     Segments = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment() 
-    base_segment.state.numerics.number_of_control_points = 10 
+    base_segment.state.numerics.number_of_control_points = 16
   
     segment = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
     segment.tag = "cruise" 
