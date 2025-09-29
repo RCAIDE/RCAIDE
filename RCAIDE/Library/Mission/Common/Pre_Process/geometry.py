@@ -10,7 +10,7 @@ import RCAIDE
 from RCAIDE.Library.Methods.Geometry.LOPA      import  compute_layout_of_passenger_accommodations
 from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume 
 # python imports
-
+from copy import deepcopy
 import  numpy as  np 
 # ----------------------------------------------------------------------------------------------------------------------
 #  geometry
@@ -55,8 +55,11 @@ def geometry(mission):
         # --------------------------------------------------------------------------------------------------------------------
         if segment.analyses.geometry is None: 
             raise AssertionError('Geometry Analyses not defined') 
-        geometry_preprocess_routine(segment.analyses.geometry)
-        
+        elif i == 0 or segment.analyses.geometry.settings.unique_geometry:  # If it is the first segment or if the segment has a unique geometry
+            geometry_preprocess_routine(segment.analyses.geometry)
+        else:
+            vehicle_seg = deepcopy(mission.segments[i-1].analyses.geometry.vehicle)
+            segment.analyses.geometry.vehicle = deepcopy(vehicle_seg)
     return 
         
 def geometry_preprocess_routine(geometry_analysis): 
