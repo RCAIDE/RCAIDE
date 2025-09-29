@@ -55,11 +55,16 @@ def geometry(mission):
         # --------------------------------------------------------------------------------------------------------------------
         if segment.analyses.geometry is None: 
             raise AssertionError('Geometry Analyses not defined') 
-        elif i == 0 or segment.analyses.geometry.settings.unique_geometry:  # If it is the first segment or if the segment has a unique geometry
+        if i == 0 or segment.analyses.geometry.settings.unique_geometry:  # If it is the first segment or if the segment has a unique geometry
             geometry_preprocess_routine(segment.analyses.geometry)
+            
         else:
-            vehicle_seg = deepcopy(mission.segments[i-1].analyses.geometry.vehicle)
-            segment.analyses.geometry.vehicle = deepcopy(vehicle_seg)
+            vehicle_0 = deepcopy(segment.analyses.geometry.vehicle)
+            segment.analyses.geometry.vehicle = deepcopy(mission.segments[i-1].analyses.geometry.vehicle)
+            for wing in segment.analyses.geometry.vehicle.wings:
+                for control_surface in wing.control_surfaces:
+                    control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
+                                  
     return 
         
 def geometry_preprocess_routine(geometry_analysis): 
