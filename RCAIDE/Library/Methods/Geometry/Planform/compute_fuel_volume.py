@@ -86,5 +86,4 @@ def compute_fuel_volume(vehicle, update_fuel_volume = False):
     # Assign Total Fuel Volume and Mass to Vehicle 
     vehicle.volume_properties.fuel = total_fuel_volume
     vehicle.mass_properties.fuel   = total_fuel_mass
-    print(total_fuel_mass)
     return 
