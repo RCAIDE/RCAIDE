@@ -94,18 +94,19 @@ def mass_properties(mission):
         if segment.analyses.weights != None: 
             segment.analyses.weights.vehicle = deepcopy(segment.analyses.geometry.vehicle)
             mass_properties_preprocess_routine(i, segment.analyses.weights)
-             
-            if segment.analyses.aerodynamics != None:   
-                segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle)
-    
-            if segment.analyses.stability != None:   
-                segment.analyses.stability.vehicle =  deepcopy(segment.analyses.weights.vehicle)                 
+                            
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
             segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights()
             segment.analyses.weights.vehicle = deepcopy(segment.analyses.geometry.vehicle)
             if segment.analyses.weights.vehicle.mass_properties.takeoff == None:
                 segment.analyses.weights.vehicle.mass_properties.takeoff = segment.analyses.weights.vehicle.mass_properties.max_takeoff
+                
+        if segment.analyses.aerodynamics != None:   
+            segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle)
+
+        if segment.analyses.stability != None:   
+            segment.analyses.stability.vehicle =  deepcopy(segment.analyses.weights.vehicle)  
     return 
 
 def mass_properties_preprocess_routine(i, weights_analysis): 
