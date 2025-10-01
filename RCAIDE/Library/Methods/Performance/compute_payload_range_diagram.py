@@ -208,8 +208,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     else:
         MaxFuel = vehicle.mass_properties.max_fuel  # If max fuel capacity not defined
         MaxFuel = min(MaxFuel, MTOW - OEW)
-    for segment in mission.segments:
-        segment.analyses.weights = None  
+
     # Define payload range points
     #Point  = [ RANGE WITH MAX. PLD   , RANGE WITH MAX. FUEL , FERRY RANGE   ]
     TOW     = [ MTOW                               , MTOW                   , OEW + MaxFuel ]
