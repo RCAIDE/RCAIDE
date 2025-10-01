@@ -53,6 +53,7 @@ class Weights(Analysis):
         self.tag                                                    = 'weights' 
         self.method                                                 = None
         self.vehicle                                                = None 
+        self.aircraft_type                                          = None
         self.propulsion_architecture                                = None
         self.print_weight_analysis_report                           = True
         self.settings                                               = Data() 
