@@ -104,9 +104,10 @@ def mass_properties(mission):
                 
         if segment.analyses.aerodynamics != None:   
             segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle)
-
         if segment.analyses.stability != None:   
             segment.analyses.stability.vehicle =  deepcopy(segment.analyses.weights.vehicle)  
+        if segment.analyses.energy != None:   
+            segment.analyses.energy.vehicle =  deepcopy(segment.analyses.weights.vehicle)  
     return 
 
 def mass_properties_preprocess_routine(i, weights_analysis): 
