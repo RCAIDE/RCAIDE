@@ -9,7 +9,7 @@ from RCAIDE.Framework.Core import Units
 from .Solid import Solid 
 
 #-------------------------------------------------------------------------------
-# Vacuum Cellular Cellular Multilayer Insulation
+# Vacuum Cellular Multilayer Insulation (VCMLI)
 #------------------------------------------------------------------------------- 
 class Vacuum_Cellular_Multilayer_Insulation(Solid): 
     """ 
