@@ -920,7 +920,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Framework.Analyses.Weights.Conventional()
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
     weights.vehicle = vehicle 
     weights.settings.FLOPS.fidelity                                           = 'Complex'      
     weights.settings.advanced_composites                                      = True

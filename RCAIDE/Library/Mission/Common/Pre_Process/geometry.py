@@ -64,6 +64,8 @@ def geometry(mission):
             for wing in segment.analyses.geometry.vehicle.wings:
                 for control_surface in wing.control_surfaces:
                     control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
+            for landing_gear in segment.analyses.geometry.vehicle.landing_gears:
+                landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
                                   
     return 
         
