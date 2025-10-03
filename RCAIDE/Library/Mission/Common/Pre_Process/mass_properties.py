@@ -92,19 +92,22 @@ def mass_properties(mission):
  
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
+            segment.analyses.weights.vehicle = deepcopy(segment.analyses.geometry.vehicle)
             mass_properties_preprocess_routine(i, segment.analyses.weights)
-             
-            if segment.analyses.aerodynamics != None:   
-                segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle)
-    
-            if segment.analyses.stability != None:   
-                segment.analyses.stability.vehicle =  deepcopy(segment.analyses.weights.vehicle)                 
+                            
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
             segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights()
-            segment.analyses.weights.vehicle = segment.analyses.geometry.vehicle
+            segment.analyses.weights.vehicle = deepcopy(segment.analyses.geometry.vehicle)
             if segment.analyses.weights.vehicle.mass_properties.takeoff == None:
                 segment.analyses.weights.vehicle.mass_properties.takeoff = segment.analyses.weights.vehicle.mass_properties.max_takeoff
+                
+        if segment.analyses.aerodynamics != None:   
+            segment.analyses.aerodynamics.vehicle =  deepcopy(segment.analyses.weights.vehicle)
+        if segment.analyses.stability != None:   
+            segment.analyses.stability.vehicle =  deepcopy(segment.analyses.weights.vehicle)  
+        if segment.analyses.energy != None:   
+            segment.analyses.energy.vehicle =  deepcopy(segment.analyses.weights.vehicle)  
     return 
 
 def mass_properties_preprocess_routine(i, weights_analysis): 
@@ -241,10 +244,12 @@ def mass_properties_preprocess_routine(i, weights_analysis):
                     print("\n===============================\n")
     
     # Compute Center of Gravity  
-    CG ,_, _ = compute_vehicle_center_of_gravity(weights_analysis.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity) 
+    if weights_analysis.settings.update_center_of_gravity:
+        CG ,_, _ = compute_vehicle_center_of_gravity(weights_analysis.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity) 
     
     # Compute Moment of Intertia
-    _, _ = compute_aircraft_moment_of_inertia(weights_analysis.vehicle, CG, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
+    if weights_analysis.settings.update_moment_of_inertia:
+        _, _ = compute_aircraft_moment_of_inertia(weights_analysis.vehicle, CG, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
 
     
 def apply_correction_factors(weights_analysis):

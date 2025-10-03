@@ -106,9 +106,10 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
         # perform inital weights analysis
         segment.analyses.geometry.vehicle.mass_properties.takeoff = None
     mass_properties(mission)
-        
-  
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
+    
+
+  
     [setattr(seg.analyses.aerodynamics.settings, "store_training_data", True) for seg in mission.segments]
     for network in vehicle.networks:
         if type(network) == RCAIDE.Framework.Networks.Fuel:  
@@ -221,9 +222,10 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     # loop for each point of Payload Range Diagram
     for i in range(len(TOW)):
         # Define takeoff weight
-        mission.segments[0].analyses.weights.vehicle.mass_properties.takeoff  = TOW[i]
-        mission.segments[0].analyses.weights.vehicle.mass_properties.payload  = PLD[i]
-        mission.segments[0].analyses.weights.vehicle.mass_properties.fuel     = FUEL[i]
+        mission.segments[0].analyses.geometry.vehicle.mass_properties.takeoff  = TOW[i]
+        mission.segments[0].analyses.geometry.vehicle.mass_properties.payload  = PLD[i]
+        mission.segments[0].analyses.geometry.vehicle.mass_properties.fuel     = FUEL[i]
+
 
         # Evaluate mission with current TOW
         results = mission.evaluate()
