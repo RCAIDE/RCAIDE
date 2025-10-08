@@ -184,8 +184,8 @@ def plot_3d_vehicle(vehicle,
             GEOM.PTS[:, :, 2] = -GEOM.PTS[:, :, 2]
             make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            GEOM = generate_3d_lopa_points(wing, tessellation)
-            make_object(renderer, GEOM,lopa_opacity)
+            lopa_geom = generate_3d_lopa_points(wing)
+            add_lopa_seats(renderer, lopa_geom, lopa_opacity)
 
     # -------------------------------------------------------------------------  
     # Plot fuselage
@@ -193,8 +193,8 @@ def plot_3d_vehicle(vehicle,
     for fuselage in geometry.fuselages:
         GEOM = generate_3d_fuselage_points(fuselage, tessellation)
         make_object(renderer, GEOM, fuselage_rgb_color,fuselage_opacity)
-        GEOM = generate_3d_lopa_points(fuselage, tessellation)
-        make_object(renderer, GEOM,lopa_opacity)
+        lopa_geom = generate_3d_lopa_points(fuselage)
+        add_lopa_seats(renderer, lopa_geom, lopa_opacity)
         
     # -------------------------------------------------------------------------  
     # Plot boom
@@ -369,6 +369,28 @@ def make_object(renderer, GEOM,  rgb_color, opacity):
     renderer.AddActor(actor)
     
     return
+
+
+def add_lopa_seats(renderer, lopa_geometry, opacity):
+    seats = getattr(lopa_geometry, "_lopa_seats", [])
+    for seat in seats:
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputData(seat["polydata"])
+
+        actor = vtk.vtkActor()
+        actor.SetMapper(mapper)
+
+        seat_class = seat.get("class", "economy")
+        if seat_class == "business":
+            color = BUSINESS_COLOR
+        else:
+            color = ECONOMY_COLOR
+
+        actor.GetProperty().SetColor(*color)
+        actor.GetProperty().SetDiffuse(1.0)
+        actor.GetProperty().SetSpecular(0.0)
+        actor.GetProperty().SetOpacity(opacity)
+        renderer.AddActor(actor)
 
 def make_actuator_disc(renderer, inner_radius, outer_radius, origin, rot_x,rot_y,rot_z, rgb_color, opacity): 
     
