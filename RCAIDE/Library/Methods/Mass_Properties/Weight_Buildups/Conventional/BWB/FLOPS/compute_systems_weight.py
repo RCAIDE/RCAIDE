@@ -115,10 +115,8 @@ def compute_systems_weight(vehicle):
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
                 NENG += 1
-            if propulsor.wing_mounted:
                 FNEW += 1
-            else:
-                FNEF += 1
+           
             if 'nacelle' in propulsor: 
                 if propulsor.nacelle !=  None:                
                     nacelle =  propulsor.nacelle
@@ -152,13 +150,7 @@ def compute_systems_weight(vehicle):
             XL    = wing.chords.root / Units.ft
             DF    = (wing.chords.root*wing.thickness_to_chord) / Units.ft
             NFUSE   += 1
-            x0, y0 = wing.layout_of_passenger_accommodations.cabin_area_coordinates[:, 0], \
-            wing.layout_of_passenger_accommodations.cabin_area_coordinates[:, 1]
-            x = np.concatenate([x0, np.flip(x0)]) 
-            y = np.concatenate([y0, -np.flip(y0)])
-            x = np.append(x, x[0])
-            y = np.append(y, y[0])
-            ACABIN = (0.5 * abs(np.dot(x, np.roll(y, -1)) - np.dot(y, np.roll(x, -1))))/Units['feet**2']
+
             SWPLE  = wing.sweeps.leading_edge/Units.degree
             for _ in wing.cabins:
                 NBAY += 1
@@ -167,10 +159,10 @@ def compute_systems_weight(vehicle):
             if isinstance(segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                 WF    = segment.percent_span_location * wing.spans.projected  / Units.ft        
                 XLW   = segment.root_chord_percent * wing.chords.root  / Units.ft        
-        
-       
-    RSPOB       = 0.9
-    FPAREA      = WF * (XL+XLW)/(2*RSPOB)
+
+    XLP         = 0.6 * XL    
+    ACABIN      = 0.5 * WF * (XLP + 0.6*XLW) #eq. 196
+    FPAREA      = WF * (XL+XLW)/(2)
     NPASS       = vehicle.number_of_passengers
     WAPU        = 54 * FPAREA ** 0.3 + 5.4 * NPASS ** 0.9  # apu weight
     if vehicle.number_of_passengers >= 150:
