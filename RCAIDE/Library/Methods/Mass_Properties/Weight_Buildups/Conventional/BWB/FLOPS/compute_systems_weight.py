@@ -161,8 +161,9 @@ def compute_systems_weight(vehicle):
                 XLW   = segment.root_chord_percent * wing.chords.root  / Units.ft        
 
     XLP         = 0.6 * XL    
+    RSPSOB      = 1.0
     ACABIN      = 0.5 * WF * (XLP + 0.6*XLW) #eq. 196
-    FPAREA      = WF * (XL+XLW)/(2)
+    FPAREA      = WF * (XL+XLW)/(2*RSPSOB)
     NPASS       = vehicle.number_of_passengers
     WAPU        = 54 * FPAREA ** 0.3 + 5.4 * NPASS ** 0.9  # apu weight
     if vehicle.number_of_passengers >= 150:
