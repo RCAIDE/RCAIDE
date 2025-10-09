@@ -13,7 +13,7 @@ from RCAIDE.Library.Plots.Geometry.generate_3d_fuselage_points  import *
 from RCAIDE.Library.Plots.Geometry.generate_3d_fuel_tank_points import *
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import generate_3d_blade_points
 from RCAIDE.Library.Plots.Geometry.generate_3d_nacelle_points   import *
-from RCAIDE.Library.Plots.Geometry.generate_3d_lopa_points      import *
+from RCAIDE.Library.Plots.Geometry.generate_3d_lopa_points      import generate_3d_lopa_points
 from RCAIDE.Library.Methods.Geometry.Planform                   import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume  
 from RCAIDE.Library.Methods.Geometry.LOPA                       import  compute_layout_of_passenger_accommodations  
 
@@ -44,7 +44,7 @@ def plot_3d_vehicle(vehicle,
                     boom_opacity                = 1.0,
                     nacelle_opacity             = 1.0,
                     fuel_tank_opacity           = 0.5,
-                    lopa_opacity                = 0.5,
+                    lopa_opacity                = 1.0,
                     rotor_opacity               = 0.6, 
                     number_of_airfoil_points    = 101,
                     tessellation                = 96,  
@@ -170,6 +170,8 @@ def plot_3d_vehicle(vehicle,
     # Plot wings
     # -------------------------------------------------------------------------  
     for wing in geometry.wings:
+        if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+            wing_opacity /= 1.25 # For clearer visualzation of lopa
         n_segments = len(wing.segments)
         dim        = n_segments if n_segments > 0 else 2
         GEOM       = generate_3d_wing_points(wing, number_of_airfoil_points, dim)
@@ -373,23 +375,46 @@ def make_object(renderer, GEOM,  rgb_color, opacity):
 
 def add_lopa_seats(renderer, lopa_geometry, opacity):
     seats = getattr(lopa_geometry, "_lopa_seats", [])
+    if not seats:
+        return
+
+    # Simple color map (no external constants)
+    def _rgb(name):
+        return mcolors.to_rgb(name)
+
+    color_map = {
+        "first":      _rgb("indianred"),
+        "business":   _rgb("seagreen"),
+        "economy":    _rgb("steelblue"),
+        "galley_lav": _rgb("sandybrown"),
+        "other":      _rgb("gray"),
+    }
+
     for seat in seats:
+        poly = seat.get("polydata", None)
+        if poly is None:
+            continue
+
         mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputData(seat["polydata"])
+        mapper.SetInputData(poly)
 
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
 
         seat_class = seat.get("class", "economy")
-        if seat_class == "business":
-            color = BUSINESS_COLOR
-        else:
-            color = ECONOMY_COLOR
+        rgb = color_map.get(seat_class, color_map["economy"])
 
-        actor.GetProperty().SetColor(*color)
+        actor.GetProperty().SetColor(*rgb)
         actor.GetProperty().SetDiffuse(1.0)
         actor.GetProperty().SetSpecular(0.0)
-        actor.GetProperty().SetOpacity(opacity)
+        actor.GetProperty().SetOpacity(float(opacity))
+
+        # Optional: outline emergency row seats subtly (no new constants; reuse color)
+        if seat.get("emergency_row", False):
+            actor.GetProperty().EdgeVisibilityOn()
+            actor.GetProperty().SetEdgeColor(*rgb)  # same hue; outline for emphasis
+            actor.GetProperty().SetLineWidth(1.0)
+
         renderer.AddActor(actor)
 
 def make_actuator_disc(renderer, inner_radius, outer_radius, origin, rot_x,rot_y,rot_z, rgb_color, opacity): 
