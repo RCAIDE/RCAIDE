@@ -34,16 +34,19 @@ def compute_layout_of_passenger_accommodations(fuselage):
             side_cabin_offset = cabin.width / 2
             LOPA = np.vstack((LOPA,seat_data))  
         cabin.number_of_seats = cabin_number_of_seats
-            
+    offset_x_overall = 0 
     for cabin in fuselage.cabins: 
         for cabin_class in cabin.classes: 
             cabin_class.percentage = cabin_class.length/cabin.length
+        if not isinstance(cabin,RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin):
+            offset_x_overall = cabin.offset_x
     
     # add cabin offset to account (useful for BWBs and aircraft with H2 tanks)
     LOPA[:, 2] += fuselage.cabin_offset 
     fuselage.layout_of_passenger_accommodations                     = Data()
     fuselage.layout_of_passenger_accommodations.object_coordinates  = LOPA  
     fuselage.number_of_seats                                        = np.sum(LOPA[:,10])    
+    fuselage.layout_of_passenger_accommodations.cabin_x_offset     = offset_x_overall
     
     if LOPA.size > 0 :
         # Step 1: plot cabin bounds  

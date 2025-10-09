@@ -119,11 +119,10 @@ def geometry_preprocess_routine(geometry_analysis):
         # --------------------------------------------------------------------------------------------------------------------
         #  Blended Wing Body
         # --------------------------------------------------------------------------------------------------------------------
-        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
-            compute_layout_of_passenger_accommodations(wing)
-            
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):            
             # compute planform properties 
             bwb_wing_planform(wing)
+            compute_layout_of_passenger_accommodations(wing)
             
             # update reference properties 
             if settings.overwrite_reference:
