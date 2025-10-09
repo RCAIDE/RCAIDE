@@ -85,7 +85,7 @@ def compute_operating_items_weight(vehicle):
     
     WUF   = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
     WOIL  = 0.082 * NENG * THRUST ** 0.65  # engine oil weight 
-    WSRV  = (5.164 * NPF + 3.846 * NPB + 2.529 * NPE) * (DESRNG / VMAX) ** 0.255  # passenger service weight
+    WSRV  = (5.164 * NPF + 3.846 * NPB + 2.529 * NPE) * (DESRNG / VMAX) ** 0.225  # passenger service weight
     
     W_cargo = 0
     for cargo_bay in vehicle.cargo_bays:
@@ -101,7 +101,7 @@ def compute_operating_items_weight(vehicle):
     if vehicle.number_of_passengers < 51:
         NFLA = 1  # number of flight attendants, NSTU in FLOPS
     else:
-        NFLA = 1 + np.floor(vehicle.number_of_passengers / 40.)
+        NFLA = 1 + np.ceil(vehicle.number_of_passengers / 40.)
 
     WFLAAB = NFLA * 155 + NGALC * 200  # flight attendant weight, WSTUAB in FLOPS
     WFLCRB = NFLCR * 225  # flight crew and baggage weight
