@@ -21,7 +21,7 @@ from BWB                    import vehicle_setup as bwb_setup
 from Stopped_Rotor_EVTOL    import vehicle_setup as evtol_setup
 from Boeing_787             import vehicle_setup as hydrogen_transport_setup
 from Electric_Twin_Otter    import vehicle_setup as electric_general_aviation_setup
-from all_electric_ATR_72    import vehicle_setup as electric_transport_setup
+from all_electric_ATR_72    import vehicle_setup as electric_transport_setup 
 
 def main():
     update_regression_values = False # should be false unless code functionally changes

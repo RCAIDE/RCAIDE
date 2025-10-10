@@ -101,21 +101,21 @@ def compute_propulsion_system_weight(vehicle,network):
                 if 'nacelle' in propulsor: 
                     if propulsor.nacelle !=  None:                    
                         ref_nacelle =  propulsor.nacelle   
-                        WNAC = compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
-                WTHR = compute_thrust_reverser_weight(propulsor,JNENG)
+                        WNAC += compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
+                WTHR += compute_thrust_reverser_weight(propulsor,JNENG)
                 WEC, WSTART = compute_misc_propulsion_system_weight(vehicle,propulsor,ref_nacelle,JNENG )
     
     NENG = JNENG + PNENG
                   
     WFSYS           = compute_fuel_system_weight(vehicle, NENG)
     
-    WPRO            = NENG * WENG + WFSYS
+    WPRO            = WENG + WFSYS + WTHR + WSTART*JNENG + WEC*JNENG + WNAC
 
     output                      = Data()
-    output.W_prop               = WPRO
+    output.W_prop               = WENG + WFSYS + WTHR + WSTART + WEC + WNAC
     output.W_thrust_reverser    = WTHR
-    output.W_starter            = WSTART
-    output.W_engine_controls    = WEC
+    output.W_starter            = WSTART*JNENG
+    output.W_engine_controls    = WEC*JNENG
     output.W_fuel_system        = WFSYS
     output.W_nacelle            = WNAC
     output.W_engine             = WENG
