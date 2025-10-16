@@ -153,7 +153,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
         z_interp_pos = interp1d(x_pos, z_pos, kind='linear', fill_value="extrapolate")
         z_interp_neg = interp1d(x_neg, z_neg, kind='linear', fill_value="extrapolate")
 
-        new_x = np.linspace(x_tank_possible.min(), x_tank_possible.max(), 10)
+        new_x = np.linspace(x_tank_possible.min(), x_tank_possible.max(), 50)
         z_upper = z_interp_pos(new_x)
         z_lower = z_interp_neg(new_x)
         
