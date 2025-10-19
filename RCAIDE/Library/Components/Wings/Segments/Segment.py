@@ -121,6 +121,8 @@ class Segment(Component):
         self.fuel_tank.percent_chord_end_location      = 0.6
         self.fuel_tank.percent_span_location           = 0.0
         self.airfoil                                   = None
+        self.has_aft_fuel_tank= False ####********** DEELETE THIS************
+        
         
     def append_airfoil(self, airfoil):
         """

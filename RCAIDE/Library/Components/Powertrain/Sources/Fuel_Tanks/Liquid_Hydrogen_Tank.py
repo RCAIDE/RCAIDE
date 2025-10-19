@@ -89,6 +89,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         None  
         """
         self.tag                      = 'Liquid_Hydrogen_Tank'
+        self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()
         self.material                 = None
         self.insulation_material      = None
         self.design_inlet_temperature = 20
