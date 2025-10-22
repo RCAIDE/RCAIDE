@@ -53,14 +53,49 @@ def compute_fuselage_tank_volume(fuel_tank,fuselage):
 
             # Create a Shapely polygon for the ellipse
             ellipse_polygons.append(Polygon(np.column_stack((x_ellipse, z_ellipse))))
-            a = 0
+
+    # -------------------------------------------------------
+    # LINEAR INTERPOLATION BETWEEN ELLIPSES
+    # -------------------------------------------------------
+    interp_polygons = []
+    num_interp = 5  # number of interpolated sections between each pair
+
+    for i in range(len(ellipse_polygons) - 1):
+        
+        poly1 = ellipse_polygons[i]
+        interp_polygons.append(poly1)
+        poly2 = ellipse_polygons[i + 1]
+
+        # Get basic geometric parameters from current segments
+        seg1 = segments[seg_names[i-1]]
+        seg2 = segments[seg_names[i]]
+
+        for alpha in np.linspace(0, 1, num_interp):
+            w = (1 - alpha) * seg1.width + alpha * seg2.width
+            h = (1 - alpha) * seg1.height + alpha * seg2.height
+            z = (1 - alpha) * seg1.percent_z_location + alpha * seg2.percent_z_location
+
+            theta = np.linspace(0, 2 * np.pi, 200)
+            x_ellipse = (w / 2) * np.cos(theta)
+            z_ellipse = z * fuselage.lengths.total + (h / 2) * np.sin(theta)
+            interp_polygons.append(Polygon(np.column_stack((x_ellipse, z_ellipse))))
+            interp_polygons.append(poly2)
+
+    # Add interpolated ellipses to main list for plotting
+    ellipse_polygons_interpolated.extend(interp_polygons)
+
+    # -------------------------------------------------------
+    # PLOT ALL POLYGONS (original + interpolated)
+    # -------------------------------------------------------
+    import matplotlib.pyplot as plt
     fig, ax = plt.subplots(figsize=(8, 5))
     ax.set_aspect("equal", adjustable="box")
+
     for i, poly in enumerate(ellipse_polygons):
         x, y = poly.exterior.xy
-        ax.plot(x, y, label=f"Section {i}", linewidth=1.8)
+        ax.plot(x, y, label=f"Section {i}", linewidth=1.5, alpha=0.8)
 
-    ax.set_title("Fuselage Cross-Section Ellipses")
+    ax.set_title("Fuselage Cross-Section Ellipses (with Linear Interpolation)")
     ax.set_xlabel("x [m]")
     ax.set_ylabel("z [m]")
     ax.legend()
@@ -595,9 +630,10 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
                         tank_percent_span_location = 0
                     inner_segment.fuel_tank.percent_span_location, tank_volume_o, tank_volume_i = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
                 except:
-                    print('Fuel tank cannot be place in specified wing segment, trying next segment')
-                    outer_segment = wing.segments[seg_tags[i+2]]
-                    inner_segment.fuel_tank.percent_span_location, tank_volume_o, tank_volume_i  = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                    pass # for purposes of the server only
+                    # print('Fuel tank cannot be place in specified wing segment, trying next segment')
+                    # outer_segment = wing.segments[seg_tags[i+2]]
+                    # inner_segment.fuel_tank.percent_span_location, tank_volume_o, tank_volume_i  = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
              
         fuel_tank.volume_properties.net_volume         = tank_volume_i
         fuel_tank.volume_properties.gross_volume       = tank_volume_o

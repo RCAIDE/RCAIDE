@@ -265,31 +265,31 @@ def plot_3d_vehicle(vehicle,
                         GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation ) 
                         make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
                         
-                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-                        segment_list = [] 
-                        segment_tags = list(wing.segments.keys())     
-                        for i in range(len(wing.segments) - 1):
-                            seg =  wing.segments[segment_tags[i]]
-                            next_seg =  wing.segments[segment_tags[i+1]]
-                            if seg.has_fuel_tank:
-                                if seg.tag not in segment_list:
-                                    segment_list.append(seg.tag)
-                                if next_seg.tag not in segment_list:
-                                    segment_list.append(next_seg.tag) 
+                if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
+                    segment_list = [] 
+                    segment_tags = list(wing.segments.keys())     
+                    for i in range(len(wing.segments) - 1):
+                        seg =  wing.segments[segment_tags[i]]
+                        next_seg =  wing.segments[segment_tags[i+1]]
+                        if seg.has_fuel_tank:
+                            if seg.tag not in segment_list:
+                                segment_list.append(seg.tag)
+                            if next_seg.tag not in segment_list:
+                                segment_list.append(next_seg.tag) 
 
-                        if len(wing.segments)>0:
-                            dim =  len(segment_list)
-                        else:
-                            dim = 2 
+                    if len(wing.segments)>0:
+                        dim =  len(segment_list)
+                    else:
+                        dim = 2 
 
-                        if  len(segment_list) == 0 and len(wing.segments) > 0:
-                            raise AttributeError('Fuel tank defined on segmented wing but no segments have "tank" attribute = True') 
-                        else:   
-                            GEOM = generate_integral_wing_tank_points(wing,5,dim,segment_list)
-                            make_object(renderer, GEOM, fuel_tank_rgb_color, fuel_tank_opacity)  
-                            if wing.xz_plane_symmetric:
-                                GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
-                                make_object(renderer, GEOM,fuel_tank_rgb_color, fuel_tank_opacity) 
+                    if  len(segment_list) == 0 and len(wing.segments) > 0:
+                        raise AttributeError('Fuel tank defined on segmented wing but no segments have "tank" attribute = True') 
+                    else:   
+                        GEOM = generate_integral_wing_tank_points(wing,5,dim,segment_list)
+                        make_object(renderer, GEOM, fuel_tank_rgb_color, fuel_tank_opacity)  
+                        if wing.xz_plane_symmetric:
+                            GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                            make_object(renderer, GEOM,fuel_tank_rgb_color, fuel_tank_opacity) 
 
                 elif fuel_tank.fuselage_tag != None:
                     fuselage = geometry.fuselages[fuel_tank.fuselage_tag]
