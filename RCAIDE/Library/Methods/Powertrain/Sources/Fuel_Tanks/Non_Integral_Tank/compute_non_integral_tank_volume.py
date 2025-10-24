@@ -574,7 +574,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
          
     return
 
-def compute_wing_non_integral_tank_volume(fuel_tank, wing):
+def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
     """
     Computes the volume of non-integral fuel tanks within wing segments.
 
@@ -630,7 +630,9 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing):
                         tank_percent_span_location = 0
                     inner_segment.fuel_tank.percent_span_location, tank_volume_o, tank_volume_i = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
                 except:
-                    pass # for purposes of the server only
+                    print(f'Tank {fuel_tank.tag} does not fit in segment so removing it from list')
+                    fuel_tanks.pop(fuel_tank.tag)
+                    return # for purposes of the server only
                     # print('Fuel tank cannot be place in specified wing segment, trying next segment')
                     # outer_segment = wing.segments[seg_tags[i+2]]
                     # inner_segment.fuel_tank.percent_span_location, tank_volume_o, tank_volume_i  = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
