@@ -154,7 +154,7 @@ def compute_fuselage_tank_volume(fuel_tank,fuselage):
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
-        if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
         fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     else:
@@ -308,7 +308,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
-        if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
         fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     else:
@@ -495,7 +495,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
 
 #     if fuel_tank.fuel.mass_properties.mass != 0:
 #         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-#         if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+#         if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
 #             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
 #         fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
 #     else:
@@ -562,7 +562,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
 
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-        if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
     else:
         fuel_tank.fuel.mass_properties.mass     = float(tank_volume_i *  fuel_tank.fuel.density)
@@ -645,7 +645,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
     
         if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
+            if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
             fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
         else:

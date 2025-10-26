@@ -139,7 +139,7 @@ class Non_Integral_Tank(Fuel_Tank):
         append_fuel_tank_conditions(self,segment, fuel_line)  
         return                      
     
-    def compute_volume(self, wings, fuselages):
+    def compute_volume(self, wings, fuselages,fuel_tanks):
         """
         Compute the volume of the non-integral fuel tank based on its attachment location.
 
@@ -177,7 +177,7 @@ class Non_Integral_Tank(Fuel_Tank):
             elif self.geometry_type == 'cylindrical':
                 if self.wing_tag != None:
                     wing = wings[self.wing_tag]  
-                    compute_wing_non_integral_tank_volume(self,wing)
+                    compute_wing_non_integral_tank_volume(self,wing,fuel_tanks)
                 else:
                     if self.bwb_aft_tank == True:
                         wing = wings[self.wing_root_tag]  
