@@ -75,7 +75,7 @@ def aerodynamics(mission):
                     segment.analyses.aerodynamics.surrogates                          = mission.segments[last_tag].analyses.aerodynamics.surrogates  
                     segment.analyses.aerodynamics.settings.vortex_distribution        = mission.segments[last_tag].analyses.aerodynamics.settings.vortex_distribution 
                 else:  
-                    segment.analyses.aerodynamics.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), segment.analyses.aerodynamics.tag + "_" +segment.analyses.aerodynamics.vehicle.tag + "_" + mission.tag+ "_" + os.path.splitext(os.path.basename(sys.argv[0]))[0] +"_aerodynamic_training_data.pkl")
+                    segment.analyses.aerodynamics.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), segment.analyses.aerodynamics.tag + "_" + mission.tag+ "_" + os.path.splitext(os.path.basename(sys.argv[0]))[0] +"_aerodynamic_training_data.pkl")
                     segment.analyses.aerodynamics.initialize()   
                     last_tag = tag  
     return 
