@@ -149,7 +149,7 @@ def compute_fuselage_tank_volume(fuel_tank,fuselage):
     fuel_tank.aspect_ratio     = (fuel_tank.outer_length +fuel_tank.outer_diameter )/fuel_tank.outer_diameter
     # Inner Volume
     fuel_tank.inner_length    = (fuel_tank.aspect_ratio * fuel_tank.inner_diameter) -fuel_tank.inner_diameter
-    tank_volume_i             = max_volume
+    tank_volume_i             = max_volume # BUGGG
     fuel_tank.volume_properties.net_volume         = tank_volume_i
     fuel_tank.volume_properties.gross_volume       = tank_volume_o
     if fuel_tank.fuel.mass_properties.mass != 0:
@@ -158,7 +158,7 @@ def compute_fuselage_tank_volume(fuel_tank,fuselage):
             raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
         fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     else:
-        fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+        fuel_tank.fuel.mass_properties.mass = tank_volume_i *  fuel_tank.fuel.density
         fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     # fuel tank origin
     fuel_tank.origin[0][0]  = circle_origins[max_idx][0] - fuel_tank.outer_diameter / 2
