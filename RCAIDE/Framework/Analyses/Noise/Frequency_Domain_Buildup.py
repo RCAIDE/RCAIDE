@@ -60,9 +60,11 @@ class Frequency_Domain_Buildup(Noise):
         """
         
         # Initialize quantities 
-        self.tag                                   =  "Frequency_Domain_Buildup"        
-        self.settings.fidelity                     = 'line_source'
-        self.settings.use_plane_loading_surrogate =  True 
+        self.tag                                             =  "Frequency_Domain_Buildup"        
+        self.settings.fidelity                               = 'line_source'
+        self.settings.use_plane_loading_surrogate            =  True 
+        self.settings.wing_wake_interactional_dBA_adjustment =  15 
+
     def evaluate_noise(self,segment):
         """ Process vehicle to setup vehicle, condititon and configuration
     
@@ -108,6 +110,6 @@ class Frequency_Domain_Buildup(Noise):
                         total_SPL_spectra = SPL_arithmetic(np.concatenate((total_SPL_spectra[:,None,:,:],conditions.noise.converters[sub_item.tag].SPL_1_3_spectrum[:,None,:,:]),axis =1),sum_axis=1) 
                         i += 1
                         
-        conditions.noise.hemisphere_SPL_dBA              = total_SPL_dBA *  (1 - settings.noise_reduction_factors.SPL_dbA)
-        conditions.noise.hemisphere_SPL_1_3_spectrum_dBA = total_SPL_spectra *  (1 - settings.noise_reduction_factors.SPL_dbA) 
+        conditions.noise.hemisphere_SPL_dBA              = (total_SPL_dBA + settings.wing_wake_interactional_dBA_adjustment) *  (1 - settings.noise_reduction_factors.SPL_dbA)
+        conditions.noise.hemisphere_SPL_1_3_spectrum_dBA = (total_SPL_spectra + settings.wing_wake_interactional_dBA_adjustment) * (1 - settings.noise_reduction_factors.SPL_dbA) 
         return

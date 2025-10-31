@@ -75,6 +75,10 @@ def geometry(mission):
                         propulsor.fan.rotation              = propulsor_0.fan.rotation           
                         propulsor.fan_nozzle.noise_speed    = propulsor_0.fan_nozzle.noise_speed 
                         propulsor.core_nozzle.noise_speed   = propulsor_0.core_nozzle.noise_speed
+                        
+                    if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
+                        propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
+                        propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command                 
                                   
     return 
         
