@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  generate_integral_wing_tank_points
 # ----------------------------------------------------------------------------------------------------------------------  
-def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
+def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_tank):
     """
     Generates 3D coordinate points that define a wing surface.
 
@@ -81,9 +81,9 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg)
-            fs = current_seg.fuel_tank.percent_chord_start_location
-            rs = current_seg.fuel_tank.percent_chord_end_location  
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
+            fs = fuel_tank.segment.percent_chord_start_location
+            rs = fuel_tank.segment.percent_chord_end_location  
             x_coordinates =  np.array([rs, rs, fs, fs, rs])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
@@ -347,11 +347,10 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         * Origin is at the nose of the fuel_tank
     """  
 
-    N = 3
+    N = 9
     fuel_tank_points = np.zeros((2*N,tessellation ,3))
     R = fuel_tank.outer_diameter / 2
-    L = fuel_tank.outer_length - fuel_tank.outer_diameter
-    
+    L = fuel_tank.outer_length    
          
     # front segments
     front_angles = np.linspace(0, np.pi/2,N) 
@@ -408,8 +407,8 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     
     # translate to location on aircraft 
     if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
-        fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] - fuel_tank.outer_diameter/2
-        fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R+L/2)
+        fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] + fuel_tank.outer_diameter/2
+        fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R + L/2)
         fuel_tank_points[:, :, 2] +=  fuel_tank.origin[0][2]
     else:
         fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
@@ -417,7 +416,16 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
     
 
-  
+    if hasattr(fuel_tank, "wing_root_twist"):
+        # do one last rotation for root twist of wing 
+        wing_root_rotation = np.zeros((3, 3))
+        wing_root_rotation[0,0] = np.cos(fuel_tank.wing_root_twist)
+        wing_root_rotation[0,2] = np.sin(fuel_tank.wing_root_twist)
+        wing_root_rotation[1,1] = 1
+        wing_root_rotation[2,0] = -np.sin(fuel_tank.wing_root_twist)
+        wing_root_rotation[2,2] = np.cos(fuel_tank.wing_root_twist)
+        fuel_tank_points =  fuel_tank_points @ wing_root_rotation.T 
+    
     G= Data()
     G.PTS  = fuel_tank_points 
 

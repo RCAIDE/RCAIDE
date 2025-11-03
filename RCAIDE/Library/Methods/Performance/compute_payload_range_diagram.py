@@ -111,6 +111,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
 
   
     [setattr(seg.analyses.aerodynamics.settings, "store_training_data", True) for seg in mission.segments]
+    file_name = [(seg.analyses.aerodynamics.tag) for seg in mission.segments][0]
     for network in vehicle.networks:
         if type(network) == RCAIDE.Framework.Networks.Fuel:  
             payload_range  =  conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_reserve_percentage,plot_diagram,fuel_name) 
@@ -119,7 +120,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     
     if delete_training_data:
         for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
-            if fname.endswith(".pkl") and "payload_range_mission" in fname:
+            if fname.endswith(".pkl") and "payload_range_mission" in fname and file_name in fname:
                 os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
 
     print("\n============== Payload Range Report ==============\n")            

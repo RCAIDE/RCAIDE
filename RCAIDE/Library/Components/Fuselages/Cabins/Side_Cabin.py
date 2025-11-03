@@ -19,5 +19,5 @@ class Side_Cabin(Cabin):
         Sets default values for all fuselage attributes.
         """      
         
-        self.tag                                    = 'side_cabin'    
-         
+        self.tag       = 'side_cabin'    
+  

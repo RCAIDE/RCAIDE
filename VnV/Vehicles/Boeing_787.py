@@ -88,7 +88,6 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment.dihedral_outboard             = 8.0 * Units.degrees
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.thickness_to_chord            = .15
-    segment.has_fuel_tank                 = True
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -102,7 +101,6 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment.sweeps.quarter_chord          = 31. * Units.degrees
     #segment.twist                         = 2.5 * Units.degrees
     segment.thickness_to_chord            = 0.125
-    segment.has_fuel_tank                 = True
     segment.append_airfoil(yehudi_airfoil)
     wing.append_segment(segment)
 
@@ -703,6 +701,9 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_1.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel_tank_1.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
+    fuel_tank_1.segment.start_tag    = 'root'
+    fuel_tank_1.segment.end_tag      = 'yehudi'
+
     fuel_line.fuel_tanks.append(fuel_tank_1)
 
     # fuel tank
@@ -711,6 +712,8 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     fuel_tank_2.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_2.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel_tank_2.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center   
+    fuel_tank_2.segment.start_tag    = 'root'
+    fuel_tank_2.segment.end_tag      = 'yehudi'
     fuel_line.fuel_tanks.append(fuel_tank_2)
 
     # fuel tank
@@ -719,6 +722,8 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     fuel_tank_3.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
     fuel_tank_3.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
     fuel_tank_3.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
+    fuel_tank_3.segment.start_tag    = 'root'
+    fuel_tank_3.segment.end_tag      = 'yehudi'
     fuel_line.fuel_tanks.append(fuel_tank_3)
 
     #------------------------------------------------------------------------------------------------------------------------------------   

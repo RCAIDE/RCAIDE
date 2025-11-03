@@ -94,9 +94,9 @@ def compute_thermal_performance(fuel_tank):
 
     # Recompute net tank volume based on the updated thickness
     r_in   = (fuel_tank.outer_diameter -  2 * (fuel_tank.wall_thickness+fuel_tank.insulation_thickness)) / 2
-    l_in = fuel_tank.aspect_ratio * fuel_tank.inner_diameter
-
-    fuel_tank.inner_length = l_in - fuel_tank.inner_diameter
+    fuel_tank.inner_diameter = r_in * 2
+    fuel_tank.inner_length = (fuel_tank.aspect_ratio * fuel_tank.inner_diameter)- fuel_tank.inner_diameter
+    
     tank_volume_i = np.pi * ( r_in** 2) * (fuel_tank.inner_length )  +  4 / 3 * np.pi * ( r_in** 3) 
     fuel_volume = (1 - fuel_tank.ullage_volume_fraction)  * tank_volume_i
     

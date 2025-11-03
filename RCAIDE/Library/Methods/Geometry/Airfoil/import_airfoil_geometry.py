@@ -43,7 +43,7 @@ def import_airfoil_geometry(airfoil_geometry_file, npoints = 201,surface_interpo
         print('Number of points must be odd, changing to ' + str(npoints) + ' points')      
     
     geometry     = Data()
-    half_npoints = npoints//2         
+    half_npoints = npoints//2           
  
     # Open file and read column names and data block
     try:
