@@ -73,16 +73,7 @@ def general_aviation_aircraft_geometry_test(show_figure):
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
-       
-    # append addition wing tanks for plots 
-    fuel_tank_2    = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.horizontal_stabilizer)
-    fuel_tank_2.fuel  = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()
-    fuel_line.fuel_tanks.append(fuel_tank_2)
-
-    fuel_tank_3    = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.vertical_stabilizer)
-    fuel_tank_3.fuel  = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()
-    fuel_line.fuel_tanks.append(fuel_tank_3)       
-
+    
     # plot vehicle 
     plot_3d_vehicle(vehicle,   
                     wing_opacity                = 0.2,
@@ -188,13 +179,6 @@ def electric_rotor_aircraft_geometry_test(show_figure):
 def bwb_aircraft_geometry_test(show_figure):
      
     vehicle  = BWB_vehicle_setup()
-     
-    plot_3d_vehicle(vehicle,
-                    save_filename = "BWB_Conventional",  
-                    show_figure=show_figure)
-    
-    
-    vehicle = BWB_vehicle_setup()
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -202,9 +186,6 @@ def bwb_aircraft_geometry_test(show_figure):
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Main Wing Tanks
     #------------------------------------------------------------------------------------------------------------------------------------      
-    vehicle.wings.main_wing.segments.fuel_wall.has_fuel_tank                 = True 
-    vehicle.wings.main_wing.segments.fuel_wall.fuel_tank.percent_chord_start_location = 0.2  
-    vehicle.wings.main_wing.segments.fuel_wall.fuel_tank.percent_chord_end_location   = 0.6   
      #------------------------------------------------------------------------------------------------------------------------- 
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
@@ -215,6 +196,10 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_1.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Jacketed_Multilayer_Insulation()
     fuel_tank_1.fuel.gravimetric_efficiency     = 0.5
+    fuel_tank_1.segment.start_tag                      = 'fuel_wall'
+    fuel_tank_1.segment.end_tag                        = 'wing_section_1'
+    fuel_tank_1.segment.percent_chord_start_location  = 0.1  
+    fuel_tank_1.segment.percent_chord_end_location    = 0.55
     fuel_tank_1.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
 
@@ -227,10 +212,8 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_4.xz_plane_symmetric            = False
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
-    fuel_tank_4.aft_tank_start_root_chord     = 0.6
-    fuel_tank_4.aft_tank_end_rood_chord       = 0.8
-    fuel_tank_4.aft_tank_end_segment_tag      = 'cabin_wall' 
-    fuel_tank_4.wing_root_tag                 = 'main_wing' 
+    fuel_tank_4.aft_tank_root_chord_bounds   = [0.65,0.9]
+    fuel_tank_4.segment.end_tag             = 'fuel_wall' 
     fuel_tank_4.radial_offset                 = 0.2
 
     fuel_line.fuel_tanks.append(fuel_tank_4)

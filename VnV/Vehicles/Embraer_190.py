@@ -140,7 +140,6 @@ def vehicle_setup():
     segment.thickness_to_chord            = .11
     segment.dihedral_outboard             = 5. * Units.degrees
     segment.sweeps.quarter_chord          = 20.6 * Units.degrees  
-    segment.has_fuel_tank                 = True  
     root_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     root_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'transonic_wing_root_section_airfoil.txt'
     segment.append_airfoil(root_airfoil)
@@ -152,7 +151,6 @@ def vehicle_setup():
     segment.root_chord_percent            = 0.60 
     segment.dihedral_outboard             = 4 * Units.degrees
     segment.sweeps.quarter_chord          = 24.1 * Units.degrees  
-    segment.has_fuel_tank                 = True
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
     yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt' 
     segment.append_airfoil(yehudi_airfoil)
@@ -463,6 +461,8 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------   
     wing_fuel_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
     wing_fuel_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()    
+    wing_fuel_tank.segment.start_tag            = 'root'
+    wing_fuel_tank.segment.end_tag              = 'yehudi'
     fuel_line.fuel_tanks.append(wing_fuel_tank)
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()  

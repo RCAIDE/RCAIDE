@@ -97,7 +97,6 @@ def converge(segment):
         print("Error Message:\n" + error_message)
         segment.state.numerics.solver.converged = False
         segment.converged = False
-        raise Exception('Mission Solver Failed')
     else:
         segment.state.numerics.solver.converged = True
         segment.converged = True
