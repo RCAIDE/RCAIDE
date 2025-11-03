@@ -107,10 +107,7 @@ class Non_Integral_Tank(Fuel_Tank):
         self.orientation_euler_angles    = [0.,0.,0.]
         self.geometry_type               = 'cylindrical'   # ['prismatic', 'cylindrical']
         self.bwb_aft_tank                = False
-        self.aft_tank_start_root_chord   = None
-        self.aft_tank_end_rood_chord     = None
-        self.aft_tank_end_segment_tag    = None 
-        self.wing_root_tag               = None 
+        self.aft_tank_root_chord_bounds  = [None, None]
         self.radial_offset               = None
         self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank.
 
@@ -171,17 +168,17 @@ class Non_Integral_Tank(Fuel_Tank):
         --------
         RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume
         """
-        if self.wing_tag is not None:
+        if self.wing_tag is not None and self.bwb_aft_tank is False:
             if self.geometry_type == 'prismatic':
                 compute_prismatic_fuel_tank_volume(self)
             elif self.geometry_type == 'cylindrical':
                     wing = wings[self.wing_tag]  
                     compute_wing_non_integral_tank_volume(self,wing,fuel_tanks)
-        elif self.fuselage_tag is not None: 
-            fuselage = fuselages[self.fuselage_tag]  
-            compute_fuselage_tank_volume(self,fuselage)
+        # elif self.fuselage_tag is not None: 
+        #     fuselage = fuselages[self.fuselage_tag]  
+        #     compute_fuselage_tank_volume(self,fuselage)
         else:
             if self.bwb_aft_tank == True:
-                wing = wings[self.wing_root_tag]  
+                wing = wings[self.wing_tag]  
                 compute_bwb_aft_tank_volume(self,wing)
         return

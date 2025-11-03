@@ -9,6 +9,7 @@
 import RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep 
 from RCAIDE.Library.Methods.Geometry.Airfoil                import  compute_naca_4series, import_airfoil_geometry 
+from .compute_segment_volume import compute_segment_volume
 
 # package imports 
 import numpy as np
@@ -222,13 +223,12 @@ def wing_planform(wing):
         total_moment = np.array([[0.0,0.0,0.0]])
         total_mass   = 0.0
         
-        segment_volume = RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Integral_Tank.compute_integral_tank_volume.compute_segmented_wing_integral_tank_fuel_volume
         
         for i in range(len(wing.segments)-1):
             # compute volume and assume unit density to get mass
             inner_segment = wing.segments[seg_keys[i]]
             outer_segment = wing.segments[seg_keys[i+1]]
-            v_seg =  segment_volume(wing,inner_segment,outer_segment)
+            v_seg =  compute_segment_volume(wing,inner_segment,outer_segment)
             m_seg =  v_seg * 1
             total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
             total_mass   += m_seg 
@@ -239,7 +239,7 @@ def wing_planform(wing):
             wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
             wing.mass_properties.center_of_gravity[0][1] = cg_wing[0][2] 
             wing.mass_properties.center_of_gravity[0][2] = 0 if sym ==True else cg_wing[0][1]
-            
+        
         else:
             wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
             wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[0][1]
@@ -458,7 +458,7 @@ def segment_properties(wing):
             segment.aspect_ratio                   = (span_seg **2) / Sref_seg
             segment.areas.exposed                  = S_exposed_seg
             segment.areas.wetted                   = Swet_seg
-            segment.fuel_tank.percent_span_location = 0.0
+            # segment.fuel_tank.percent_span_location = 0.0
             total_wetted_area                      += Swet_seg
             
 

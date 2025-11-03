@@ -135,7 +135,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             Thermal solver for cryogenic hydrogen tanks.  
         """
         if self.geometry_type == 'cylindrical':
-            if self.wing_tag != None:
+            if self.wing_tag != None and self.bwb_aft_tank is False:
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self, wing,fuel_tanks)
                 if hasattr(fuel_tanks,self.tag):
@@ -143,8 +143,9 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                     compute_thermal_performance(self)
             else:
                 if self.bwb_aft_tank == True:
-                    wing = wings[self.wing_root_tag]  
-                    compute_bwb_aft_tank_volume(self, wing)
-                    compute_structural_performance(self)
-                    compute_thermal_performance(self)
+                    if self.wing_tag != None:
+                        wing = wings[self.wing_tag]  
+                        compute_bwb_aft_tank_volume(self, wing)
+                        compute_structural_performance(self)
+                        compute_thermal_performance(self)
         return

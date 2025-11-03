@@ -9,6 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # RCAIDE imports 
+from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Components          import Component
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks  import * 
 
@@ -69,6 +70,14 @@ class Fuel_Tank(Component):
         self.outer_height                          = 0.0
         self.inner_diameter                        = 0.0
         self.outer_diameter                        = 0.0
+        self.segment                               = Data()
+        self.segment.start_tag                     = None
+        self.segment.end_tag                       = None
+        self.segment.percent_chord_start_location  = 0.1  
+        self.segment.percent_chord_end_location    = 0.7
+        self.segment.percent_span_location         = 0.0
+        
+
  
     def append_operating_conditions(self,segment,fuel_line):  
         """

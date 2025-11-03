@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  generate_integral_wing_tank_points
 # ----------------------------------------------------------------------------------------------------------------------  
-def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
+def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_tank):
     """
     Generates 3D coordinate points that define a wing surface.
 
@@ -81,9 +81,9 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg)
-            fs = current_seg.fuel_tank.percent_chord_start_location
-            rs = current_seg.fuel_tank.percent_chord_end_location  
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
+            fs = fuel_tank.segment.percent_chord_start_location
+            rs = fuel_tank.segment.percent_chord_end_location  
             x_coordinates =  np.array([rs, rs, fs, fs, rs])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
