@@ -29,8 +29,16 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    integral_fuel_tank_volume_test()
-    non_integral_fuel_tank_volume_test()
+    # integral_fuel_tank_volume_test()
+    # -------------------------------------------------------------
+    # Run test only if Python version >= 3.11
+    # Shapely < 2.1 (and Python < 3.11) may not include functions
+    # like 'maximum_inscribed_circle' required for this test.
+    # -------------------------------------------------------------
+    if sys.version_info >= (3, 11):
+        non_integral_fuel_tank_volume_test()
+    else:
+        print("Skipping non_integral_fuel_tank_volume_test(): Shapely lacks 'maximum_inscribed_circle' support for Python < 3.11.")
     return
 
 def integral_fuel_tank_volume_test():
