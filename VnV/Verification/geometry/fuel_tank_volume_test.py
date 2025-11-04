@@ -29,7 +29,7 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------
 
 def main():
-    # integral_fuel_tank_volume_test()
+    integral_fuel_tank_volume_test()
     # -------------------------------------------------------------
     # Run test only if Python version >= 3.11
     # Shapely < 2.1 (and Python < 3.11) may not include functions
