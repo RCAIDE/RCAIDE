@@ -73,6 +73,10 @@ def general_aviation_aircraft_geometry_test(show_figure):
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
+
+    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.horizontal_stabilizer)  
+    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fuel_line.fuel_tanks.append(wing_tank)
     
     # plot vehicle 
     plot_3d_vehicle(vehicle,   
@@ -228,10 +232,8 @@ def bwb_aircraft_geometry_test(show_figure):
     plot_3d_vehicle(vehicle, 
                     save_filename = "BWB_Additional_Tanks",  
                     show_figure=show_figure)
-    
-    
-    return 
-    
+
+    return    
      
 if __name__ == '__main__': 
     main()    

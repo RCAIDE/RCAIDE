@@ -55,6 +55,9 @@ def single_wing_segment_integral_fuel_tank_volume_test():
     wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.horizontal_stabilizer)  
     wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(wing_tank)
+    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.vertical_stabilizer)  
+    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fuel_line.fuel_tanks.append(wing_tank)
     
     configs = configs_setup(vehicle)
     analyses = analyses_setup(configs)
