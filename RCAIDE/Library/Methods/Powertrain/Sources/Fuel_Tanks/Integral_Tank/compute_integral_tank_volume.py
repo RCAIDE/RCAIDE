@@ -77,32 +77,44 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
 
     if len(fuselage.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_tags = list(fuselage.segments.keys())
+        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
+
+        # Collect all segment tags between start and end (inclusive)
+        collect = False
+        seg_tags = []
+        for segment in fuselage.segments:
+            if segment.tag == seg_bounds[0]:
+                collect = True
+            if collect:
+                seg_tags.append(segment.tag)
+            if segment.tag == seg_bounds[1]:
+                break
+        
         for i in range(len(seg_tags)-1):
             inner_segment = fuselage.segments[seg_tags[i]]
             outer_segment = fuselage.segments[seg_tags[i+1]]
-            if inner_segment.has_fuel_tank == True: 
-                h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location) 
+        
+            h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location) 
+            # volume of truncated cylinder 
+            A_1_o    = np.pi * inner_segment.height /2  *  inner_segment.width/2
+            A_2_o    = np.pi * outer_segment.height/2   *  outer_segment.width/2
+            volume_o = (1 /3) * ( A_1_o + A_2_o + np.sqrt(A_2_o*A_2_o)) *h
+
+            A_1_i    = np.pi * inner_segment.height /2  *  inner_segment.width/2
+            A_2_i    = np.pi * outer_segment.height/2   *  outer_segment.width/2 
+            volume_i = (1 /3) * ( A_1_i + A_2_i + np.sqrt(A_1_i*A_2_i)) *h
                 
-                # volume of truncated cylinder 
-                A_1_o    = np.pi * inner_segment.height /2  *  inner_segment.width/2
-                A_2_o    = np.pi * outer_segment.height/2   *  outer_segment.width/2
-                volume_o = (1 /3) * ( A_1_o + A_2_o + np.sqrt(A_2_o*A_2_o)) *h
+            total_fuel_mass        += volume_i * fuel_tank.fuel.density  
+            segment_cg             = np.array([[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0, \
+                                         (inner_segment.height  + outer_segment.height)/2]])
+            segment_tank_moment    += segment_cg[0] * volume_i * fuel_tank.fuel.density  
+            tank_volume_i          += volume_i
+            tank_volume_o          += volume_o
 
-                A_1_i    = np.pi * inner_segment.height /2  *  inner_segment.width/2
-                A_2_i    = np.pi * outer_segment.height/2   *  outer_segment.width/2 
-                volume_i = (1 /3) * ( A_1_i + A_2_i + np.sqrt(A_1_i*A_2_i)) *h
-                  
-                total_fuel_mass        += volume_i * fuel_tank.fuel.density  
-                segment_cg             = np.array([[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0,  (inner_segment.height  + outer_segment.height)/2]])
-                segment_tank_moment    += segment_cg[0] * volume_i * fuel_tank.fuel.density  
-                tank_volume_i          += volume_i
-                tank_volume_o          += volume_o
-
-                if fuselage.lengths.total * inner_segment.percent_x_location < origin_x: 
-                    origin_x = fuselage.lengths.total * inner_segment.percent_x_location 
-                    origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
-                    origin_z = inner_segment.percent_z_location *fuselage.lengths.total                    
+            if fuselage.lengths.total * inner_segment.percent_x_location < origin_x: 
+                origin_x = fuselage.lengths.total * inner_segment.percent_x_location 
+                origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
+                origin_z = inner_segment.percent_z_location *fuselage.lengths.total                    
             
         fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)  
         fuel_tank.volume_properties.net_volume       = tank_volume_i
@@ -181,7 +193,19 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     
     if len(wing.segments) > 1: 
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_tags = [fuel_tank.segment.start_tag,fuel_tank.segment.end_tag]
+        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
+
+        # Collect all segment tags between start and end (inclusive)
+        collect = False
+        seg_tags = []
+        for segment in wing.segments:
+            if segment.tag == seg_bounds[0]:
+                collect = True
+            if collect:
+                seg_tags.append(segment.tag)
+            if segment.tag == seg_bounds[1]:
+                break
+        
         for i in range(len(seg_tags)-1):
             inner_segment = wing.segments[seg_tags[i]]
             outer_segment = wing.segments[seg_tags[i+1]]
@@ -206,7 +230,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             
     else:  
         # assume whole wing has fuel 
-        total_fuel_volume                                 = compute_wing_integral_tank_fuel_volume(wing) 
+        total_fuel_volume                                 = compute_wing_integral_tank_fuel_volume(wing,fuel_tank) 
         total_fuel_mass                                   = total_fuel_volume  * fuel_tank.fuel.density
         
         fuel_tank.volume_properties.internal_volume       = total_fuel_volume
@@ -224,7 +248,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         fuel_tank.fuel.volume_properties.net_volume = total_fuel_volume    
     return 
 
-def compute_wing_integral_tank_fuel_volume(wing):     
+def compute_wing_integral_tank_fuel_volume(wing,fuel_tank):     
     """
     Computes the fuel volume for an integral fuel tank in a single-segment wing.
 
@@ -274,15 +298,15 @@ def compute_wing_integral_tank_fuel_volume(wing):
         The position along the wing chord where the fuel tank begins and ends
     """
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing) 
+    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
     inner_front_rib_length  = wing.chords.root * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
     inner_rear_rib_length   = wing.chords.root * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl))
-    inner_wingbox_length    = wing.chords.root * (wing.fuel_tank.percent_chord_end_location -wing.fuel_tank.percent_chord_start_location)  
+    inner_wingbox_length    = wing.chords.root * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)  
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing) 
+    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
     outer_front_rib_length  = wing.chords.tip * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl))
     outer_rear_rib_length   = wing.chords.tip * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = wing.chords.tip * (wing.fuel_tank.percent_chord_end_location -wing.fuel_tank.percent_chord_start_location)   
+    outer_wingbox_length    = wing.chords.tip * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)   
 
     # volume of truncated prism
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 

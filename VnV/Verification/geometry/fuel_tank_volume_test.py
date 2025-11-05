@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
 from BWB         import vehicle_setup as BWB_vehicle_setup
 from Boeing_737  import vehicle_setup as B737_vehicle_setup
+from Navion      import vehicle_setup as Nav_vehicle_setup
 
 # ----------------------------------------------------------------------------------------------------------------------
 #   Main
@@ -30,12 +31,45 @@ from Boeing_737  import vehicle_setup as B737_vehicle_setup
 
 def main():
     integral_fuel_tank_volume_test()
-    non_integral_fuel_tank_volume_test()
+    single_wing_segment_integral_fuel_tank_volume_test()
+    # -------------------------------------------------------------
+    # Run test only if Python version >= 3.11
+    # Shapely < 2.1 (and Python < 3.11) may not include functions
+    # like 'maximum_inscribed_circle' required for this test.
+    # -------------------------------------------------------------
+    if sys.version_info >= (3, 11):
+        non_integral_fuel_tank_volume_test()
+    else:
+        print("Skipping non_integral_fuel_tank_volume_test(): Shapely lacks 'maximum_inscribed_circle' support for Python < 3.11.")
     return
+
+def single_wing_segment_integral_fuel_tank_volume_test():
+
+    fuel_volume_true = [0.12996673613905557]
+
+    vehicle = Nav_vehicle_setup()
+    
+    fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
+    fuel_line.fuel_tanks.clear()
+
+    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.horizontal_stabilizer)  
+    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fuel_line.fuel_tanks.append(wing_tank)
+    
+    configs = configs_setup(vehicle)
+    analyses = analyses_setup(configs)
+    mission = mission_setup(analyses)
+    geometry(mission)
+
+    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
+    print(error)
+    assert(abs(error)<1e-6)    
+    return
+
 
 def integral_fuel_tank_volume_test():
 
-    fuel_volume_true = [14.79946459921295]
+    fuel_volume_true = [14.79946459921295,73.1463880351615]
     vehicle = B737_vehicle_setup()
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
@@ -58,6 +92,22 @@ def integral_fuel_tank_volume_test():
     geometry(mission)
 
     error = (fuel_volume_true[0]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
+    print(error)
+    assert(abs(error)<1e-6)    
+
+    fus_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
+    fus_tank.fuel_selector_ratio  = 0.5
+    fus_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fus_tank.segment.start_tag    = 'segment_5'
+    fus_tank.segment.end_tag      = 'segment_8'
+    fuel_line.fuel_tanks.append(fus_tank)
+
+    configs = configs_setup(vehicle)
+    analyses = analyses_setup(configs)
+    mission = mission_setup(analyses)
+    geometry(mission)
+
+    error = (fuel_volume_true[1]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
     print(error)
     assert(abs(error)<1e-6)    
 
