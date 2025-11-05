@@ -104,10 +104,21 @@ def conventional_turboprop_aircraft_geometry_test(show_figure):
 
     # vehicle data
     vehicle  = ATR_72_vehicle_setup()
+    fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
+    fuel_line.fuel_tanks.clear()
+    
+    fuselage_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
+    fuselage_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
+    fuselage_tank.segment.percent_chord_start_location  = 0.1  
+    fuselage_tank.segment.percent_chord_end_location    = 0.55
+    fuel_line.fuel_tanks.append(fuselage_tank)
+
+
      
     plot_3d_vehicle(vehicle,
                     save_filename  = "ATR_72", 
                     show_figure=show_figure)
+
     return
 
 def orthogonal_view_test(show_figure):
