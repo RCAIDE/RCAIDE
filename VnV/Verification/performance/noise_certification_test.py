@@ -29,7 +29,8 @@ def main():
     approach_mission  = approach_mission_setup(analyses)
     takeoff_mission   = takeoff_mission_setup(analyses)  
      
-    results =  compute_noise_certification_data(approach_mission = approach_mission, takeoff_mission=takeoff_mission) 
+    results =  compute_noise_certification_data(approach_mission = approach_mission, takeoff_mission=takeoff_mission)
+    plot_noise_certification_contour(results)
 
     truth_approach_noise_2000m  = 114.75848514767164
     truth_flyover_noise_6000m   = 81.97075913496701
