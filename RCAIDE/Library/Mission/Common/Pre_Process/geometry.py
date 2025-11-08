@@ -67,7 +67,7 @@ def geometry(mission):
             for landing_gear in segment.analyses.geometry.vehicle.landing_gears:
                 landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
                 
-            for network in segment.analyses.geometry.vehicle.network: 
+            for network in segment.analyses.geometry.vehicle.networks: 
                 for propulsor in network.propulsor:
                     if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
                         propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
