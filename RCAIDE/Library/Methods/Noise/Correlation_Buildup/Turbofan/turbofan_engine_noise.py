@@ -107,8 +107,8 @@ def turbofan_engine_noise(microphone_locations, turbofan, aeroacoustic_data, seg
     RCAIDE.Library.Methods.Noise.Common.SPL_arithmetic
     """
     # unpack   
-    Velocity_primary        = turbofan.core_nozzle.noise_speed * np.ones_like(aeroacoustic_data.core_nozzle.exit_velocity)  # aeroacoustic_data.core_nozzle.exit_velocity or use mass flow rate 
-    Velocity_secondary      = turbofan.fan_nozzle.noise_speed * np.ones_like(aeroacoustic_data.core_nozzle.exit_velocity)  # aeroacoustic_data.fan_nozzle.exit_velocity or use mass flow rate 
+    Velocity_primary        = turbofan.core_nozzle.exit_velocity * np.ones_like(aeroacoustic_data.core_nozzle.exit_velocity)  # aeroacoustic_data.core_nozzle.exit_velocity or use mass flow rate 
+    Velocity_secondary      = turbofan.fan_nozzle.exit_velocity * np.ones_like(aeroacoustic_data.core_nozzle.exit_velocity)   # aeroacoustic_data.fan_nozzle.exit_velocity or use mass flow rate 
     N1                      = turbofan.fan.angular_velocity* np.ones_like(aeroacoustic_data.core_nozzle.exit_velocity)  / Units.rpm
 
     Temperature_secondary  = aeroacoustic_data.fan_nozzle.exit_stagnation_temperature[:,0] 
@@ -123,7 +123,7 @@ def turbofan_engine_noise(microphone_locations, turbofan, aeroacoustic_data, seg
     Diameter_primary       = turbofan.core_nozzle.diameter
     Diameter_secondary     = turbofan.fan_nozzle.diameter
     engine_height          = turbofan.origin[0][2]
-    EXA                    = turbofan.engine_length /  turbofan.engine_diameter 
+    EXA                    = turbofan.length /  turbofan.diameter 
     Plug_diameter          = turbofan.plug_diameter 
     Xe                     = turbofan.geometry_xe
     Ye                     = turbofan.geometry_ye

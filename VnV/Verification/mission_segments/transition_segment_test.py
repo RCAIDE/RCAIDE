@@ -382,7 +382,7 @@ def SR_mission_setup(analyses,vehicle):
     segment.acceleration                                  = 1.5
     segment.pitch_initial                                 = 0.0 * Units.degrees
     segment.pitch_final                                   = 2.  * Units.degrees 
-    segment.state.numerics.solver.type                              = "root_finder"
+    segment.state.numerics.solver.type                    = "root_finder"
 
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
