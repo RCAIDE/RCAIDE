@@ -368,15 +368,16 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
 
         fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
         fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]   
-    
-        if fuel_tank.fuel.mass_properties.mass != 0:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
-                raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-        else:
-            fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
-            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+
+        if not isinstance(fuel_tank, RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
+            if fuel_tank.fuel.mass_properties.mass != 0:
+                actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
+                if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+                    raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+            else:
+                fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
              
     return 
 

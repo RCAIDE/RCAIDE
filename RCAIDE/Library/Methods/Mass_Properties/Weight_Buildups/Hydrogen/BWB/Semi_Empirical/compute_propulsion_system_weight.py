@@ -101,6 +101,30 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
     output.number_of_fuel_tanks = number_of_tanks  
     return output
 
+def compute_fuel_system_weight(vehicle, NENG):
+    """ Calculates the weight of the fuel system based on Wess ****update l
+        Source:
+            The Flight Optimization System Weight Estimation Method
+
+        Inputs:
+            vehicle - data dictionary with vehicle properties                   [dimensionless]
+                -.design_mach_number: design mach number
+                -   [kg]
+
+        Outputs:
+            WFSYS: Fuel system weight                                       [kg]
+
+        Properties Used:
+            N/A
+    """
+    WFSYS = 0
+    
+    for fuel_tank in vehicle.networks.fuel.fuel_lines.fuel_line.fuel_tanks:
+        WFSYS += getattr(fuel_tank.mass_properties, 'insulation_mass')
+        WFSYS += getattr(fuel_tank.mass_properties, 'structural_mass')
+
+    return WFSYS *1.5
+
 
 def compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG):
     """ Calculates the nacelle weight based on the FLOPS method

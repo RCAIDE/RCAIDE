@@ -16,7 +16,7 @@ from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLO
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common                                   import compute_payload_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport                                import FLOPS 
 from RCAIDE.Library.Methods.Geometry.Planform                                                                     import segment_properties  
- 
+from .compute_propulsion_system_weight import compute_propulsion_system_weight
 from copy import deepcopy
 import numpy as np
 
@@ -184,13 +184,13 @@ def compute_operating_empty_weight(vehicle,settings=None):
         W_energy_network_total   = 0 
         # Fuel-Powered Propulsors  
 
-        W_propulsion                         = FLOPS.compute_propulsion_system_weight(vehicle, network)
+        W_propulsion                         = compute_propulsion_system_weight(vehicle, network)
         W_energy_network_total              += W_propulsion.W_prop 
         W_energy_network.W_engine           += W_propulsion.W_engine
         W_energy_network.W_thrust_reverser  += W_propulsion.W_thrust_reverser
         W_energy_network.W_engine_controls  += W_propulsion.W_engine_controls
         W_energy_network.W_starter          += W_propulsion.W_starter
-        W_energy_network.W_fuel_system      += 0 # Fix 
+        W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system
         W_energy_network.W_nacelle          += W_propulsion.W_nacelle * (1. - W_factors.nacelle)
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  

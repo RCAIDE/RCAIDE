@@ -194,7 +194,7 @@ def mass_properties_preprocess_routine(i, weights_analysis):
                 weights_analysis.vehicle.mass_properties.operating_empty = weights_analysis.vehicle.mass_properties.weight_breakdown.empty.total + \
                                                                            weights_analysis.vehicle.mass_properties.weight_breakdown.operational_items.total 
                                 
-                # Apply correction factors  if any
+                # Apply correction factors if any
                 apply_correction_factors(weights_analysis)
 
                 # Compute takeoff weight and max zero fuel weight

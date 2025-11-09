@@ -15,5 +15,6 @@ from .Electric_Transport            import Electric_Transport
 from .Electric_VTOL                 import Electric_VTOL 
 from .Hydrogen                      import Hydrogen
 from .Hydrogen_Transport            import Hydrogen_Transport
+from .Hydrogen_BWB                  import Hydrogen_BWB
 from .Hybrid                        import Hybrid
  

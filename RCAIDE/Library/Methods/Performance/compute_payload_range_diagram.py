@@ -106,10 +106,13 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
         # perform inital weights analysis
         segment.analyses.geometry.vehicle.mass_properties.takeoff = None
     mass_properties(mission)
+    for segment in  mission.segments:
+        # Clear geometry analysis
+        segment.analyses.geometry.vehicle.mass_properties.takeoff = None
+        segment.analyses.geometry.settings.compute_fuel_volume = False
+        segment.analyses.geometry.settings.update_max_fuel = False
     vehicle = mission.segments[initial_segment].analyses.weights.vehicle
     
-
-  
     [setattr(seg.analyses.aerodynamics.settings, "store_training_data", True) for seg in mission.segments]
     file_name = [(seg.analyses.aerodynamics.tag) for seg in mission.segments][0]
     for network in vehicle.networks:
