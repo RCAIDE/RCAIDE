@@ -210,7 +210,7 @@ def append_battery_segment_conditions(battery_module, segment, bus):
         n_total           = n_series*n_parallel
         
         initial_battery_energy                                              = segment.initial_battery_state_of_charge*battery_module.maximum_energy   
-        module_conditions.maximum_initial_energy  = initial_battery_energy
+        # module_conditions.maximum_initial_energy  = initial_battery_energy
         module_conditions.energy[:,0]                   = initial_battery_energy
         module_conditions.cell.energy[:,0]              = initial_battery_energy / n_total
         module_conditions.state_of_charge[:,0]          = segment.initial_battery_state_of_charge 
