@@ -66,9 +66,8 @@ class Air_Cooled(Component):
         Sets default values for the air cooling system attributes.
         """                 
         self.tag                                  = 'air_cooled_heat_acquisition'
-        self.cooling_fluid                        = RCAIDE.Library.Attributes.Gases.Air()  
-        self.cooling_fluid.flowspeed              = 0.01                                          
-        self.convective_heat_transfer_coefficient = 35.     
+        self.cooling_fluid                        = RCAIDE.Library.Attributes.Gases.Air()                                          
+        self.convective_heat_transfer_coefficient = 5    
         self.heat_transfer_efficiency             = 1.0      
    
     def append_operating_conditions(self, segment, coolant_line):

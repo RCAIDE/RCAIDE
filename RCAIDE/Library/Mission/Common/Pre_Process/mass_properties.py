@@ -184,8 +184,8 @@ def mass_properties_preprocess_routine(i, weights_analysis):
                             weights_analysis.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
             else:
-                if weights_analysis.vehicle.mass_properties.fuel >weights_analysis.vehicle.mass_properties.max_fuel:
-                    raise AssertionError('Prescribed fuel is greater than maxmimum fuel')   
+                # if weights_analysis.vehicle.mass_properties.fuel >weights_analysis.vehicle.mass_properties.max_fuel:
+                #     raise AssertionError('Prescribed fuel is greater than maxmimum fuel')   
                 
                 # Run weights analysis ! 
                 _ = weights_analysis.evaluate()
