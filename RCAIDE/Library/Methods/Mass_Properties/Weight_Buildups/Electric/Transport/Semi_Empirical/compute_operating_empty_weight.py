@@ -8,7 +8,6 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Data ,  Units 
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight 
-import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS as FLOPS
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Electric.Transport.Semi_Empirical.compute_operating_items_weight import compute_operating_items_weight
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Electric.Common as Electric_Common
 
@@ -103,6 +102,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
         Properties Used:
             N/A
     """
+    if settings.method == 'Raymer':
+        import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS as Method
+    elif settings.method == 'FLOPS':
+        import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.Raymer as Method
 
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
@@ -125,13 +128,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
             W_factors.systems      = 0.
     
     Wings = RCAIDE.Library.Components.Wings  
-
-    if vehicle.flight_envelope.design_mach_number  == None: # Added design mach number
-        raise ValueError("FLOPS requires a design mach number for sizing!")
-    if vehicle.flight_envelope.design_range  == None:
-        raise ValueError("FLOPS requires a design range for sizing!")
-    if vehicle.flight_envelope.design_cruise_altitude == None:
-        raise ValueError("FLOPS requires a cruise altitude for sizing!")
+    if settings.method == 'FLOPS':
+        if vehicle.flight_envelope.design_mach_number  == None: # Added design mach number
+            raise ValueError("FLOPS requires a design mach number for sizing!")
+        if vehicle.flight_envelope.design_range  == None:
+            raise ValueError("FLOPS requires a design range for sizing!")
+        if vehicle.flight_envelope.design_cruise_altitude == None:
+            raise ValueError("FLOPS requires a cruise altitude for sizing!")
     if not hasattr(vehicle, 'flap_ratio'):
         flap_ratio = 0.33
         for wing in vehicle.wings:
@@ -151,7 +154,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------         
     # System Weight
     ##------------------------------------------------------------------------------- 
-    W_systems = FLOPS.compute_systems_weight(vehicle) 
+    W_systems = Method.compute_systems_weight(vehicle) 
     for item in W_systems.keys():
         W_systems[item] *= (1. - W_factors.systems)
         
@@ -219,13 +222,14 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # Pod Weight Weight 
     ##-------------------------------------------------------------------------------         
     WPOD  = 0.0             
-    if settings.FLOPS.fidelity == 'Complex': 
-        NENG   = number_of_engines
-        WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
-                + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
-                + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
-        WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle* (1. - W_factors.nacelle)    / np.max(
-            [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
+    if settings.method == 'FLOPS':
+        if settings.FLOPS.fidelity == 'Complex': 
+            NENG   = number_of_engines
+            WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
+                    + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
+                    + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
+            WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle* (1. - W_factors.nacelle)    / np.max(
+                [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
  
     output.empty.propulsion.total               = W_energy_network_cumulative
     output.empty.propulsion.battery             = W_energy_network.W_battery
@@ -273,7 +277,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing): 
             fidelity = settings.FLOPS.fidelity
-            W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
+            W_wing = Method.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
 
             # Apply weight factor
             W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
@@ -282,7 +286,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
             wing.mass_properties.mass = W_wing
             W_main_wing += W_wing
         if isinstance(wing, Wings.Horizontal_Tail):
-            W_tail = FLOPS.compute_horizontal_tail_weight(vehicle, wing)
+            W_tail = Method.compute_horizontal_tail_weight(vehicle, wing)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
             # Apply weight factor
@@ -291,7 +295,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail):
-            W_tail = FLOPS.compute_vertical_tail_weight(vehicle, wing)
+            W_tail = Method.compute_vertical_tail_weight(vehicle, wing)
             # Apply weight factor
             W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
@@ -303,7 +307,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##------------------------------------------------------------------------------- 
     W_fuselage_total = 0
     for fuse in vehicle.fuselages:
-        W_fuselage = FLOPS.compute_fuselage_weight(vehicle)
+        W_fuselage = Method.compute_fuselage_weight(vehicle)
         W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
@@ -311,7 +315,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 
-    landing_gear = FLOPS.compute_landing_gear_weight(vehicle)
+    landing_gear = Method.compute_landing_gear_weight(vehicle)
     
     ##-------------------------------------------------------------------------------                 
     # Accumulate Structural Weight
