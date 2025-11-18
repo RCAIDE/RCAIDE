@@ -458,7 +458,6 @@ def segment_properties(wing):
             segment.aspect_ratio                   = (span_seg **2) / Sref_seg
             segment.areas.exposed                  = S_exposed_seg
             segment.areas.wetted                   = Swet_seg
-            # segment.fuel_tank.percent_span_location = 0.0
             total_wetted_area                      += Swet_seg
             
 

@@ -31,7 +31,6 @@ class First(Component):
         self.aile_width                          = 18 *  Units.inches          
         self.galley_lavatory_percent_x_locations = []      
         self.emergency_exit_percent_x_locations  = []
-        self.type_A_exit_percent_x_locations     = [] 
-        self.offset_y                            = 0.0
+        self.type_A_exit_percent_x_locations     = []  
                
      

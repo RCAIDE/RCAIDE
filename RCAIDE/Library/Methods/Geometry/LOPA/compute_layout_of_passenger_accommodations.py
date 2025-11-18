@@ -152,7 +152,7 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
         
         seat_data[:, 3] += cabin.width / 2
         seat_data  = update_seat_map_layout_using_cabin_taper(seat_data,cabin) 
-        seat_data[:, 3] += side_cabin_offset  
+        seat_data[:, 3] += side_cabin_offset  +  cabin_class.origin[0][1]
         
         # make copy about center
         seat_data_        = deepcopy(seat_data)
