@@ -578,8 +578,8 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     turbofan1                                    = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan()   
     turbofan1.origin                             = [[17.818, 10.000,-0.953 ]]
     turbofan1.tag                                = 'propulsor_1'    
-    turbofan1.engine_length                      = 4.928                      
-    turbofan1.engine_diameter                    = 2.822                  
+    turbofan1.length                             = 4.928                      
+    turbofan1.diameter                           = 2.822                  
     turbofan1.bypass_ratio                       = 9.1                        
     turbofan1.design_altitude                    = 36000*Units.ft             
     turbofan1.design_mach_number                 = 0.85                     

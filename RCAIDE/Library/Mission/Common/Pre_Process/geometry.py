@@ -66,6 +66,19 @@ def geometry(mission):
                     control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
             for landing_gear in segment.analyses.geometry.vehicle.landing_gears:
                 landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
+                
+            for network in segment.analyses.geometry.vehicle.networks: 
+                for propulsor in network.propulsor:
+                    if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
+                        propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
+                        propulsor.fan.angular_velocity      = propulsor_0.fan.angular_velocity          
+                        propulsor.fan.rotation              = propulsor_0.fan.rotation           
+                        propulsor.fan_nozzle.noise_speed    = propulsor_0.fan_nozzle.noise_speed 
+                        propulsor.core_nozzle.noise_speed   = propulsor_0.core_nozzle.noise_speed
+                        
+                    if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
+                        propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
+                        propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command                 
                                   
     return 
         

@@ -69,9 +69,9 @@ def tiltwing_transition_test(update_regression_values):
             print(val)
     
     # Truth values 
-    hover_throttle_truth              = 0.5994692986064557
-    vertical_climb_1_throttle_truth   = 0.6187135868082909
-    vertical_descent_throttle_truth   = 0.5925255481996211
+    hover_throttle_truth              = 0.5962569361317036
+    vertical_climb_1_throttle_truth   = 0.6160323373581633
+    vertical_descent_throttle_truth   = 0.5891369096688992
     
     # Store errors 
     error = Data() 
@@ -382,7 +382,7 @@ def SR_mission_setup(analyses,vehicle):
     segment.acceleration                                  = 1.5
     segment.pitch_initial                                 = 0.0 * Units.degrees
     segment.pitch_final                                   = 2.  * Units.degrees 
-    segment.state.numerics.solver.type                              = "root_finder"
+    segment.state.numerics.solver.type                    = "root_finder"
 
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  

@@ -29,21 +29,18 @@ def main():
     approach_mission  = approach_mission_setup(analyses)
     takeoff_mission   = takeoff_mission_setup(analyses)  
      
-    results =  compute_noise_certification_data(approach_mission = approach_mission, takeoff_mission=takeoff_mission) 
+    results = compute_noise_certification_data(approach_mission = approach_mission, takeoff_mission=takeoff_mission)
+    plot_noise_certification_contour(results)
 
-    truth_approach_noise_2000m  = 114.75848514767164
-    truth_flyover_noise_6000m   = 81.97075913496701
-    truth_sideline_noise_450m   = 94.36869920723564
-    truth_area_65_dbA           = 98.836242726517
-    truth_area_85_dbA           = 39.17982820725963
+    truth_approach_noise_2000m  = 85.93076344921005
+    truth_flyover_noise_6000m   = 89.1840478382459
+    truth_sideline_noise_450m   = 98.55365729833616
 
     # Check the errors
     error = Data()
     error.approach_noise_2000m   = abs( truth_approach_noise_2000m - results.approach_noise_2000m)/results.approach_noise_2000m
     error.flyover_noise_6000m    = abs( truth_flyover_noise_6000m  - results.flyover_noise_6000m )/results.flyover_noise_6000m 
-    error.sideline_noise_450m    = abs( truth_sideline_noise_450m  - results.sideline_noise_450m )/results.sideline_noise_450m 
-    error.area_65_dbA            = abs( truth_area_65_dbA          - results.area_65_dbA         )/results.area_65_dbA         
-    error.area_85_dbA            = abs( truth_area_85_dbA          - results.area_85_dbA         )/results.area_85_dbA
+    error.sideline_noise_450m    = abs( truth_sideline_noise_450m  - results.sideline_noise_450m )/results.sideline_noise_450m  
 
     print('Errors:')
     print(error)

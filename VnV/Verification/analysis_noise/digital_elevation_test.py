@@ -9,6 +9,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units , Data 
 from RCAIDE.Library.Plots import *
+from RCAIDE.Library.Methods.Noise.Common import post_process_noise_data     
 
 # Python imports
 import matplotlib.pyplot as plt  
@@ -55,7 +56,7 @@ def main():
     plot_battery_pack_conditions(results) 
 
     X57_SPL        = np.max(results.segments.cruise.conditions.noise.hemisphere_SPL_dBA) 
-    X57_SPL_true   = 65.90063815104601
+    X57_SPL_true   = 80.32077228241845
     X57_diff_SPL   = np.abs(X57_SPL - X57_SPL_true)
     print('Error: ',X57_diff_SPL)
     assert np.abs((X57_SPL - X57_SPL_true)/X57_SPL_true) < 1e-3 

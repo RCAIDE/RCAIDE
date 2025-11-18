@@ -420,8 +420,8 @@ def vehicle_setup():
     turbofan1                                    = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan()  
     turbofan1.origin                             = [[30, 3, 3]] 
     turbofan1.tag                                = 'propulsor_1'    
-    turbofan1.engine_length                      = 3.5                   
-    turbofan1.engine_diameter                    = 2.6  # 3.556                     
+    turbofan1.length                             = 3.5                   
+    turbofan1.diameter                           = 2.6                     
     turbofan1.bypass_ratio                       = 9.1                        
     turbofan1.design_altitude                    = 40000*Units.ft             
     turbofan1.design_mach_number                 = 0.7                       
