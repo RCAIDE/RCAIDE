@@ -161,8 +161,7 @@ def vehicle_setup():
     segment.percent_span_location        = 0.961
     segment.root_chord_percent           = 0.25 
     segment.dihedral_outboard            = 70. * Units.degrees
-    segment.sweeps.quarter_chord         = 40. * Units.degrees 
-    segment.has_fuel_tank                = True
+    segment.sweeps.quarter_chord         = 40. * Units.degrees  
     mid_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     mid_airfoil.coordinate_file          = rel_path + 'Airfoils' + separator + 'transonic_wing_outboard_section_airfoil.txt'
     segment.append_airfoil(mid_airfoil)

@@ -211,10 +211,7 @@ def vehicle_setup():
     segment.root_chord_percent            = 0.636
     segment.dihedral_outboard             = 15 *  Units.degrees  
     segment.thickness_to_chord            = 0.1
-    segment.sweeps.quarter_chord           = 25*Units.degrees
-    segment.has_fuel_tank                 = True 
-    segment.fuel_tank.percent_chord_start = 0.2  
-    segment.fuel_tank.percent_chord_end   = 0.6   
+    segment.sweeps.quarter_chord          = 25*Units.degrees  
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
