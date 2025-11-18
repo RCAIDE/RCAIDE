@@ -262,7 +262,7 @@ def plot_3d_vehicle(vehicle,
 
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
                         segment_list = [] 
-                        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
+                        seg_bounds =   fuel_tank.bounding_segment_tags 
                         # Collect all segment tags between start and end (inclusive)
                         collect = False
                         seg_tags = []
@@ -298,7 +298,7 @@ def plot_3d_vehicle(vehicle,
                     fuselage = geometry.fuselages[fuel_tank.fuselage_tag]
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
                         
-                        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
+                        seg_bounds =   fuel_tank.bounding_segment_tags 
                         # Collect all segment tags between start and end (inclusive)
                         collect = False
                         seg_tags = []

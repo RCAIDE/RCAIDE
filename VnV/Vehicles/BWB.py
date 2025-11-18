@@ -95,8 +95,8 @@ def vehicle_setup():
     wing.aft_center_body.length  = 9.021    
     wing.aft_center_body.taper   = 0.85
     wing.total_length            = 32.4
-    wing.twists.outwash           = -2.5*Units.degree
-    wing.twists.root             = 2.15*Units.degree    
+    wing.twists.root             = 0.0 
+    wing.twists.tip              = 0.0  
     wing.origin                  = [[0.0,  0.0,  0.0]] 
     wing.aerodynamic_center      = [17.43511294,  0.        ,  1.08931241] 
     wing.vertical                = False
@@ -154,7 +154,6 @@ def vehicle_setup():
     segment.dihedral_outboard             = 2  *  Units.degrees
     #segment.thickness_to_chord            = 0.11
     segment.sweeps.quarter_chord          = 10.037 *  Units.degrees 
-    segment.twist                         = 0.027723464337147424
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file               = rel_path + 's1016.txt' 
     segment.append_airfoil(airfoil )
@@ -169,7 +168,6 @@ def vehicle_setup():
     segment.root_chord_percent            = 0.9923542105
     segment.dihedral_outboard             = 5 *  Units.degrees  
     segment.thickness_to_chord            = 0.16
-    segment.twist                         = 0.027723464337147424
     segment.sweeps.quarter_chord           = 46.9023 *  Units.degrees  
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file               = rel_path +  's1016.txt'
@@ -185,7 +183,6 @@ def vehicle_setup():
     segment.root_chord_percent            = 0.9375928
     segment.dihedral_outboard             = 10.5 *  Units.degrees  
     segment.thickness_to_chord            = 0.16
-    segment.twist                         = 0.027723464337147424
     segment.sweeps.quarter_chord          = 51.027  *  Units.degrees  
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file               = rel_path +  's1016.txt'
@@ -199,7 +196,6 @@ def vehicle_setup():
     segment.percent_span_location         = ((6.172 * 2)/wing.spans.projected)   
     segment.root_chord_percent            = 0.718797
     segment.dihedral_outboard             = 10 *  Units.degrees  
-    segment.twist                         = 0.027723464337147424
     segment.thickness_to_chord            = 0.11
     segment.sweeps.quarter_chord          = 45  *  Units.degrees   
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
@@ -213,10 +209,12 @@ def vehicle_setup():
     segment.twist                         = 0.0   
     segment.percent_span_location         = 0.224625
     segment.root_chord_percent            = 0.636
-    segment.twist                         = 0.027723464337147424
     segment.dihedral_outboard             = 15 *  Units.degrees  
     segment.thickness_to_chord            = 0.1
     segment.sweeps.quarter_chord           = 25*Units.degrees
+    segment.has_fuel_tank                 = True 
+    segment.fuel_tank.percent_chord_start = 0.2  
+    segment.fuel_tank.percent_chord_end   = 0.6   
     airfoil                               = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file               = rel_path +  's1016.txt'
     segment.append_airfoil(airfoil )
@@ -420,8 +418,8 @@ def vehicle_setup():
     turbofan1                                    = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan()  
     turbofan1.origin                             = [[30, 3, 3]] 
     turbofan1.tag                                = 'propulsor_1'    
-    turbofan1.length                             = 3.5                   
-    turbofan1.diameter                           = 2.6                     
+    turbofan1.engine_length                      = 3.5                   
+    turbofan1.engine_diameter                    = 2.6  # 3.556                     
     turbofan1.bypass_ratio                       = 9.1                        
     turbofan1.design_altitude                    = 40000*Units.ft             
     turbofan1.design_mach_number                 = 0.7                       

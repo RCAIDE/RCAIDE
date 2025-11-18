@@ -182,8 +182,8 @@ class Wing(Component):
         self.total_length                           = 0.0
              
         self.fuel_tank                              = Data()      
-        self.fuel_tank.percent_chord_start_location = 0.1  
-        self.fuel_tank.percent_chord_end_location   = 0.6
+        self.fuel_tank.percent_chord_start = 0.1  
+        self.fuel_tank.percent_chord_end   = 0.6
         self.fuel_tank.percent_span_location        = 0.0
         self.has_fuel_tank                          = False
              

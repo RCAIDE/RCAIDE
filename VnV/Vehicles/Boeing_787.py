@@ -696,39 +696,15 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
     # fuel tank
-    fuel_tank_1                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_1.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_1.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_1.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
-    fuel_tank_1.segment.start_tag    = 'root'
-    fuel_tank_1.segment.end_tag      = 'yehudi'
-
+    fuel_tank_1                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel_tank_1.fuel                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
+    fuel_tank_1.bounding_segment_tags  = ['root', 'section_2']  
     fuel_line.fuel_tanks.append(fuel_tank_1)
-
-    # fuel tank
-    fuel_tank_2                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_2.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_2.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_2.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_2.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center   
-    fuel_tank_2.segment.start_tag    = 'root'
-    fuel_tank_2.segment.end_tag      = 'yehudi'
-    fuel_line.fuel_tanks.append(fuel_tank_2)
-
-    # fuel tank
-    fuel_tank_3                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_3.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_3.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_3.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_3.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
-    fuel_tank_3.segment.start_tag    = 'root'
-    fuel_tank_3.segment.end_tag      = 'yehudi'
-    fuel_line.fuel_tanks.append(fuel_tank_3)
+ 
 
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to fuel line to network      
-    fuel_line.assigned_propulsors =  [['propulsor_1', 'propulsor_2']]
+    fuel_line.assigned_propulsors     =  [['propulsor_1', 'propulsor_2']]
 
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Append fuel line to fuel line to network      

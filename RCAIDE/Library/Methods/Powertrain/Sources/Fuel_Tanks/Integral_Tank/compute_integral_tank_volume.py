@@ -77,8 +77,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
 
     if len(fuselage.segments) > 1:
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
-
+        seg_bounds =  fuel_tank.bounding_segment_tags 
         # Collect all segment tags between start and end (inclusive)
         collect = False
         seg_tags = []
@@ -122,7 +121,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     
         if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+            if actual_fuel_volume > fuel_tank.volume_properties.net_volume:
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
             fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)    
@@ -193,7 +192,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     
     if len(wing.segments) > 1: 
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_bounds = [fuel_tank.segment.start_tag, fuel_tank.segment.end_tag]
+        seg_bounds =   fuel_tank.bounding_segment_tags  
 
         # Collect all segment tags between start and end (inclusive)
         collect = False
@@ -223,7 +222,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
          
         if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+            if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
                 raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         else:
             fuel_tank.fuel.mass_properties.mass = float(total_fuel_volume *  fuel_tank.fuel.density)  
@@ -240,7 +239,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
 
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8:
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume:
             raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
     else:
@@ -301,12 +300,12 @@ def compute_wing_integral_tank_fuel_volume(wing,fuel_tank):
     inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
     inner_front_rib_length  = wing.chords.root * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
     inner_rear_rib_length   = wing.chords.root * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl))
-    inner_wingbox_length    = wing.chords.root * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)  
+    inner_wingbox_length    = wing.chords.root * (fuel_tank.percent_chord_end -fuel_tank.percent_chord_start)  
 
     outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
     outer_front_rib_length  = wing.chords.tip * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl))
     outer_rear_rib_length   = wing.chords.tip * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = wing.chords.tip * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)   
+    outer_wingbox_length    = wing.chords.tip * (fuel_tank.percent_chord_end -fuel_tank.percent_chord_start)   
 
     # volume of truncated prism
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
@@ -374,13 +373,13 @@ def compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_se
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)  
+    inner_wingbox_length    = inner_segment_chord * (fuel_tank.percent_chord_end -fuel_tank.percent_chord_start)  
 
     outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank)
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl) )
     outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl) )
-    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)  
+    outer_wingbox_length    = outer_segment_chord * (fuel_tank.percent_chord_end -fuel_tank.percent_chord_start)  
 
     # volume of truncated prism
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
@@ -454,8 +453,8 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank):
         geometry = compute_naca_4series('0012')
 
     clearance = 1.5E-2
-    front_rib_nondim_x       = fuel_tank.segment.percent_chord_start_location   
-    rear_rib_nondim_x        = fuel_tank.segment.percent_chord_end_location  
+    front_rib_nondim_x       = fuel_tank.percent_chord_start   
+    rear_rib_nondim_x        = fuel_tank.percent_chord_end  
     f_upper            = interp1d(geometry.x_upper_surface, geometry.y_upper_surface, kind='linear')
     f_lower            = interp1d(geometry.x_lower_surface, geometry.y_lower_surface, kind='linear')
 

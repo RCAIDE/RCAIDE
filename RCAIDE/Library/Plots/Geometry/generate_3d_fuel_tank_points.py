@@ -82,8 +82,8 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
             front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
-            fs = fuel_tank.segment.percent_chord_start_location
-            rs = fuel_tank.segment.percent_chord_end_location  
+            fs = fuel_tank.percent_chord_start
+            rs = fuel_tank.percent_chord_end  
             x_coordinates =  np.array([rs, rs, fs, fs, rs])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
@@ -142,8 +142,8 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         translation      = np.zeros((dim,n_points, 3,1))
     
         front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
-        fs = fuel_tank.segment.percent_chord_start_location
-        rs = fuel_tank.segment.percent_chord_end_location  
+        fs = fuel_tank.percent_chord_start
+        rs = fuel_tank.percent_chord_end  
         x_coordinates =  np.array([rs, rs, fs, fs, rs])
         y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ]) 
             

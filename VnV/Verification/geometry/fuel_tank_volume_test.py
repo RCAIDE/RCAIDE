@@ -135,11 +135,10 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_1.fuel                            = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()  
     fuel_tank_1.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
-    fuel_tank_1.fuel.gravimetric_efficiency     = 0.5
-    fuel_tank_1.segment.start_tag                      = 'fuel_wall'
-    fuel_tank_1.segment.end_tag                        = 'wing_section_1'
-    fuel_tank_1.segment.percent_chord_start_location  = 0.2
-    fuel_tank_1.segment.percent_chord_end_location    = 0.6
+    fuel_tank_1.fuel.gravimetric_efficiency     = 0.5 
+    fuel_tank_1.bounding_segment_tags           = ['fuel_wall', 'section_2']       
+    fuel_tank_1.percent_chord_start             = 0.2
+    fuel_tank_1.percent_chord_end               = 0.6
     fuel_tank_1.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
      # fuel tank
@@ -150,10 +149,9 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_2.outer_length                    = 1
     fuel_tank_2.outer_width                     = 1
     fuel_tank_2.outer_height                    = 1
-    fuel_tank_2.segment.start_tag                      = 'fuel_wall'
-    fuel_tank_2.segment.end_tag                        = 'wing_section_1'
-    fuel_tank_2.segment.percent_chord_start_location  = 0.2
-    fuel_tank_2.segment.percent_chord_end_location    = 0.6
+    fuel_tank_2.bounding_segment_tags           = ['fuel_wall', 'wing_section_2']  
+    fuel_tank_2.percent_chord_start             = 0.2
+    fuel_tank_2.percent_chord_end               = 0.6
     fuel_tank_2.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_2)
 
@@ -176,10 +174,9 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_3.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_3.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_3.wall_thickness                  = 2*Units.inches
-    fuel_tank_3.segment.start_tag                     = 'fuel_wall'
-    fuel_tank_3.segment.end_tag                       = 'wing_section_1'
-    fuel_tank_3.segment.percent_chord_start_location  = 0.2
-    fuel_tank_3.segment.percent_chord_end_location    = 0.6
+    fuel_tank_3.bounding_segment_tags           = ['fuel_wall', 'wing_section_2']      
+    fuel_tank_3.percent_chord_start              = 0.2
+    fuel_tank_3.percent_chord_end                = 0.6
     fuel_line.fuel_tanks.append(fuel_tank_3)
 
 
@@ -193,7 +190,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
     fuel_tank_4.aft_tank_root_chord_bounds    = [0.65,0.9]
-    fuel_tank_4.segment.end_tag               = 'fuel_wall' 
+    fuel_tank_4.bounding_segment_tags         = ['fuel_wall', 'wing_section_2']  
     fuel_tank_4.radial_offset                 = 0.2
 
     fuel_line.fuel_tanks.append(fuel_tank_4)
@@ -208,7 +205,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4a.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4a.bwb_aft_tank                  = True
     fuel_tank_4a.aft_tank_root_chord_bounds    = [0.65,0.9]
-    fuel_tank_4a.segment.end_tag               = 'fuel_wall' 
+    fuel_tank_4a.bounding_segment_tags         = ['fuel_wall', 'wing_section_2']  
     fuel_tank_4a.radial_offset                 = 0.2
     fuel_line.fuel_tanks.append(fuel_tank_4a)
 
@@ -221,8 +218,8 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_5.xz_plane_symmetric            = False
     fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_5.bwb_aft_tank                  = True
-    fuel_tank_5.aft_tank_root_chord_bounds    = [0.65,0.9]
-    fuel_tank_5.segment.end_tag               = 'fuel_wall' 
+    fuel_tank_5.aft_tank_root_chord_bounds    = [0.65,0.9] 
+    fuel_tank_5.bounding_segment_tags         = ['fuel_wall', 'wing_section_2']  
     fuel_tank_5.radial_offset                 = 0.5
     fuel_tank_5.fuel.mass_properties.mass     = 0.1
 
@@ -237,8 +234,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_6.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_6.wall_thickness                  = 2*Units.inches
     fuel_tank_6.fuel.mass_properties.mass       = 0.1
-    fuel_tank_6.segment.start_tag               = 'fuel_wall'
-    fuel_tank_6.segment.end_tag                 = 'wing_section_1'
+    fuel_tank_6.bounding_segment_tags         = ['fuel_wall', 'wing_section_2']   
     fuel_line.fuel_tanks.append(fuel_tank_6)
  
     

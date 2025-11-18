@@ -36,7 +36,7 @@ def main():
                     show_figure                 =False)
 
     Cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
-    Cruise_CL_true   = 0.38477464749834034
+    Cruise_CL_true   = 0.3841007724387933
     Cruise_CL_diff   = np.abs(Cruise_CL - Cruise_CL_true)
     print('Error: ',Cruise_CL_diff)
     assert np.abs((Cruise_CL - Cruise_CL_true)/Cruise_CL_true) < 1e-6
@@ -76,7 +76,7 @@ def base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.vehicle = vehicle
     geometry.settings.update_fuselage_properties = True
-    geometry.settings.update_fuel_volume         = False
+    geometry.settings.update_fuel_volume         = True
     analyses.append(geometry)
     
 
