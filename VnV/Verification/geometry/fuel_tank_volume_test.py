@@ -84,9 +84,8 @@ def integral_fuel_tank_volume_test():
      
     wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
     wing_tank.fuel_selector_ratio  = 0.5
-    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    wing_tank.segment.start_tag    = 'root'
-    wing_tank.segment.end_tag      = 'yehudi'
+    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A()  
+    wing_tank.bounding_segment_tags = ['root', 'section_2']  
     fuel_line.fuel_tanks.append(wing_tank)
 
     configs = configs_setup(vehicle)
@@ -100,9 +99,8 @@ def integral_fuel_tank_volume_test():
 
     fus_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
     fus_tank.fuel_selector_ratio  = 0.5
-    fus_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    fus_tank.segment.start_tag    = 'segment_5'
-    fus_tank.segment.end_tag      = 'segment_8'
+    fus_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A()  
+    fus_tank.bounding_segment_tags = ['segment_5', 'segment_9']  
     fuel_line.fuel_tanks.append(fus_tank)
 
     configs = configs_setup(vehicle)

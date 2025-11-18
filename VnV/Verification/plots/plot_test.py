@@ -210,11 +210,10 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()  
     fuel_tank_1.material                               = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_1.insulation_material                    = RCAIDE.Library.Attributes.Materials.Vacuum_Jacketed_Multilayer_Insulation()
-    fuel_tank_1.fuel.gravimetric_efficiency            = 0.5
-    fuel_tank_1.segment.start_tag                      = 'fuel_wall'
-    fuel_tank_1.segment.end_tag                        = 'wing_section_1'
-    fuel_tank_1.percent_chord_start   = 0.1  
-    fuel_tank_1.percent_chord_end     = 0.55
+    fuel_tank_1.fuel.gravimetric_efficiency            = 0.5 
+    fuel_tank_1.bounding_segment_tags                  = ['fuel_wall', 'wing_section_2']  
+    fuel_tank_1.percent_chord_start                    = 0.1  
+    fuel_tank_1.percent_chord_end                      = 0.55
     fuel_tank_1.wall_thickness                         = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
 
