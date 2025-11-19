@@ -141,7 +141,7 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         section_twist[:, :, 2, 2] = 1
         translation      = np.zeros((dim,n_points, 3,1))
     
-        front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(wing)
+        front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(wing, fuel_tank)
         fs = wing.fuel_tank.percent_chord_start_location
         rs = wing.fuel_tank.percent_chord_end_location  
         x_coordinates =  np.array([rs, rs, fs, fs, rs])
