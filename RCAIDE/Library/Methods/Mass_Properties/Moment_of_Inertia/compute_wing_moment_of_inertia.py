@@ -56,7 +56,7 @@ def compute_wing_moment_of_inertia(wing,mass = 0, center_of_gravity = [[0, 0, 0]
     b           = wing.spans.total / 2 # half-span of the wing
     A           = wing.sweeps.quarter_chord # sweep angle (located at quarter chord)
     dihedral    = wing.dihedral # Wing dihedral
-    origin_wing = wing.origin + np.array([[cr / 4], [0], [0]]) # moves the origin of the wing to the quarter chord of the root airfoil.
+    origin_wing = wing.origin + np.array([[cr / 4, 0, 0]]) # moves the origin of the wing to the quarter chord of the root airfoil.
     
     if wing.xz_plane_symmetric: # Splits the wing weight between the two wings if the wing is symmetric.
         m_wing = mass * 0.5
@@ -70,7 +70,7 @@ def compute_wing_moment_of_inertia(wing,mass = 0, center_of_gravity = [[0, 0, 0]
         b           = b * 0.8 # Wing fuel tank is 80% span of the entire wing
         ct          = (0.8 * (ct - cr) + cr)* 0.6 # Wing fuel tank has 60% of the chord 80% down the wing. Assumes linear relation ebtween cr and ct 
         cr          = cr * 0.6 # Wing tank has 60% of the chord of the root chord
-        origin_wing = origin_wing + np.array([[cr * 0.0125], [0], [0]])  # wing fuel tank is set about 10% back in the wing. This is a correction that considers the quarter chord location of the main wing and the smaller section. 
+        origin_wing = origin_wing + np.array([[cr * 0.0125, 0, 0]])  # wing fuel tank is set about 10% back in the wing. This is a correction that considers the quarter chord location of the main wing and the smaller section. 
     
     # ----------------------------------------------------------------------------------------------------------------------
     # Constants. These values and equations are defined in Moulton and Hunsaker [1]
@@ -160,7 +160,7 @@ def compute_wing_moment_of_inertia(wing,mass = 0, center_of_gravity = [[0, 0, 0]
     # Global Coordinate System
     # ----------------------------------------------------------------------------------------------------------------------
     s        = np.array(center_of_gravity) - np.array(origin_wing) # Vector for the parallel axis theorem
-    I_global = np.array(I_RCAIDE) + m_wing * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s * np.transpose(s))
+    I_global = np.array(I_RCAIDE) + m_wing * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))
     
     return I_global,  mass
 
