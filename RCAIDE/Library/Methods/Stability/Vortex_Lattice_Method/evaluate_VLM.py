@@ -46,8 +46,11 @@ def evaluate(state,settings,vehicle):
     # --------------------------------------------------------------------------------------------      
     # Vehicle Properties 
     # --------------------------------------------------------------------------------------------      
-    c_ref         = vehicle.reference_chord   
-    NP            = vehicle.neutral_point
+    c_ref         = vehicle.reference_chord  
+    if settings.compute_neutral_point: 
+        NP            = vehicle.neutral_point
+    else:
+        NP = 0
     
     # --------------------------------------------------------------------------------------------      
     # Store Results 
