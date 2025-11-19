@@ -70,7 +70,7 @@ class Fuel_Tank(Component):
         self.outer_height               = 0.0
         self.inner_diameter             = 0.0
         self.outer_diameter             = 0.0 
-        self.bounding_segment_tags      = None
+        self.bounding_segment_tags      = [None, None] # [starting segment, ending segment]
         self.percent_chord_start        = 0.1  
         self.percent_chord_end          = 0.7  
  

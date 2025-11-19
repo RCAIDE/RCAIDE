@@ -214,7 +214,6 @@ def wing_planform(wing):
         wing.aerodynamic_center              = aerodynamic_center 
         wing.total_length                    = total_length  
         wing.aspect_ratio                    = AR
-        wing.fuel_tank.percent_span_location = 0
             
         # update remainder segment properties
         segment_properties(wing)

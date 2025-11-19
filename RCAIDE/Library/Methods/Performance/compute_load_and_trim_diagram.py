@@ -135,8 +135,7 @@ def compute_load_and_trim_diagram(vehicle, number_of_points = 5, aerodynamic_ana
     vehicle_0         = mission.segments[0].analyses.weights.vehicle
     x_cg_0            = mission.segments[0].analyses.weights.vehicle.mass_properties.center_of_gravity
     weight_breakdown  = mission.segments[0].analyses.weights.vehicle.mass_properties.weight_breakdown 
-    neutral_point_0   = mission.segments[0].analyses.stability.vehicle.neutral_point
-                        
+    neutral_point_0   = mission.segments[0].analyses.stability.vehicle.neutral_point 
      
     CARGO =  weight_breakdown.payload.cargo 
     BAG   =  weight_breakdown.payload.baggage 

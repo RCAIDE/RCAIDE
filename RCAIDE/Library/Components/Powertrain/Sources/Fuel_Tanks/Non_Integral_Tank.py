@@ -170,11 +170,8 @@ class Non_Integral_Tank(Fuel_Tank):
         """
         if self.wing_tag is not None and self.bwb_aft_tank is False:
             if self.geometry_type == 'cylindrical':
-                    wing = wings[self.wing_tag]  
-                    compute_wing_non_integral_tank_volume(self,wing,fuel_tanks)
-        # elif self.fuselage_tag is not None: 
-        #     fuselage = fuselages[self.fuselage_tag]  
-        #     compute_fuselage_tank_volume(self,fuselage)
+                wing = wings[self.wing_tag]  
+                compute_wing_non_integral_tank_volume(self,wing,fuel_tanks) 
         elif self.bwb_aft_tank is True:
             if self.bwb_aft_tank == True:
                 wing = wings[self.wing_tag]  

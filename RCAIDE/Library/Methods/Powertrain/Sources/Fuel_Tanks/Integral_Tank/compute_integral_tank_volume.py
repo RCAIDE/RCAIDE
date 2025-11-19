@@ -73,63 +73,67 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     tank_volume_i    = 0
     origin_x         = 100
     origin_y         = 0
-    origin_z         = 0
-
-    if len(fuselage.segments) > 1:
-        segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_bounds =  fuel_tank.bounding_segment_tags 
-        # Collect all segment tags between start and end (inclusive)
-        collect = False
-        seg_tags = []
-        for segment in fuselage.segments:
-            if segment.tag == seg_bounds[0]:
-                collect = True
-            if collect:
-                seg_tags.append(segment.tag)
-            if segment.tag == seg_bounds[1]:
-                break
-        
-        for i in range(len(seg_tags)-1):
-            inner_segment = fuselage.segments[seg_tags[i]]
-            outer_segment = fuselage.segments[seg_tags[i+1]]
-        
-            h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location) 
-            # volume of truncated cylinder 
-            A_1_o    = np.pi * inner_segment.height /2  *  inner_segment.width/2
-            A_2_o    = np.pi * outer_segment.height/2   *  outer_segment.width/2
-            volume_o = (1 /3) * ( A_1_o + A_2_o + np.sqrt(A_2_o*A_2_o)) *h
-
-            A_1_i    = np.pi * inner_segment.height /2  *  inner_segment.width/2
-            A_2_i    = np.pi * outer_segment.height/2   *  outer_segment.width/2 
-            volume_i = (1 /3) * ( A_1_i + A_2_i + np.sqrt(A_1_i*A_2_i)) *h
-                
-            total_fuel_mass        += volume_i * fuel_tank.fuel.density  
-            segment_cg             = np.array([[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0, \
-                                         (inner_segment.height  + outer_segment.height)/2]])
-            segment_tank_moment    += segment_cg[0] * volume_i * fuel_tank.fuel.density  
-            tank_volume_i          += volume_i
-            tank_volume_o          += volume_o
-
-            if fuselage.lengths.total * inner_segment.percent_x_location < origin_x: 
-                origin_x = fuselage.lengths.total * inner_segment.percent_x_location 
-                origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
-                origin_z = inner_segment.percent_z_location *fuselage.lengths.total                    
+    origin_z         = 0 
+       
+    if fuel_tank.bounding_segment_tags[0] == None or fuel_tank.bounding_segment_tags[1] == None:
+        pass 
+    else:
+        if len(fuselage.segments) > 1:
+            segment_tank_moment = np.array([0.0, 0.0, 0.0])
+            seg_bounds          = fuel_tank.bounding_segment_tags  
+            collect             = False
+            seg_tags            = []
+            for segment in fuselage.segments:
+                if segment.tag == seg_bounds[0]:
+                    collect = True
+                if collect:
+                    seg_tags.append(segment.tag)
+                if segment.tag == seg_bounds[1]:
+                    seg_tags.append(segment.tag)
+                    break
             
-        fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)  
-        fuel_tank.volume_properties.net_volume       = tank_volume_i
-        fuel_tank.volume_properties.gross_volume     = tank_volume_o
+            for i in range(len(seg_tags)-1):
+                inner_segment = fuselage.segments[seg_tags[i]]
+                outer_segment = fuselage.segments[seg_tags[i+1]]
+            
+                h        = fuselage.lengths.total * (outer_segment.percent_x_location  - inner_segment.percent_x_location) 
+                # volume of truncated cylinder 
+                A_1_o    = np.pi * inner_segment.height /2  *  inner_segment.width/2
+                A_2_o    = np.pi * outer_segment.height/2   *  outer_segment.width/2
+                volume_o = (1 /3) * ( A_1_o + A_2_o + np.sqrt(A_2_o*A_2_o)) *h
     
-        if fuel_tank.fuel.mass_properties.mass != 0:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume:
-                raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-        else:
-            fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)    
-            fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
-            
-    # update orign of tank 
-    fuel_tank.origin      = [[origin_x, origin_y, origin_z]]             
-    fuel_tank.fuel.origin = [[origin_x, origin_y, origin_z]]  
+                A_1_i    = np.pi * inner_segment.height /2  *  inner_segment.width/2
+                A_2_i    = np.pi * outer_segment.height/2   *  outer_segment.width/2 
+                volume_i = (1 /3) * ( A_1_i + A_2_i + np.sqrt(A_1_i*A_2_i)) *h
+                    
+                total_fuel_mass        += volume_i * fuel_tank.fuel.density  
+                segment_cg             = np.array([[fuselage.lengths.total * (inner_segment.percent_x_location  + outer_segment.percent_x_location)/2 ,0, \
+                                             (inner_segment.height  + outer_segment.height)/2]])
+                segment_tank_moment    += segment_cg[0] * volume_i * fuel_tank.fuel.density  
+                tank_volume_i          += volume_i
+                tank_volume_o          += volume_o
+    
+                if fuselage.lengths.total * inner_segment.percent_x_location < origin_x: 
+                    origin_x = fuselage.lengths.total * inner_segment.percent_x_location 
+                    origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
+                    origin_z = inner_segment.percent_z_location *fuselage.lengths.total                    
+                
+            fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)  
+            fuel_tank.volume_properties.net_volume       = tank_volume_i
+            fuel_tank.volume_properties.gross_volume     = tank_volume_o
+        
+            if fuel_tank.fuel.mass_properties.mass != 0:
+                actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
+                tol = 1E-8
+                if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol:
+                    raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+            else:
+                fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)    
+                fuel_tank.fuel.volume_properties.gross_volume = tank_volume_i
+                
+        # update orign of tank 
+        fuel_tank.origin      = [[origin_x, origin_y, origin_z]]             
+        fuel_tank.fuel.origin = [[origin_x, origin_y, origin_z]]  
     return 
 
 def compute_wing_integral_tank_volume(fuel_tank,wing):
@@ -191,41 +195,46 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     fuel_tank.fuel.origin = wing.origin 
     
     if len(wing.segments) > 1: 
-        segment_tank_moment = np.array([0.0, 0.0, 0.0])
-        seg_bounds =   fuel_tank.bounding_segment_tags  
-
-        # Collect all segment tags between start and end (inclusive)
-        collect = False
-        seg_tags = []
-        for segment in wing.segments:
-            if segment.tag == seg_bounds[0]:
-                collect = True
-            if collect:
-                seg_tags.append(segment.tag)
-            if segment.tag == seg_bounds[1]:
-                break
-        
-        for i in range(len(seg_tags)-1):
-            inner_segment = wing.segments[seg_tags[i]]
-            outer_segment = wing.segments[seg_tags[i+1]]
-
-            # compute volume of fuel in wing
-            volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment,fuel_tank)
+        if fuel_tank.bounding_segment_tags[0] == None or fuel_tank.bounding_segment_tags[1] == None:
+            pass 
+        else: 
+            segment_tank_moment = np.array([0.0, 0.0, 0.0])
+            seg_bounds = fuel_tank.bounding_segment_tags  
     
-            total_fuel_mass      += volume * fuel_tank.fuel.density  
-            segment_tank_moment  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * volume * fuel_tank.fuel.density  
-            total_fuel_volume    += volume
-                 
-        fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)
-        fuel_tank.volume_properties.net_volume            = total_fuel_volume
-        fuel_tank.volume_properties.gross_volume          = total_fuel_volume
-         
-        if fuel_tank.fuel.mass_properties.mass != 0:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-            if actual_fuel_volume > fuel_tank.volume_properties.net_volume :
-                raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-        else:
-            fuel_tank.fuel.mass_properties.mass = float(total_fuel_volume *  fuel_tank.fuel.density)  
+            # Collect all segment tags between start and end (inclusive)
+            collect = False
+            seg_tags = []
+            for segment in wing.segments:
+                if segment.tag == seg_bounds[0]:
+                    collect = True
+                if collect:
+                    seg_tags.append(segment.tag)
+                if segment.tag == seg_bounds[1]:
+                    seg_tags.append(segment.tag)
+                    break
+            
+            for i in range(len(seg_tags)-1):
+                inner_segment = wing.segments[seg_tags[i]]
+                outer_segment = wing.segments[seg_tags[i+1]]
+    
+                # compute volume of fuel in wing
+                volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment,fuel_tank)
+        
+                total_fuel_mass      += volume * fuel_tank.fuel.density  
+                segment_tank_moment  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * volume * fuel_tank.fuel.density  
+                total_fuel_volume    += volume
+                     
+            fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)
+            fuel_tank.volume_properties.net_volume            = total_fuel_volume
+            fuel_tank.volume_properties.gross_volume          = total_fuel_volume
+             
+            if fuel_tank.fuel.mass_properties.mass != 0:
+                actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
+                tol = 1E-8  
+                if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
+                    raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+            else:
+                fuel_tank.fuel.mass_properties.mass = float(total_fuel_volume *  fuel_tank.fuel.density)  
             
     else:  
         # assume whole wing has fuel 
@@ -238,8 +247,9 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         fuel_tank.fuel.mass_properties.center_of_gravity  = wing.mass_properties.center_of_gravity
 
     if fuel_tank.fuel.mass_properties.mass != 0:
-        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-        if actual_fuel_volume > fuel_tank.volume_properties.net_volume:
+        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density 
+        tol = 1E-8 
+        if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol:
             raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
         fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
     else:
