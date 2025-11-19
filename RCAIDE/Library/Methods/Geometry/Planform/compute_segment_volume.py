@@ -6,15 +6,14 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from copy import deepcopy
 import RCAIDE
 from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
 
 import numpy as np
-from scipy.interpolate import interp1d
+from shapely import Polygon
+from copy import deepcopy
 
-
-def compute_segment_volume(wing, inner_segment, outer_segment, n_points=401, n_span=51):
+def compute_segment_volume(wing, inner_segment, outer_segment, n_points=401):
 
     # Extract airfoil coordinates
     if hasattr(inner_segment.airfoil,'geometry') is False or hasattr(outer_segment.airfoil,'geometry') is False: # first, if airfoil geometry data not defined, import from geoemtry files
@@ -39,42 +38,21 @@ def compute_segment_volume(wing, inner_segment, outer_segment, n_points=401, n_s
             outer_segment.airfoil.geometry = compute_naca_4series('0012')
     
       
-    x_in = np.array(inner_segment.airfoil.geometry.x_coordinates)
-    y_in = np.array(inner_segment.airfoil.geometry.y_coordinates)
-    x_out = np.array(outer_segment.airfoil.geometry.x_coordinates)
-    y_out = np.array(outer_segment.airfoil.geometry.y_coordinates)
+    x_in = np.array(inner_segment.airfoil.geometry.x_coordinates)[:-1] * wing.chords.root *inner_segment.root_chord_percent
+    y_in = np.array(inner_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *inner_segment.root_chord_percent
+    x_out = np.array(outer_segment.airfoil.geometry.x_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
+    y_out = np.array(outer_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
 
-    x_in, idx = np.unique(x_in, return_index=True)
-    y_in = y_in[idx]
+    points_out = list(zip(x_out, y_out))
+    poly_out = Polygon(points_out)
 
-    x_out, idx = np.unique(x_out, return_index=True)
-    y_out = y_out[idx]
+    points_in = list(zip(x_in, y_in))
+    poly_in = Polygon(points_in)
+    A_1 = poly_in.area
+    A_2 = poly_out.area
 
-    # Compute segment span length
+     # Compute segment span length
     L = (outer_segment.percent_span_location - inner_segment.percent_span_location) * wing.spans.projected
-
-    # Resample both airfoils to common cosine x-grid
-    beta = np.linspace(0, np.pi, n_points)
-    x_common = 0.5 * (1 - np.cos(beta))
-
-    f_in = interp1d(x_in, y_in, kind='cubic', fill_value="extrapolate")
-    f_out = interp1d(x_out, y_out, kind='cubic', fill_value="extrapolate")
-
-    y_in_resampled = f_in(x_common)
-    y_out_resampled = f_out(x_common)
-
-    A_in = polygon_area(x_common, y_in_resampled)
-    A_out = polygon_area(x_common, y_out_resampled)
-
-    # Interpolate between the two sections spanwise
-    t = np.linspace(0, 1, n_span)
-    areas = (1 - t) * A_in + t * A_out
-
-    # Integrate area along span to get volume
-    volume = np.trapezoid(areas, t) * L  # m³ if inputs are in meters
+    volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *L
 
     return volume
-
-# Compute areas of each section (shoelace formula)
-def polygon_area(x, y):
-    return 0.5 * np.abs(np.dot(x, np.roll(y, 1)) - np.dot(y, np.roll(x, 1)))
