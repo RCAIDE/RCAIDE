@@ -45,7 +45,7 @@ def sum_moment(component, total_mass, total_moment):
                     total_moment , total_mass  = sum_moment(item, total_mass, total_moment)
                 if isinstance(item,Component): 
                     total_mass, total_moment = update_mass_and_moment(total_mass,total_moment,item) 
-            
+                    
     return total_moment , total_mass
 
 def update_mass_and_moment(total_mass,total_moment,C): 
@@ -54,13 +54,17 @@ def update_mass_and_moment(total_mass,total_moment,C):
         if C.xz_plane_symmetric:
             global_cg_loc[0][1] = 0
     if global_cg_loc[0][0] == 0:
+        if C.tag == 'jet_a1':
+            test = 0
         pass
     else:    
+        if C.tag == 'jet_a1':
+            test = 0
         M = C.mass_properties.mass
         if M != 0:  
             total_mass   += M                 
             total_moment += M*global_cg_loc 
-    
+        print(f"moment and mass calculated for: {C.tag}, mass: {M:.2f}, location: {C.origin + C.mass_properties.center_of_gravity}")
     return total_mass,total_moment
     
     

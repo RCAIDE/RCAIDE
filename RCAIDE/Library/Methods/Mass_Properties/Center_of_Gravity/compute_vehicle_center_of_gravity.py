@@ -75,8 +75,15 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     #---------------------------------------------------------------------------------
     for wing in vehicle.wings:    
         if isinstance(wing, C.Wings.Blended_Wing_Body):
-            for cabin in wing.cabins:
-                compute_cabin_center_of_gravity(cabin, wing,length_scale)        
+            for cabin in wing.cabins:      
+                compute_cabin_center_of_gravity(cabin, wing,length_scale)   
+            
+            wing.aft_center_body.origin = [[wing.chords.root - 2/3 * wing.aft_center_body.length,0,0]]     
+            wing.aft_center_body.tag = 'aft_center_body'
+            wing.center_body.origin = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]]     
+            wing.center_body.tag = 'center_body'
+            wing.center_body.mass_properties.mass += 22000 #vehicle.mass_properties.weight_breakdown.operational_items.total
+            # wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.total
 
     #---------------------------------------------------------------------------------
     # Landing Gear 
@@ -108,6 +115,8 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
 
     for key in vehicle.keys():
         item = vehicle[key]
+        if key =='wings':
+            test = 0
         if isinstance(item,Component.Container):
             Moment = np.array([[0.0,0.0,0.0]])
             Mass   = 0
