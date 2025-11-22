@@ -75,7 +75,7 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     #---------------------------------------------------------------------------------
     for wing in vehicle.wings:    
         if isinstance(wing, C.Wings.Blended_Wing_Body):
-            for cabin in wing.cabins:      
+            for cabin in wing.cabins:
                 compute_cabin_center_of_gravity(cabin, wing,length_scale)   
             
             wing.aft_center_body.origin = [[wing.chords.root - 2/3 * wing.aft_center_body.length,0,0]]     

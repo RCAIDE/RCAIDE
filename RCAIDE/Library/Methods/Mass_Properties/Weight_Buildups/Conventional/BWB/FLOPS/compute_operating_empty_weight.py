@@ -284,7 +284,8 @@ def compute_operating_empty_weight(vehicle,settings=None):
     TOW                = vehicle.mass_properties.max_takeoff
     W_cabin            = compute_cabin_weight(vehicle,settings) 
     W_aft_center_body   = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW)
-    
+    vehicle.wings.main_wing.aft_center_body.mass_properties.mass = W_aft_center_body
+    vehicle.wings.main_wing.center_body.mass_properties.mass = W_cabin
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 

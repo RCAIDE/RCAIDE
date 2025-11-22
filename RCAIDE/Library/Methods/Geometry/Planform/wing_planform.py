@@ -223,15 +223,22 @@ def wing_planform(wing):
         total_moment = np.array([[0.0,0.0,0.0]])
         total_mass   = 0.0
         
-        
+        outer_wing_flag = False
         for i in range(len(wing.segments)-1):
             # compute volume and assume unit density to get mass
             inner_segment = wing.segments[seg_keys[i]]
             outer_segment = wing.segments[seg_keys[i+1]]
             v_seg =  compute_segment_volume(wing,inner_segment,outer_segment)
             m_seg =  v_seg * 1
-            total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
-            total_mass   += m_seg 
+            if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+                if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
+                    outer_wing_flag = True
+                if outer_wing_flag:
+                    total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
+                    total_mass   += m_seg 
+            else:
+                total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
+                total_mass   += m_seg 
                  
         cg_wing = total_moment / total_mass
         
