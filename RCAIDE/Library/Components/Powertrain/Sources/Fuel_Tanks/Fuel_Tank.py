@@ -73,6 +73,7 @@ class Fuel_Tank(Component):
         self.bounding_segment_tags      = [None, None] # [starting segment, ending segment]
         self.percent_chord_start        = 0.1  
         self.percent_chord_end          = 0.7  
+        self.percent_span_location      = 0.0
  
     def append_operating_conditions(self,segment,fuel_line):  
         """

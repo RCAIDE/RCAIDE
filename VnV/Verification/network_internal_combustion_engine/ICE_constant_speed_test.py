@@ -248,22 +248,20 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle    = vehicle 
 
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     analyses.append(geometry)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle                            = vehicle 
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy= RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

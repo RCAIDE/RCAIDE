@@ -65,7 +65,7 @@ class Frequency_Domain_Buildup(Noise):
         self.settings.use_plane_loading_surrogate            =  True 
         self.settings.wing_wake_interactional_dB_adjustment =  15 
 
-    def evaluate_noise(self,segment):
+    def evaluate_noise(self,segment, vehicle):
         """ Process vehicle to setup vehicle, condititon and configuration
     
         Assumptions:
@@ -85,8 +85,7 @@ class Frequency_Domain_Buildup(Noise):
         self.vehicle
         """         
     
-        # unpack 
-        config               = segment.analyses.noise.vehicle 
+        # unpack  
         settings             = self.settings  
         conditions           = segment.state.conditions  
         dim_cf               = len(settings.center_frequencies ) 
@@ -101,7 +100,7 @@ class Frequency_Domain_Buildup(Noise):
         # iterate through sources and iteratively add rotor noise
         rotor_tag = None
         i = 0
-        for network in config.networks:
+        for network in vehicle.networks:
             for propulsor in network.propulsors:
                 for sub_tag , sub_item in  propulsor.items():
                     if isinstance(sub_item, RCAIDE.Library.Components.Powertrain.Converters.Rotor): 

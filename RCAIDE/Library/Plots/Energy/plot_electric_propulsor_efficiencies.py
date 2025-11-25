@@ -97,7 +97,7 @@ def plot_electric_propulsor_efficiencies(results,
     axis_2 = plt.subplot(1,2,2)
 
 
-    for network in results.segments[0].analyses.energy.vehicle.networks:  
+    for network in results.segments[0].analyses.vehicle.networks:  
         for p_i, propulsor in enumerate(network.propulsors):
             if (p_i == 0) or (network.identical_propulsors == False): 
                 for i in range(len(results.segments)):  

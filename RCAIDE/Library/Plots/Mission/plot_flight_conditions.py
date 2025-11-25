@@ -137,7 +137,7 @@ def plot_flight_conditions(results,
     spoiler_flag   = False 
 
     # loop through wings to determine what control surfaces are present  
-    for wing in results.segments[0].analyses.aerodynamics.vehicle.wings: 
+    for wing in results.segments[0].analyses.vehicle.wings: 
         for control_surface in wing.control_surfaces:  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
                 aileron_flag = True

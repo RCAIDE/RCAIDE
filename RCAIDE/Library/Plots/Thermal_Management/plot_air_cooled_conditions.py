@@ -113,7 +113,7 @@ def plot_air_cooled_conditions(air_cooled, results, coolant_line,
     
 
  
-    for network in results.segments[0].analyses.energy.vehicle.networks: 
+    for network in results.segments[0].analyses.vehicle.networks: 
         busses  = network.busses 
         for bus in busses:
             for b_i, battery in enumerate(bus.battery_modules):

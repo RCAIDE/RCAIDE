@@ -99,14 +99,14 @@ class Vortex_Lattice_Method(Stability):
         compute.dynamic_stability                                   = Common.compute_dynamic_flight_modes    
         self.process.compute                                        = compute 
 
-    def initialize(self): 
+    def initialize(self, vehicle): 
         
         # compute neutral point 
-        compute_neutral_point(self)            
+        compute_neutral_point(self, vehicle)            
         return 
     
          
-    def evaluate(self,state):
+    def evaluate(self,state, vehicle):
         """The default evaluate function.
 
         Assumptions:
@@ -125,8 +125,7 @@ class Vortex_Lattice_Method(Stability):
         self.settings
         self.vehicle
         """          
-        settings = self.settings
-        vehicle  = self.vehicle 
+        settings = self.settings 
         results  = self.process.compute(state,settings,vehicle)
         
         return results

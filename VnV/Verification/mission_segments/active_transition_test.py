@@ -88,13 +88,13 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
 
     # ------------------------------------------------------------------
     #  Geometry
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle                               = vehicle 
     geometry.settings.update_center_of_gravity     = True 
     analyses.append(geometry)
 
@@ -102,26 +102,22 @@ def base_analysis(vehicle):
     #  Weights
     weights         = RCAIDE.Framework.Analyses.Weights.Electric()
     weights.aircraft_type = "VTOL"
-    weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics         = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.settings.maximum_lift_coefficient =  1.5
-    aerodynamics.vehicle = vehicle 
+    aerodynamics.settings.maximum_lift_coefficient =  1.5 
     analyses.append(aerodynamics)
      
     # ------------------------------------------------------------------
     #  Stability Analysis
-    stability         = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method() 
-    stability.vehicle = vehicle 
+    stability         = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
     analyses.append(stability)    
 
     # ------------------------------------------------------------------
     #  Energy 
-    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle = vehicle 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -153,7 +149,7 @@ def mission_setup(analyses):
     base_segment.state.numerics.solver.type = 'optimize' 
     
 
-    beta_cruise = analyses.low_speed_transition.energy.vehicle.networks.electric.propulsors.prop_rotor_propulsor_1.rotor.cruise.design_blade_pitch_command
+    beta_cruise = analyses.low_speed_transition.vehicle.networks.electric.propulsors.prop_rotor_propulsor_1.rotor.cruise.design_blade_pitch_command
     
      # ------------------------------------------------------------------
     #  Second Transition Segment
@@ -188,7 +184,7 @@ def mission_setup(analyses):
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
     segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
                                                                                         'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
-    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,1.5 ]] 
+    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
      
     mission.append_segment(segment)
    

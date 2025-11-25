@@ -74,23 +74,21 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle =  vehicle
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False 
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis  
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle  = vehicle 
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
     
     # ------------------------------------------------------------------
@@ -125,7 +123,7 @@ def mission_setup(analyses):
     base_segment.state.numerics.number_of_control_points  = 3
     
     # VSTALL Calculation  
-    vehicle        = analyses.base.aerodynamics.vehicle
+    vehicle        = analyses.base.vehicle
     vehicle_mass   = vehicle.mass_properties.max_takeoff
     reference_area = vehicle.reference_area 
     Vstall         = estimate_stall_speed(vehicle_mass,reference_area,altitude = 0.0,maximum_lift_coefficient = 1.2)

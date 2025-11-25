@@ -64,7 +64,7 @@ def single_wing_segment_integral_fuel_tank_volume_test():
     mission = mission_setup(analyses)
     geometry(mission)
 
-    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
+    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.vehicle.volume_properties.fuel)/fuel_volume_true[0]
     print(error)
     assert(abs(error)<1e-6)    
     return
@@ -87,12 +87,12 @@ def integral_fuel_tank_volume_test():
     wing_tank.bounding_segment_tags = ['root', 'section_2']  
     fuel_line.fuel_tanks.append(wing_tank)
 
-    configs = configs_setup(vehicle)
+    configs  = configs_setup(vehicle)
     analyses = analyses_setup(configs)
-    mission = mission_setup(analyses)
+    mission  = mission_setup(analyses)
     geometry(mission)
 
-    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
+    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.vehicle.volume_properties.fuel)/fuel_volume_true[0]
     print(error)
     assert(abs(error)<1e-6)    
 
@@ -107,7 +107,7 @@ def integral_fuel_tank_volume_test():
     mission = mission_setup(analyses)
     geometry(mission)
 
-    error = (fuel_volume_true[1]- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true[0]
+    error = (fuel_volume_true[1]- mission.segments.cruise.analyses.vehicle.volume_properties.fuel)/fuel_volume_true[0]
     print(error)
     assert(abs(error)<1e-6)    
 
@@ -116,7 +116,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 332.1897838974284 
+    fuel_volume_true = 406.1823636616837
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -233,14 +233,13 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_6.fuel.mass_properties.mass       = 0.1
     fuel_tank_6.bounding_segment_tags           = ['fuel_wall', 'wing_section_2']   
     fuel_line.fuel_tanks.append(fuel_tank_6)
- 
-    plot_3d_vehicle(vehicle)
+  
     configs = configs_setup(vehicle)
     analyses = analyses_setup(configs)
     mission = mission_setup(analyses)
     geometry(mission)   
     
-    error = (fuel_volume_true- mission.segments.cruise.analyses.geometry.vehicle.volume_properties.fuel)/fuel_volume_true
+    error = (fuel_volume_true- mission.segments.cruise.analyses.vehicle.volume_properties.fuel)/fuel_volume_true
     
     assert(abs(error)<5e-2) 
 
@@ -281,13 +280,13 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
 
     # ------------------------------------------------------------------
     #  Geometry
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
-    geometry.settings.update_fuel_volume = True
+    geometry.settings.overwrite_fuel_volume = True
     analyses.append(geometry)
     return analyses    
 

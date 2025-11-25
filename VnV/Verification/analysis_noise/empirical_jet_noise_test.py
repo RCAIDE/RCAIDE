@@ -59,17 +59,16 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses.vehicle = vehicle
 
     #  Geometry
-    geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle 
+    geometry = RCAIDE.Framework.Analyses.Geometry.Geometry() 
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     # ------------------------------------------------------------------
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle = vehicle
     aerodynamics.settings.number_of_spanwise_vortices   = 10
     aerodynamics.settings.number_of_chordwise_vortices  = 2     
     analyses.append(aerodynamics)
@@ -78,14 +77,12 @@ def base_analysis(vehicle):
     #  Noise Analysis
     # ------------------------------------------------------------------
     noise = RCAIDE.Framework.Analyses.Noise.Correlation_Buildup()   
-    noise.vehicle = vehicle          
     analyses.append(noise)
 
     # ------------------------------------------------------------------
     #  Energy
     # ------------------------------------------------------------------
-    energy= RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy= RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

@@ -154,13 +154,13 @@ class Athena_Vortex_Lattice(Aerodynamics):
         self.process.compute                       = compute
         
 
-    def initialize(self):  
+    def initialize(self, vehicle):  
         use_surrogate   = self.settings.use_surrogate  
 
         # If we are using the surrogate
         if use_surrogate == True: 
             # sample training data
-            train_AVL_surrogates(self)
+            train_AVL_surrogates(self, vehicle)
 
             # build surrogate
             build_AVL_surrogates(self)  
@@ -174,7 +174,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         return 
     
          
-    def evaluate(self,state):
+    def evaluate(self,state, vehicle):
         """The default evaluate function.
 
         Assumptions:
@@ -193,8 +193,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
         self.settings
         self.vehicle
         """          
-        settings = self.settings
-        vehicle  = self.vehicle 
+        settings = self.settings 
         results  = self.process.compute(state,settings,vehicle)
         
         return results

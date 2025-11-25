@@ -32,7 +32,7 @@ def main():
     results = compute_noise_certification_data(approach_mission = approach_mission, takeoff_mission=takeoff_mission)
     plot_noise_certification_contour(results)
 
-    truth_approach_noise_2000m  = 85.93076344921005
+    truth_approach_noise_2000m  = 95.74105421155724
     truth_flyover_noise_6000m   = 89.1840478382459
     truth_sideline_noise_450m   = 98.55365729833616
 
@@ -80,29 +80,26 @@ def noise_base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
 
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle = vehicle
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle = vehicle 
+    energy = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
     
     # ------------------------------------------------------------------
     #  Noise Analysis
     # ------------------------------------------------------------------
-    noise = RCAIDE.Framework.Analyses.Noise.Correlation_Buildup()   
-    noise.vehicle = vehicle 
+    noise = RCAIDE.Framework.Analyses.Noise.Correlation_Buildup()  
     analyses.append(noise)
  
     # ------------------------------------------------------------------

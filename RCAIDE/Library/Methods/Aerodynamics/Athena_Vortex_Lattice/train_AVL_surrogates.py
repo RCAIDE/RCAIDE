@@ -17,7 +17,7 @@ from shutil import rmtree
 # ----------------------------------------------------------------------------------------------------------------------
 #  train_AVL_surrogates
 # ---------------------------------------------------------------------------------------------------------------------- 
-def train_AVL_surrogates(aerodynamics):
+def train_AVL_surrogates(aerodynamics,vehicle):
     """Call methods to run VLM for sample point evaluation. 
     
     Assumptions:
@@ -33,8 +33,7 @@ def train_AVL_surrogates(aerodynamics):
         None    
     """ 
  
-    run_folder             = os.path.abspath(aerodynamics.settings.filenames.run_folder)
-    vehicle                = aerodynamics.vehicle
+    run_folder             = os.path.abspath(aerodynamics.settings.filenames.run_folder) 
     training               = aerodynamics.training  
     AoA                    = training.angle_of_attack
     Mach                   = training.Mach
@@ -79,7 +78,7 @@ def train_AVL_surrogates(aerodynamics):
         run_conditions.static_stability.coefficients.pitch = np.ones_like(run_conditions.aerodynamics.angles.alpha)*pitch_rate_coefficient 
 
         # Run Analysis at AoA[i] and Mach[i]
-        run_AVL_analysis(aerodynamics,run_conditions)
+        run_AVL_analysis(aerodynamics,run_conditions, vehicle)
  
         CL[:,i]       = run_conditions.aerodynamics.coefficients.lift.inviscid.total[:,0]
         CD[:,i]       = run_conditions.aerodynamics.coefficients.drag.induced.total[:,0]      

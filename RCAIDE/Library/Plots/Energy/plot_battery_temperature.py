@@ -96,7 +96,7 @@ def plot_battery_temperature(results,
     axis_2 = plt.subplot(2,2,2) 
     axis_3 = plt.subplot(2,2,3)     
  
-    for network in results.segments[0].analyses.energy.vehicle.networks: 
+    for network in results.segments[0].analyses.vehicle.networks: 
         busses  = network.busses 
         for  bus_i, bus in enumerate(busses):
             for b_i, battery in enumerate(bus.battery_modules):

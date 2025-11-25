@@ -55,26 +55,25 @@ def geometry(mission):
         # --------------------------------------------------------------------------------------------------------------------
         if segment.analyses.geometry is None: 
             raise AssertionError('Geometry Analyses not defined') 
-        if i == 0 or segment.analyses.geometry.settings.unique_geometry:  # If it is the first segment or if the segment has a unique geometry
-            geometry_preprocess_routine(segment.analyses.geometry)
+        if i == 0 or segment.analyses.geometry.settings.unique_geometry: 
+            geometry_preprocess_routine(segment.analyses.geometry.settings, segment.analyses.vehicle)
             
         else:
-            vehicle_0 = deepcopy(segment.analyses.geometry.vehicle)
-            segment.analyses.geometry.vehicle = deepcopy(mission.segments[i-1].analyses.geometry.vehicle)
-            for wing in segment.analyses.geometry.vehicle.wings:
+            vehicle_0 = deepcopy(segment.analyses.vehicle)
+            segment.analyses.vehicle = deepcopy(mission.segments[i-1].analyses.vehicle)
+            for wing in segment.analyses.vehicle.wings:
                 for control_surface in wing.control_surfaces:
                     control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
-            for landing_gear in segment.analyses.geometry.vehicle.landing_gears:
+            for landing_gear in segment.analyses.vehicle.landing_gears:
                 landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
                 
-            for network in segment.analyses.geometry.vehicle.networks: 
-                for propulsor in network.propulsor:
+            for network in segment.analyses.vehicle.networks: 
+                for propulsor in network.propulsors:
                     if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
                         propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                        propulsor.fan.angular_velocity      = propulsor_0.fan.angular_velocity          
-                        propulsor.fan.rotation              = propulsor_0.fan.rotation           
-                        propulsor.fan_nozzle.noise_speed    = propulsor_0.fan_nozzle.noise_speed 
-                        propulsor.core_nozzle.noise_speed   = propulsor_0.core_nozzle.noise_speed
+                        propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity        
+                        propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
+                        propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity
                         
                     if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
                         propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
@@ -82,9 +81,7 @@ def geometry(mission):
                                   
     return 
         
-def geometry_preprocess_routine(geometry_analysis): 
-    vehicle        = geometry_analysis.vehicle
-    settings       = geometry_analysis.settings
+def geometry_preprocess_routine(settings, vehicle):   
     
     # initalize variables 
     A_fuselage     = 0
@@ -198,6 +195,6 @@ def geometry_preprocess_routine(geometry_analysis):
     # --------------------------------------------------------------------------------------------------------------------
     # Compute fuel volume  
     # -------------------------------------------------------------------------------------------------------------------- 
-    compute_fuel_volume(vehicle,update_fuel_volume = settings.update_fuel_volume)
+    compute_fuel_volume(vehicle,overwrite_fuel_volume = settings.overwrite_fuel_volume)
                
     return 

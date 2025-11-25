@@ -188,30 +188,26 @@ def fuel_aircraft_base_analysis_weights(vehicle):
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
     analyses.append(geometry)
 
      # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
-    weights.vehicle                 = vehicle 
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.FLOPS.fidelity = 'Complex'      
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle  = vehicle
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2       
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -236,25 +232,23 @@ def fuel_aircraft_base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses.vehicle = vehicle   
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle  = vehicle
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2       
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------
@@ -279,18 +273,17 @@ def electric_aircraft_base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses.vehicle =  vehicle
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.overwrite_reference        = False
     analyses.append(geometry)
 
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
-    aerodynamics.vehicle  = vehicle
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
     aerodynamics.settings.number_of_spanwise_vortices   = 5
     aerodynamics.settings.number_of_chordwise_vortices  = 2     
     aerodynamics.training.Mach                          = np.array([0.1  ,0.3,  0.5,  0.65 , 0.95])  
@@ -298,8 +291,7 @@ def electric_aircraft_base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Energy
-    energy          = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
 
     # ------------------------------------------------------------------

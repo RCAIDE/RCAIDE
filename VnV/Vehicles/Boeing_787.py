@@ -768,13 +768,11 @@ def configs_setup(vehicle):
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity      =  3470. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  3470. * Units.rpm 
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx      = 34.77 /1000      
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx      = 34.77 /1000             
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation              = 3470. #N1 speed
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation              = 3470. #N1 speed
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed    = 315.
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed    = 315.
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed   = 415.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed   = 415. 
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx      = 34.77 /1000       
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity    = 315.
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity    = 315.
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity   = 415.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity   = 415. 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True     
     
@@ -793,13 +791,11 @@ def configs_setup(vehicle):
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity    =  2780. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity    =  2780. * Units.rpm 
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx    = 20.87 /1000      
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 20.87 /1000       
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation            = 2780.  
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation            = 2780. 
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed  = 210.
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed  = 210.
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed = 360.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed = 360.
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 20.87 /1000   
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity  = 210.
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity  = 210.
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity = 360.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity = 360.
 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True         
@@ -815,18 +811,16 @@ def configs_setup(vehicle):
     config.tag = 'landing'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
-    config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  2780. * Units.rpm
-    config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  2780. * Units.rpm
+    config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity   =  2780. * Units.rpm
+    config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity   =  2780. * Units.rpm
     config.landing_gears.main_gear.gear_extended    = True
     config.landing_gears.nose_gear.gear_extended    = True  
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx    = 11.02/1000              
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 11.02 /1000      
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation            = 2780.  
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation            = 2780. 
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed = 92.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed = 92.
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed  = 109.3
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed  = 109.3 
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 11.02 /1000   
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity = 92.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity = 92.
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity  = 109.3
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity  = 109.3 
 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True         
@@ -891,21 +885,20 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle =  vehicle
 
     # ------------------------------------------------------------------
     #  Geometry
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.unique_geometry = False
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
-    weights.vehicle = vehicle 
-    weights.settings.FLOPS.fidelity                                           = 'Complex'      
-    weights.settings.advanced_composites                                      = True
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
+    weights.settings.FLOPS.fidelity                                          = 'Complex'      
+    weights.settings.advanced_composites                                     = True
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
     weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.number_of_passengers
     weights.settings.weight_correction_additions.empty.propulsion.battery    = 56 
@@ -916,13 +909,11 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle = vehicle
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle = vehicle 
+    energy = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
     
   

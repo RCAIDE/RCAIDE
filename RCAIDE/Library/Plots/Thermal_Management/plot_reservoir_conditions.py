@@ -108,7 +108,7 @@ def plot_reservoir_conditions(reservoir, results, coolant_line,
     axis_1 = plt.subplot(1,1,1)
     set_axes(axis_1)      
  
-    for network in results.segments[0].analyses.energy.vehicle.networks: 
+    for network in results.segments[0].analyses.vehicle.networks: 
         busses  = network.busses 
         for bus in busses:
             for b_i, battery in enumerate(bus.battery_modules):

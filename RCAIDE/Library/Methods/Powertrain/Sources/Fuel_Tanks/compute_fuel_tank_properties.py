@@ -15,9 +15,8 @@ import numpy as np
 #  METHOD
 # ----------------------------------------------------------------------------------------------------------------------  
 def compute_fuel_tank_properties(tank,state,distributor):
-    '''
-    SAI HEADER
-    ''' 
+    """ Computes fuel comsumtion of tanks
+    """
     # unpack  
     I  = state.numerics.time.integrate
     

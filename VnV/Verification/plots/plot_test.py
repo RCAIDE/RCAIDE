@@ -234,7 +234,7 @@ def bwb_aircraft_geometry_test(show_figure):
         fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
         fuel_tank_4.bwb_aft_tank                  = True
         fuel_tank_4.aft_tank_root_chord_bounds    = [0.65,0.9]
-        fuel_tank_4.segment.end_tag               = 'fuel_wall' 
+        fuel_tank_4.bounding_segment_tags         = ['fuselage_section_1', 'cabin_wall']
         fuel_tank_4.radial_offset                 = 0.2
         
         fuel_line.fuel_tanks.append(fuel_tank_4)

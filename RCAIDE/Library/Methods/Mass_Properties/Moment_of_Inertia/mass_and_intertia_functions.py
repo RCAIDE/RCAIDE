@@ -56,8 +56,8 @@ def update_mass_and_moment(total_mass,total_moment,C):
     if global_cg_loc[0][0] == 0:
         pass
     else:    
-        M = C.mass_properties.mass
-        if M != 0:  
+        M = C.mass_properties.mass 
+        if M != 0:
             total_mass   += M                 
             total_moment += M*global_cg_loc 
     

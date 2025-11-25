@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 # ----------------------------------------------------------------------------------------------------------------------
 #  Methods to compute volume of non integrak tanks
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_bwb_aft_tank_volume(fuel_tank, wing):
+def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     """
     Computes the volume of an aft fuel tank for a Blended Wing Body (BWB) aircraft configuration.
 
@@ -234,21 +234,25 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     # Inner Volume
     fuel_tank.inner_length    = (fuel_tank.aspect_ratio * fuel_tank.inner_diameter) -fuel_tank.inner_diameter
     tank_volume_i             = max_volume
-    fuel_tank.volume_properties.net_volume         = tank_volume_i
-    fuel_tank.volume_properties.gross_volume       = tank_volume_o
-    if fuel_tank.fuel.mass_properties.mass != 0:
-        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
-        tol = 1E-8
-        if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-            raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-    else:
-        fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+    
+    if overwrite_fuel_volume:
+        fuel_tank.volume_properties.net_volume         = tank_volume_i
+        fuel_tank.volume_properties.gross_volume       = tank_volume_o
+        if fuel_tank.fuel.mass_properties.mass != 0:
+            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
+            tol = 1E-8
+            if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
+                raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
+            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+        else:
+            fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i  
+        
     # fuel tank origin
     fuel_tank.origin[0][0]  = circle_origins[max_idx][0] - fuel_tank.outer_diameter / 2
     fuel_tank.origin[0][1]  = 0
     fuel_tank.origin[0][2]  = circle_origins[max_idx][1]
+    
     # fuel tank C.G.
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]]
     fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.outer_length /2, 0, 0]]
@@ -259,7 +263,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     
     return
 
-def compute_prismatic_fuel_tank_volume(fuel_tank):
+def compute_prismatic_fuel_tank_volume(fuel_tank, overwrite_fuel_volume):
     """
     Computes the volume of a Prismatic non-integral fuel tanks.
  
@@ -294,17 +298,20 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
     tank_volume_o = l * w * h
     tank_volume_i = inner_length * inner_width *  inner_height
  
-    fuel_tank.volume_properties.net_volume         = tank_volume_i
-    fuel_tank.volume_properties.gross_volume       = tank_volume_o
-
-    if fuel_tank.fuel.mass_properties.mass != 0:
-        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
-        tol = 1E-8
-        if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-            raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-    else:
-        fuel_tank.fuel.mass_properties.mass     = float(tank_volume_i *  fuel_tank.fuel.density)
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i 
+    if overwrite_fuel_volume:
+        fuel_tank.volume_properties.net_volume         = tank_volume_i
+        fuel_tank.volume_properties.gross_volume       = tank_volume_o
+        
+        if fuel_tank.fuel.mass_properties.mass != 0:
+            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
+            fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
+            tol = 1E-8
+            if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
+                raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+        else:
+            fuel_tank.fuel.mass_properties.mass     = float(tank_volume_i *  fuel_tank.fuel.density)
+            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+        
     
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]] 
     fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.outer_length /2, 0, 0]]
@@ -312,7 +319,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank):
          
     return
 
-def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
+def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks,overwrite_fuel_volume):
     """
     Computes the volume of non-integral fuel tanks within wing segments.
 
@@ -372,22 +379,22 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
                 except: 
                     fuel_tanks.pop(fuel_tank.tag)
                     return 
-                 
-            fuel_tank.volume_properties.net_volume         = tank_volume_i
-            fuel_tank.volume_properties.gross_volume       = tank_volume_o
-    
+                  
             fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
-            fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]   
-        
-            if fuel_tank.fuel.mass_properties.mass != 0:
-                actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density 
-                tol = 1E-8 
-                if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-                    raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-            else:
-                fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
-                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+            fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]                  
+            if overwrite_fuel_volume:
+                fuel_tank.volume_properties.net_volume         = tank_volume_i
+                fuel_tank.volume_properties.gross_volume       = tank_volume_o  
+            
+                if fuel_tank.fuel.mass_properties.mass != 0:
+                    actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density 
+                    tol = 1E-8 
+                    if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
+                        raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+                    fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+                else:
+                    fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+                    fuel_tank.fuel.volume_properties.net_volume = tank_volume_i 
              
     return 
 
@@ -471,10 +478,10 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
 
     semi_span      = wing.spans.projected / 2
     inner_segment  = deepcopy(inner_segment_0) 
-    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.segment.percent_span_location  )     
+    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.percent_span_location  )     
     if tank_percent_span_location > inner_segment_0.percent_span_location: 
         inner_segment.percent_span_location = tank_percent_span_location
-        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.segment.percent_span_location)
+        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.percent_span_location)
         delta_y_percent                     =  (tank_percent_span_location - inner_segment_0.percent_span_location)
         inner_segment.root_chord_percent    = inner_segment_0.root_chord_percent + m*delta_y_percent
 

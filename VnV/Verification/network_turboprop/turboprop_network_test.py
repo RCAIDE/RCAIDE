@@ -96,11 +96,11 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     analyses.append(geometry)
     
     # ------------------------------------------------------------------
@@ -112,25 +112,21 @@ def base_analysis(vehicle):
     
     # remove landing gear for regression
     vehicle.landing_gears  = Components.Landing_Gear.Landing_Gear.Container() 
-    weights.vehicle = vehicle
     analyses.append(weights)
     
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics                                       = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle                              = vehicle 
+    aerodynamics            = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------
     #  Emissions
-    emissions = RCAIDE.Framework.Analyses.Emissions.Emission_Index_Correlation_Method()
-    emissions.vehicle = vehicle          
+    emissions = RCAIDE.Framework.Analyses.Emissions.Emission_Index_Correlation_Method() 
     analyses.append(emissions)
   
     # ------------------------------------------------------------------
     #  Energy
-    energy= RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle  = vehicle 
+    energy= RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
     
     # ------------------------------------------------------------------
@@ -176,7 +172,7 @@ def mission_setup(analyses):
     base_segment.state.numerics.discretization_method     = RCAIDE.Library.Methods.Utilities.Chebyshev.chebyshev_data
     
     # VSTALL Calculation  
-    vehicle        = analyses.base.aerodynamics.vehicle
+    vehicle        = analyses.vehicle
     vehicle_mass   = vehicle.mass_properties.max_takeoff
     reference_area = vehicle.reference_area 
     Vstall         = estimate_stall_speed(vehicle_mass,reference_area,altitude = 0.0,maximum_lift_coefficient = 1.2)

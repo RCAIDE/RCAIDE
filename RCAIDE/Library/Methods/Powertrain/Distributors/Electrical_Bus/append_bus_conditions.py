@@ -128,7 +128,7 @@ def append_bus_segment_conditions(bus,segment):
     
     # Thermal power draw
     if segment.state.initials:
-        for network in segment.analyses.energy.vehicle.networks:
+        for network in segment.analyses.vehicle.networks:
             for coolant_line in  network.coolant_lines:
                 for tag, item in  coolant_line.items():
                     if tag == 'battery_modules':

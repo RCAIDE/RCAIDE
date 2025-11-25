@@ -90,7 +90,7 @@ class Integral_Tank(Fuel_Tank):
         append_fuel_tank_conditions(self,segment, fuel_line)  
         return       
 
-    def compute_volume(self, wings, fuselages,_):
+    def compute_volume(self, wings, fuselages,overwrite_fuel_volume, _):
         """
         Compute the internal volume of an integral fuel tank based on its location.
 
@@ -146,8 +146,8 @@ class Integral_Tank(Fuel_Tank):
         """
         if self.wing_tag is not None:
             wing = wings[self.wing_tag]  
-            compute_wing_integral_tank_volume(self, wing)
+            compute_wing_integral_tank_volume(self, wing, overwrite_fuel_volume)
         elif self.fuselage_tag is not None: 
             fuselage = fuselages[self.fuselage_tag]  
-            compute_fuselage_integral_tank_fuel_volume(self, fuselage)
+            compute_fuselage_integral_tank_fuel_volume(self, fuselage, overwrite_fuel_volume)
         return
