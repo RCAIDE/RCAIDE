@@ -30,8 +30,7 @@ from Embraer_190    import vehicle_setup as E190_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
      
-    vehicle    = E190_vehicle_setup() 
-    vehicle.mass_properties.payload =  vehicle.mass_properties.max_payload
+    vehicle    = E190_vehicle_setup()  
     
     # take out control surfaces to make regression run faster
     for wing in vehicle.wings:
