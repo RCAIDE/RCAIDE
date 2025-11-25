@@ -126,7 +126,9 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     
     if update_center_of_gravity and aircraft_total_mass != 0.0:
         CG = aircraft_total_moment/aircraft_total_mass 
-        vehicle.mass_properties.center_of_gravity = CG.tolist() 
+        vehicle.mass_properties.center_of_gravity = CG.tolist()
+        vehicle.mass_properties.aircraft_total_moment = aircraft_total_moment
+        vehicle.mass_properties.aircraft_total_mass = aircraft_total_mass
      
     return vehicle.mass_properties.center_of_gravity, aircraft_total_moment, aircraft_total_mass 
 
