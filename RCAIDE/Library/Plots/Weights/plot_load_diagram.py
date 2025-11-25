@@ -179,11 +179,7 @@ def plot_load_diagram(results,
     axis.set_ylabel('Mass (kg)')
     axis.grid(True)
     fig.tight_layout()
-    
-    # set title of plot 
-    title_text    = 'Aircraft Loading Dragram'      
-    fig.suptitle(title_text)
-    
+     
     if save_figure:
         plt.savefig(save_filename + file_type)       
                                   
