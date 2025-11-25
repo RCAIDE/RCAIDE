@@ -83,7 +83,8 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
             wing.center_body.origin = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]]     
             wing.center_body.tag = 'center_body'
             wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.operational_items.total
-            wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.furnishings + vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner + vehicle.mass_properties.weight_breakdown.empty.systems.hydraulics + vehicle.mass_properties.weight_breakdown.empty.systems.electrical
+            wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.furnishings +\
+                                                     vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner 
             wing.aft_center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.propulsion.fuel_system
 
     #---------------------------------------------------------------------------------
