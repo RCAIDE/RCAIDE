@@ -97,31 +97,8 @@ def plot_load_diagram(results,
     axis = fig.add_subplot(1,1,1)
     
     min_range = 0
-    max_range = 0 
+    max_range = 0
     
-    ## ------------------------------------------------------------------------
-    ## fuel loading line
-    ## ------------------------------------------------------------------------
-    #fuel_weight          = results.loading_mass[0, :]
-    #fuel_moment_forward  = results.loading_LEMAC_location[0, :]
-    #axis.plot( fuel_moment_forward, fuel_weight, 'go-', linewidth=3, label = "Fuel")
-    #min_range =  np.minimum( min(fuel_moment_forward), min_range)
-    #max_range =  np.maximum( max(fuel_moment_forward), max_range)
-
-    ## ------------------------------------------------------------------------    
-    ## payload loading line
-    ## ------------------------------------------------------------------------
-    #payload_moment_forward  = results.loading_LEMAC_location[:, 0]
-    #payload_weight          = results.loading_mass[:, 0]
-    #split                   =  int( len(payload_moment_forward) / 2)
-    #axis.plot( payload_moment_forward[:split], payload_weight[:split], color = 'blue', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Ascending") 
-    #axis.plot( payload_moment_forward[split:], payload_weight[split:], color = 'cyan', marker = 'o', linestyle = '-', linewidth=3, label = "Payload Descending") 
-    #min_range =  np.minimum( min(payload_moment_forward), min_range)
-    #max_range =  np.maximum( max(payload_moment_forward), max_range)
-     
-    
-    
-
     # ------------------------------------------------------------------------    
     # cumulative
     # ------------------------------------------------------------------------ 

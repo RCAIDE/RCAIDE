@@ -44,24 +44,21 @@ def main():
 
     # mission analyses 
     mission = mission_setup(analyses)
-
-    load_data_old =  load_results('loading_results')    
-    
+ 
     load_data =  compute_load_and_trim_diagram( mission, cruise_segment_tag= 'cruise', discretization=  3)
     
-    #save_results(load_data,'loading_results_2')
-    #load_data =  load_results('loading_results_2')
+    save_results(load_data,'loading_results')
+    load_data =  load_results('loading_results')
  
     LEMAC_truth = np.array([[-38.27860142,  51.34751534, 140.9736321 ],
                             [-38.27860142,  51.34751534, 140.9736321 ],
                             [-38.27860142,  51.34751534, 140.9736321 ]])
+ 
+    plot_load_diagram(load_data) 
 
-    plot_load_diagram(load_data_old, save_filename='Old_Diagram') 
-    plot_load_diagram(load_data, save_filename='New_Diagram') 
-
-    #LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
-    #print(f"LEMAC error: {LEMAC_error}")
-    #assert LEMAC_error < 1e-4, f"LEMAC error too large: {LEMAC_error}"
+    LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
+    print(f"LEMAC error: {LEMAC_error}")
+    assert LEMAC_error < 1e-4, f"LEMAC error too large: {LEMAC_error}"
         
     return 
  
