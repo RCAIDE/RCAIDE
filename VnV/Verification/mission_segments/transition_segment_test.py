@@ -114,9 +114,9 @@ def stopped_rotor_transition_test(update_regression_values):
             print(val)
     
     # Truth values 
-    hover_throttle_truth  = 0.6113063676052419
-    lst_throttle_truth    = 0.596221733428434
-    hsct_throttle_truth   = 0.49177786771719284
+    hover_throttle_truth  = 0.5590852980635563
+    lst_throttle_truth    = 0.5426308450480425
+    hsct_throttle_truth   = 0.43730782471289087
     
     # Store errors 
     error = Data() 

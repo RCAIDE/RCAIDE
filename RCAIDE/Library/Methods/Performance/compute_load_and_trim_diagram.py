@@ -105,10 +105,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     x_cg_0            = base_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.center_of_gravity
     weight_breakdown  = base_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.weight_breakdown 
     neutral_point_0   = base_mission.segments[cruise_segment_tag].analyses.vehicle.neutral_point 
-     
-    W_BAG         =  weight_breakdown.payload.baggage 
-    W_PAX         =  weight_breakdown.payload.passengers 
-    W_BAG_per_pax =  W_BAG / vehicle_0.number_of_passengers
+      
+    W_PAX         =  weight_breakdown.payload.passengers  
     W_PAX_per_pax =  W_PAX / vehicle_0.number_of_passengers 
     MTOW          =  vehicle_0.mass_properties.max_takeoff
     OEW           =  weight_breakdown.empty.total

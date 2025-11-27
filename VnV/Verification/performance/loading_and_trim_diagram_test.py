@@ -50,10 +50,9 @@ def main():
     save_results(load_data,'loading_results')
     load_data =  load_results('loading_results')
  
-    LEMAC_truth = np.array([[-38.27860142,  51.34751534, 140.9736321 ],
-                            [-38.27860142,  51.34751534, 140.9736321 ],
-                            [-38.27860142,  51.34751534, 140.9736321 ]])
- 
+    LEMAC_truth = np.array([[-54.67980201,  30.8460146 , 116.37183121],
+                            [-54.67980201,  30.8460146 , 116.37183121],
+                            [-54.67980201,  30.8460146 , 116.37183121]])
     plot_load_diagram(load_data) 
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))

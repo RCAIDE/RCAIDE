@@ -97,6 +97,9 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+
+    # remove landing gear for regression
+    vehicle.landing_gears  = Components.Landing_Gear.Landing_Gear.Container()     
     analyses.vehicle = vehicle
     
     #  Geometry
@@ -110,8 +113,6 @@ def base_analysis(vehicle):
     weights.settings.update_center_of_gravity       = False
     weights.settings.update_moment_of_inertia       = False
     
-    # remove landing gear for regression
-    vehicle.landing_gears  = Components.Landing_Gear.Landing_Gear.Container() 
     analyses.append(weights)
     
     # ------------------------------------------------------------------
@@ -172,7 +173,7 @@ def mission_setup(analyses):
     base_segment.state.numerics.discretization_method     = RCAIDE.Library.Methods.Utilities.Chebyshev.chebyshev_data
     
     # VSTALL Calculation  
-    vehicle        = analyses.vehicle
+    vehicle        = analyses.base.vehicle
     vehicle_mass   = vehicle.mass_properties.max_takeoff
     reference_area = vehicle.reference_area 
     Vstall         = estimate_stall_speed(vehicle_mass,reference_area,altitude = 0.0,maximum_lift_coefficient = 1.2)

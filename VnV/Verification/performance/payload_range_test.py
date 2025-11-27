@@ -184,7 +184,8 @@ def fuel_aircraft_base_analysis_weights(vehicle):
     # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
-    analyses = RCAIDE.Framework.Analyses.Vehicle() 
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
