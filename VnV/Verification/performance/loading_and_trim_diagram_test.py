@@ -48,7 +48,6 @@ def main():
     load_data =  compute_load_and_trim_diagram( mission, cruise_segment_tag= 'cruise', discretization=  3)
     
     save_results(load_data,'loading_results')
-    load_data =  load_results('loading_results')
  
     LEMAC_truth = np.array([[-54.67980201,  30.8460146 , 116.37183121],
                             [-54.67980201,  30.8460146 , 116.37183121],
