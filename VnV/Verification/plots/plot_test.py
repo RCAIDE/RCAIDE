@@ -108,12 +108,9 @@ def conventional_turboprop_aircraft_geometry_test(show_figure):
     fuel_line.fuel_tanks.clear()
     
     fuselage_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
-    fuselage_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    fuselage_tank.segment_percent_chord_start  = [0.1  ,0.1]
-    fuselage_tank.segment_percent_chord_end    = [0.55 ,0.55]
-    fuel_line.fuel_tanks.append(fuselage_tank)
-
-
+    fuselage_tank.fuel                          = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    fuselage_tank.segments_bounding_tank        = ['segment_11','segment_12' ] 
+    fuel_line.fuel_tanks.append(fuselage_tank) 
      
     plot_3d_vehicle(vehicle,
                     save_filename  = "ATR_72", 
@@ -211,9 +208,9 @@ def bwb_aircraft_geometry_test(show_figure):
     fuel_tank_1.material                               = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_1.insulation_material                    = RCAIDE.Library.Attributes.Materials.Vacuum_Jacketed_Multilayer_Insulation()
     fuel_tank_1.fuel.gravimetric_efficiency            = 0.5 
-    fuel_tank_1.segment_tags                           = ['fuel_wall', 'wing_section_1', 'wing_section_2']  
-    fuel_tank_1.segment_percent_chord_start            = [0.1,0.1,0.1] 
-    fuel_tank_1.segment_percent_chord_end              = [0.55,0.55,0.55]
+    fuel_tank_1.segments_bounding_tank                 = ['fuel_wall', 'wing_section_2']  
+    fuel_tank_1.segments_percent_chord_start           = [0.1,0.1] 
+    fuel_tank_1.segments_percent_chord_end             = [0.55,0.55]
     fuel_tank_1.wall_thickness                         = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
 
@@ -234,7 +231,7 @@ def bwb_aircraft_geometry_test(show_figure):
         fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
         fuel_tank_4.bwb_aft_tank                  = True
         fuel_tank_4.aft_tank_root_chord_bounds    = [0.65,0.9]
-        fuel_tank_4.segment_tags                  = ['fuselage_section_1','fuselage_section_2', 'fuselage_section_3','cabin_wall']
+        fuel_tank_4.segments_bounding_tank        = ['fuselage_section_1','cabin_wall']
         fuel_tank_4.radial_offset                 = 0.2
         
         fuel_line.fuel_tanks.append(fuel_tank_4)

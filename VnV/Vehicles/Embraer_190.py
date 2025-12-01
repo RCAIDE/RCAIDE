@@ -458,12 +458,19 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    wing_fuel_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
-    wing_fuel_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    wing_fuel_tank.segment_percent_chord_start  = [0.15  ,0.15 ,0.15 ]
-    wing_fuel_tank.segment_percent_chord_end    = [0.625 ,0.625,0.625]  
-    wing_fuel_tank.segment_tags                 = ['root','yehudi', 'section_2']  
-    fuel_line.fuel_tanks.append(wing_fuel_tank)
+    wing_fuel_tank_1                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    wing_fuel_tank_1.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    wing_fuel_tank_1.segments_bounding_tank       = ['root','yehudi']  
+    wing_fuel_tank_1.segments_percent_chord_start = [0.15  ,0.15 ]
+    wing_fuel_tank_1.segments_percent_chord_end   = [0.625 ,0.625]  
+    fuel_line.fuel_tanks.append(wing_fuel_tank_1)
+    
+    wing_fuel_tank_2                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    wing_fuel_tank_2.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    wing_fuel_tank_2.segments_bounding_tank       = ['yehudi', 'section_2']  
+    wing_fuel_tank_2.segments_percent_chord_start = [0.15 ,0.15 ]
+    wing_fuel_tank_2.segments_percent_chord_end   = [0.625,0.625]  
+    fuel_line.fuel_tanks.append(wing_fuel_tank_2)    
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()  
     fuel_tank.outer_length                      = 2 

@@ -55,25 +55,25 @@ class Fuel_Tank(Component):
         """
         Sets default values for fuel tank attributes
         """          
-        self.tag                         = 'fuel_tank'  
-        self.fuel                        = None
-        self.secondary_mass_flow_rate    = 0.0
-        self.fuel_selector_ratio         = 1.0    
-        self.wall_clearance              = 0.0
-        self.wall_thickness              = 1E-3
-        self.xz_plane_symmetric          = True
-        self.wing_tag                    = None
-        self.fuselage_tag                = None
-        self.inner_length                = 0.0
-        self.outer_length                = 0.0 
-        self.outer_width                 = 0.0
-        self.outer_height                = 0.0
-        self.inner_diameter              = 0.0
-        self.outer_diameter              = 0.0 
-        self.segment_tags                = [] 
-        self.segment_percent_chord_start = [0.1,0.1]  
-        self.segment_percent_chord_end   = [0.7,0.7]  
-        self.percent_span_location       = 0.0
+        self.tag                          = 'fuel_tank'  
+        self.fuel                         = None
+        self.secondary_mass_flow_rate     = 0.0
+        self.fuel_selector_ratio          = 1.0    
+        self.wall_clearance               = 0.0
+        self.wall_thickness               = 1E-3
+        self.xz_plane_symmetric           = True
+        self.wing_tag                     = None
+        self.fuselage_tag                 = None
+        self.inner_length                 = 0.0
+        self.outer_length                 = 0.0 
+        self.outer_width                  = 0.0
+        self.outer_height                 = 0.0
+        self.inner_diameter               = 0.0
+        self.outer_diameter               = 0.0 
+        self.segments_bounding_tank       = [None, None] 
+        self.segments_percent_chord_start = [0.1,0.1]
+        self.segments_percent_chord_end   = [0.7,0.7]
+        self.percent_span_location        = 0.0
  
     def append_operating_conditions(self,segment,fuel_line):  
         """

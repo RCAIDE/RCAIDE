@@ -261,8 +261,8 @@ def plot_3d_vehicle(vehicle,
                             make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity)
 
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
-                        if  len(fuel_tank.segment_tags) >1: 
-                            seg_tags = fuel_tank.segment_tags  
+                        if  len(fuel_tank.segments_bounding_tank) >1: 
+                            seg_tags = fuel_tank.segments_bounding_tank  
                             if len(wing.segments)>0:
                                 dim =  len(seg_tags)
                             else:
@@ -276,8 +276,8 @@ def plot_3d_vehicle(vehicle,
                 elif fuel_tank.fuselage_tag != None:
                     fuselage = geometry.fuselages[fuel_tank.fuselage_tag]
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:   
-                        if len(fuel_tank.segment_tags) > 1: 
-                            seg_tags = fuel_tank.segment_tags  
+                        if len(fuel_tank.segments_bounding_tank) > 1: 
+                            seg_tags = fuel_tank.segments_bounding_tank  
                             GEOM     = generate_integral_fuel_tank_points(fuselage,fuel_tank, seg_tags,tessellation )
                             make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 
