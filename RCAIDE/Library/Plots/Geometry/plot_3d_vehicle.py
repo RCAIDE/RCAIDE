@@ -261,21 +261,9 @@ def plot_3d_vehicle(vehicle,
                             make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity)
 
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank: 
-                        segment_list = [] 
-                        seg_bounds =   fuel_tank.bounding_segment_tags 
-                        if fuel_tank.bounding_segment_tags[0] == None or fuel_tank.bounding_segment_tags[1] == None:
-                            pass 
-                        else:                          
-                            collect = False
-                            seg_tags = []
-                            for segment in wing.segments:
-                                if segment.tag == seg_bounds[0]:
-                                    collect = True
-                                if collect:
-                                    seg_tags.append(segment.tag)
-                                if segment.tag == seg_bounds[1]:
-                                    seg_tags.append(segment.tag)
-                                    break
+                        segment_list = []  
+                        if  len(fuel_tank.segment_tags) >1: 
+                            seg_tags = fuel_tank.segment_tags
     
                             for i in range(len(seg_tags)-1):
                                 seg =  wing.segments[seg_tags[i]]
@@ -299,22 +287,9 @@ def plot_3d_vehicle(vehicle,
 
                 elif fuel_tank.fuselage_tag != None:
                     fuselage = geometry.fuselages[fuel_tank.fuselage_tag]
-                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
-                        seg_bounds =   fuel_tank.bounding_segment_tags 
-                        if fuel_tank.bounding_segment_tags[0] == None or fuel_tank.bounding_segment_tags[1] == None:
-                            pass 
-                        else: 
-                            collect = False
-                            seg_tags = []
-                            for segment in fuselage.segments:
-                                if segment.tag == seg_bounds[0]:
-                                    collect = True
-                                if collect:
-                                    seg_tags.append(segment.tag)
-                                if segment.tag == seg_bounds[1]:
-                                    seg_tags.append(segment.tag)
-                                    break
-    
+                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:   
+                        if len(fuel_tank.segment_tags) > 1: 
+                            seg_tags = fuel_tank.segment_tags  
                             GEOM  = generate_integral_fuel_tank_points(fuselage,fuel_tank, seg_tags,tessellation )
                             make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 

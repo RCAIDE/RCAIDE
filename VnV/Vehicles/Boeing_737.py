@@ -640,9 +640,11 @@ def vehicle_setup():
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
     # fuel tank
-    fuel_tank                      = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
-    fuel_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A1()         
-    fuel_tank.bounding_segment_tags    = ['root', 'section_2']   
+    fuel_tank                             = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel_tank.fuel                        = RCAIDE.Library.Attributes.Propellants.Jet_A1()         
+    fuel_tank.segment_tags                = ['root','yehudi', 'section_2']
+    fuel_tank.segment_percent_chord_start = [0.1, 0.1, 0.1]
+    fuel_tank.segment_percent_chord_end   = [0.7, 0.7, 0.7] 
     fuel_line.fuel_tanks.append(fuel_tank)
     
     #------------------------------------------------------------------------------------------------------------------------------------   

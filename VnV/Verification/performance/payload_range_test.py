@@ -31,7 +31,7 @@ def main():
     return
     
 def fuel_aircraft_payload_range_mzfw():
-    vehicle               = E190_vehicle_setup()
+    vehicle                               = E190_vehicle_setup()
     vehicle.mass_properties.max_zero_fuel = None
     vehicle.mass_properties.max_fuel      = None
     vehicle.mass_properties.min_payload   = 10800

@@ -696,9 +696,11 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
     # fuel tank
-    fuel_tank_1                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
-    fuel_tank_1.fuel                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
-    fuel_tank_1.bounding_segment_tags  = ['root', 'section_2']  
+    fuel_tank_1                             = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel_tank_1.fuel                        = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
+    fuel_tank_1.segment_tags                = ['root', 'yehudi','tip']  
+    fuel_tank_1.segment_percent_chord_start = [0.1, 0.1, 0.1]
+    fuel_tank_1.segment_percent_chord_end   = [0.7, 0.7, 0.7] 
     fuel_line.fuel_tanks.append(fuel_tank_1)
  
 

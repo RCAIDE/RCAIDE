@@ -525,15 +525,15 @@ def vehicle_setup():
     #  Energy Source: Fuel Tank
     #-------------------------------------------------------------------------------------------------------------------------  
     # fuel tank
-    fuel_tank_1                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(vehicle.wings.main_wing)
-    fuel_tank_1.tag                                    = 'H2_Fuel_Tank_1' 
-    fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
-    fuel_tank_1.material                               = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
-    fuel_tank_1.insulation_material                    = RCAIDE.Library.Attributes.Materials.Vacuum_Jacketed_Multilayer_Insulation()
-    fuel_tank_1.fuel.gravimetric_efficiency            = 0.5
-    fuel_tank_1.bounding_segment_tags                  = ['fuel_wall', 'wing_section_1']  
-    fuel_tank_1.percent_chord_start                    = 0.2  
-    fuel_tank_1.percent_chord_end                      = 0.6   
+    fuel_tank_1                                                = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank(vehicle.wings.main_wing)
+    fuel_tank_1.tag                                            = 'H2_Fuel_Tank_1' 
+    fuel_tank_1.fuel                                           = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()   
+    fuel_tank_1.material                                       = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
+    fuel_tank_1.insulation_material                            = RCAIDE.Library.Attributes.Materials.Vacuum_Jacketed_Multilayer_Insulation()
+    fuel_tank_1.fuel.gravimetric_efficiency                    = 0.5
+    fuel_tank_1.segment_tags                                   = ['fuel_wall', 'wing_section_1']  
+    fuel_tank_1.segment_percent_chord_start                    = [0.2,0.2] 
+    fuel_tank_1.segment_percent_chord_end                      = [0.6,0.6]  
     fuel_line.fuel_tanks.append(fuel_tank_1)
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to fuel line to network      

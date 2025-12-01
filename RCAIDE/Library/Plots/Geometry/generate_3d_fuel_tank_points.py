@@ -81,10 +81,10 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
-            fs = fuel_tank.percent_chord_start
-            rs = fuel_tank.percent_chord_end  
-            x_coordinates =  np.array([rs, rs, fs, fs, rs])
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank,i)
+            fs = fuel_tank.segment_percent_chord_start
+            rs = fuel_tank.segment_percent_chord_end  
+            x_coordinates =  np.array([rs[i], rs[i], fs[i], fs[i], rs[i]])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
             if wing.vertical:  
@@ -142,10 +142,11 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         translation      = np.zeros((dim,n_points, 3,1))
     
         front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
-        fs = fuel_tank.percent_chord_start
-        rs = fuel_tank.percent_chord_end  
-        x_coordinates =  np.array([rs, rs, fs, fs, rs])
-        y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ]) 
+        fs            = fuel_tank.segment_percent_chord_start
+        rs            = fuel_tank.segment_percent_chord_end  
+        x_coordinates_i =  np.array([rs[0], rs[0], fs[0], fs[0], rs[0]])
+        x_coordinates_o =  np.array([rs[1], rs[1], fs[1], fs[1], rs[1]])
+        y_coordinates  =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ]) 
             
         dihedral              = wing.dihedral
         if wing.sweeps.leading_edge  is not None: 
@@ -164,11 +165,11 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
         translation[:, :, 2,:] = origin[0][2] 
        
         if wing.vertical: 
-            pts[0,:,0,0]   = x_coordinates *  wing.chords.root
+            pts[0,:,0,0]   = x_coordinates_i *  wing.chords.root
             pts[0,:,1,0]   = y_coordinates *  wing.chords.root
             pts[0,:,2,0]   = np.zeros_like(y_coordinates)
             
-            pts[1,:,0,0]   = x_coordinates *  wing.chords.tip  
+            pts[1,:,0,0]   = x_coordinates_o *  wing.chords.tip  
             pts[1,:,1,0]   = y_coordinates *  wing.chords.tip  
             pts[1,:,2,0]   = np.zeros_like(y_coordinates)   
             
