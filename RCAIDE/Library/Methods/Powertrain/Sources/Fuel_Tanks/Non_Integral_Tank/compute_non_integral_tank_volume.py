@@ -104,7 +104,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     
     # where tank is located as a percentage of root chord
     tank_start_percent = fuel_tank.aft_tank_root_chord_bounds[0]
-    tank_end_percent   = fuel_tank.aft_tank_root_chord_bounds[1]
+    tank_end_percent   = fuel_tank.aft_tank_root_chord_bounds[-1]
     
     # dimensionalized location of tank bounds
     tank_start_dimensional = tank_start_percent *  root_chord
@@ -362,23 +362,22 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks,overwrite_f
         * Tank placement constraints are reasonable
     """ 
     if len(wing.segments) > 1: 
-        if len(fuel_tank.segment_tags) >1:  
-            for i in range(len(fuel_tank.segment_tags)-1):
-                inner_segment = wing.segments[fuel_tank.segment_tags[i]]
-                outer_segment = wing.segments[fuel_tank.segment_tags[i+1]] 
+        if len(fuel_tank.segment_tags) >1:   
+            inner_segment = wing.segments[fuel_tank.segment_tags[0]]
+            outer_segment = wing.segments[fuel_tank.segment_tags[-1]] 
+            try:
                 try:
-                    try:
-                        tank_percent_span_location = inner_segment.tank_percent_span_location    
-                    except:
-                        tank_percent_span_location = 0
-                        
-                    inner_segment_index = i
-                    outer_segment_index = i + 1
-                    inner_segment.tank_percent_span_location, tank_volume_o, tank_volume_i\
-                                        = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,inner_segment_index, outer_segment,outer_segment_index, tank_percent_span_location)
-                except: 
-                    fuel_tanks.pop(fuel_tank.tag)
-                    return 
+                    tank_percent_span_location = inner_segment.tank_percent_span_location    
+                except:
+                    tank_percent_span_location = 0
+                    
+                inner_segment_index = 0
+                outer_segment_index = -1
+                inner_segment.tank_percent_span_location, tank_volume_o, tank_volume_i\
+                                    = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,inner_segment_index, outer_segment,outer_segment_index, tank_percent_span_location)
+            except: 
+                fuel_tanks.pop(fuel_tank.tag)
+                return 
                   
             fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
             fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]                  
