@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compute a V-n diagram
 # ---------------------------------------------------------------------------------------------------------------------- 
-def generate_V_n_diagram(vehicle,analyses,altitude,delta_ISA):
+def generate_V_n_diagram(vehicle,analyses,altitude = 0,delta_ISA = 0):
     
     """
     Computes a V-n (velocity-load factor) diagram for an aircraft according to FAR requirements.
