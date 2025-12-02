@@ -103,9 +103,9 @@ def compute_operating_empty_weight(vehicle, settings=None):
             N/A
     """
     if settings.method == 'Raymer':
-        import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS as Method
-    elif settings.method == 'FLOPS':
         import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.Raymer as Method
+    elif settings.method == 'FLOPS':
+        import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS as Method
 
     # Set the factors
     if not hasattr(settings, 'weight_reduction_factors'):
@@ -277,7 +277,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing): 
             fidelity = settings.FLOPS.fidelity
-            W_wing = Method.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
+            try:
+                W_wing = Method.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
+            except:
+                W_wing = Method.compute_main_wing_weight(vehicle, wing, settings)
 
             # Apply weight factor
             W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
@@ -286,7 +289,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
             wing.mass_properties.mass = W_wing
             W_main_wing += W_wing
         if isinstance(wing, Wings.Horizontal_Tail):
-            W_tail = Method.compute_horizontal_tail_weight(vehicle, wing)
+            try:
+                W_tail = Method.compute_horizontal_tail_weight(vehicle, wing, settings)
+            except:
+                W_tail = Method.compute_horizontal_tail_weight(vehicle, wing)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
             # Apply weight factor
@@ -295,7 +301,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail):
-            W_tail = Method.compute_vertical_tail_weight(vehicle, wing)
+            try:
+                W_tail = Method.compute_vertical_tail_weight(vehicle, wing)
+            except:
+                W_tail = Method.compute_vertical_tail_weight(vehicle, wing, settings)
             # Apply weight factor
             W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
@@ -307,7 +316,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##------------------------------------------------------------------------------- 
     W_fuselage_total = 0
     for fuse in vehicle.fuselages:
-        W_fuselage = Method.compute_fuselage_weight(vehicle)
+        try:
+            W_fuselage = Method.compute_fuselage_weight(vehicle)
+        except:
+            W_fuselage = Method.compute_fuselage_weight(vehicle, fuse, settings)
         W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
