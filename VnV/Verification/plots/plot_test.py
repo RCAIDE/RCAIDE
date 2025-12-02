@@ -190,7 +190,8 @@ def electric_rotor_aircraft_geometry_test(show_figure):
     
 def bwb_aircraft_geometry_test(show_figure):
      
-    vehicle  = BWB_vehicle_setup()
+    vehicle  = BWB_vehicle_setup() 
+    vehicle.wings.main_wing.cabins.side_cabin.tail.fineness_ratio  = 1      
 
     fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()

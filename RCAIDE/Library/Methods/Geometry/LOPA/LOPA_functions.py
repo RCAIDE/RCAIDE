@@ -256,7 +256,7 @@ def update_seat_map_layout_using_cabin_taper(seat_data,cabin,side_cabin_offset):
         y0    = seat_data[t_idxs[t_i],3] - seat_data[t_idxs[t_i],6]/2
         y1    = seat_data[t_idxs[t_i],3] + seat_data[t_idxs[t_i],6]/2
         
-        x_pts = np.array([x0, x1])
+        x_pts =  cabin.length - np.array([x0, x1])
         y_pts = np.array([y0, y1])
         
         y_border = max(x_pts * np.tan(theta2)) + side_cabin_offset / 2

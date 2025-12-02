@@ -529,11 +529,11 @@ def vehicle_setup(redesign_rotors=True) :
      
             
     if redesign_rotors:
-        design_electric_rotor(propulsor)
+        design_electric_rotor(propulsor, print_iterations=True)
         save_propulsor(propulsor, os.path.join(test_dir, 'proprotor_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(propulsor)        
-        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
+        design_electric_rotor(regression_prop_rotor_propulsor, iterations=2, print_iterations=True)
         loaded_propulsor = load_propulsor(os.path.join(test_dir, 'proprotor_propulsor.res'))  
         for key,item in propulsor.rotor.items(): 
             propulsor.rotor[key] = loaded_propulsor.rotor[key] 

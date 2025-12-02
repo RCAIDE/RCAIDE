@@ -10,7 +10,6 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Units, Data     
 from RCAIDE.Library.Plots  import *       
-from RCAIDE.Library.Methods.Performance.estimate_stall_speed    import estimate_stall_speed 
   
 # python imports     
 import numpy as np  
@@ -151,17 +150,17 @@ def mission_setup(analyses):
 
     beta_cruise = analyses.low_speed_transition.vehicle.networks.electric.propulsors.prop_rotor_propulsor_1.rotor.cruise.design_blade_pitch_command
     
-     # ------------------------------------------------------------------
+    # ------------------------------------------------------------------
     #  Second Transition Segment
     # ------------------------------------------------------------------ 
     segment                           = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
     segment.tag                       = "departure_transition_3"  
     segment.analyses.extend(analyses.high_speed_transition)   
+    segment.air_speed_start           = 90.  * Units['mph']  
     segment.air_speed_end             = 91.  * Units['mph']  
     segment.acceleration              = 9.81/5 
     segment.true_course               = 90 * Units.degree
     segment.altitude                  = 1000 * Units.ft
-    segment.air_speed_start           = 90.  * Units['mph']  
     
 
     segment.state.numerics.solver.step_size                 = 1E-2 
@@ -187,6 +186,46 @@ def mission_setup(analyses):
     segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
      
     mission.append_segment(segment)
+    
+    
+    
+    # ------------------------------------------------------------------
+    #  Second Transition Segment
+    # ------------------------------------------------------------------ 
+    segment                           = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
+    segment.tag                       = "departure_transition_3"  
+    segment.analyses.extend(analyses.high_speed_transition)    
+    segment.acceleration              = 9.81/5 
+    segment.true_course               = 90 * Units.degree
+    segment.altitude                  = 1000 * Units.ft
+    segment.air_speed_start           = 91.  * Units['mph']   
+    segment.air_speed_end             = 92.  * Units['mph']
+    
+
+    segment.state.numerics.solver.step_size                 = 1E-2 
+    segment.state.numerics.solver.tolerance_solution        = 1E-6 
+    segment.state.numerics.solver.objective                 = None
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
+    
+    # define flight controls 
+    segment.assigned_control_variables.throttle.active                                = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
+                                                                                          'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]  
+    
+    segment.assigned_control_variables.thrust_vector_angle.active                     = True        
+    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        =  [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
+                                                                                        'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]   
+    
+    segment.assigned_control_variables.blade_pitch_command.active                     = True        
+    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
+                                                                                        'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
+    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
+     
+    mission.append_segment(segment)
+       
    
     return mission 
 

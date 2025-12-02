@@ -22,22 +22,16 @@ def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
     if hasattr(inner_segment.airfoil,'geometry') is False or hasattr(outer_segment.airfoil,'geometry') is False: # first, if airfoil geometry data not defined, import from geoemtry files
         inner_segment = deepcopy(inner_segment)
         outer_segment = deepcopy(outer_segment)
-        if type(inner_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-            try:
-                inner_segment.airfoil.geometry = compute_naca_4series(inner_segment.NACA_4_Series_code,n_points)
-            except:
-                inner_segment.airfoil.geometry = compute_naca_4series('0012')
+        if type(inner_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile 
+            inner_segment.airfoil.geometry = compute_naca_4series(inner_segment.NACA_4_Series_code,n_points) 
         else:
-            inner_segment.airfoil= RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil
+            inner_segment.airfoil = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
             inner_segment.airfoil.geometry = compute_naca_4series('0012')
         
-        if type(outer_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile
-            try:
-                outer_segment.airfoil.geometry = compute_naca_4series(outer_segment.NACA_4_Series_code,n_points)
-            except:
-                outer_segment.airfoil.geometry = compute_naca_4series('0012')
+        if type(outer_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: # check if naca 4 series of airfoil from datafile 
+            outer_segment.airfoil.geometry = compute_naca_4series(outer_segment.NACA_4_Series_code,n_points) 
         else:
-            outer_segment.airfoil= RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil
+            outer_segment.airfoil = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
             outer_segment.airfoil.geometry = compute_naca_4series('0012')
     
       
