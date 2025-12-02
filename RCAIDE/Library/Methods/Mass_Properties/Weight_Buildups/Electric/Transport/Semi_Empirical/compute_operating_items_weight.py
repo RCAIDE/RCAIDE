@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Conventional/BWB/FLOPS/compute_operating_items.py
+# RCAIDE/Library/Methods/Weights/Correlation_Buildups/FLOPS/compute_operating_items_weight.py
 # 
 # 
 # Created:  Sep 2024, M. Clarke
@@ -57,39 +57,19 @@ def compute_operating_items_weight(vehicle):
 
         Properties Used:
             N/A
-    """ 
-    NENG =  0 
+    """  
     NPF  = vehicle.number_of_first_class_seats      
     NPB  = vehicle.number_of_business_class_seats   
-    NPE  = vehicle.number_of_economy_class_seats  
-    for network in  vehicle.networks:
-        for propulsor in network.propulsors:
-            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
-                ref_propulsor = propulsor  
-                NENG  += 1   
-    
-    THRUST          = ref_propulsor.sealevel_static_thrust * 1 / Units.lbf
-    SW              = vehicle.reference_area / Units.ft ** 2
-    FMXTOT          = vehicle.mass_properties.max_zero_fuel / Units.lbs
+    NPE  = vehicle.number_of_economy_class_seats   
+
     DESRNG          = vehicle.flight_envelope.design_range / Units.nmi
     VMAX            = vehicle.flight_envelope.design_mach_number   
-    
-    number_of_tanks = 0  
-    for network in  vehicle.networks:
-        for fuel_line in network.fuel_lines:
-            for fuel_tank in fuel_line.fuel_tanks:
-                if fuel_tank.xz_plane_symmetric:
-                    number_of_tanks += 2
-                else:
-                    number_of_tanks += 1
-    
-    WUF   = 11.5 * NENG * THRUST ** 0.2 + 0.07 * SW + 1.6 * number_of_tanks * FMXTOT ** 0.28  # unusable fuel weight
-    WOIL  = 0.082 * NENG * THRUST ** 0.65  # engine oil weight 
-    WSRV  = (5.164 * NPF + 3.846 * NPB + 2.529 * NPE) * (DESRNG / VMAX) ** 0.225  # passenger service weight
-    
+            
+    WSRV        = (5.164 * NPF + 3.846 * NPB + 2.529 * NPE) * (DESRNG / VMAX) ** 0.225  # passenger service weight
+
     W_cargo = 0
     for cargo_bay in vehicle.cargo_bays:
-        W_cargo = cargo_bay.mass_properties.mass  
+        W_cargo = cargo_bay.cargo.mass_properties.mass      
     WCON        = 175 * np.ceil(W_cargo/ Units.lbs * 1. / 950)  # cargo container weight
 
     if vehicle.number_of_passengers >= 150:
@@ -101,19 +81,18 @@ def compute_operating_items_weight(vehicle):
     if vehicle.number_of_passengers < 51:
         NFLA = 1  # number of flight attendants, NSTU in FLOPS
     else:
-        NFLA = 1 + np.ceil(vehicle.number_of_passengers / 40.)
+        NFLA = 1 + np.floor(vehicle.number_of_passengers / 40.)
 
     WFLAAB = NFLA * 155 + NGALC * 200  # flight attendant weight, WSTUAB in FLOPS
     WFLCRB = NFLCR * 225  # flight crew and baggage weight
 
     # Passenger Service Weight
-    WSRV = (5.164*NPF + 3.846*NPB + 2.529*NPE)*(DESRNG/VMAX)**0.225
-    
+    WSRV = (5.164*NPF + 3.846*NPB + 2.529*NPE)*(DESRNG/VMAX)**0.225 
+
     output                           = Data()
-    output.misc                      = WUF * Units.lbs + WOIL * Units.lbs + WCON * Units.lbs
+    output.container                 = WCON * Units.lbs
     output.flight_crew               = WFLCRB * Units.lbs
     output.flight_attendants         = WFLAAB * Units.lbs
     output.passenger_service         = WSRV   * Units.lbs
-    output.total                     = output.misc + output.flight_crew + \
-                                       output.flight_attendants + output.passenger_service 
+    output.total                     = output.container + output.flight_crew + output.flight_attendants + output.passenger_service 
     return output

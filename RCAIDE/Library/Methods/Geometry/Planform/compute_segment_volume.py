@@ -8,15 +8,12 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
+
 import numpy as np
 from shapely import Polygon
 from copy import deepcopy
 
-def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
-    '''
-    DOCUMENTATION
-    
-    '''
+def compute_segment_volume(wing, inner_segment, outer_segment, n_points=401):
 
     # Extract airfoil coordinates
     if hasattr(inner_segment.airfoil,'geometry') is False or hasattr(outer_segment.airfoil,'geometry') is False: # first, if airfoil geometry data not defined, import from geoemtry files

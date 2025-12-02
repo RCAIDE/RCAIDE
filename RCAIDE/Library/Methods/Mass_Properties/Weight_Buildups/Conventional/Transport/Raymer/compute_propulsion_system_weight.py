@@ -127,6 +127,9 @@ def compute_propulsion_system_weight(vehicle,network):
                     NENG  += 1
                     BPR    =  propulsor.bypass_ratio
                     WENG   += 0.084 *  (propulsor.sealevel_static_thrust/Units.lbf)**1.1 * np.exp(-0.045*BPR) * Units.lbs # Raymer 3rd Edition eq. 10.4 
+                if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):
+                    NENG  += 1
+                    WENG   +=  0.1448/(9.81)*(propulsor.sealevel_static_thrust/2)**1.1*np.e**(-0.045*5)
                 if 'nacelle' in propulsor:
                     ref_nacelle =  propulsor.nacelle 
                     

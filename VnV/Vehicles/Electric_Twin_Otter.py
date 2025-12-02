@@ -401,7 +401,7 @@ def vehicle_setup(cell_chemistry, btms_type):
         ##------------------------------------------------------------------------------------------------------------------------------------  
         # Coolant Line
         #------------------------------------------------------------------------------------------------------------------------------------  
-        coolant_line                                           = RCAIDE.Library.Components.Powertrain.Distributors.Coolant_Line(bus)
+        coolant_line                                           = RCAIDE.Library.Components.Powertrain.Distributors.Coolant_Line([bus])
         coolant_line.tag                                       = 'liquid_cooled_coolant_line'
         net.coolant_lines.append(coolant_line)
         HAS                                                    = RCAIDE.Library.Components.Thermal_Management.Batteries.Liquid_Cooled_Wavy_Channel(coolant_line)
@@ -431,7 +431,7 @@ def vehicle_setup(cell_chemistry, btms_type):
         ##------------------------------------------------------------------------------------------------------------------------------------  
         # Coolant Line
         #------------------------------------------------------------------------------------------------------------------------------------  
-        coolant_line                                 = RCAIDE.Library.Components.Powertrain.Distributors.Coolant_Line(bus)
+        coolant_line                                 = RCAIDE.Library.Components.Powertrain.Distributors.Coolant_Line([bus])
         coolant_line.tag                             = 'air_cooled_coolant_line'
         net.coolant_lines.append(coolant_line)
         HAS                                         = RCAIDE.Library.Components.Thermal_Management.Batteries.Air_Cooled() 

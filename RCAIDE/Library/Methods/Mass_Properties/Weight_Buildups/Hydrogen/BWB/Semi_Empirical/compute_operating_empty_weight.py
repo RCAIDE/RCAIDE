@@ -7,15 +7,16 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import  RCAIDE
 from RCAIDE.Framework.Core import Data , Units 
-from .compute_aft_center_body_weight import compute_aft_center_body_weight
-from .compute_cabin_weight import compute_cabin_weight
-from .compute_systems_weight import compute_systems_weight
-from .compute_bwb_wing_weight import compute_wing_weight
-from .compute_operating_items import compute_operating_items_weight
-from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
-from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport import FLOPS 
-from RCAIDE.Library.Methods.Geometry.Planform                          import segment_properties  
- 
+
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_aft_center_body_weight import compute_aft_center_body_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_cabin_weight           import compute_cabin_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_systems_weight         import compute_systems_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_bwb_wing_weight        import compute_wing_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_operating_items        import compute_operating_items_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common                                   import compute_payload_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport                                import FLOPS 
+from RCAIDE.Library.Methods.Geometry.Planform                                                                     import segment_properties  
+from .compute_propulsion_system_weight import compute_propulsion_system_weight
 from copy import deepcopy
 import numpy as np
 
@@ -183,13 +184,13 @@ def compute_operating_empty_weight(vehicle,settings=None):
         W_energy_network_total   = 0 
         # Fuel-Powered Propulsors  
 
-        W_propulsion                         = FLOPS.compute_propulsion_system_weight(vehicle, network)
+        W_propulsion                         = compute_propulsion_system_weight(vehicle, network)
         W_energy_network_total              += W_propulsion.W_prop 
         W_energy_network.W_engine           += W_propulsion.W_engine
         W_energy_network.W_thrust_reverser  += W_propulsion.W_thrust_reverser
         W_energy_network.W_engine_controls  += W_propulsion.W_engine_controls
         W_energy_network.W_starter          += W_propulsion.W_starter
-        W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system 
+        W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system
         W_energy_network.W_nacelle          += W_propulsion.W_nacelle * (1. - W_factors.nacelle)
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
@@ -284,8 +285,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     TOW                = vehicle.mass_properties.max_takeoff
     W_cabin            = compute_cabin_weight(vehicle,settings) 
     W_aft_center_body   = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW)
-    vehicle.wings.main_wing.aft_center_body.mass_properties.mass = W_aft_center_body
-    vehicle.wings.main_wing.center_body.mass_properties.mass = W_cabin
+    
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 

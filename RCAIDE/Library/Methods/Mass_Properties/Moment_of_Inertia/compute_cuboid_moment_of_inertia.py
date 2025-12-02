@@ -60,6 +60,6 @@ def compute_cuboid_moment_of_inertia(origin, mass, outer_length, width_outer, he
     # transform moment of inertia to the global system
     # ----------------------------------------------------------------------------------------------------------------------
     s        = np.array(center_of_gravity) - np.array(origin) # Vector between component and the CG
-    I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s*np.transpose(s))
+    I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
     
     return I_global,  mass

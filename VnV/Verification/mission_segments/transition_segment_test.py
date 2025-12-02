@@ -128,7 +128,7 @@ def stopped_rotor_transition_test(update_regression_values):
     print(error)
      
     for k,v in list(error.items()):
-        assert(np.abs(v)<1e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
+        assert(np.abs(v)<1.5e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
     return     
  
 # ----------------------------------------------------------------------

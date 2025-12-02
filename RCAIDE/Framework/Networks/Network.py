@@ -166,9 +166,9 @@ class Network(Component):
                             total_mech_power  += P_mech 
                             total_elec_power  += P_elec 
     
-                # compute power from each componemnt 
-                conditions.energy.busses[bus.tag].power_draw        += (total_elec_power- state.conditions.energy.busses[bus.tag].regenerative_power*bus_voltage ) * bus.power_split_ratio  /bus.efficiency   
-                conditions.energy.busses[bus.tag].current_draw       = conditions.energy.busses[bus.tag].power_draw/bus_voltage  
+                    # compute power from each componemnt 
+                    conditions.energy.busses[bus.tag].power_draw        += (total_elec_power- state.conditions.energy.busses[bus.tag].regenerative_power*bus_voltage ) * bus.power_split_ratio  /bus.efficiency   
+                    conditions.energy.busses[bus.tag].current_draw       = conditions.energy.busses[bus.tag].power_draw/bus_voltage  
              
         # ------------------------------------------------------------------------------------------------------------------- 
         # Section 2.0 Converters

@@ -85,7 +85,8 @@ def compute_structural_performance(fuel_tank):
         # Optimize wall thickness ratio (ro/ri) using von Mises criterion
         ro_ri = minimize(
             tank_width,
-            x0=(1 + 1e-3),
+            x0=(1 + 1e-2),
+            bounds=[(1+1e-5,1.1)],
             method='L-BFGS-B',
             tol=1e-5,
             args=(P_internal, P_external, safety_factor, fuel_tank)

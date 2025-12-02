@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Hydrogen/__init__.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Hydrogen/BWB/__init__.py
 # 
 
 """RCAIDE Package Setup
@@ -7,5 +7,4 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from . import Transport
-from . import BWB
+from . import Semi_Empirical
