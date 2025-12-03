@@ -57,6 +57,5 @@ def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
      # Compute segment span length
     L = (outer_segment.percent_span_location - inner_segment.percent_span_location) * wing.spans.projected
     volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *L
-    volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *L
 
     return volume
