@@ -122,7 +122,7 @@ def design_electric_rotor(electric_rotor, number_of_stations=20, solver_name='SL
     motor = electric_rotor.motor
     
     if type(rotor) == RCAIDE.Library.Components.Powertrain.Converters.Propeller: 
-        design_propeller(rotor,number_of_stations = number_of_stations)
+        design_propeller(rotor,number_of_stations)
         motor.design_torque            = rotor.cruise.design_torque 
         motor.design_angular_velocity  = rotor.cruise.design_angular_velocity 
     elif type(rotor) == RCAIDE.Library.Components.Powertrain.Converters.Prop_Rotor:

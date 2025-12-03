@@ -18,7 +18,6 @@ from shapely.geometry import Polygon, Point
 from copy import  deepcopy
 import shapely
 import os
-import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Methods to compute volume of non integrak tanks
@@ -93,7 +92,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     if any(val is None for val in [
         fuel_tank.aft_tank_root_chord_bounds[0],
         fuel_tank.aft_tank_root_chord_bounds[1],
-        fuel_tank.segment.end_tag,
+         fuel_tank.segments_bounding_tank ,
         ]):
         raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
     # ------------------------------------------------------
@@ -119,7 +118,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     segments             = wing.segments
         
     seg_tags = list(wing.segments.keys())
-    index = seg_tags.index(fuel_tank.segment.end_tag)
+    index = seg_tags.index( fuel_tank.segments_bounding_tank[1])
     seg_names = seg_tags[:index + 1]
 
     for _,tag in enumerate(seg_names):
@@ -347,7 +346,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
         * Tank placement constraints are reasonable
     """ 
     if len(wing.segments) > 1: 
-        seg_tags = [fuel_tank.segment.start_tag,fuel_tank.segment.end_tag]
+        seg_tags = fuel_tank.segments_bounding_tank  
         for i in range(len(seg_tags)-1):
             inner_segment = wing.segments[seg_tags[i]]
             outer_segment = wing.segments[seg_tags[i+1]] 
@@ -357,7 +356,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
                 except:
                     tank_percent_span_location = 0
                 inner_segment.tank_percent_span_location, tank_volume_o, tank_volume_i\
-                                    = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                                        = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
             except:
                 print(f"[WARNING] Tank '{fuel_tank.tag}' does not fit in the segment. Removing from list.")
                 fuel_tanks.pop(fuel_tank.tag)
@@ -461,10 +460,10 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
 
     semi_span      = wing.spans.projected / 2
     inner_segment  = deepcopy(inner_segment_0) 
-    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.segment.percent_span_location  )     
+    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.percent_span_location  )     
     if tank_percent_span_location > inner_segment_0.percent_span_location: 
         inner_segment.percent_span_location = tank_percent_span_location
-        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.segment.percent_span_location)
+        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.percent_span_location)
         delta_y_percent                     =  (tank_percent_span_location - inner_segment_0.percent_span_location)
         inner_segment.root_chord_percent    = inner_segment_0.root_chord_percent + m*delta_y_percent
 
@@ -478,7 +477,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl)) 
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)
+    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])
 
     clearance  = fuel_tank.wall_clearance
     delta_span = (outer_segment.percent_span_location - inner_segment.percent_span_location) * semi_span
@@ -487,7 +486,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl)) 
     outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segment.percent_chord_end_location -fuel_tank.segment.percent_chord_start_location)
+    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])
 
     # inner segment coordinate  
     inner_segment_thickness =  np.minimum(inner_front_rib_length,inner_rear_rib_length)
@@ -541,7 +540,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     tank_percent_span_location = inner_segment.percent_span_location +  D / semi_span 
 
     # get orgin of fuel tank 
-    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segment.percent_chord_start_location * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
+    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segments_percent_chord_bounds[0] * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
     origin_y              = inner_segment.origin[0][1] + D / 2
     origin_z              = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin      = [[origin_x,origin_y,origin_z]]
@@ -636,8 +635,8 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank):
         geometry = compute_naca_4series('0012')
 
     clearance = 1.5E-2
-    front_rib_nondim_x       = fuel_tank.segment.percent_chord_start_location   
-    rear_rib_nondim_x        = fuel_tank.segment.percent_chord_end_location 
+    front_rib_nondim_x       = fuel_tank.segments_percent_chord_bounds[0]   
+    rear_rib_nondim_x        = fuel_tank.segments_percent_chord_bounds[1] 
     f_upper = interp1d(geometry.x_upper_surface  ,geometry.y_upper_surface, kind='linear')
     f_lower = interp1d(geometry.x_lower_surface  , geometry.y_lower_surface, kind='linear')
 

@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compute a V-n diagram
 # ---------------------------------------------------------------------------------------------------------------------- 
-def generate_V_n_diagram(vehicle,analyses,altitude,delta_ISA):
+def generate_V_n_diagram(vehicle,analyses,altitude = 0,delta_ISA = 0):
     
     """
     Computes a V-n (velocity-load factor) diagram for an aircraft according to FAR requirements.
@@ -444,11 +444,11 @@ def base_analysis(vehicle):
        # ------------------------------------------------------------------
     #   Initialize the Analyses
     # ------------------------------------------------------------------
-    analyses        = RCAIDE.Framework.Analyses.Vehicle()
+    analyses         = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     analyses.append(geometry)
     
 
@@ -456,14 +456,12 @@ def base_analysis(vehicle):
     #  Weights
     # ------------------------------------------------------------------
     weights         = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation() 
-    weights.vehicle = vehicle
     analyses.append(weights)
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     # ------------------------------------------------------------------
-    aerodynamics                                      = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle                              = vehicle
+    aerodynamics                                      = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method() 
     aerodynamics.settings.use_surrogate               = False
     analyses.append(aerodynamics)
 
@@ -472,7 +470,6 @@ def base_analysis(vehicle):
     #  Energy
     # ------------------------------------------------------------------
     energy     = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle = vehicle
     analyses.append(energy)
 
     # ------------------------------------------------------------------

@@ -189,8 +189,7 @@ def compute_rotor_noise(microphone_locations,rotor,segment,settings, rotor_index
         Results.SPL_harmonic[cpt,:]                        = SPL_arithmetic(Noise.SPL_prop_harmonic_1_3_spectrum[0], sum_axis=1)
         Results.SPL_broadband[cpt,:]                       = SPL_arithmetic(Noise.SPL_prop_broadband_1_3_spectrum[0], sum_axis=1) 
           
-        # blade passing frequency   
-        Results.blade_passing_frequencies                  = Noise.f          
+        # blade passing frequency         
         Results.SPL_harmonic_bpf_spectrum[cpt,:,:]         = Noise.SPL_prop_harmonic_bpf_spectrum 
         Results.SPL_harmonic_bpf_spectrum_dBA[cpt,:,:]     = A_weighting_metric(Results.SPL_harmonic_bpf_spectrum[cpt,:,:],Noise.f) 
           

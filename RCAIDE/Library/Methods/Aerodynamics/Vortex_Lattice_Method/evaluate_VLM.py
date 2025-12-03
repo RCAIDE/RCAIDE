@@ -259,7 +259,7 @@ def evaluate_surrogate(state,settings,vehicle):
     
     return
 
-def evaluate_no_surrogate(state,settings,base_vehicle):
+def evaluate_no_surrogate(state,settings,vehicle):
     """Evaluates forces and moments directly using VLM.
     
     Assumptions:
@@ -279,8 +279,7 @@ def evaluate_no_surrogate(state,settings,base_vehicle):
 
     # unpack 
     conditions    = state.conditions 
-    aerodynamics  = state.analyses.aerodynamics
-    vehicle       = aerodynamics.vehicle   
+    aerodynamics  = state.analyses.aerodynamics 
     n_cpts        = len(conditions.aerodynamics.angles.alpha)
      
     

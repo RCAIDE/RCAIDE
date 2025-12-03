@@ -31,7 +31,6 @@ class Business(Component):
         self.aisle_width                          = 15  *  Units.inches          
         self.galley_lavatory_percent_x_locations = []      
         self.emergency_exit_percent_x_locations  = []
-        self.type_A_exit_percent_x_locations     = []
-        self.offset_y                            = 0.0
+        self.type_A_exit_percent_x_locations     = [] 
          
      

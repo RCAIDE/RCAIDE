@@ -578,8 +578,8 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     turbofan1                                    = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan()   
     turbofan1.origin                             = [[17.818, 10.000,-0.953 ]]
     turbofan1.tag                                = 'propulsor_1'    
-    turbofan1.engine_length                      = 4.928                      
-    turbofan1.engine_diameter                    = 2.822                  
+    turbofan1.length                             = 4.928                      
+    turbofan1.diameter                           = 2.822                  
     turbofan1.bypass_ratio                       = 9.1                        
     turbofan1.design_altitude                    = 36000*Units.ft             
     turbofan1.design_mach_number                 = 0.85                     
@@ -696,39 +696,24 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     #  Energy Source: Fuel Tank
     #------------------------------------------------------------------------------------------------------------------------- 
     # fuel tank
-    fuel_tank_1                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_1.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_1.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_1.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_1.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
-    fuel_tank_1.segment.start_tag    = 'root'
-    fuel_tank_1.segment.end_tag      = 'yehudi'
-
+    fuel_tank_1                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel_tank_1.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
+    fuel_tank_1.segments_bounding_tank       = ['root', 'yehudi']  
+    fuel_tank_1.segments_percent_chord_start = [0.1, 0.1]
+    fuel_tank_1.segments_percent_chord_end   = [0.7, 0.7] 
     fuel_line.fuel_tanks.append(fuel_tank_1)
-
-    # fuel tank
-    fuel_tank_2                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_2.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_2.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_2.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_2.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center   
-    fuel_tank_2.segment.start_tag    = 'root'
-    fuel_tank_2.segment.end_tag      = 'yehudi'
-    fuel_line.fuel_tanks.append(fuel_tank_2)
-
-    # fuel tank
-    fuel_tank_3                                        = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_3.origin                                 = vehicle.wings.main_wing.origin  
-    fuel_tank_3.fuel                                   = RCAIDE.Library.Attributes.Propellants.Jet_A1()   
-    fuel_tank_3.fuel.origin                            = vehicle.wings.main_wing.mass_properties.center_of_gravity      
-    fuel_tank_3.fuel.mass_properties.center_of_gravity = vehicle.wings.main_wing.aerodynamic_center  
-    fuel_tank_3.segment.start_tag    = 'root'
-    fuel_tank_3.segment.end_tag      = 'yehudi'
-    fuel_line.fuel_tanks.append(fuel_tank_3)
+    
+    fuel_tank_2                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing) 
+    fuel_tank_2.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A1()    
+    fuel_tank_2.segments_bounding_tank       = ['yehudi','tip']  
+    fuel_tank_2.segments_percent_chord_start = [0.1, 0.1]
+    fuel_tank_2.segments_percent_chord_end   = [0.7, 0.7] 
+    fuel_line.fuel_tanks.append(fuel_tank_2)    
+ 
 
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to fuel line to network      
-    fuel_line.assigned_propulsors =  [['propulsor_1', 'propulsor_2']]
+    fuel_line.assigned_propulsors     =  [['propulsor_1', 'propulsor_2']]
 
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Append fuel line to fuel line to network      
@@ -792,13 +777,11 @@ def configs_setup(vehicle):
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity      =  3470. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  3470. * Units.rpm 
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx      = 34.77 /1000      
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx      = 34.77 /1000             
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation              = 3470. #N1 speed
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation              = 3470. #N1 speed
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed    = 315.
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed    = 315.
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed   = 415.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed   = 415. 
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx      = 34.77 /1000       
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity    = 315.
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity    = 315.
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity   = 415.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity   = 415. 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True     
     
@@ -817,13 +800,11 @@ def configs_setup(vehicle):
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity    =  2780. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity    =  2780. * Units.rpm 
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx    = 20.87 /1000      
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 20.87 /1000       
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation            = 2780.  
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation            = 2780. 
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed  = 210.
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed  = 210.
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed = 360.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed = 360.
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 20.87 /1000   
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity  = 210.
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity  = 210.
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity = 360.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity = 360.
 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True         
@@ -839,18 +820,16 @@ def configs_setup(vehicle):
     config.tag = 'landing'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
     config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
-    config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  2780. * Units.rpm
-    config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  2780. * Units.rpm
+    config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity   =  2780. * Units.rpm
+    config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity   =  2780. * Units.rpm
     config.landing_gears.main_gear.gear_extended    = True
     config.landing_gears.nose_gear.gear_extended    = True  
     config.networks.fuel.propulsors['propulsor_1'].emission_indices.NOx    = 11.02/1000              
-    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 11.02 /1000      
-    config.networks.fuel.propulsors['propulsor_1'].fan.rotation            = 2780.  
-    config.networks.fuel.propulsors['propulsor_2'].fan.rotation            = 2780. 
-    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.noise_speed = 92.
-    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.noise_speed = 92.
-    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.noise_speed  = 109.3
-    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.noise_speed  = 109.3 
+    config.networks.fuel.propulsors['propulsor_2'].emission_indices.NOx    = 11.02 /1000   
+    config.networks.fuel.propulsors['propulsor_1'].core_nozzle.exit_velocity = 92.
+    config.networks.fuel.propulsors['propulsor_2'].core_nozzle.exit_velocity = 92.
+    config.networks.fuel.propulsors['propulsor_1'].fan_nozzle.exit_velocity  = 109.3
+    config.networks.fuel.propulsors['propulsor_2'].fan_nozzle.exit_velocity  = 109.3 
 
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True         
@@ -915,21 +894,20 @@ def base_analysis(vehicle):
     #   Initialize the Analyses
     # ------------------------------------------------------------------     
     analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle =  vehicle
 
     # ------------------------------------------------------------------
     #  Geometry
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.vehicle = vehicle
     geometry.settings.unique_geometry = False
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Weights
-    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
-    weights.vehicle = vehicle 
-    weights.settings.FLOPS.fidelity                                           = 'Complex'      
-    weights.settings.advanced_composites                                      = True
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
+    weights.settings.FLOPS.fidelity                                          = 'Complex'      
+    weights.settings.advanced_composites                                     = True
     weights.settings.weight_correction_additions.empty.structural.paint      = 450 
     weights.settings.weight_correction_additions.operational_items.ETOPS     = 7.7 * vehicle.number_of_passengers
     weights.settings.weight_correction_additions.empty.propulsion.battery    = 56 
@@ -940,13 +918,11 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle = vehicle
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
     #  Energy
-    energy = RCAIDE.Framework.Analyses.Energy.Energy()
-    energy.vehicle = vehicle 
+    energy = RCAIDE.Framework.Analyses.Energy.Energy() 
     analyses.append(energy)
     
   

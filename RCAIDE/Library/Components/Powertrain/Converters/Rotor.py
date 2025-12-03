@@ -226,11 +226,12 @@ class Rotor(Component):
  
         # blade optimization parameters     
         self.optimization_parameters                                    = Data() 
-        self.optimization_parameters.tip_mach_range                     = [0.3,0.7] 
+        self.optimization_parameters.tip_mach_range                     = [0.1,0.6] 
         self.optimization_parameters.multiobjective_aeroacoustic_weight = 1.0
         self.optimization_parameters.multiobjective_performance_weight  = 1.0
         self.optimization_parameters.multiobjective_acoustic_weight     = 1.0
-        self.optimization_parameters.noise_evaluation_angle             = 135 * Units.degrees 
+        self.optimization_parameters.noise_evaluation_angle             = 135 * Units.degrees
+        self.optimization_parameters.noise_evaluation_distance          = 20
         self.optimization_parameters.tolerance                          = 1E-4
         self.optimization_parameters.ideal_SPL_dBA                      = 30
         self.optimization_parameters.ideal_efficiency                   = 1.0     
@@ -378,7 +379,7 @@ class Rotor(Component):
         cpts       = len(np.atleast_1d(commanded_thrust_vector))
         rots       = np.array(self.orientation_euler_angles) * 1.
         rots       = np.repeat(rots[None,:], cpts, axis=0) 
-        rots[:,1] += commanded_thrust_vector[:,0] 
+        rots[:,1] += commanded_thrust_vector[:,0]
         
         vehicle_2_prop_vec = sp.spatial.transform.Rotation.from_rotvec(rots).as_matrix()
 

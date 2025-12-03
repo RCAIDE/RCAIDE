@@ -55,29 +55,24 @@ class Fuel_Tank(Component):
         """
         Sets default values for fuel tank attributes
         """          
-        self.tag                                   = 'fuel_tank'  
-        self.fuel                                  = None
-        self.secondary_mass_flow_rate              = 0.0
-        self.fuel_selector_ratio                   = 1.0    
-        self.wall_clearance                        = 0.0
-        self.wall_thickness                        = 1E-3
-        self.xz_plane_symmetric                    = True
-        self.wing_tag                              = None
-        self.fuselage_tag                          = None
-        self.inner_length                          = 0.0
-        self.outer_length                          = 0.0 
-        self.outer_width                           = 0.0
-        self.outer_height                          = 0.0
-        self.inner_diameter                        = 0.0
-        self.outer_diameter                        = 0.0
-        self.segment                               = Data()
-        self.segment.start_tag                     = None
-        self.segment.end_tag                       = None
-        self.segment.percent_chord_start_location  = 0.1  
-        self.segment.percent_chord_end_location    = 0.7
-        self.segment.percent_span_location         = 0.0
-        
-
+        self.tag                            = 'fuel_tank'  
+        self.fuel                           = None
+        self.secondary_mass_flow_rate       = 0.0
+        self.fuel_selector_ratio            = 1.0    
+        self.wall_clearance                 = 0.0
+        self.wall_thickness                 = 1E-3
+        self.xz_plane_symmetric             = True
+        self.wing_tag                       = None
+        self.fuselage_tag                   = None
+        self.inner_length                   = 0.0
+        self.outer_length                   = 0.0 
+        self.outer_width                    = 0.0
+        self.outer_height                   = 0.0
+        self.inner_diameter                 = 0.0
+        self.outer_diameter                 = 0.0 
+        self.segments_bounding_tank         = [None, None] 
+        self.segments_percent_chord_bounds  = [0.1,0.7]
+        self.percent_span_location          = 0.0
  
     def append_operating_conditions(self,segment,fuel_line):  
         """

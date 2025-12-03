@@ -214,7 +214,6 @@ def wing_planform(wing):
         wing.aerodynamic_center              = aerodynamic_center 
         wing.total_length                    = total_length  
         wing.aspect_ratio                    = AR
-        wing.fuel_tank.percent_span_location = 0
             
         # update remainder segment properties
         segment_properties(wing)
@@ -465,7 +464,6 @@ def segment_properties(wing):
             segment.aspect_ratio                   = (span_seg **2) / Sref_seg
             segment.areas.exposed                  = S_exposed_seg
             segment.areas.wetted                   = Swet_seg
-            # segment.fuel_tank.percent_span_location = 0.0
             total_wetted_area                      += Swet_seg
             
 

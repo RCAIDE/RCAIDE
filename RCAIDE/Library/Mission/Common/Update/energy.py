@@ -26,7 +26,7 @@ def energy(segment):
        N/A 
     """  
     # loop throuh networks in vehicle 
-    for network in segment.analyses.energy.vehicle.networks:  
+    for network in segment.analyses.vehicle.networks:  
         busses  = network.busses
         for bus in busses:
             for battery in bus.battery_modules: 

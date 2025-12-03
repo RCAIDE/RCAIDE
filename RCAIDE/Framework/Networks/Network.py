@@ -326,7 +326,7 @@ class Network(Component):
         """            
          
         unknowns(segment)  
-        for network in segment.analyses.energy.vehicle.networks:
+        for network in segment.analyses.vehicle.networks:
             # Fuel unknowns 
             for fuel_line_i, fuel_line in enumerate(network.fuel_lines):    
                 if fuel_line.active:
@@ -363,7 +363,7 @@ class Network(Component):
            Properties Used: 
            N/A
        """         
-        for network in segment.analyses.energy.vehicle.networks:
+        for network in segment.analyses.vehicle.networks:
             for fuel_line_i, fuel_line in enumerate(network.fuel_lines):    
                 if fuel_line.active:
                     for propulsor_group in  fuel_line.assigned_propulsors:
@@ -398,7 +398,7 @@ class Network(Component):
         """                   
         segment.state.residuals.network = Residuals()
         
-        for network in segment.analyses.energy.vehicle.networks:
+        for network in segment.analyses.vehicle.networks:
             for propulsor in network.propulsors: 
                 propulsor.append_operating_conditions(segment,segment.state.conditions.energy,segment.state.conditions.noise)     
     
