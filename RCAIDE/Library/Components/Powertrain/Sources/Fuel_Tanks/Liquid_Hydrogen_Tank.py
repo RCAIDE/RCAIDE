@@ -9,9 +9,9 @@
 # RCAIDE imports
 from .Non_Integral_Tank  import Non_Integral_Tank 
 from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume  import *
-from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_structural_performance import compute_structural_performance
-from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_thermal_performance    import compute_thermal_performance
+
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume       import *
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_tank_volume import compute_liquid_hydrogen_tank_volume
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen Tank
@@ -139,13 +139,12 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self, wing,fuel_tanks)
                 if hasattr(fuel_tanks,self.tag):
-                    compute_structural_performance(self)
-                    compute_thermal_performance(self)
+                    compute_liquid_hydrogen_tank_volume(self)
+                  
             else:
                 if self.bwb_aft_tank == True:
                     if self.wing_tag != None:
                         wing = wings[self.wing_tag]  
                         compute_bwb_aft_tank_volume(self, wing)
-                        compute_structural_performance(self)
-                        compute_thermal_performance(self)
+                        compute_liquid_hydrogen_tank_volume(self)
         return
