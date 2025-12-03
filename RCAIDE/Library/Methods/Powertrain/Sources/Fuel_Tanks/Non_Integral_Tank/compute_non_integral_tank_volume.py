@@ -18,7 +18,6 @@ from shapely.geometry import Polygon, Point
 from copy import  deepcopy
 import shapely
 import os
-import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Methods to compute volume of non integrak tanks

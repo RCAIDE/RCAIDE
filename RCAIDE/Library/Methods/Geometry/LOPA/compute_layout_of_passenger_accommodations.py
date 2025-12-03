@@ -159,8 +159,8 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
      
     if type(cabin) == RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin:
         offset = 0
-        if cabin.side_ailse: 
-            offset = cabin_class.aile_width      
+        if cabin.side_aisle: 
+            offset = cabin_class.aisle_width      
         
         seat_data[:, 3] += max(seat_data[:, 3]) + cabin_class.seat_width /2
         seat_data[:, 3] += side_cabin_offset /2 + offset

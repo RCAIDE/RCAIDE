@@ -112,7 +112,7 @@ def vehicle_setup():
     business_class.galley_lavatory_percent_x_locations = [0] 
     business_class.seat_arm_rest_width                 = 4 *  Units.inches 
     business_class.seat_width                          = 25 *  Units.inches
-    business_class.aile_width                          = 15  *  Units.inches 
+    business_class.aisle_width                          = 15  *  Units.inches 
     business_class.type_A_exit_percent_x_locations     = [0,0]
     cabin.append_cabin_class(business_class)  
 
@@ -132,7 +132,7 @@ def vehicle_setup():
     business_class.galley_lavatory_percent_x_locations   = [0] 
     business_class.seat_arm_rest_width                   = 4 *  Units.inches 
     business_class.seat_width                            = 30 *  Units.inches
-    business_class.aile_width                            = 15  *  Units.inches  
+    business_class.aisle_width                            = 15  *  Units.inches  
     business_class.type_A_exit_percent_x_locations       = [0,0]
     side_cabin.append_cabin_class(business_class)
     
