@@ -61,6 +61,8 @@ def single_wing_segment_integral_fuel_tank_volume_test():
     
     configs = configs_setup(vehicle)
     analyses = analyses_setup(configs)
+    for analysis in analyses:
+        analysis.geometry.settings.compute_fuel_volume = True
     mission = mission_setup(analyses)
     geometry(mission)
 
@@ -99,6 +101,8 @@ def integral_fuel_tank_volume_test():
 
     configs  = configs_setup(vehicle)
     analyses = analyses_setup(configs)
+    for analysis in analyses:
+        analysis.geometry.settings.compute_fuel_volume = True
     mission  = mission_setup(analyses)
     geometry(mission)
 
@@ -126,6 +130,8 @@ def integral_fuel_tank_volume_test():
 
     configs  = configs_setup(vehicle)
     analyses = analyses_setup(configs)
+    for analysis in analyses:
+        analysis.geometry.settings.compute_fuel_volume = True
     mission  = mission_setup(analyses)
     geometry(mission)
 
@@ -258,6 +264,8 @@ def non_integral_fuel_tank_volume_test():
   
     configs  = configs_setup(vehicle)
     analyses = analyses_setup(configs)
+    for analysis in analyses:
+        analysis.geometry.settings.compute_fuel_volume = True
     mission  = mission_setup(analyses)
     geometry(mission)   
     

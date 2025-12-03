@@ -37,11 +37,13 @@ class Geometry(Analysis):
             """                  
         
         
-        self.tag                                 = 'geometry' 
-        self.settings                            = Data() 
-        self.settings.overwrite_reference        = True 
-        self.settings.overwrite_fuel_volume      = False
-        self.settings.unique_geometry            = False
+        self.tag                           = 'geometry'
+        self.vehicle                       = None
+        self.settings                      = Data() 
+        self.settings.overwrite_reference  = True 
+        self.settings.compute_fuel_volume  = False
+        self.settings.unique_geometry      = True
+        self.settings.update_max_fuel      = False
 
         
         

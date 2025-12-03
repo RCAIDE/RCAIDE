@@ -198,6 +198,6 @@ def geometry_preprocess_routine(settings, vehicle):
     # --------------------------------------------------------------------------------------------------------------------
     # Compute fuel volume  
     # -------------------------------------------------------------------------------------------------------------------- 
-    compute_fuel_volume(vehicle,overwrite_fuel_volume = settings.overwrite_fuel_volume)
+    compute_fuel_volume(vehicle,compute_fuel_volume = settings.compute_fuel_volume, update_max_fuel=settings.update_max_fuel)
                
     return 

@@ -100,7 +100,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.ullage_volume_fraction   = 0.07
         self.design_external_pressure = 0 
 
-    def compute_volume(self, wings, fuselages,overwrite_fuel_volume,fuel_tanks):
+    def compute_volume(self, wings, fuselages,fuel_tanks):
         """
         Compute the internal volume of the liquid hydrogen tank.  
 
@@ -137,7 +137,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         if self.geometry_type == 'cylindrical':
             if self.wing_tag != None and self.bwb_aft_tank is False:
                 wing = wings[self.wing_tag]  
-                compute_wing_non_integral_tank_volume(self, wing,fuel_tanks, overwrite_fuel_volume)
+                compute_wing_non_integral_tank_volume(self, wing,fuel_tanks)
                 if hasattr(fuel_tanks,self.tag):
                     compute_structural_performance(self)
                     compute_thermal_performance(self)
@@ -145,7 +145,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 if self.bwb_aft_tank == True:
                     if self.wing_tag != None:
                         wing = wings[self.wing_tag]  
-                        compute_bwb_aft_tank_volume(self, wing, overwrite_fuel_volume)
+                        compute_bwb_aft_tank_volume(self, wing)
                         compute_structural_performance(self)
                         compute_thermal_performance(self)
         return
