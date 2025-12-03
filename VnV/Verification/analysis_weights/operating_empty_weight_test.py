@@ -27,25 +27,25 @@ def main():
     update_regression_values = False # should be false unless code functionally changes
     show_figure              = False # leave false for regression
 
-    # Transport_Aircraft_Test(update_regression_values,show_figure)
-    # BWB_Aircraft_Test(update_regression_values,show_figure)
-    # General_Aviation_Test(update_regression_values,show_figure)
-    # EVTOL_Aircraft_Test(update_regression_values,show_figure)
-    # Transport_Hydrogen_Test(update_regression_values,show_figure)
-    # Electric_General_Aviation_Test(update_regression_values,show_figure)
+    Transport_Aircraft_Test(update_regression_values,show_figure)
+    BWB_Aircraft_Test(update_regression_values,show_figure)
+    General_Aviation_Test(update_regression_values,show_figure)
+    EVTOL_Aircraft_Test(update_regression_values,show_figure)
+    Transport_Hydrogen_Test(update_regression_values,show_figure)
+    Electric_General_Aviation_Test(update_regression_values,show_figure)
     Electric_Transport_Test(update_regression_values,show_figure)
     return
 
 def Electric_Transport_Test(update_regression_values, show_figure):
-    method_types = ['Semi_Empirical']
+    method_types = ['Raymer', 'FLOPS']
 
     vehicle = electric_transport_setup()
     vehicle.mass_properties.takeoff = None
     for method_type in method_types:
-        print(f'Testing Transport Aircraft Method: {method_type} | Method: {"Complex"}')        
+        print(f'Testing Electric Transport Aircraft Method: {method_type} | Method: {"Complex"}')        
         weight_analysis = RCAIDE.Framework.Analyses.Weights.Electric_Transport()
-        weight_analysis.vehicle = vehicle
-        weight = weight_analysis.evaluate()
+        weight_analysis.settings.method = method_type
+        weight = weight_analysis.evaluate(vehicle)
         save_path = os.path.join(os.path.dirname(__file__), f'electric_transport_{method_type}.res')
 
         if update_regression_values:
