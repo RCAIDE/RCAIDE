@@ -97,7 +97,7 @@ def plot_battery_module_C_rates(results,
     axis_1 = plt.subplot(1,2,1)
     axis_2 = plt.subplot(1,2,2)  
      
-    for network in results.segments[0].analyses.energy.vehicle.networks: 
+    for network in results.segments[0].analyses.vehicle.networks: 
         busses  = network.busses 
         for bus in busses:
             for b_i, battery in enumerate(bus.battery_modules):

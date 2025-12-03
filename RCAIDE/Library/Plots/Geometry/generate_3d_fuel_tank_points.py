@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  generate_integral_wing_tank_points
 # ----------------------------------------------------------------------------------------------------------------------  
-def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
+def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_tank):
     """
     Generates 3D coordinate points that define a wing surface.
 
@@ -69,7 +69,7 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
     n_segments           = len(segment_list) 
     origin               = wing.origin   
         
-    if n_segments > 0: 
+    if len(segments) > 0: 
         pts              = np.zeros((dim,n_points, 3,1))  
         section_twist    = np.zeros((dim,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
@@ -81,10 +81,10 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg)
-            fs = current_seg.fuel_tank.percent_chord_start_location
-            rs = current_seg.fuel_tank.percent_chord_end_location  
-            x_coordinates =  np.array([rs, rs, fs, fs, rs])
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
+            fs = fuel_tank.segments_percent_chord_start
+            rs = fuel_tank.segments_percent_chord_end  
+            x_coordinates =  np.array([rs[i], rs[i], fs[i], fs[i], rs[i]])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
             if wing.vertical:  
@@ -134,18 +134,21 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
                 translation[i,:,2,:] = translation[i-1,:,2,:] + dz 
     else:
 
-        pts              = np.zeros((dim,n_points, 3,1))  
-        section_twist    = np.zeros((dim,n_points, 3,3))
+        pts                       = np.zeros((dim,n_points, 3,1))  
+        section_twist             = np.zeros((dim,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1
-        translation      = np.zeros((dim,n_points, 3,1))
-    
-        front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(wing)
-        fs = wing.fuel_tank.percent_chord_start_location
-        rs = wing.fuel_tank.percent_chord_end_location  
-        x_coordinates =  np.array([rs, rs, fs, fs, rs])
-        y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ]) 
+        translation               = np.zeros((dim,n_points, 3,1))
+
+        fs                = fuel_tank.segments_percent_chord_bounds[0]
+        rs                = fuel_tank.segments_percent_chord_bounds[1]      
+        front_rib_yu_i,rear_rib_yu_i,front_rib_yl_i,rear_rib_yl_i = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
+        front_rib_yu_o,rear_rib_yu_o,front_rib_yl_o,rear_rib_yl_o = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
+        x_coordinates_i   =  np.array([rs, rs, fs, fs, rs])
+        x_coordinates_o   =  np.array([rs, rs, fs, fs, rs])
+        y_coordinates_i   =  np.array([rear_rib_yl_i, rear_rib_yu_i, front_rib_yu_i,front_rib_yl_i,rear_rib_yl_i ]) 
+        y_coordinates_o   =  np.array([rear_rib_yl_o, rear_rib_yu_o, front_rib_yu_o,front_rib_yl_o,rear_rib_yl_o ]) 
             
         dihedral              = wing.dihedral
         if wing.sweeps.leading_edge  is not None: 
@@ -164,13 +167,13 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
         translation[:, :, 2,:] = origin[0][2] 
        
         if wing.vertical: 
-            pts[0,:,0,0]   = x_coordinates *  wing.chords.root
-            pts[0,:,1,0]   = y_coordinates *  wing.chords.root
-            pts[0,:,2,0]   = np.zeros_like(y_coordinates)
+            pts[0,:,0,0]   = x_coordinates_i *  wing.chords.root
+            pts[0,:,1,0]   = y_coordinates_i *  wing.chords.root
+            pts[0,:,2,0]   = np.zeros_like(y_coordinates_i)
             
-            pts[1,:,0,0]   = x_coordinates *  wing.chords.tip  
-            pts[1,:,1,0]   = y_coordinates *  wing.chords.tip  
-            pts[1,:,2,0]   = np.zeros_like(y_coordinates)   
+            pts[1,:,0,0]   = x_coordinates_o *  wing.chords.tip  
+            pts[1,:,1,0]   = y_coordinates_o *  wing.chords.tip  
+            pts[1,:,2,0]   = np.zeros_like(y_coordinates_o)   
             
             translation[1, :, 0,:] += semispan*np.tan(sweep)
             translation[1, :, 1,:] += semispan*np.tan(dihedral) 
@@ -188,13 +191,13 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list):
             
             
         else:
-            pts[0,:,0,0]   = x_coordinates *  wing.chords.root
-            pts[0,:,1,0]   = np.zeros_like(y_coordinates) 
-            pts[0,:,2,0]   = y_coordinates *  wing.chords.root
+            pts[0,:,0,0]   = x_coordinates_i *  wing.chords.root
+            pts[0,:,1,0]   = np.zeros_like(y_coordinates_i) 
+            pts[0,:,2,0]   = y_coordinates_i *  wing.chords.root
             
-            pts[1,:,0,0]   = x_coordinates *  wing.chords.tip  
-            pts[1,:,1,0]   = np.zeros_like(y_coordinates)  
-            pts[1,:,2,0]   = y_coordinates *  wing.chords.tip   
+            pts[1,:,0,0]   = x_coordinates_o *  wing.chords.tip  
+            pts[1,:,1,0]   = np.zeros_like(y_coordinates_o)  
+            pts[1,:,2,0]   = y_coordinates_o *  wing.chords.tip   
     
             translation[1, :, 0,:] += semispan*np.tan(sweep)
             translation[1, :, 1,:] += semispan 
@@ -347,11 +350,10 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         * Origin is at the nose of the fuel_tank
     """  
 
-    N = 3
+    N = 9
     fuel_tank_points = np.zeros((2*N,tessellation ,3))
     R = fuel_tank.outer_diameter / 2
-    L = fuel_tank.outer_length - fuel_tank.outer_diameter
-    
+    L = fuel_tank.outer_length    
          
     # front segments
     front_angles = np.linspace(0, np.pi/2,N) 
@@ -408,8 +410,8 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
     
     # translate to location on aircraft 
     if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
-        fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] - fuel_tank.outer_diameter/2
-        fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R+L/2)
+        fuel_tank_points[:, :, 0] +=  fuel_tank.origin[0][0] + fuel_tank.outer_diameter/2
+        fuel_tank_points[:, :, 1] +=  fuel_tank.origin[0][1] - (R + L/2)
         fuel_tank_points[:, :, 2] +=  fuel_tank.origin[0][2]
     else:
         fuel_tank_points[:, :, 0] += fuel_tank.origin[0][0]
@@ -417,7 +419,16 @@ def generate_non_integral_fuel_tank_points(fuel_tank, tessellation = 24):
         fuel_tank_points[:, :, 2] += fuel_tank.origin[0][2]
     
 
-  
+    if hasattr(fuel_tank, "wing_root_twist"):
+        # do one last rotation for root twist of wing 
+        wing_root_rotation = np.zeros((3, 3))
+        wing_root_rotation[0,0] = np.cos(fuel_tank.wing_root_twist)
+        wing_root_rotation[0,2] = np.sin(fuel_tank.wing_root_twist)
+        wing_root_rotation[1,1] = 1
+        wing_root_rotation[2,0] = -np.sin(fuel_tank.wing_root_twist)
+        wing_root_rotation[2,2] = np.cos(fuel_tank.wing_root_twist)
+        fuel_tank_points =  fuel_tank_points @ wing_root_rotation.T 
+    
     G= Data()
     G.PTS  = fuel_tank_points 
 

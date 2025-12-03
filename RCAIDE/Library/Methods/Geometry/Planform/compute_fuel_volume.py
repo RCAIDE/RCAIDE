@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # compute_fuel_volume 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_fuel_volume(vehicle, update_fuel_volume = False):
+def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = False):
     """
     Computes the total fuel volume and mass for all fuel tanks in a vehicle.
 
@@ -69,7 +69,8 @@ def compute_fuel_volume(vehicle, update_fuel_volume = False):
     total_fuel_mass   = 0
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
-            for fuel_tank in fuel_line.fuel_tanks:
+            fuel_tanks= fuel_line.fuel_tanks
+            for fuel_tank in fuel_tanks:
                 try:
                     compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:
@@ -77,13 +78,17 @@ def compute_fuel_volume(vehicle, update_fuel_volume = False):
                     total_fuel_mass   += getattr(fuel_tank.fuel.mass_properties, "mass", None)
                 else:
                     # if no error getting the method, run it normally
-                    if update_fuel_volume:
-                        compute_fuel_tank_volume(wings, fuselages) 
+                    if compute_fuel_volume:
+                        compute_fuel_tank_volume(wings, fuselages, fuel_tanks) 
                         fuel_tank.fuel.volume_properties.net_volume = fuel_tank.fuel.mass_properties.mass / fuel_tank.fuel.density
                     total_fuel_volume += fuel_tank.fuel.volume_properties.net_volume 
                     total_fuel_mass   += fuel_tank.fuel.mass_properties.mass 
                     
     # Assign Total Fuel Volume and Mass to Vehicle 
-    vehicle.volume_properties.fuel = total_fuel_volume
-    vehicle.mass_properties.fuel   = total_fuel_mass
+    vehicle.volume_properties.fuel   = total_fuel_volume
+    vehicle.mass_properties.fuel     = total_fuel_mass
+
+    if update_max_fuel:
+        vehicle.mass_properties.max_fuel = total_fuel_mass
+
     return 

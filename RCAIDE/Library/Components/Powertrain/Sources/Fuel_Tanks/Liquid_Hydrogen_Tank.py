@@ -89,6 +89,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         None  
         """
         self.tag                      = 'Liquid_Hydrogen_Tank'
+        self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()
         self.material                 = None
         self.insulation_material      = None
         self.design_inlet_temperature = 20
@@ -99,7 +100,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.ullage_volume_fraction   = 0.07
         self.design_external_pressure = 0 
 
-    def compute_volume(self, wings, fuselages):
+    def compute_volume(self, wings, fuselages,fuel_tanks):
         """
         Compute the internal volume of the liquid hydrogen tank.  
 
@@ -134,15 +135,17 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             Thermal solver for cryogenic hydrogen tanks.  
         """
         if self.geometry_type == 'cylindrical':
-            if self.wing_tag != None:
+            if self.wing_tag != None and self.bwb_aft_tank is False:
                 wing = wings[self.wing_tag]  
-                compute_wing_non_integral_tank_volume(self, wing)
-                compute_structural_performance(self)
-                compute_thermal_performance(self)
-            else:
-                if self.bwb_aft_tank == True:
-                    wing = wings[self.wing_root_tag]  
-                    compute_bwb_aft_tank_volume(self, wing)
+                compute_wing_non_integral_tank_volume(self, wing,fuel_tanks)
+                if hasattr(fuel_tanks,self.tag):
                     compute_structural_performance(self)
                     compute_thermal_performance(self)
+            else:
+                if self.bwb_aft_tank == True:
+                    if self.wing_tag != None:
+                        wing = wings[self.wing_tag]  
+                        compute_bwb_aft_tank_volume(self, wing)
+                        compute_structural_performance(self)
+                        compute_thermal_performance(self)
         return
