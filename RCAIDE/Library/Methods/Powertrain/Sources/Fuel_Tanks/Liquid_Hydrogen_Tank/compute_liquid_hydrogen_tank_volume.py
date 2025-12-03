@@ -119,32 +119,25 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
                 tol=1e-5,
                 args=(P_internal, P_external, safety_factor, fuel_tank)
             ).x[0]
-
+    
         r_outer = ro_ri * r_inner # This is the outer diameter of the inner vessel
 
-        # Optimize insulation thickness
-        def bracket_root(func, start=1e-6, factor=10, limit=1e2):
-            a = start
-            fa = func(a)
-            b = a * factor
-            fb = func(b)
-            while np.sign(fa) == np.sign(fb) and b < limit:
-                a, fa = b, fb
-                b *= factor
-                fb = func(b)
-            if np.sign(fa) == np.sign(fb):
-                return None
-            return a, b
 
-        def t_ins_residual(thickness):
-            return insulation_width(
-                thickness, Ta, PI_Q, fuel_tank, atmo_data, r_outer, r_inner, L_inner
-            )
-
-        bracket = bracket_root(t_ins_residual, start=1e-6, factor=5, limit=1e2)
+        bracket = bracket_root(
+            insulation_width,
+            start=1e-6,
+            factor=5,
+            limit=1e2,
+            args=(Ta, PI_Q, fuel_tank, atmo_data, r_outer, r_inner, L_inner)
+        )
         if bracket:
             try:
-                t_ins = brentq(t_ins_residual, *bracket, xtol=1e-9)
+                t_ins = brentq(
+                    insulation_width,
+                    *bracket,
+                    xtol=1e-9,
+                    args=(Ta, PI_Q, fuel_tank, atmo_data, r_outer, r_inner, L_inner)
+                )
             except ValueError:
                 t_ins = minimize(
                     insulation_width,
@@ -177,7 +170,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
 
     # Store results
     fuel_tank.inner_structure = Data()
-    fuel_tank.inner_structure.thickness = r_outer-r_inner
+    fuel_tank.inner_structure.thickness = ro_ri
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
     fuel_tank.inner_structure.inner_length = L_inner
@@ -282,24 +275,14 @@ def insulation_width(t_ins, Ta, PI_Q, fuel_tank, atmo_data,r_o,r_i,l_i):
     Qo = fuel_tank.acceptable_heat_leak
 
     # Estimate equilibrium wall temperature
-    try:
-        Te = brentq(
-            heat_transfer_wrap,
-            Ti,
-            Ta,
-            xtol=1e-9,
-            args=(t_ins, fuel_tank,atmo_data,r_o,r_i,l_i)
-        )
-    except ValueError:
-        Te = minimize(
-            heat_transfer_wrap,
-            x0=(Ta + Ti) / 2,
-            method='L-BFGS-B',
-            bounds=[(Ti, Ta)],
-            tol=1e-10,
-            args=(t_ins, fuel_tank,atmo_data,r_o,r_i,l_i)
-        ).x
-        Te = float(np.atleast_1d(Te)[0])
+
+    Te = brentq(
+        heat_transfer_wrap,
+        Ti,
+        Ta,
+        xtol=1e-9,
+        args=(t_ins, fuel_tank,atmo_data,r_o,r_i,l_i)
+    )
 
     Qc_mat = fuel_tank.insulation_wall_conductive_heat_transfer
 
