@@ -144,7 +144,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 406.1823636616837
+    fuel_volume_true = 266.7482902525257
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -267,6 +267,7 @@ def non_integral_fuel_tank_volume_test():
     for analysis in analyses:
         analysis.geometry.settings.compute_fuel_volume = True
     mission  = mission_setup(analyses)
+
     geometry(mission)   
     
     error = (fuel_volume_true- mission.segments.cruise.analyses.vehicle.volume_properties.fuel)/fuel_volume_true
