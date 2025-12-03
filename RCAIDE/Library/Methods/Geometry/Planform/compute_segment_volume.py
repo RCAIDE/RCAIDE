@@ -11,8 +11,6 @@ from RCAIDE.Library.Methods.Geometry.Airfoil import compute_naca_4series
 import numpy as np
 from shapely import Polygon
 from copy import deepcopy
-from shapely import Polygon
-from copy import deepcopy
 
 def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
     '''
@@ -47,10 +45,6 @@ def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
     y_in = np.array(inner_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *inner_segment.root_chord_percent
     x_out = np.array(outer_segment.airfoil.geometry.x_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
     y_out = np.array(outer_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
-    x_in = np.array(inner_segment.airfoil.geometry.x_coordinates)[:-1] * wing.chords.root *inner_segment.root_chord_percent
-    y_in = np.array(inner_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *inner_segment.root_chord_percent
-    x_out = np.array(outer_segment.airfoil.geometry.x_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
-    y_out = np.array(outer_segment.airfoil.geometry.y_coordinates)[:-1] * wing.chords.root *outer_segment.root_chord_percent
 
     points_out = list(zip(x_out, y_out))
     poly_out = Polygon(points_out)
@@ -59,15 +53,7 @@ def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
     poly_in = Polygon(points_in)
     A_1 = poly_in.area
     A_2 = poly_out.area
-    points_out = list(zip(x_out, y_out))
-    poly_out = Polygon(points_out)
 
-    points_in = list(zip(x_in, y_in))
-    poly_in = Polygon(points_in)
-    A_1 = poly_in.area
-    A_2 = poly_out.area
-
-     # Compute segment span length
      # Compute segment span length
     L = (outer_segment.percent_span_location - inner_segment.percent_span_location) * wing.spans.projected
     volume = (1 /3) * ( A_1 + A_2 + np.sqrt(A_1*A_2)) *L
