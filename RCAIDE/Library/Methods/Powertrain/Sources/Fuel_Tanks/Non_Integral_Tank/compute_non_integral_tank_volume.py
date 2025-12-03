@@ -356,7 +356,7 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
                 except:
                     tank_percent_span_location = 0
                 inner_segment.tank_percent_span_location, tank_volume_o, tank_volume_i\
-                                    = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+                                        = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
             except:
                 print(f"[WARNING] Tank '{fuel_tank.tag}' does not fit in the segment. Removing from list.")
                 fuel_tanks.pop(fuel_tank.tag)
@@ -460,10 +460,10 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
 
     semi_span      = wing.spans.projected / 2
     inner_segment  = deepcopy(inner_segment_0) 
-    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.segment.percent_span_location  )     
+    spar_sweep     = convert_sweep_segments(inner_segment_0.sweeps.quarter_chord, inner_segment_0, outer_segment, wing, old_ref_chord_fraction=0.25, new_ref_chord_fraction=fuel_tank.percent_span_location  )     
     if tank_percent_span_location > inner_segment_0.percent_span_location: 
         inner_segment.percent_span_location = tank_percent_span_location
-        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.segment.percent_span_location)
+        m                                   =  (outer_segment.root_chord_percent -  inner_segment_0.root_chord_percent) / (outer_segment.percent_span_location - fuel_tank.percent_span_location)
         delta_y_percent                     =  (tank_percent_span_location - inner_segment_0.percent_span_location)
         inner_segment.root_chord_percent    = inner_segment_0.root_chord_percent + m*delta_y_percent
 
