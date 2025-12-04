@@ -197,7 +197,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     fuel_tank.fuel.mass_properties.mass = 0
                         
         for cargo_bay in vehicle.cargo_bays:  
-            cargo_bay.mass_properties.mass   =  0
+            cargo_bay.cargo.mass_properties.mass   =  0
                  
         
         reverse_flag =  False
@@ -268,7 +268,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                             previous_cargo_bays = 0
                             for cargo_bay in vehicle.cargo_bays: 
                                 for c_i in range(len(percent_cargo)): 
-                                    cargo_bay.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  
+                                    cargo_bay.cargo.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  
                                     vehicle.mass_properties.cargo    = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  + previous_cargo_bays 
                                     vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo +   previous_cargo_bays
                                     
