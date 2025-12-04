@@ -13,10 +13,32 @@ from shapely import Polygon
 from copy import deepcopy
 
 def compute_segment_volume(wing, inner_segment, outer_segment,n_points=401):
-    '''
-    DOCUMENTATION
-    
-    '''
+    """
+    Estimate the prism volume between two consecutive wing segments using their
+    airfoil cross-sectional areas and local span.
+
+    Parameters
+    ----------
+    wing : Wing
+        Wing object containing reference chord and span information.
+    inner_segment : WingSegment
+        Upstream segment with airfoil definition and percent span/chord scaling.
+    outer_segment : WingSegment
+        Downstream segment with airfoil definition and percent span/chord scaling.
+    n_points : int, optional
+        Number of points to generate NACA 4-series airfoil geometry when missing.
+
+    Returns
+    -------
+    float
+        Estimated segment volume [m³] using a frustum (prismoid) approximation.
+
+    Notes
+    -----
+    * If airfoil geometry is absent, a NACA 4-series shape is generated/assumed.
+    * Areas are computed via polygon integration of the airfoil coordinates.
+    * Volume uses (1/3)*(A1 + A2 + sqrt(A1*A2))*span for the local segment span.
+    """
 
     # Extract airfoil coordinates
     if hasattr(inner_segment.airfoil,'geometry') is False or hasattr(outer_segment.airfoil,'geometry') is False: # first, if airfoil geometry data not defined, import from geoemtry files

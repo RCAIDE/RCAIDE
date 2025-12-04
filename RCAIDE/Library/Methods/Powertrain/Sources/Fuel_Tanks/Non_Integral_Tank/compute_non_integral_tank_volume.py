@@ -93,6 +93,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
         fuel_tank.aft_tank_root_chord_bounds[0],
         fuel_tank.aft_tank_root_chord_bounds[1],
          fuel_tank.segments_bounding_tank ,
+         fuel_tank.aft_tank_segment_bound
         ]):
         raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
     # ------------------------------------------------------
@@ -118,7 +119,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     segments             = wing.segments
         
     seg_tags = list(wing.segments.keys())
-    index = seg_tags.index( fuel_tank.segments_bounding_tank[1])
+    index = seg_tags.index( fuel_tank.aft_tank_segment_bound)
     seg_names = seg_tags[:index + 1]
 
     for _,tag in enumerate(seg_names):

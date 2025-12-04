@@ -144,7 +144,7 @@ def integral_fuel_tank_volume_test():
 
 def non_integral_fuel_tank_volume_test():
 
-    fuel_volume_true = 566.6601669335861
+    fuel_volume_true = 566.6589439371462
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -212,7 +212,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4.bwb_aft_tank                  = True
     fuel_tank_4.aft_tank_root_chord_bounds    = [0.65,0.9]
-    fuel_tank_4.segments_bounding_tank        = ['fuselage_section_1','fuel_wall']  
+    fuel_tank_4.aft_tank_segment_bound        = 'fuel_wall'
     fuel_tank_4.radial_offset                 = 0.2
 
     fuel_line.fuel_tanks.append(fuel_tank_4)
@@ -227,7 +227,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_4a.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_4a.bwb_aft_tank                  = True
     fuel_tank_4a.aft_tank_root_chord_bounds    = [0.65,0.9]
-    fuel_tank_4a.segments_bounding_tank        = ['fuselage_section_1','cabin_wall']
+    fuel_tank_4a.aft_tank_segment_bound        = 'cabin_wall'
     fuel_tank_4a.radial_offset                 = 0.2
     fuel_line.fuel_tanks.append(fuel_tank_4a)
 
@@ -241,7 +241,7 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_5.orientation_euler_angles      = [0,0,np.pi/2]
     fuel_tank_5.bwb_aft_tank                  = True
     fuel_tank_5.aft_tank_root_chord_bounds    = [0.65,0.9] 
-    fuel_tank_5.segments_bounding_tank        = ['fuselage_section_1','cabin_wall']  
+    fuel_tank_5.aft_tank_segment_bound        = 'cabin_wall'
     fuel_tank_5.radial_offset                 = 0.5
     fuel_tank_5.fuel.mass_properties.mass     = 0.1
 
