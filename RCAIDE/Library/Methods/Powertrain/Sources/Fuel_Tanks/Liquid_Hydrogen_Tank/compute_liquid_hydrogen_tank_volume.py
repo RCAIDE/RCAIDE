@@ -162,6 +162,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         rel_error                                      = error / (fuel_tank.outer_diameter / 2)
         fuel_tank.fuel.volume_properties.net_volume    = V_guess
         fuel_tank.fuel.volume_properties.gross_volume  = V_total
+        fuel_tank.fuel.mass_properties.mass            = float(V_guess *  fuel_tank.fuel.density)  
         V_guess                                       += alpha * rel_error
         iteration                                     += 1
 
