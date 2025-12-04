@@ -104,7 +104,7 @@ class Vortex_Lattice_Method(Stability):
         
         # compute neutral point 
         if self.settings.compute_neutral_point:
-            compute_neutral_point(self)            
+            compute_neutral_point(self, vehicle)            
         return 
     
          

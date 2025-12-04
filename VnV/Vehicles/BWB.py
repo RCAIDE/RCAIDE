@@ -33,7 +33,7 @@ def vehicle_setup():
     vehicle                                           = RCAIDE.Vehicle()    
     vehicle.tag                                       = 'BWB' 
     vehicle.mass_properties.max_takeoff               = 280000. * Units.lbs 
-    vehicle.mass_properties.payload                   = 35000
+    vehicle.mass_properties.payload                   = 35000. * Units.lbs 
     vehicle.mass_properties.fuel                      = 55000  
     vehicle.mass_properties.max_fuel                  = 100000  
     vehicle.mass_properties.takeoff                   = 280000 * Units.lbs
