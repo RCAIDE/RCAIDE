@@ -25,10 +25,12 @@ def compute_layout_of_passenger_accommodations(fuselage):
     for cabin in fuselage.cabins:
         cabin_number_of_seats = 0
         cabin_class_origin  = [0, 0, 0]
+        total_cabin_length = 0
         for cabin_class in cabin.classes:
-            seat_data ,cabin_class_origin,cabin_number_of_seats  = create_class_seating_map_layout(cabin, cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats)
+            seat_data ,cabin_class_origin,cabin_number_of_seats,total_cabin_length  = create_class_seating_map_layout(cabin, cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats,total_cabin_length)
             side_cabin_offset = cabin.width / 2
             LOPA = np.vstack((LOPA,seat_data))
+        cabin.length = total_cabin_length 
         cabin.number_of_seats = cabin_number_of_seats
     offset_x_overall = 0
     for cabin in fuselage.cabins:
@@ -99,9 +101,9 @@ def compute_layout_of_passenger_accommodations(fuselage):
         if fuselage.lengths.total == 0:
             fuselage.lengths.total         = fuselage.lengths.nose + fuselage.lengths.tail + fuselage.layout_of_passenger_accommodations.cabin_length
     return
-def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats):
+def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_cabin_offset,cabin_number_of_seats,cabin_length):
     s_y_coord, cabin_class_origin = get_seat_y_coords(cabin, cabin_class,cabin_class_origin)
-    s_x_coord,object_type, cabin_class_origin = get_seat_x_coords(cabin, cabin_class,cabin_class_origin)
+    s_x_coord,object_type, cabin_class_origin,cabin_length = get_seat_x_coords(cabin, cabin_class,cabin_class_origin,cabin_length)
     # concatenate arrays
     length   =  cabin_class.seat_length * np.ones_like(s_x_coord)
     length[object_type[:,2] == 1] = cabin.galley_lavatory_length
@@ -136,4 +138,4 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
         seat_data         = np.vstack((seat_data,seat_data_))
     cabin_class.number_of_seats = int(np.sum(seat_data[:,10]))
     cabin_number_of_seats       += int(cabin_class.number_of_seats)
-    return seat_data ,cabin_class_origin,cabin_number_of_seats
+    return seat_data ,cabin_class_origin,cabin_number_of_seats,cabin_length

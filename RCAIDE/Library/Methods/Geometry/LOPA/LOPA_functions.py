@@ -113,7 +113,7 @@ def get_seat_y_coords(cabin,cabin_class,cabin_class_origin):
 # ----------------------------------------------------------------------------------------------------------------------
 #  get_seat_x_coords
 # ----------------------------------------------------------------------------------------------------------------------
-def get_seat_x_coords(cabin,cabin_class,cabin_class_origin):
+def get_seat_x_coords(cabin,cabin_class,cabin_class_origin,cabin_length):
     n_r     = cabin_class.number_of_rows
     s_p     = cabin_class.seat_pitch
     gl_l    = cabin.galley_lavatory_length
@@ -184,10 +184,10 @@ def get_seat_x_coords(cabin,cabin_class,cabin_class_origin):
     if object_type[-1, 3] == 1:
         offset_end = A_l / 2
     cabin_class.length    =  s_x_coord[-1] + offset_end
-    cabin.length          += s_x_coord[-1] + offset_end
+    cabin_length          += s_x_coord[-1] + offset_end
     s_x_coord             += cabin_class_origin[0]
     cabin_class_origin[0] = s_x_coord[-1] + offset_end
-    return s_x_coord , object_type, cabin_class_origin
+    return s_x_coord , object_type, cabin_class_origin,cabin_length
 # ----------------------------------------------------------------------------------------------------------------------
 #  update_seat_map_layout_using_cabin_taper
 # ----------------------------------------------------------------------------------------------------------------------
