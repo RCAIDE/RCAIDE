@@ -38,10 +38,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                     -.flap_ratio: flap surface area over wing surface area
                 -.mass_properties: data dictionary with all the main mass properties of the vehicle including MTOW, ZFW, EW and OEW
 
-            settings.weight_reduction_factors.
-                    main_wing                                               [dimensionless] (.1 is a 10% weight reduction)
-                    empennage                                               [dimensionless] (.1 is a 10% weight reduction)
-                    fuselage                                                [dimensionless] (.1 is a 10% weight reduction)
             method_type - weight estimation method chosen, available:
                             - FLOPS Simple
                             - FLOPS Complex
@@ -98,26 +94,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
         Properties Used:
             N/A
     """
-
-    # Set the factors
-    if not hasattr(settings, 'weight_reduction_factors'):
-        W_factors              = Data()
-        W_factors.main_wing    = 0.
-        W_factors.empennage    = 0.
-        W_factors.fuselage     = 0.
-        W_factors.structural   = 0.
-        W_factors.systems      = 0.
-    else:
-        W_factors = settings.weight_reduction_factors
-        if 'structural' in W_factors and W_factors.structural != 0.:
-            print('Overriding individual structural weight factors')
-            W_factors.main_wing    = 0.
-            W_factors.empennage    = 0.
-            W_factors.fuselage     = 0.
-            W_factors.systems      = 0.
-        else:
-            W_factors.structural   = 0.
-            W_factors.systems      = 0.
     
     Wings = RCAIDE.Library.Components.Wings  
 
@@ -152,8 +128,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = FLOPS.compute_systems_weight(vehicle) 
-    for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems)
         
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -193,11 +167,12 @@ def compute_operating_empty_weight(vehicle, settings=None):
         W_energy_network.W_engine_controls  += W_propulsion.W_engine_controls
         W_energy_network.W_starter          += W_propulsion.W_starter
         W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system 
-        W_energy_network.W_nacelle          += W_propulsion.W_nacelle * (1. - W_factors.nacelle)
+        W_energy_network.W_nacelle          += W_propulsion.W_nacelle 
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
         for propulsor in network.propulsors:
-            propulsor.mass_properties.mass = W_energy_network_total / number_of_engines
+            propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverse+W_energy_network.W_starter)\
+                                            +W_energy_network.W_engine_controls / number_of_engines
         
         # Electric-Powered Propulsors  
         for bus in network.busses: 
@@ -227,7 +202,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                 + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
                 + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
-        WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle* (1. - W_factors.nacelle)    / np.max(
+        WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle    / np.max(
             [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
  
     output.empty.propulsion.total               = W_energy_network_cumulative
@@ -253,9 +228,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
         if isinstance(wing, Wings.Main_Wing): 
             fidelity = settings.FLOPS.fidelity
             W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
-
-            # Apply weight factor
-            W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
             if np.isnan(W_wing):
                 W_wing = 0.
             wing.mass_properties.mass = W_wing
@@ -264,15 +236,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
             W_tail = FLOPS.compute_horizontal_tail_weight(vehicle, wing)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
+        
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail):
             W_tail = FLOPS.compute_vertical_tail_weight(vehicle, wing)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
+
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_vertical += W_tail
@@ -283,7 +253,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_fuselage_total = 0
     for fuse in vehicle.fuselages:
         W_fuselage = FLOPS.compute_fuselage_weight(vehicle)
-        W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
+        W_fuselage = W_fuselage 
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
     
@@ -299,7 +269,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.structural.wings                  = W_main_wing +   W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.fuselage              = W_fuselage_total
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
-    output.empty.structural.nacelle               = W_energy_network.W_nacelle* (1. - W_factors.nacelle)
+    output.empty.structural.nacelle               = W_energy_network.W_nacelle
     output.empty.structural.paint = 0  # reconcile FLOPS paint calculations with Raymer and RCAIDE baseline
     output.empty.structural.total = output.empty.structural.wings   + output.empty.structural.fuselage + output.empty.structural.landing_gear\
                                     + output.empty.structural.paint + output.empty.structural.nacelle 

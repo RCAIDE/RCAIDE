@@ -21,26 +21,6 @@ import numpy as np
 def compute_operating_empty_weight(vehicle, settings=None):
     """
     """
-    # Set the factors
-    if not hasattr(settings, 'weight_reduction_factors'):
-        W_factors              = Data()
-        W_factors.main_wing    = 0.
-        W_factors.empennage    = 0.
-        W_factors.fuselage     = 0.
-        W_factors.structural   = 0.
-        W_factors.systems      = 0.
-    else:
-        W_factors = settings.weight_reduction_factors
-        if 'structural' in W_factors and W_factors.structural != 0.:
-            print('Overriding individual structural weight factors')
-            W_factors.main_wing    = 0.
-            W_factors.empennage    = 0.
-            W_factors.fuselage     = 0.
-            W_factors.systems      = 0.
-        else:
-            W_factors.structural   = 0.
-            W_factors.systems      = 0.
-    
     Wings = RCAIDE.Library.Components.Wings  
 
     ##-------------------------------------------------------------------------------             
@@ -57,9 +37,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = Raymer.compute_systems_weight(vehicle)
-        
-    for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems) 
 
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -103,25 +80,9 @@ def compute_operating_empty_weight(vehicle, settings=None):
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks
         for propulsor in network.propulsors:
-            propulsor.mass_properties.mass = W_energy_network_total / number_of_engines
-                 
-        # Electric-Powered Propulsors  
-        # for bus in network.busses: 
-        #     # electrical payload 
-        #     W_systems.W_electrical  += bus.payload.mass_properties.mass * Units.kg
-     
-        #     # Avionics Weight 
-        #     W_systems.W_avionics  += bus.avionics.mass_properties.mass      
-    
-        #     for battery in bus.battery_modules: 
-        #         W_energy_network_total  += battery.mass_properties.mass * Units.kg
-        #         W_energy_network.W_battery = battery.mass_properties.mass * Units.kg
-                
-        # for propulsor in network.propulsors:
-        #     if 'motor' in propulsor:                           
-        #         W_energy_network.W_motor +=  propulsor.motor.mass_properties.mass
-        #         W_energy_network_total  +=  propulsor.motor.mass_properties.mass
-                   
+           propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverse+W_energy_network.W_starter)\
+                                            +W_energy_network.W_engine_controls / number_of_engines
+        
     W_energy_network_cumulative += W_energy_network_total
     
     ##-------------------------------------------------------------------------------                 
@@ -153,8 +114,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):  
             W_wing = Raymer.compute_main_wing_weight(vehicle, wing, settings) 
-            # Apply weight factor
-            W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
             if np.isnan(W_wing):
                 W_wing = 0.
             wing.mass_properties.mass = W_wing
@@ -163,15 +122,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
             W_tail = Raymer.compute_horizontal_tail_weight(vehicle, wing, settings)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
+         
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail):
             W_tail = Raymer.compute_vertical_tail_weight(vehicle, wing, settings)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
+
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_vertical += W_tail
@@ -182,7 +139,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_fuselage_total = 0
     for fuse in vehicle.fuselages:
         W_fuselage = Raymer.compute_fuselage_weight(vehicle, fuse, settings)
-        W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
     

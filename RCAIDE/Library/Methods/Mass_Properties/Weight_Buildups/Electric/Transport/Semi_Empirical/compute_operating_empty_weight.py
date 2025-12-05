@@ -41,11 +41,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                 -.wings['main_wing']: data dictionary with main wing properties
                     -.flap_ratio: flap surface area over wing surface area
                 -.mass_properties: data dictionary with all the main mass properties of the vehicle including MTOW, ZFW, EW and OEW
-
-            settings.weight_reduction_factors.
-                    main_wing                                               [dimensionless] (.1 is a 10% weight reduction)
-                    empennage                                               [dimensionless] (.1 is a 10% weight reduction)
-                    fuselage                                                [dimensionless] (.1 is a 10% weight reduction)
             method_type - weight estimation method chosen, available:
                             - FLOPS Simple
                             - FLOPS Complex
@@ -106,26 +101,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
         import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.Raymer as Method
     elif settings.method == 'FLOPS':
         import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.FLOPS as Method
-
-    # Set the factors
-    if not hasattr(settings, 'weight_reduction_factors'):
-        W_factors              = Data()
-        W_factors.main_wing    = 0.
-        W_factors.empennage    = 0.
-        W_factors.fuselage     = 0.
-        W_factors.structural   = 0.
-        W_factors.systems      = 0.
-    else:
-        W_factors = settings.weight_reduction_factors
-        if 'structural' in W_factors and W_factors.structural != 0.:
-            print('Overriding individual structural weight factors')
-            W_factors.main_wing    = 0.
-            W_factors.empennage    = 0.
-            W_factors.fuselage     = 0.
-            W_factors.systems      = 0.
-        else:
-            W_factors.structural   = 0.
-            W_factors.systems      = 0.
     
     Wings = RCAIDE.Library.Components.Wings  
     if settings.method == 'FLOPS':
@@ -155,9 +130,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = Method.compute_systems_weight(vehicle) 
-    for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems)
-        
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
     ##-------------------------------------------------------------------------------
@@ -228,7 +200,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
             WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                     + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
                     + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
-            WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle* (1. - W_factors.nacelle)    / np.max(
+            WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle  / np.max(
                 [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
  
     output.empty.propulsion.total               = W_energy_network_cumulative
@@ -282,8 +254,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
             except:
                 W_wing = Method.compute_main_wing_weight(vehicle, wing, settings)
 
-            # Apply weight factor
-            W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
             if np.isnan(W_wing):
                 W_wing = 0.
             wing.mass_properties.mass = W_wing
@@ -295,8 +265,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
                 W_tail = Method.compute_horizontal_tail_weight(vehicle, wing)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
+
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
@@ -305,8 +274,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                 W_tail = Method.compute_vertical_tail_weight(vehicle, wing)
             except:
                 W_tail = Method.compute_vertical_tail_weight(vehicle, wing, settings)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_vertical += W_tail
@@ -320,7 +287,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
             W_fuselage = Method.compute_fuselage_weight(vehicle)
         except:
             W_fuselage = Method.compute_fuselage_weight(vehicle, fuse, settings)
-        W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
     
@@ -336,7 +302,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.structural.wings                  = W_main_wing +   W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.fuselage              = W_fuselage_total
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
-    output.empty.structural.nacelle               = W_energy_network.W_nacelle* (1. - W_factors.nacelle)
+    output.empty.structural.nacelle               = W_energy_network.W_nacelle
     output.empty.structural.paint = 0
     output.empty.structural.total = output.empty.structural.wings   + output.empty.structural.fuselage + output.empty.structural.landing_gear\
                                     + output.empty.structural.paint + output.empty.structural.nacelle 

@@ -24,27 +24,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
 
         Also creates system components and assigns weights to them. These are appended to the vehicle.
     """
-
-    # Set the factors
-    if not hasattr(settings, 'weight_reduction_factors'):
-        W_factors              = Data()
-        W_factors.main_wing    = 0.
-        W_factors.empennage    = 0.
-        W_factors.fuselage     = 0.
-        W_factors.structural   = 0.
-        W_factors.systems      = 0.
-    else:
-        W_factors = settings.weight_reduction_factors
-        if 'structural' in W_factors and W_factors.structural != 0.:
-            print('Overriding individual structural weight factors')
-            W_factors.main_wing    = 0.
-            W_factors.empennage    = 0.
-            W_factors.fuselage     = 0.
-            W_factors.systems      = 0.
-        else:
-            W_factors.structural   = 0.
-            W_factors.systems      = 0.
-    
     Wings = RCAIDE.Library.Components.Wings  
 
     # Check vehicle properties:
@@ -71,10 +50,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = FLOPS.compute_systems_weight(vehicle)
-   
-    for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems)
-        
       
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -157,9 +132,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):  # Main wing
             fidelity = settings.FLOPS.fidelity
             W_wing = FLOPS.compute_wing_weight(vehicle, wing, WPOD, fidelity, settings, num_main_wings)
-
-            # Apply weight factor
-            W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
             if np.isnan(W_wing):
                 W_wing = 0.
             # Pack and sum
@@ -169,15 +141,11 @@ def compute_operating_empty_weight(vehicle, settings=None):
             W_tail = FLOPS.compute_horizontal_tail_weight(vehicle)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail): # Vertical tail
             W_tail = FLOPS.compute_vertical_tail_weight(vehicle, wing)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_vertical += W_tail
@@ -188,7 +156,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_fuselage_total = 0
     for fuse in vehicle.fuselages:
         W_fuselage = FLOPS.compute_fuselage_weight(vehicle)
-        W_fuselage = W_fuselage * (1. - W_factors.fuselage) * (1. - W_factors.structural)
+        W_fuselage = W_fuselage 
         fuse.mass_properties.mass = W_fuselage
         W_fuselage_total += W_fuselage
     
