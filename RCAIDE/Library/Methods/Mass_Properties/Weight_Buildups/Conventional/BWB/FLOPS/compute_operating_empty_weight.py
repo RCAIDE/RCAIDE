@@ -268,13 +268,14 @@ def compute_operating_empty_weight(vehicle,settings=None):
     # Accumulate Structural Weight
     ##-------------------------------------------------------------------------------   
     output.empty.structural                       = Data()
-    output.empty.structural.wings                 = W_main_wing +   W_tail_horizontal +  W_tail_vertical 
+    output.empty.structural.wings                 = W_main_wing 
+    output.empty.structural.empennage             = W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.center_body           = W_cabin
     output.empty.structural.aft_center_body       = W_aft_center_body
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
     output.empty.structural.nacelle               = W_energy_network.W_nacelle
     output.empty.structural.total = output.empty.structural.wings   + output.empty.structural.center_body + output.empty.structural.aft_center_body + output.empty.structural.landing_gear\
-                                    + output.empty.structural.nacelle 
+                                    + output.empty.structural.nacelle +output.empty.structural.empennage 
     
     ##-------------------------------------------------------------------------------                 
     # Accumulate Systems Weight
