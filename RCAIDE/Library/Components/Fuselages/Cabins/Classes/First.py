@@ -32,5 +32,6 @@ class First(Component):
         self.galley_lavatory_percent_x_locations = []      
         self.emergency_exit_percent_x_locations  = []
         self.type_A_exit_percent_x_locations     = []  
+        self.offset_y                            = 0
                
      
