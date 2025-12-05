@@ -99,13 +99,6 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
     output.W_engine             = WENG * NENG
     output.number_of_engines    = NENG 
     output.number_of_fuel_tanks = number_of_tanks
-    
-    # append nacelle weight to object: 
-    for network in  vehicle.networks:
-        for propulsor in network.propulsors:
-            if 'nacelle' in propulsor:                 
-                nacelle = propulsor.nacelle
-                nacelle.mass_properties.mass = WNAC
             
     return output
 

@@ -84,8 +84,10 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
             wing.center_body.tag = 'center_body'
             wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.operational_items.total
             wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.furnishings +\
-                                                     vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner 
-            wing.aft_center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.propulsion.fuel_system
+                                                     vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner +\
+                                                     vehicle.mass_properties.weight_breakdown.operational_items.misc +\
+                                                     vehicle.mass_properties.weight_breakdown.operational_items.passenger_service +\
+                                                     vehicle.mass_properties.weight_breakdown.operational_items.flight_attendants
 
     #---------------------------------------------------------------------------------
     # Landing Gear 

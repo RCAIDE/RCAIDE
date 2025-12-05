@@ -173,6 +173,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         for propulsor in network.propulsors:
             propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverser+W_energy_network.W_starter)\
                                             +W_energy_network.W_engine_controls / number_of_engines
+            propulsor.nacelle.mass_properties.mass = W_energy_network.W_nacelle / number_of_engines
         
         # Electric-Powered Propulsors  
         for bus in network.busses: 

@@ -8,6 +8,7 @@
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
+from RCAIDE.Library.Components import Component
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_aircraft_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity
 from copy import deepcopy 
@@ -156,6 +157,7 @@ def mass_properties_preprocess_routine(i, analyses):
                                     
                     # Apply Correction Factors if any
                     apply_correction_factors(analyses)
+                    apply_component_weights(analyses)
 
                     analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
                     mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
@@ -189,6 +191,7 @@ def mass_properties_preprocess_routine(i, analyses):
                                 
                 # Apply correction factors  if any
                 apply_correction_factors(analyses)
+                apply_component_weights(analyses)
 
                 # Compute takeoff weight and max zero fuel weight
                 analyses.vehicle.mass_properties.takeoff       = analyses.vehicle.mass_properties.operating_empty \
@@ -289,4 +292,38 @@ def apply_correction_factors(analyses):
                 analyses.vehicle.mass_properties.weight_breakdown[tag].total  += subitem
                 analyses.vehicle.mass_properties.operating_empty += subitem
     return
-                                    
+
+def apply_component_weights(analyses):
+    weight_correction_factors = analyses.weights.settings.weight_correction_factors
+    for key in analyses.vehicle.keys():
+        if key =='wings':
+            for wing in analyses.vehicle.wings:
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
+                    if hasattr(weight_correction_factors.empty.structural, 'wing'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.wing
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Horizontal_Tail):
+                    if hasattr(weight_correction_factors.empty.structural, 'empennage'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.empennage
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Vertical_Tail):
+                    if hasattr(weight_correction_factors.empty.structural, 'empennage'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.empennage
+        elif key == 'fuselages':
+            for fuselage in analyses.vehicle.fuselages:
+                if isinstance(fuselage, RCAIDE.Library.Components.Fuselages.Fuselage):
+                    if hasattr(weight_correction_factors.empty.structural, 'fuselage'):
+                        fuselage.mass_properties.mass *= weight_correction_factors.empty.structural.fuselage
+        elif key == 'networks':
+            for network in analyses.vehicle.networks:
+                for propulsor in network.propulsors:
+                    propulsor.mass_properties.mass *= 1 
+                    if hasattr(weight_correction_factors.empty.structural, 'nacelle'):
+                        propulsor.nacelle.mass_properties.mass *= weight_correction_factors.empty.structural.nacelle
+                    # Add to this nacelles, thrust reversers, etc
+        elif key == 'landing_gears':
+            for landing_gear in analyses.vehicle.landing_gears:
+                if hasattr(weight_correction_factors.empty.structural, 'landing_gear'):
+                    landing_gear.mass_properties.mass *= weight_correction_factors.empty.structural.landing_gear
+        elif key == 'booms':
+            for boom in analyses.vehicle.booms:
+                if hasattr(weight_correction_factors.empty.structural, 'boom'):
+                    boom.mass_properties.mass *= weight_correction_factors.empty.structural.boom                            
