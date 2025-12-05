@@ -200,6 +200,12 @@ def compute_operating_empty_weight(vehicle, settings=None):
                 
         W_energy_network_cumulative = W_propulsion.W_prop
         number_of_engines           =  W_propulsion.number_of_engines
+
+        for propulsor in network.propulsors:
+            propulsor.mass_properties.mass = (W_propulsion.W_engine +W_propulsion.W_thrust_reverser+W_propulsion.W_starter)\
+                                            +W_propulsion.W_engine_controls / number_of_engines
+            propulsor.nacelle.mass_properties.mass = W_propulsion.W_nacelle / number_of_engines
+        
     
     # Main
     for wing in vehicle.wings:
