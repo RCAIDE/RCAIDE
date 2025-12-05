@@ -173,7 +173,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
         for propulsor in network.propulsors:
-           propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverse+W_energy_network.W_starter)\
+           propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverser+W_energy_network.W_starter)\
                                             +W_energy_network.W_engine_controls / number_of_engines
         
         
