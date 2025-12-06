@@ -83,9 +83,9 @@ def generate_integral_wing_tank_points(wing, n_points, segment_list,fuel_tank):
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank)
             fs = fuel_tank.segments_percent_chord_start
             rs = fuel_tank.segments_percent_chord_end  
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank,fs[i], rs[i])
             x_coordinates =  np.array([rs[i], rs[i], fs[i], fs[i], rs[i]])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
@@ -143,12 +143,12 @@ def generate_integral_wing_tank_points(wing, n_points, segment_list,fuel_tank):
         section_twist[:, :, 2, 2] = 1
         translation               = np.zeros((2,n_points, 3,1))
 
-        fs                = fuel_tank.segments_percent_chord_bounds[0]
-        rs                = fuel_tank.segments_percent_chord_bounds[1]      
-        front_rib_yu_i,rear_rib_yu_i,front_rib_yl_i,rear_rib_yl_i = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
-        front_rib_yu_o,rear_rib_yu_o,front_rib_yl_o,rear_rib_yl_o = compute_non_dimensional_rib_coordinates(wing,fuel_tank)
-        x_coordinates_i   =  np.array([rs, rs, fs, fs, rs])
-        x_coordinates_o   =  np.array([rs, rs, fs, fs, rs])
+        fs                = fuel_tank.segments_percent_chord_start
+        rs                = fuel_tank.segments_percent_chord_end       
+        front_rib_yu_i,rear_rib_yu_i,front_rib_yl_i,rear_rib_yl_i = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fs[0],rs[0])
+        front_rib_yu_o,rear_rib_yu_o,front_rib_yl_o,rear_rib_yl_o = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fs[1],rs[1])
+        x_coordinates_i   =  np.array([rs[0], rs[0], fs[0], fs[0], rs[0]])
+        x_coordinates_o   =  np.array([rs[1], rs[1], fs[1], fs[1], rs[1]])
         y_coordinates_i   =  np.array([rear_rib_yl_i, rear_rib_yu_i, front_rib_yu_i,front_rib_yl_i,rear_rib_yl_i ]) 
         y_coordinates_o   =  np.array([rear_rib_yl_o, rear_rib_yu_o, front_rib_yu_o,front_rib_yl_o,rear_rib_yl_o ]) 
             
