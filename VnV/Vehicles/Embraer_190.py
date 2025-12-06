@@ -458,19 +458,19 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Tank & Fuel
     #------------------------------------------------------------------------------------------------------------------------------------   
-    wing_fuel_tank_1                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
-    wing_fuel_tank_1.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    wing_fuel_tank_1.segments_bounding_tank       = ['root','yehudi']  
-    wing_fuel_tank_1.segments_percent_chord_start = [0.15  ,0.15 ]
-    wing_fuel_tank_1.segments_percent_chord_end   = [0.625 ,0.625]  
-    fuel_line.fuel_tanks.append(wing_fuel_tank_1)
+    inboard_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    inboard_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    inboard_tank.segments_bounding_tank       = ['root','yehudi']  
+    inboard_tank.segments_percent_chord_start = [0.15  ,0.15 ]
+    inboard_tank.segments_percent_chord_end   = [0.625 ,0.625]  
+    fuel_line.fuel_tanks.append(inboard_tank)
     
-    wing_fuel_tank_2                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
-    wing_fuel_tank_2.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    wing_fuel_tank_2.segments_bounding_tank       = ['yehudi', 'section_2']  
-    wing_fuel_tank_2.segments_percent_chord_start = [0.15 ,0.15 ]
-    wing_fuel_tank_2.segments_percent_chord_end   = [0.625,0.625]  
-    fuel_line.fuel_tanks.append(wing_fuel_tank_2)    
+    outboard_tank                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
+    outboard_tank.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()
+    outboard_tank.segments_bounding_tank       = ['yehudi', 'section_2']  
+    outboard_tank.segments_percent_chord_start = [0.15 ,0.15 ]
+    outboard_tank.segments_percent_chord_end   = [0.625,0.625]  
+    fuel_line.fuel_tanks.append(outboard_tank)    
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()  
     fuel_tank.outer_length                      = 2 
