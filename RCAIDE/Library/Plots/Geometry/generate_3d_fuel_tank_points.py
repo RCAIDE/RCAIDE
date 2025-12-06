@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  generate_integral_wing_tank_points
 # ----------------------------------------------------------------------------------------------------------------------  
-def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_tank):
+def generate_integral_wing_tank_points(wing, n_points, segment_list,fuel_tank):
     """
     Generates 3D coordinate points that define a wing surface.
 
@@ -66,16 +66,18 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
     symm                 = wing.xz_plane_symmetric
     semispan             = wing.spans.projected*0.5 * (2 - symm)  
     segments             = wing.segments
+    if segment_list[0] == None or  segment_list[1] == None:
+        raise Exception('Tank segments must be defined')
     n_segments           = len(segment_list) 
     origin               = wing.origin   
         
     if len(segments) > 0: 
-        pts              = np.zeros((dim,n_points, 3,1))  
-        section_twist    = np.zeros((dim,n_points, 3,3))
+        pts              = np.zeros((2,n_points, 3,1))  
+        section_twist    = np.zeros((2,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1 
-        translation        = np.zeros((dim,n_points, 3,1))    
+        translation        = np.zeros((2,n_points, 3,1))    
         translation[:, :, 0,:] = origin[0][0]  
         translation[:, :, 1,:] = origin[0][1]  
         translation[:, :, 2,:] = origin[0][2]  
@@ -134,12 +136,12 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
                 translation[i,:,2,:] = translation[i-1,:,2,:] + dz 
     else:
 
-        pts                       = np.zeros((dim,n_points, 3,1))  
-        section_twist             = np.zeros((dim,n_points, 3,3))
+        pts                       = np.zeros((2,n_points, 3,1))  
+        section_twist             = np.zeros((2,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1
-        translation               = np.zeros((dim,n_points, 3,1))
+        translation               = np.zeros((2,n_points, 3,1))
 
         fs                = fuel_tank.segments_percent_chord_bounds[0]
         rs                = fuel_tank.segments_percent_chord_bounds[1]      
@@ -272,7 +274,9 @@ def generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list, tessell
         * Origin is at the nose of the fuel_tank
     """ 
     tank_segs         = fuselage.segments
-    num_tank_segs     = len(segment_list) 
+    num_tank_segs     = len(segment_list)
+    if segment_list[0] == None or  segment_list[1] == None:
+        raise Exception('Tank segments must be defined') 
     fuel_tank_points = np.zeros((num_tank_segs+2,tessellation ,3))
         
     if num_tank_segs > 0: 
