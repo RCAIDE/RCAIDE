@@ -328,15 +328,15 @@ def compute_wing_integral_tank_fuel_volume(wing,fuel_tank):
         The position along the wing chord where the fuel tank begins and ends
     """
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
+    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fuel_tank.segments_percent_chord_start[0], fuel_tank.segments_percent_chord_end[0])
     inner_front_rib_length  = wing.chords.root * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
     inner_rear_rib_length   = wing.chords.root * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl))
-    inner_wingbox_length    = wing.chords.root * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])  
+    inner_wingbox_length    = wing.chords.root * (fuel_tank.segments_percent_chord_end[0] -fuel_tank.segments_percent_chord_start[0]) 
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank) 
+    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fuel_tank.segments_percent_chord_start[1], fuel_tank.segments_percent_chord_end[1])
     outer_front_rib_length  = wing.chords.tip * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl))
     outer_rear_rib_length   = wing.chords.tip * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = wing.chords.tip * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])   
+    outer_wingbox_length    = wing.chords.tip * (fuel_tank.segments_percent_chord_end[1] -fuel_tank.segments_percent_chord_start[1]) 
 
     # volume of truncated prism
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
@@ -400,17 +400,17 @@ def compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_se
         The position along the wing span where the segment is located
     """
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank)
+    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank, fuel_tank.segments_percent_chord_start[0],fuel_tank.segments_percent_chord_end[0])
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl))
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])  
+    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_end[0] -fuel_tank.segments_percent_chord_start[0])  
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank)
+    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank, fuel_tank.segments_percent_chord_start[1],fuel_tank.segments_percent_chord_end[1])
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl) )
     outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl) )
-    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])  
+    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_end[1] -fuel_tank.segments_percent_chord_start[1])  
 
     # volume of truncated prism
     A_1 = inner_wingbox_length * (inner_front_rib_length + inner_rear_rib_length) / 2 
@@ -423,7 +423,7 @@ def compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_se
  
     return volume
 
-def compute_non_dimensional_rib_coordinates(compoment,fuel_tank): 
+def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,front_rib_nondim_x,rear_rib_nondim_x): 
     """
     Computes the non-dimensional rib coordinates for fuel tank volume calculations.
 
@@ -483,9 +483,7 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank):
     else:
         geometry = compute_naca_4series('0012')
 
-    clearance = 1.5E-2
-    front_rib_nondim_x       = fuel_tank.segments_percent_chord_bounds[0]   
-    rear_rib_nondim_x        = fuel_tank.segments_percent_chord_bounds[1]  
+    clearance = 1.5E-2 
     f_upper            = interp1d(geometry.x_upper_surface, geometry.y_upper_surface, kind='linear')
     f_lower            = interp1d(geometry.x_lower_surface, geometry.y_lower_surface, kind='linear')
 

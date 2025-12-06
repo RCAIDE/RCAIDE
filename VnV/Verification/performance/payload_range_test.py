@@ -219,7 +219,6 @@ def fuel_aircraft_base_analysis_weights(vehicle):
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
     # done!
@@ -260,7 +259,6 @@ def fuel_aircraft_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
     # done!
@@ -303,7 +301,6 @@ def electric_aircraft_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
     # done!

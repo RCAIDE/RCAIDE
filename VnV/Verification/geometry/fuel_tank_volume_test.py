@@ -160,8 +160,9 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_1.material                        = RCAIDE.Library.Attributes.Materials.Aluminum_2219()
     fuel_tank_1.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_1.fuel.gravimetric_efficiency     = 0.5 
-    fuel_tank_1.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']       
-    fuel_tank_1.segments_percent_chord_bounds   = [0.2,0.6]
+    fuel_tank_1.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']        
+    fuel_tank_1.segments_percent_chord_start    = [0.2,0.2]
+    fuel_tank_1.segments_percent_chord_end      = [0.6,0.6]  
     fuel_tank_1.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_1)
      
@@ -173,8 +174,9 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_2.outer_length                    = 1
     fuel_tank_2.outer_width                     = 1
     fuel_tank_2.outer_height                    = 1
-    fuel_tank_2.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']  
-    fuel_tank_2.segments_percent_chord_bounds   = [0.2,0.6] 
+    fuel_tank_2.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']      
+    fuel_tank_2.segments_percent_chord_start    = [0.2 ,0.2]
+    fuel_tank_2.segments_percent_chord_end      = [0.6,0.6]  
     fuel_tank_2.wall_thickness                  = 2*Units.inches
     fuel_line.fuel_tanks.append(fuel_tank_2)
 
@@ -197,8 +199,9 @@ def non_integral_fuel_tank_volume_test():
     fuel_tank_3.insulation_material             = RCAIDE.Library.Attributes.Materials.Vacuum_Cellular_Multilayer_Insulation()
     fuel_tank_3.fuel.gravimetric_efficiency     = 0.5
     fuel_tank_3.wall_thickness                  = 2*Units.inches
-    fuel_tank_3.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']      
-    fuel_tank_3.segments_percent_chord_bounds   = [0.2,0.6]
+    fuel_tank_3.segments_bounding_tank          = ['fuselage_section_3', 'wing_section_2']       
+    fuel_tank_3.segments_percent_chord_start    = [0.2 ,0.2]
+    fuel_tank_3.segments_percent_chord_end      = [0.6,0.6]  
     fuel_line.fuel_tanks.append(fuel_tank_3)
 
 
