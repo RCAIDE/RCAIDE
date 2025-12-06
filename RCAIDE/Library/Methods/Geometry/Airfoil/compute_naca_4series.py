@@ -88,8 +88,9 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 201, leading_and_trailin
 
     max_t  = np.max(thickness)
     max_c  = max(x_data) - min(x_data)
-    t_c    = max_t/max_c         
+    t_c    = max_t/max_c          
     
+    camber_coordinates          = (y_up_surf + y_lo_surf[::-1][0:-1] )*1/2 
     geometry.max_thickness      = max_t 
     geometry.x_coordinates      = x_data   
     geometry.y_coordinates      = y_data      
@@ -97,7 +98,9 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 201, leading_and_trailin
     geometry.x_lower_surface    = x_ls 
     geometry.y_upper_surface    = np.append(0,y_up_surf) 
     geometry.y_lower_surface    = y_lo_surf[::-1]           
-    geometry.camber_coordinates = c_us         
-    geometry.thickness_to_chord = t_c 
-    
+    geometry.camber_coordinates = camber_coordinates          
+    geometry.camber             = camber         
+    geometry.camber_location    = camber_loc
+    geometry.thickness_to_chord = t_c
+        
     return geometry

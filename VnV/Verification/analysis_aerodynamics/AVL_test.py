@@ -168,7 +168,6 @@ def base_analysis(vehicle,use_surrogate,trim_aircraft,keep_regression_files,new_
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere                                       = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet                       = planet.features
     analyses.append(atmosphere)   
 
     # done!
