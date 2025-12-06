@@ -66,12 +66,12 @@ def generate_integral_wing_tank_points(wing, n_points, segment_list,fuel_tank):
     symm                 = wing.xz_plane_symmetric
     semispan             = wing.spans.projected*0.5 * (2 - symm)  
     segments             = wing.segments
-    if segment_list[0] == None or  segment_list[1] == None:
-        raise Exception('Tank segments must be defined')
     n_segments           = len(segment_list) 
     origin               = wing.origin   
         
     if len(segments) > 0: 
+        if segment_list[0] == None or  segment_list[1] == None:
+            raise Exception('Tank segments must be defined')
         pts              = np.zeros((2,n_points, 3,1))  
         section_twist    = np.zeros((2,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
