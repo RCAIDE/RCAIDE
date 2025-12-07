@@ -186,6 +186,7 @@ def aircraft_aerodynamic_analysis(vehicle,
         cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
         trim_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.trim.total,
         moment_coefficient               = state.conditions.static_stability.coefficients.M, 
+        state_conditions                 = state.conditions,
         
     )  
           
