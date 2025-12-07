@@ -474,20 +474,20 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
         inner_segment.origin[0][1] = inner_segment.percent_span_location * semi_span
         inner_segment.origin[0][2] = inner_segment_0.origin[0][2] +  delta_y *np.tan(inner_segment.dihedral_outboard)
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank)
+    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank,fuel_tank.segments_percent_chord_start[0], fuel_tank.segments_percent_chord_end[0])
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl)) 
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])
+    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_end[0] -fuel_tank.segments_percent_chord_start[0]) 
 
     clearance  = fuel_tank.wall_clearance
     delta_span = (outer_segment.percent_span_location - inner_segment.percent_span_location) * semi_span
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank)
+    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank,fuel_tank.segments_percent_chord_start[1], fuel_tank.segments_percent_chord_end[1])
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl)) 
     outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_bounds[1] -fuel_tank.segments_percent_chord_bounds[0])
+    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_end[1] -fuel_tank.segments_percent_chord_start[1]) 
 
     # inner segment coordinate  
     inner_segment_thickness =  np.minimum(inner_front_rib_length,inner_rear_rib_length)
@@ -541,7 +541,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     tank_percent_span_location = inner_segment.percent_span_location +  D / semi_span 
 
     # get orgin of fuel tank 
-    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segments_percent_chord_bounds[0] * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
+    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segments_percent_chord_start[0] * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
     origin_y              = inner_segment.origin[0][1] + D / 2
     origin_z              = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin      = [[origin_x,origin_y,origin_z]]
@@ -575,7 +575,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
 
     return tank_percent_span_location, tank_volume_o, tank_volume_i
 
-def compute_non_dimensional_rib_coordinates(compoment,fuel_tank): 
+def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,front_rib_nondim_x,rear_rib_nondim_x): 
     """
     Computes non-dimensional rib coordinates for wing segments based on airfoil geometry.
 
@@ -635,9 +635,7 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank):
     else:
         geometry = compute_naca_4series('0012')
 
-    clearance = 1.5E-2
-    front_rib_nondim_x       = fuel_tank.segments_percent_chord_bounds[0]   
-    rear_rib_nondim_x        = fuel_tank.segments_percent_chord_bounds[1] 
+    clearance = 1.5E-2 
     f_upper = interp1d(geometry.x_upper_surface  ,geometry.y_upper_surface, kind='linear')
     f_lower = interp1d(geometry.x_lower_surface  , geometry.y_lower_surface, kind='linear')
 

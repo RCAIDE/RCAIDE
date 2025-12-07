@@ -56,7 +56,6 @@ def part_35_V_n_Diagram():
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
     V_n_data = generate_V_n_diagram(vehicle,analyses)
@@ -88,7 +87,6 @@ def part_23_V_n_Diagram():
     # ------------------------------------------------------------------
     #  Atmosphere Analysis
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmosphere.features.planet = planet.features
     analyses.append(atmosphere)   
 
     V_n_data = generate_V_n_diagram(vehicle,analyses) 
