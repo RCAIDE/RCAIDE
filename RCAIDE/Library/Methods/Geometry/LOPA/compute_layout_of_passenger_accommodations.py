@@ -43,7 +43,7 @@ def compute_layout_of_passenger_accommodations(fuselage):
     fuselage.layout_of_passenger_accommodations                     = Data()
     fuselage.layout_of_passenger_accommodations.object_coordinates  = LOPA
     fuselage.number_of_seats                                        = np.sum(LOPA[:,10])
-    fuselage.layout_of_passenger_accommodations.cabin_x_offset     = offset_x_overall
+    fuselage.layout_of_passenger_accommodations.cabin_x_offset      = offset_x_overall
     if LOPA.size > 0 :
         # Step 1: plot cabin bounds
         # get points at x min

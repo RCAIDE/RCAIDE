@@ -216,12 +216,13 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             total_fuel_mass      += volume * fuel_tank.fuel.density  
             segment_tank_moment  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * volume * fuel_tank.fuel.density  
             total_fuel_volume    += volume
-        inner_segment_x_start = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_bounds[0])
-        inner_segment_x_end = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_bounds[1])
-        outer_segment_x_start = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_bounds[0])
-        outer_segment_x_end = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_bounds[1])  
-        inner_segment_y =  wing.segments[seg_tags[0]].origin[0][1]
-        outer_segment_y =  wing.segments[seg_tags[-1]].origin[0][1]
+     
+        inner_segment_x_start = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_start[0])
+        inner_segment_x_end   = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_end[0])
+        outer_segment_x_start = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_start[1])
+        outer_segment_x_end   = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_end[0])  
+        inner_segment_y       =  wing.segments[seg_tags[0]].origin[0][1]
+        outer_segment_y       =  wing.segments[seg_tags[-1]].origin[0][1]
 
         p1x = inner_segment_x_start
         p1y = inner_segment_y

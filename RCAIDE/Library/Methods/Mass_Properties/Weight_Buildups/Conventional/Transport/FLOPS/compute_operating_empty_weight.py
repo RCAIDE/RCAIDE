@@ -178,7 +178,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
-            W_systems.W_electrical  += bus.payload.mass_properties.mass * Units.kg
+            W_systems.W_electrical  += bus.systems.mass_properties.mass * Units.kg
      
             # Avionics Weight 
             W_systems.W_avionics  += bus.avionics.mass_properties.mass      
