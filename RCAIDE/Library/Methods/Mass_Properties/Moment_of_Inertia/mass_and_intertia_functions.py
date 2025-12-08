@@ -59,7 +59,6 @@ def update_mass_and_moment(total_mass,total_moment,C):
         M = C.mass_properties.mass 
         if M != 0:
             total_mass   += M                 
-            total_moment += M*global_cg_loc 
-        print(f"moment and mass calculated for: {C.tag}, mass: {M:.2f}, location: {C.origin + C.mass_properties.center_of_gravity}")
+            total_moment += M*global_cg_loc
     return total_mass,total_moment
 

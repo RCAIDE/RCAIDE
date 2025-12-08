@@ -119,10 +119,16 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     # determine number is weight simulations
     cabin_tags_     = []
     cabin_x_origin_ = []
-    for fuslage in vehicle_0.fuselages:
+    for fuslage in vehicle_0.fuselages: 
         for cabin in  fuslage.cabins: 
             cabin_tags_.append(cabin.tag)
             cabin_x_origin_.append(cabin.origin[0][0])
+            
+    for wing in vehicle_0.wings:   
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
+            for cabin in  wing.cabins: 
+                cabin_tags_.append(cabin.tag)
+                cabin_x_origin_.append(cabin.origin[0][0])       
         
     cargo_bay_tags_     = []
     cargo_bay_x_origin_ = []
@@ -229,10 +235,9 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     num_pax_cabin = 0
                     cabin.filled_seats_arrangement  = filling_order[f_o] 
                     for cabin_class in cabin.classes:
-                        pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                        cabin_class.number_of_passengers  = pax
-                        num_pax += cabin_class.number_of_passengers
-                        num_pax_cabin += cabin_class.number_of_passengers
+                        pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)  
+                        num_pax       += pax
+                        num_pax_cabin += pax
                     cabin.number_of_passengers = num_pax_cabin
                             
             for wing in vehicle.wings: 
@@ -241,10 +246,9 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                         num_pax_cabin = 0 
                         cabin.filled_seats_arrangement  =  filling_order[f_o]                 
                         for cabin_class in cabin.classes: 
-                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                            cabin_class.number_of_passengers  = pax                             
-                            num_pax += cabin_class.number_of_passengers
-                            num_pax_cabin += cabin_class.number_of_passengers
+                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)               
+                            num_pax       += pax
+                            num_pax_cabin += pax
                         cabin.number_of_passengers = num_pax_cabin 
                                            
             # run weights analysis and store results
@@ -335,8 +339,7 @@ def compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter
         segment.analyses.vehicle.mass_properties.takeoff              = None 
         segment.analyses.weights.settings.update_moment_of_inertia    = True
         segment.analyses.weights.settings.update_center_of_gravity    = True 
-        segment.analyses.vehicle.neutral_point                        = neutral_point
-        segment.analyses.vehicle.neutral_point                        = neutral_point
+        segment.analyses.vehicle.neutral_point                        = neutral_point 
         segment.analyses.stability.settings.update_center_of_gravity  = True        
 
          

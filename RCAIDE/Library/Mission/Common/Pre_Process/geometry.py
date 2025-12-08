@@ -145,8 +145,7 @@ def geometry_preprocess_routine(analyses):
      
             for cabin in wing.cabins: 
                 defined_cabins = True
-                for cabin_class in cabin.classes: 
-                    cabin.number_of_passengers += cabin_class.number_of_passengers
+                for cabin_class in cabin.classes:  
                     if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
                         NPE +=  cabin_class.number_of_seats
                     elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business:
