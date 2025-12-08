@@ -93,8 +93,7 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
         total_volume += (cargo_bay.length * cargo_bay.width * cargo_bay.height)
     
     for cargo_bay in vehicle.cargo_bays:
-        cargo_bay_volume                       = (cargo_bay.length * cargo_bay.width * cargo_bay.height)
-        cargo_bay.cargo.mass_properties.mass         = (vehicle.mass_properties.cargo + W_bag) * (cargo_bay_volume / total_volume)
+        cargo_bay_volume                       = (cargo_bay.length * cargo_bay.width * cargo_bay.height) 
         cargo_bay.baggage.mass_properties.mass = W_bag * (cargo_bay_volume / total_volume)
         cargo_bay.cargo.mass_properties.mass   = vehicle.mass_properties.cargo * (cargo_bay_volume / total_volume)
 

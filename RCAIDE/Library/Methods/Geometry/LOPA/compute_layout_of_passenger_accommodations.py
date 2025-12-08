@@ -37,7 +37,7 @@ def compute_layout_of_passenger_accommodations(fuselage):
         for cabin_class in cabin.classes:
             cabin_class.percentage = cabin_class.length/cabin.length
         if not isinstance(cabin,RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin):
-            offset_x_overall = cabin.offset_x
+            offset_x_overall = cabin.origin[0][0]
     # add cabin offset to account (useful for BWBs and aircraft with H2 tanks)
     LOPA[:, 2] += fuselage.cabin_offset
     fuselage.layout_of_passenger_accommodations                     = Data()

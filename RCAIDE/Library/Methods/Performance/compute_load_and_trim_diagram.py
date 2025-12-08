@@ -136,7 +136,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     for cargo_bay in vehicle_0.cargo_bays: 
         cargo_bay_tags_.append(cargo_bay.tag)
         cargo_bay_x_origin_.append(cargo_bay.origin[0][0])
-        W_CARGO += cargo_bay.mass_properties.mass
+        W_CARGO += cargo_bay.cargo.mass_properties.mass +   cargo_bay.baggage.mass_properties.mass
 
     fuel_tank_tags_ = []
     fuel_tank_x_origin_ = []
@@ -203,8 +203,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     fuel_tank.fuel.mass_properties.mass = 0
                         
         for cargo_bay in vehicle.cargo_bays:  
-            cargo_bay.cargo.mass_properties.mass   =  0
-                 
+            cargo_bay.cargo.mass_properties.mass   =  0 
         
         reverse_flag =  False
         if filling_order[f_o] == 'descending':
@@ -278,8 +277,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                                     
                                     # run weights analysis and store results
                                     counter =  compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter,total_sims, neutral_point_0,percent_pax[p_i], percent_fuel[f_i],  percent_cargo[c_i])
-                                    
-                                    
+                                     
                                 previous_cargo_bays += cargo_bay.mass_properties.mass
                                 
                         remaining_tank_fuel = vehicle.mass_properties.fuel 
@@ -291,7 +289,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
 
     total_sims = len(percent_pax) * len(percent_cg_shift)
     counter    = 0        
-    for k in range(len(percent_pax)):
+    for k in range(len(percent_pax)):    
+        num_pax = 0   
         for l in range(len(percent_cg_shift)):
 
             aero_analysis_mission = deepcopy(mission)
@@ -307,24 +306,32 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
             # Update Passengers           
             for fuselage in  vehicle.fuselages: 
                 for cabin in fuselage.cabins:
+                    num_pax_cabin = 0
                     cabin.filled_seats_arrangement  = 'ascending'
                     for cabin_class in cabin.classes: 
-                        pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                        cabin_class.number_of_passengers  = pax 
+                        pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)  
+                        num_pax       += pax
+                        num_pax_cabin += pax
+                    cabin.number_of_passengers = num_pax_cabin                        
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                    for cabin in wing.cabins:    
+                    for cabin in wing.cabins: 
+                        num_pax_cabin = 0   
                         cabin.filled_seats_arrangement  = 'ascending'
                         for cabin_class in cabin.classes:  
-                            pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                            cabin_class.number_of_passengers  = pax 
-        
+                            pax =  1 if k == 0 else int(percent_pax[k] *   vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)                
+                            num_pax       += pax
+                            num_pax_cabin += pax
+                        cabin.number_of_passengers = num_pax_cabin 
+            
+            # run weights analysis and store results
+            vehicle.number_of_passengers     =  num_pax
+            
             # Update Fuel            
             for network in  vehicle.networks:
                 for fuel_line in  network.fuel_lines: 
                     for fuel_tank in fuel_line.fuel_tanks:
                         fuel_tank.fuel.mass_properties.mass = percent_fuel[k] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
-         
            
             counter =  compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims,neutral_point_0,k,l)
    
@@ -339,6 +346,7 @@ def compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter
         segment.analyses.vehicle.mass_properties.takeoff              = None 
         segment.analyses.weights.settings.update_moment_of_inertia    = True
         segment.analyses.weights.settings.update_center_of_gravity    = True 
+        segment.analyses.weights.print_weight_analysis_report         = False
         segment.analyses.vehicle.neutral_point                        = neutral_point 
         segment.analyses.stability.settings.update_center_of_gravity  = True        
 
