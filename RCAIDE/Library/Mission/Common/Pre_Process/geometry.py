@@ -56,8 +56,7 @@ def geometry(mission):
         if segment.analyses.geometry is None: 
             raise AssertionError('Geometry Analyses not defined') 
         if i == 0 or segment.analyses.geometry.settings.unique_geometry: 
-            geometry_preprocess_routine(segment.analyses.geometry.settings, segment.analyses.vehicle)
-            
+            geometry_preprocess_routine( segment.analyses) 
         else:
             vehicle_0 = deepcopy(segment.analyses.vehicle)
             segment.analyses.vehicle = deepcopy(mission.segments[i-1].analyses.vehicle)
@@ -84,7 +83,9 @@ def geometry(mission):
                                   
     return 
         
-def geometry_preprocess_routine(settings, vehicle):   
+def geometry_preprocess_routine(analyses):
+    settings = analyses.geometry.settings
+    vehicle  = analyses.vehicle
     
     # initalize variables 
     A_fuselage     = 0

@@ -93,7 +93,7 @@ def mass_properties(mission):
  
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
-            mass_properties_preprocess_routine(i, segment.analyses)
+            mass_properties_preprocess_routine(segment.analyses,i=i)
                             
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
@@ -103,7 +103,7 @@ def mass_properties(mission):
                   
     return 
 
-def mass_properties_preprocess_routine(i, analyses):
+def mass_properties_preprocess_routine(analyses, i=0):
     weights_analysis = analyses.weights 
     if analyses.vehicle.mass_properties.max_takeoff == None:
         # For all weights analysis a maximum take off weight needs to be defined by the user
