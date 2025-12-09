@@ -74,7 +74,7 @@ class Vortex_Lattice_Method(Stability):
         self.settings.leading_edge_suction_multiplier               = 1.0  
         self.settings.use_VORLAX_matrix_calculation                 = False
         self.settings.floating_point_precision                      = np.float32 
-        self.settings.compute_neutral_point = False
+        self.settings.compute_neutral_point                         = False
         
         # conditions table, used for surrogate model training
         self.training                                               = Data()  

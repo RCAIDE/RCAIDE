@@ -107,7 +107,7 @@ def base_analysis(vehicle):
     #  Aerodynamics Analysis  
     stability     = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
     stability.settings.number_of_spanwise_vortices   = 5
-    stability.settings.number_of_chordwise_vortices  = 2   
+    stability.settings.number_of_chordwise_vortices  = 2     
     analyses.append(stability)       
 
     # ------------------------------------------------------------------
