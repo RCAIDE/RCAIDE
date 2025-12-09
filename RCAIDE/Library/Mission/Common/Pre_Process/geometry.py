@@ -98,24 +98,25 @@ def geometry_preprocess_routine(analyses):
     # ================================================================================================================================================  
     total_seats = 0
     for fuselage in vehicle.fuselages: 
-        compute_layout_of_passenger_accommodations(fuselage) 
-        fuselage_planform(fuselage) 
-        vehicle.length = np.maximum(vehicle.length, fuselage.lengths.total)
-        A_fuselage     = np.maximum(A_fuselage,fuselage.areas.front_projected) 
-          
-        for cabin in fuselage.cabins: 
-            defined_cabins = True
-            for cabin_class in cabin.classes:  
-                if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
-                    NPE +=  cabin_class.number_of_seats 
-                elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business: 
-                    NPB +=  cabin_class.number_of_seats 
-                elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.First:
-                    NPF +=  cabin_class.number_of_seats  
-            total_seats += cabin.number_of_seats 
-        for cabin in fuselage.cabins:     
-            if cabin.number_of_passengers == 0: # if cabin class  passengers are not defined, use ratio of cabin to aircraft
-                cabin.number_of_passengers = int((cabin.number_of_seats / total_seats) *  vehicle.number_of_passengers)
+        if vehicle.fuselages.fuselage.cabins.cabin.classes.economy_class.number_of_rows > 0:
+            compute_layout_of_passenger_accommodations(fuselage) 
+            fuselage_planform(fuselage) 
+            vehicle.length = np.maximum(vehicle.length, fuselage.lengths.total)
+            A_fuselage     = np.maximum(A_fuselage,fuselage.areas.front_projected) 
+            
+            for cabin in fuselage.cabins: 
+                defined_cabins = True
+                for cabin_class in cabin.classes:  
+                    if type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy:
+                        NPE +=  cabin_class.number_of_seats 
+                    elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business: 
+                        NPB +=  cabin_class.number_of_seats 
+                    elif type(cabin_class) == RCAIDE.Library.Components.Fuselages.Cabins.Classes.First:
+                        NPF +=  cabin_class.number_of_seats  
+                total_seats += cabin.number_of_seats 
+            for cabin in fuselage.cabins:     
+                if cabin.number_of_passengers == 0: # if cabin class  passengers are not defined, use ratio of cabin to aircraft
+                    cabin.number_of_passengers = int((cabin.number_of_seats / total_seats) *  vehicle.number_of_passengers)
             
     # update landing gear properties 
     for landing_gear in  vehicle.landing_gears:
