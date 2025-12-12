@@ -251,7 +251,7 @@ def mass_properties_preprocess_routine(analyses, i=0):
         CG ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity) 
     else:
         CG = analyses.vehicle.mass_properties.center_of_gravity
-    # Compute Moment of Intertia
+    # Compute Moment of Inertia
     if weights_analysis.settings.update_moment_of_inertia:
         _, _ = compute_aircraft_moment_of_inertia(analyses.vehicle, CG, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
 

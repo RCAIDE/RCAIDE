@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Units
 # package imports 
 import numpy as np  
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Wing Moment of Intertia
+#  Compute Wing Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------  
 def compute_wing_moment_of_inertia(wing,mass = 0, center_of_gravity = [[0, 0, 0]], fuel_flag = False):
     ''' computes the moment of inertia tensor for a wing about a given center of gravity.

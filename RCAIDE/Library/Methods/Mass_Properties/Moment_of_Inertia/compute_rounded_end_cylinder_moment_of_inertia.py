@@ -10,7 +10,7 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Rounded-End Cylinder Moment of Intertia
+#  Compute Rounded-End Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_rounded_end_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
     """

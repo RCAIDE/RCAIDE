@@ -18,7 +18,7 @@ import numpy as np
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True): 
-    ''' Computes the moment of intertia of aircraft 
+    ''' Computes the moment of inertia of aircraft 
     
     Source:
     Simplified Mass and Inertial Estimates for Aircraft with Components of Constant Density

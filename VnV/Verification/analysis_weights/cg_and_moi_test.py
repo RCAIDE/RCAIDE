@@ -59,7 +59,7 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------    
     MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
 
-    print(vehicle.tag + ' Moment of Intertia')
+    print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
     accepted  = np.array([[ 3.10377697e+07,  1.82353123e+05, -1.21894994e+06],
                           [ 1.82353123e+05,  9.39505157e+07, -3.52133374e+03],
@@ -106,7 +106,7 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------    
     MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
 
-    print(vehicle.tag + ' Moment of Intertia')
+    print(vehicle.tag + ' Moment of Inertia')
     print(MOI)
 
     accepted  = np.array([[3278.83878669,  426.30343101, -131.22242232],
