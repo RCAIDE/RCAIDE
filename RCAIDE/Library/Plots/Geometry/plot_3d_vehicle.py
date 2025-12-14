@@ -14,20 +14,20 @@ from RCAIDE.Library.Plots.Geometry.generate_3d_fuel_tank_points import *
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import generate_3d_blade_points
 from RCAIDE.Library.Plots.Geometry.generate_3d_nacelle_points   import *
 from RCAIDE.Library.Plots.Geometry.generate_3d_lopa_points      import generate_3d_lopa_points
+from RCAIDE.Library.Plots.Geometry.generate_3d_cargo_bay_points import generate_3d_cargo_bay_points
 from RCAIDE.Library.Methods.Geometry.Planform                   import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume  
 from RCAIDE.Library.Methods.Geometry.LOPA                       import  compute_layout_of_passenger_accommodations  
 
 # python imports 
 import numpy as np  
 from copy import deepcopy 
-import vtk
+import vtk 
 import matplotlib.colors as mcolors
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
-def plot_3d_vehicle(vehicle,
-                    show_axis                   = False,
+def plot_3d_vehicle(vehicle, 
                     save_figure                 = False,
                     save_filename               = "geometry", 
                     top_view                    = False, 
@@ -39,6 +39,7 @@ def plot_3d_vehicle(vehicle,
                     nacelle_color               = 'grey', 
                     fuel_tank_color             = 'orange', 
                     rotor_color                 = 'black', 
+                    cargo_bay_color             = 'blue', 
                     wing_opacity                = 0.5, 
                     fuselage_opacity            = 1.0,
                     boom_opacity                = 1.0,
@@ -46,6 +47,7 @@ def plot_3d_vehicle(vehicle,
                     fuel_tank_opacity           = 0.5,
                     lopa_opacity                = 1.0,
                     rotor_opacity               = 0.6, 
+                    cargo_bay_opacity           = 0.6, 
                     number_of_airfoil_points    = 101,
                     tessellation                = 96,  
                     overwrite_geometry          = True, 
@@ -141,6 +143,7 @@ def plot_3d_vehicle(vehicle,
     nacelle_rgb_color    = mcolors.to_rgb(nacelle_color) 
     rotor_rgb_color      = mcolors.to_rgb(rotor_color)
     boom_rgb_color       = mcolors.to_rgb(boom_color)
+    cargo_bay_rgb_color  = mcolors.to_rgb(cargo_bay_color)
      
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
@@ -197,6 +200,14 @@ def plot_3d_vehicle(vehicle,
         make_object(renderer, GEOM, fuselage_rgb_color,fuselage_opacity)
         lopa_geom = generate_3d_lopa_points(fuselage)
         add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+    
+    
+    # -------------------------------------------------------------------------  
+    # Plot cargo bay
+    # -------------------------------------------------------------------------  
+    for cargo_bay in geometry.cargo_bays:
+        GEOM = generate_3d_cargo_bay_points(cargo_bay)
+        make_object(renderer, GEOM, cargo_bay_rgb_color,cargo_bay_opacity) 
         
     # -------------------------------------------------------------------------  
     # Plot boom
@@ -282,7 +293,7 @@ def plot_3d_vehicle(vehicle,
                     if wing.xz_plane_symmetric: 
                         GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
                         make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
-
+        
     # Set camera and background
     camera = vtk.vtkCamera()
     camera.SetPosition(camera_eye_x, camera_eye_y, camera_eye_z)
@@ -481,3 +492,4 @@ def write_azimuthal_cell_values(f, n_cells, n_a):
         adjacent_cells[i, 2] = c
         adjacent_cells[i, 3] = d
     return adjacent_cells 
+ 
