@@ -39,7 +39,9 @@ def plot_3d_vehicle(vehicle,
                     nacelle_color               = 'grey', 
                     fuel_tank_color             = 'orange', 
                     rotor_color                 = 'black', 
-                    cargo_bay_color             = 'blue', 
+                    cargo_bay_color             = 'blue',
+                    plot_actuator_disc          = False,
+                    show_LOPA                   = True, 
                     wing_opacity                = 0.5, 
                     fuselage_opacity            = 1.0,
                     boom_opacity                = 1.0,
@@ -49,7 +51,10 @@ def plot_3d_vehicle(vehicle,
                     rotor_opacity               = 0.6, 
                     cargo_bay_opacity           = 0.6, 
                     number_of_airfoil_points    = 101,
-                    tessellation                = 96,  
+                    tessellation                = 96,
+                    camera_eye_x                = None,
+                    camera_eye_y                = None,
+                    camera_eye_z                = None,
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """
@@ -130,9 +135,9 @@ def plot_3d_vehicle(vehicle,
         camera_eye_z  = 1  
 
     else: 
-        camera_eye_x  = -1 
-        camera_eye_y  = -1 
-        camera_eye_z  = 0.35  
+        camera_eye_x  = camera_eye_x if camera_eye_x is not None else -1
+        camera_eye_y  = camera_eye_y if camera_eye_y is not None else -1
+        camera_eye_z  = camera_eye_z if camera_eye_z is not None else 0.35  
     
     # -------------------------------------------------------------------------
     # Object RGB Colors  
@@ -189,8 +194,9 @@ def plot_3d_vehicle(vehicle,
             GEOM.PTS[:, :, 2] = -GEOM.PTS[:, :, 2]
             make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            lopa_geom = generate_3d_lopa_points(wing)
-            add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+            if show_LOPA:
+                lopa_geom = generate_3d_lopa_points(wing)
+                add_lopa_seats(renderer, lopa_geom, lopa_opacity)
 
     # -------------------------------------------------------------------------  
     # Plot fuselage
@@ -198,9 +204,10 @@ def plot_3d_vehicle(vehicle,
     for fuselage in geometry.fuselages:
         GEOM = generate_3d_fuselage_points(fuselage, tessellation)
         make_object(renderer, GEOM, fuselage_rgb_color,fuselage_opacity)
-        lopa_geom = generate_3d_lopa_points(fuselage)
-        add_lopa_seats(renderer, lopa_geom, lopa_opacity)
-    
+        if show_LOPA:
+            lopa_geom = generate_3d_lopa_points(fuselage)
+            add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+        
     
     # -------------------------------------------------------------------------  
     # Plot cargo bay
@@ -234,10 +241,10 @@ def plot_3d_vehicle(vehicle,
             if 'rotor' in propulsor:  
                 rot       = propulsor.rotor
                 rot_x     = rot.orientation_euler_angles[0]
-                rot_y     = rot.orientation_euler_angles[1]
+                rot_y     = np.pi / 2 +  rot.orientation_euler_angles[1]
                 rot_z     = rot.orientation_euler_angles[2]
                 num_B     = int(rot.number_of_blades) 
-                if rot.radius_distribution is None:
+                if (rot.radius_distribution) is None or (plot_actuator_disc == True):  
                     make_actuator_disc(renderer, rot.hub_radius, rot.tip_radius, rot.origin, rot_x,rot_y,rot_z, rotor_rgb_color,rotor_opacity) 
                 else:
                     dim       = len(rot.radius_distribution) 
@@ -251,7 +258,7 @@ def plot_3d_vehicle(vehicle,
                 rot_y     = np.pi / 2 +  prop.orientation_euler_angles[1]
                 rot_z     = prop.orientation_euler_angles[2]
                 num_B     = int(prop.number_of_blades) 
-                if prop.radius_distribution is None:
+                if (prop.radius_distribution is None ) or ( plot_actuator_disc == True):  
                     make_actuator_disc(renderer, prop.hub_radius, prop.tip_radius, prop.origin, rot_x,rot_y,rot_z,rotor_rgb_color,rotor_opacity) 
                 else:
                     dim       = len(prop.radius_distribution)
