@@ -206,7 +206,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                                             +W_propulsion.W_engine_controls / number_of_engines
             propulsor.nacelle.mass_properties.mass = W_propulsion.W_nacelle / number_of_engines
         
-    
     # Main
     for wing in vehicle.wings:
         if isinstance(wing,RCAIDE.Library.Components.Wings.Main_Wing):

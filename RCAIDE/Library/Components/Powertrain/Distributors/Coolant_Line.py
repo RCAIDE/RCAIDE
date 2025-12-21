@@ -99,9 +99,9 @@ class Coolant_Line(Component):
         self.efficiency                    = 1.0
         if distributor is not None:
             for item in distributor:
-                    self.identical_battery_modules  =  item.identical_battery_modules
-                    if 'battery_modules' in item:
-                        if not hasattr(self, 'battery_modules'):
-                            self.battery_modules = Container()
-                        for battery in item.battery_modules:
-                            self.battery_modules[battery.tag] = Container()
+                self.identical_battery_modules  =  item.identical_battery_modules
+                if 'battery_modules' in item:
+                    if not hasattr(self, 'battery_modules'):
+                        self.battery_modules = Container()
+                    for battery in item.battery_modules:
+                        self.battery_modules[battery.tag] = Container()

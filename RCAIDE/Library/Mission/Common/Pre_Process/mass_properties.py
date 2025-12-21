@@ -151,18 +151,18 @@ def mass_properties_preprocess_routine(analyses, i=0):
                     # Run weights analysis ! 
                     _ = weights_analysis.evaluate(analyses.vehicle)
                     
-                    # Compute OEW 
-                    analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total + \
-                                                                            analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                    # Compute OEW
+                    if weights_analysis.settings.overwrite_operating_empty_weight: 
+                        analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
                                     
                     # Apply Correction Factors if any
                     apply_correction_factors(analyses)
                     apply_component_weights(analyses)
 
-                    analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
+                    analyses.vehicle.mass_properties.takeoff         = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
                     mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
                     residual_max_zero_fuel                           = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
-                    analyses.vehicle.mass_properties.max_zero_fuel = mew_max_zero_fuel
+                    analyses.vehicle.mass_properties.max_zero_fuel   = mew_max_zero_fuel
                    
                     residual_max_fuel = 0
                     if compute_max_fuel:
@@ -178,16 +178,14 @@ def mass_properties_preprocess_routine(analyses, i=0):
                         if compute_max_fuel: 
                             analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
-            else:
-                # if weights_analysis.vehicle.mass_properties.fuel >weights_analysis.vehicle.mass_properties.max_fuel:
-                #     raise AssertionError('Prescribed fuel is greater than maxmimum fuel')   
-                
+            else: 
                 # Run weights analysis ! 
                 _ = weights_analysis.evaluate(analyses.vehicle)
                 
                 # Compute OEW 
-                analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total + \
-                                                                           analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                if weights_analysis.settings.overwrite_operating_empty_weight: 
+                    analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total \
+                                                                         +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
                                 
                 # Apply correction factors  if any
                 apply_correction_factors(analyses)

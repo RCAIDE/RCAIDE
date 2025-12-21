@@ -227,16 +227,15 @@ def plot_3d_vehicle(vehicle,
     # Plot Nacelle, Rotors and Fuel Tanks 
     # ------------------------------------------------------------------------- 
     for network in geometry.networks:     
-        for propulsor in network.propulsors: 
-            if 'nacelle' in propulsor: 
-                if propulsor.nacelle !=  None: 
-                    if type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
-                        GEOM = generate_3d_stack_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    elif type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle: 
-                        GEOM = generate_3d_BOR_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    else:
-                        GEOM= generate_3d_basic_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    make_object(renderer, GEOM, nacelle_rgb_color,nacelle_opacity)
+        for propulsor in network.propulsors:  
+            if propulsor.nacelle !=  None: 
+                if type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
+                    GEOM = generate_3d_stack_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                elif type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle: 
+                    GEOM = generate_3d_BOR_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                else:
+                    GEOM= generate_3d_basic_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                make_object(renderer, GEOM, nacelle_rgb_color,nacelle_opacity)
                     
             if 'rotor' in propulsor:  
                 rot       = propulsor.rotor

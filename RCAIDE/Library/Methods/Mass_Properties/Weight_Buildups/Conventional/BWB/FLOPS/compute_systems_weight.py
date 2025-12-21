@@ -115,12 +115,10 @@ def compute_systems_weight(vehicle):
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet):
                 NENG += 1
-                FNEW += 1
-           
-            if 'nacelle' in propulsor: 
-                if propulsor.nacelle !=  None:                
-                    nacelle =  propulsor.nacelle
-                    FNAC    = nacelle.diameter / Units.ft
+                FNEW += 1 
+            if propulsor.nacelle !=  None:                
+                nacelle =  propulsor.nacelle
+                FNAC    = nacelle.diameter / Units.ft
             else:
                 FNAC    = 0
             

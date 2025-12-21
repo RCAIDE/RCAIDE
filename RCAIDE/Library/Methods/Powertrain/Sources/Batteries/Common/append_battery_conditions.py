@@ -183,11 +183,11 @@ def append_battery_segment_conditions(battery_module, segment, bus):
 
     module_conditions = segment.state.conditions.energy.busses[bus.tag].battery_modules[battery_module.tag]
     if segment.state.initials:  
-        battery_initials                                        = segment.state.initials.conditions.energy.busses[bus.tag].battery_modules[battery_module.tag]  
+        battery_initials                                  = segment.state.initials.conditions.energy.busses[bus.tag].battery_modules[battery_module.tag]  
         if type(segment) ==  RCAIDE.Framework.Mission.Segments.Ground.Battery_Recharge:             
-            module_conditions.battery_discharge_flag           = False 
-        else:                   
-            module_conditions.battery_discharge_flag           = True      
+            module_conditions.battery_discharge_flag      = False 
+        else:                      
+            module_conditions.battery_discharge_flag      = True      
             
         module_conditions.energy[:,0]                     = battery_initials.energy[-1,0]
         module_conditions.temperature[:,0]                = battery_initials.temperature[-1,0]
@@ -200,21 +200,15 @@ def append_battery_segment_conditions(battery_module, segment, bus):
         module_conditions.cell.energy[:,0]                = battery_initials.cell.energy[-1,0]
 
     if 'battery_cell_temperature' in segment:       
-        module_conditions.temperature[:,0]          = segment.battery_cell_temperature 
-        module_conditions.cell.temperature[:,0]     = segment.battery_cell_temperature     
-    
-    if 'initial_battery_state_of_charge' in segment:
-    
-        n_series          = battery_module.electrical_configuration.series
-        n_parallel        = battery_module.electrical_configuration.parallel 
-        n_total           = n_series*n_parallel
-        
-        initial_battery_energy                                              = segment.initial_battery_state_of_charge*battery_module.maximum_energy   
-        # module_conditions.maximum_initial_energy  = initial_battery_energy
-        module_conditions.energy[:,0]                   = initial_battery_energy
-        module_conditions.cell.energy[:,0]              = initial_battery_energy / n_total
-        module_conditions.state_of_charge[:,0]          = segment.initial_battery_state_of_charge 
-        module_conditions.cell.state_of_charge[:,0]     = segment.initial_battery_state_of_charge
-        module_conditions.cell.depth_of_discharge[:,0]  = 1 - segment.initial_battery_state_of_charge
+        module_conditions.temperature[:,0]                = segment.battery_cell_temperature 
+        module_conditions.cell.temperature[:,0]           = segment.battery_cell_temperature     
+       
+    if 'initial_battery_state_of_charge' in segment:    
+        n_series                                          = battery_module.electrical_configuration.series
+        n_parallel                                        = battery_module.electrical_configuration.parallel 
+        n_total                                           = n_series*n_parallel 
+        module_conditions.cell.energy[:,0]                = segment.initial_battery_state_of_charge*battery_module.maximum_energy / n_total 
+        module_conditions.cell.state_of_charge[:,0]       = segment.initial_battery_state_of_charge
+        module_conditions.cell.depth_of_discharge[:,0]    = 1 - segment.initial_battery_state_of_charge
 
     return    

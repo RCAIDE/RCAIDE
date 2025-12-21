@@ -142,7 +142,7 @@ def create_class_seating_map_layout(cabin,cabin_class,cabin_class_origin, side_c
     if type(cabin) == RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin:
         seat_data[:, 3] += cabin.width / 2
         seat_data  = update_seat_map_layout_using_cabin_taper(seat_data,cabin)
-        seat_data[:, 3] += side_cabin_offset  +  cabin_class.offset_y
+        seat_data[:, 3] += side_cabin_offset  +  cabin_class.y_offset_distance
         # make copy about center
         seat_data_        = deepcopy(seat_data)
         seat_data_[:, 3] *= -1

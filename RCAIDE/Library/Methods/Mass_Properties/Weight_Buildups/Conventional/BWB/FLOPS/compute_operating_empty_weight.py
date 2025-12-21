@@ -11,7 +11,7 @@ from .compute_aft_center_body_weight import compute_aft_center_body_weight
 from .compute_cabin_weight import compute_cabin_weight
 from .compute_systems_weight import compute_systems_weight
 from .compute_bwb_wing_weight import compute_wing_weight
-from .compute_operating_items import compute_operating_items_weight
+from .compute_operating_items_weight import compute_operating_items_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport import FLOPS 
 from RCAIDE.Library.Methods.Geometry.Planform                          import segment_properties  
@@ -175,9 +175,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
             propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverser+W_energy_network.W_starter +\
                                             W_energy_network.W_engine_controls) / number_of_engines
             propulsor.nacelle.mass_properties.mass = W_energy_network.W_nacelle / number_of_engines
-        
-        
-        
+    
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 

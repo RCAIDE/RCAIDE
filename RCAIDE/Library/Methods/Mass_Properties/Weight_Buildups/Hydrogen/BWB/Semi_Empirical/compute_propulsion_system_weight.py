@@ -74,7 +74,7 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
                or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):
                 ref_propulsor = propulsor  
                 NENG  += 1 
-            if 'nacelle' in propulsor: 
+            if propulsor.nacelle !=  None:          
                 if propulsor.nacelle !=  None:                
                     ref_nacelle =  propulsor.nacelle   
         for fuel_line in network.fuel_lines:

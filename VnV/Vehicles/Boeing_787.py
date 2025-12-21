@@ -551,11 +551,8 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     # Carbo Bays 
     # ------------------------------------------------------------------ 
     cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-    cargo_bay.cargo.mass_properties.mass  = 19000 * Units.kilogram
-    vehicle.cargo_bays.append(cargo_bay)
-    
-    
-
+    cargo_bay.cargo.mass_properties.mass  = 0 * Units.kilogram
+    vehicle.cargo_bays.append(cargo_bay) 
 
     # ################################################# Energy Network #######################################################          
     #------------------------------------------------------------------------------------------------------------------------- 

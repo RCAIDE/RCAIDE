@@ -41,16 +41,14 @@ def Boeing_737_Drag_Polar():
     Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.78 
     temperatures                          = np.ones_like(angle_of_attack_range) * 340
     non_dimensional_reynolds_numbers      = np.ones_like(angle_of_attack_range) * 1E7
-    results                               = aircraft_aerodynamic_analysis(vehicle, 
-                                                                          analyses=  analyses.base,
-                                                                          angle_of_attacks = angle_of_attack_range,
+    results                               = aircraft_aerodynamic_analysis(analyses                         = analyses.base,
+                                                                          angle_of_attacks                 = angle_of_attack_range,
                                                                           non_dimensional_reynolds_numbers = non_dimensional_reynolds_numbers,
                                                                           temperatures                     = temperatures,
-                                                                          mach_numbers = Mach_number_range)
+                                                                          mach_numbers                     = Mach_number_range)
 
-    results                           = aircraft_aerodynamic_analysis(vehicle,
-                                                                      analyses =  analyses.base,
-                                                                      angle_of_attacks = angle_of_attack_range,
+    results                           = aircraft_aerodynamic_analysis(analyses                         = analyses.base,
+                                                                      angle_of_attacks                 = angle_of_attack_range,
                                                                       mach_numbers = Mach_number_range,
                                                                       altitude  = 0)
 
@@ -87,15 +85,13 @@ def BWB_Drag_Polar():
     Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.78 
     temperatures                          = np.ones_like(angle_of_attack_range) * 340
     non_dimensional_reynolds_numbers      = np.ones_like(angle_of_attack_range) * 1E7
-    results                               = aircraft_aerodynamic_analysis(vehicle,
-                                                                          analyses = analyses.base,
+    results                               = aircraft_aerodynamic_analysis(analyses = analyses.base,
                                                                           angle_of_attacks = angle_of_attack_range,
                                                                           non_dimensional_reynolds_numbers = non_dimensional_reynolds_numbers,
                                                                           temperatures                     = temperatures,
                                                                           mach_numbers = Mach_number_range)
 
-    results                           = aircraft_aerodynamic_analysis(vehicle,
-                                                                      analyses = analyses.base,
+    results                           = aircraft_aerodynamic_analysis(analyses = analyses.base,
                                                                       angle_of_attacks = angle_of_attack_range,
                                                                       mach_numbers = Mach_number_range,
                                                                       altitude  = 0)

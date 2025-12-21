@@ -97,19 +97,16 @@ def compute_propulsion_system_weight(vehicle,network):
         for propulsor in network.propulsors: 
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) \
                or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet)\
-               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):            
-                if 'nacelle' in propulsor: 
-                    if propulsor.nacelle !=  None:                    
-                        ref_nacelle =  propulsor.nacelle   
-                        WNAC += compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
+               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):      
+                if propulsor.nacelle !=  None:                    
+                    ref_nacelle =  propulsor.nacelle   
+                    WNAC += compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
                 WTHR += compute_thrust_reverser_weight(propulsor,JNENG)
                 WEC, WSTART = compute_misc_propulsion_system_weight(vehicle,propulsor,ref_nacelle,JNENG )
     
     NENG = JNENG + PNENG
                   
-    WFSYS           = compute_fuel_system_weight(vehicle, NENG)
-    
-    WPRO            = WENG + WFSYS + WTHR + WSTART*JNENG + WEC*JNENG + WNAC
+    WFSYS           = compute_fuel_system_weight(vehicle, NENG) 
 
     output                      = Data()
     output.W_prop               = WENG + WFSYS + WTHR + WSTART + WEC + WNAC
@@ -125,9 +122,8 @@ def compute_propulsion_system_weight(vehicle,network):
     # append nacelle weight to object: 
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
-            if 'nacelle' in propulsor:                 
-                nacelle = propulsor.nacelle
-                nacelle.mass_properties.mass = WNAC    
+            if propulsor.nacelle != None:
+                propulsor.nacelle.mass_properties.mass = WNAC    
     return output
 
 def compute_piston_engine_weight(ref_propulsor):

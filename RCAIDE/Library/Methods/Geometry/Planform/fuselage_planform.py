@@ -40,14 +40,12 @@ def fuselage_planform(fuselage, circular_cross_section = True):
 
     Properties Used:
     N/A
-    """
-    nose_fineness   = fuselage.fineness.nose
-    tail_fineness   = fuselage.fineness.tail 
+    """ 
     fuselage_width  = fuselage.width  
-    nose_length     = nose_fineness * fuselage_width
-    tail_length     = tail_fineness * fuselage_width 
+    nose_length     = fuselage.fineness.nose * fuselage_width
+    tail_length     = fuselage.fineness.tail  * fuselage_width 
     cabin_length    = fuselage.lengths.total -  nose_length - tail_length  
-    fuselage_height =  fuselage.heights.maximum
+    fuselage_height = fuselage.heights.maximum
     
     if fuselage.heights.maximum == 0:
         fuselage.heights.maximum = fuselage_width

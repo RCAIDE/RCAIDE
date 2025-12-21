@@ -173,7 +173,6 @@ def compute_operating_empty_weight(vehicle, settings=None):
                                             W_energy_network.W_engine_controls) / number_of_engines
             propulsor.nacelle.mass_properties.mass = W_energy_network.W_nacelle / number_of_engines
         
-        
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
