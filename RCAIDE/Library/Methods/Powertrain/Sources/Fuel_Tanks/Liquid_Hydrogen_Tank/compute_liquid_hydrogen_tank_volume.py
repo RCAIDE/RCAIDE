@@ -80,7 +80,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,
                                            fuel_tank.design_isa_deviation)
-    Ta = float(np.atleast_1d(atmo_data.temperature)[0])
+    Ta =  atmo_data.temperature[0][0]
 
     # Initial fuel volume guess
     if fuel_tank.xz_plane_symmetric:
@@ -162,7 +162,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         rel_error                                      = error / (fuel_tank.outer_diameter / 2)
         fuel_tank.fuel.volume_properties.net_volume    = V_guess
         fuel_tank.fuel.volume_properties.gross_volume  = V_total
-        fuel_tank.fuel.mass_properties.mass            = float(V_guess *  fuel_tank.fuel.density)  
+        fuel_tank.fuel.mass_properties.mass            = V_guess *  fuel_tank.fuel.density   
         V_guess                                       += alpha * rel_error
         iteration                                     += 1
 
@@ -315,7 +315,7 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
     rho_air  = atmo_data.density             
     mu_air   = atmo_data.dynamic_viscosity
     k_air    = atmo_data.thermal_conductivity   
-    Ta       = float(np.atleast_1d(atmo_data.temperature)[0])
+    Ta       = atmo_data.temperature[0][0]
     g        = 9.81
     Ti       = fuel_tank.design_inlet_temperature
 

@@ -300,9 +300,9 @@ def turbofan_engine_noise(microphone_locations, turbofan, aeroacoustic_data, seg
 
             # Store SPL history      
             SPL_1_3_spectrum[i,j,:]       = SPL_total 
-            SPL[i,j]                      = SPL_arithmetic(np.atleast_2d(SPL_total),sum_axis=1 ) 
-            SPL_1_3_spectrum_dBA[i,j,:]   = A_weighting_metric(SPL_total,frequency)
-            SPL_dBA[i,j]                  = SPL_arithmetic(np.atleast_2d(A_weighting_metric(SPL_total,frequency)),sum_axis=1)  
+            SPL[i,j]                      = SPL_arithmetic(SPL_total,sum_axis=1 )[0] 
+            SPL_1_3_spectrum_dBA[i,j,:]   = A_weighting_metric(SPL_total,frequency)[0]
+            SPL_dBA[i,j]                  = SPL_arithmetic(np.atleast_2d(A_weighting_metric(SPL_total,frequency)),sum_axis=1)[0]
 
     engine_noise                   = Data()   
     engine_noise.SPL_1_3_spectrum  = SPL_1_3_spectrum_dBA
