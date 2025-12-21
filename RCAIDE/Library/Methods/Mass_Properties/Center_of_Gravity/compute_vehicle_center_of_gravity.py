@@ -118,9 +118,7 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     aircraft_total_mass   = 0
 
     for key in vehicle.keys():
-        item = vehicle[key]
-        if key =='wings':
-            test = 0
+        item = vehicle[key] 
         if isinstance(item,Component.Container):
             Moment = np.array([[0.0,0.0,0.0]])
             Mass   = 0

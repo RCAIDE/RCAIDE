@@ -7,11 +7,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
-import RCAIDE
-from RCAIDE.Library.Components import Component
+import RCAIDE 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_aircraft_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity
-from copy import deepcopy 
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
 # ----------------------------------------------------------------------------------------------------------------------  

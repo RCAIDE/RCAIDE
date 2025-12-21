@@ -85,16 +85,16 @@ def BWB_Drag_Polar():
     Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.78 
     temperatures                          = np.ones_like(angle_of_attack_range) * 340
     non_dimensional_reynolds_numbers      = np.ones_like(angle_of_attack_range) * 1E7
-    results                               = aircraft_aerodynamic_analysis(analyses = analyses.base,
-                                                                          angle_of_attacks = angle_of_attack_range,
+    results                               = aircraft_aerodynamic_analysis(analyses                         = analyses.cruise,
+                                                                          angle_of_attacks                 = angle_of_attack_range,
                                                                           non_dimensional_reynolds_numbers = non_dimensional_reynolds_numbers,
                                                                           temperatures                     = temperatures,
-                                                                          mach_numbers = Mach_number_range)
+                                                                          mach_numbers                     = Mach_number_range)
 
-    results                           = aircraft_aerodynamic_analysis(analyses = analyses.base,
+    results                           = aircraft_aerodynamic_analysis(analyses         = analyses.cruise,
                                                                       angle_of_attacks = angle_of_attack_range,
-                                                                      mach_numbers = Mach_number_range,
-                                                                      altitude  = 0)
+                                                                      mach_numbers     = Mach_number_range,
+                                                                      altitude         = 0)
 
     CL_truth = np.array([-0.66537549, -0.43113207, -0.19644241,  0.03928848,  0.27496979,
                          0.50921321,  0.74216586,  0.97253695,  1.19801695,  1.42066528,
