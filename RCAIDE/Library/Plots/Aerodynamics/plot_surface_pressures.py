@@ -96,7 +96,7 @@ def plot_surface_pressures(results,
 
     # Create a boolean for not plotting vertical wings
     idx        = 0
-    plot_flag  = np.ones(int(VD.n_w[0]))
+    plot_flag  = np.ones(VD.n_w[0][0])
     for wing in vehicle.wings:
         if wing.vertical:
             plot_flag[idx] = 0

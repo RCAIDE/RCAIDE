@@ -310,11 +310,10 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
     error : float
         Net heat flow residual (external - internal conduction).
     """
-    # Atmospheric properties
-    p        = atmo_data.pressure          
-    rho_air  = atmo_data.density             
-    mu_air   = atmo_data.dynamic_viscosity
-    k_air    = atmo_data.thermal_conductivity   
+    # Atmospheric properties       
+    rho_air  = atmo_data.density[0][0]             
+    mu_air   = atmo_data.dynamic_viscosity[0][0]
+    k_air    = atmo_data.thermal_conductivity[0][0]   
     Ta       = atmo_data.temperature[0][0]
     g        = 9.81
     Ti       = fuel_tank.design_inlet_temperature
