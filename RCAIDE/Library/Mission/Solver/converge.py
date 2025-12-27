@@ -6,7 +6,6 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from logging import raiseExceptions
 import RCAIDE
 from RCAIDE.Framework.Core import  Units, Data
 from RCAIDE.Framework.Optimization.Packages.scipy import scipy_setup

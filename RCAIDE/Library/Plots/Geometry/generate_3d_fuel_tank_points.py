@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  generate_integral_wing_tank_points
 # ----------------------------------------------------------------------------------------------------------------------  
-def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_tank):
+def generate_integral_wing_tank_points(wing, n_points, segment_list,fuel_tank):
     """
     Generates 3D coordinate points that define a wing surface.
 
@@ -70,20 +70,22 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
     origin               = wing.origin   
         
     if len(segments) > 0: 
-        pts              = np.zeros((dim,n_points, 3,1))  
-        section_twist    = np.zeros((dim,n_points, 3,3))
+        if segment_list[0] == None or  segment_list[1] == None:
+            raise Exception('Tank segments must be defined')
+        pts              = np.zeros((2,n_points, 3,1))  
+        section_twist    = np.zeros((2,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1 
-        translation        = np.zeros((dim,n_points, 3,1))    
+        translation        = np.zeros((2,n_points, 3,1))    
         translation[:, :, 0,:] = origin[0][0]  
         translation[:, :, 1,:] = origin[0][1]  
         translation[:, :, 2,:] = origin[0][2]  
         for i in range(len(segment_list)):
             current_seg = segments[segment_list[i]]
-            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank,i)
             fs = fuel_tank.segments_percent_chord_start
             rs = fuel_tank.segments_percent_chord_end  
+            front_rib_yu,rear_rib_yu,front_rib_yl,rear_rib_yl = compute_non_dimensional_rib_coordinates(current_seg,fuel_tank,fs[i], rs[i])
             x_coordinates =  np.array([rs[i], rs[i], fs[i], fs[i], rs[i]])
             y_coordinates =  np.array([rear_rib_yl, rear_rib_yu, front_rib_yu,front_rib_yl,rear_rib_yl ])   
             twist    = current_seg.twist 
@@ -134,17 +136,17 @@ def generate_integral_wing_tank_points(wing, n_points, dim, segment_list,fuel_ta
                 translation[i,:,2,:] = translation[i-1,:,2,:] + dz 
     else:
 
-        pts                       = np.zeros((dim,n_points, 3,1))  
-        section_twist             = np.zeros((dim,n_points, 3,3))
+        pts                       = np.zeros((2,n_points, 3,1))  
+        section_twist             = np.zeros((2,n_points, 3,3))
         section_twist[:, :, 0, 0] = 1        
         section_twist[:, :, 1, 1] = 1
         section_twist[:, :, 2, 2] = 1
-        translation               = np.zeros((dim,n_points, 3,1))
+        translation               = np.zeros((2,n_points, 3,1))
 
         fs                = fuel_tank.segments_percent_chord_start
-        rs                = fuel_tank.segments_percent_chord_end      
-        front_rib_yu_i,rear_rib_yu_i,front_rib_yl_i,rear_rib_yl_i = compute_non_dimensional_rib_coordinates(wing,fuel_tank,0)
-        front_rib_yu_o,rear_rib_yu_o,front_rib_yl_o,rear_rib_yl_o = compute_non_dimensional_rib_coordinates(wing,fuel_tank,1)
+        rs                = fuel_tank.segments_percent_chord_end       
+        front_rib_yu_i,rear_rib_yu_i,front_rib_yl_i,rear_rib_yl_i = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fs[0],rs[0])
+        front_rib_yu_o,rear_rib_yu_o,front_rib_yl_o,rear_rib_yl_o = compute_non_dimensional_rib_coordinates(wing,fuel_tank,fs[1],rs[1])
         x_coordinates_i   =  np.array([rs[0], rs[0], fs[0], fs[0], rs[0]])
         x_coordinates_o   =  np.array([rs[1], rs[1], fs[1], fs[1], rs[1]])
         y_coordinates_i   =  np.array([rear_rib_yl_i, rear_rib_yu_i, front_rib_yu_i,front_rib_yl_i,rear_rib_yl_i ]) 
@@ -272,7 +274,9 @@ def generate_integral_fuel_tank_points(fuselage,fuel_tank, segment_list, tessell
         * Origin is at the nose of the fuel_tank
     """ 
     tank_segs         = fuselage.segments
-    num_tank_segs     = len(segment_list) 
+    num_tank_segs     = len(segment_list)
+    if segment_list[0] == None or  segment_list[1] == None:
+        raise Exception('Tank segments must be defined') 
     fuel_tank_points = np.zeros((num_tank_segs+2,tessellation ,3))
         
     if num_tank_segs > 0: 

@@ -107,7 +107,7 @@ class Non_Integral_Tank(Fuel_Tank):
         self.orientation_euler_angles    = [0.,0.,0.]
         self.geometry_type               = 'cylindrical'   # ['prismatic', 'cylindrical']
         self.bwb_aft_tank                = False
-        self.aft_tank_root_chord_bounds  = [None, None]
+        self.aft_tank_segment_bound      =  None # This only has one bound since it is more of a end bound and it will always start from the rootchord and grow symmetrically till bound
         self.radial_offset               = None
         self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank.
 
@@ -136,7 +136,7 @@ class Non_Integral_Tank(Fuel_Tank):
         append_fuel_tank_conditions(self,segment, fuel_line)  
         return                      
     
-    def compute_volume(self, wings, fuselages,overwrite_fuel_volume,fuel_tanks):
+    def compute_volume(self, wings, fuselages,fuel_tanks):
         """
         Compute the volume of the non-integral fuel tank based on its attachment location.
 
@@ -171,12 +171,12 @@ class Non_Integral_Tank(Fuel_Tank):
         if self.wing_tag is not None and self.bwb_aft_tank is False:
             if self.geometry_type == 'cylindrical':
                 wing = wings[self.wing_tag]  
-                compute_wing_non_integral_tank_volume(self,wing,fuel_tanks, overwrite_fuel_volume) 
+                compute_wing_non_integral_tank_volume(self,wing,fuel_tanks) 
         elif self.bwb_aft_tank is True:
             if self.bwb_aft_tank == True:
                 wing = wings[self.wing_tag]  
-                compute_bwb_aft_tank_volume(self,wing,overwrite_fuel_volume)
+                compute_bwb_aft_tank_volume(self,wing)
         else:
             if self.geometry_type == 'prismatic':
-                compute_prismatic_fuel_tank_volume(self,overwrite_fuel_volume)
+                compute_prismatic_fuel_tank_volume(self)
         return

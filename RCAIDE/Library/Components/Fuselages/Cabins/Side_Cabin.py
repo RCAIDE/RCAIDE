@@ -20,5 +20,5 @@ class Side_Cabin(Cabin):
         """      
         
         self.tag        = 'side_cabin'
-        self.side_ailse = False
+        self.side_aisle = False
   

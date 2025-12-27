@@ -18,12 +18,12 @@ from shapely.geometry import Polygon, Point
 from copy import  deepcopy
 import shapely
 import os
-import matplotlib.pyplot as plt
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Methods to compute volume of non integrak tanks
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
+
+def compute_bwb_aft_tank_volume(fuel_tank, wing):
     """
     Computes the volume of an aft fuel tank for a Blended Wing Body (BWB) aircraft configuration.
 
@@ -92,8 +92,9 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     if any(val is None for val in [
         fuel_tank.aft_tank_root_chord_bounds[0],
         fuel_tank.aft_tank_root_chord_bounds[1],
-        fuel_tank.segments_bounding_tank[0], 
-        fuel_tank.segments_bounding_tank[1],]):
+         fuel_tank.segments_bounding_tank ,
+         fuel_tank.aft_tank_segment_bound
+        ]):
         raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
     # ------------------------------------------------------
     # compute tank bounds
@@ -101,19 +102,15 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     # root chord of refernce wing
     root_chord = wing.chords.root
     wing_span  = wing.spans.projected
-    
     # where tank is located as a percentage of root chord
     tank_start_percent = fuel_tank.aft_tank_root_chord_bounds[0]
-    tank_end_percent   = fuel_tank.aft_tank_root_chord_bounds[-1]
-    
+    tank_end_percent   = fuel_tank.aft_tank_root_chord_bounds[1]
     # dimensionalized location of tank bounds
     tank_start_dimensional = tank_start_percent *  root_chord
     tank_end_dimensional   = tank_end_percent *  root_chord
-    
     # create x coordinates where airfoils will be interpolated to find polygon of interest
     n = 5
     x_tank_bounds =  np.linspace(tank_start_dimensional,tank_end_dimensional,n)
-    
     # ------------------------------------------------------
     # loop through wing segments to get cooridates
     # ------------------------------------------------------
@@ -121,8 +118,8 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     wing_segment_origins = np.empty((0, 3))
     segments             = wing.segments
         
-    seg_tags  = list(wing.segments.keys())
-    index     = seg_tags.index(fuel_tank.segments_bounding_tank[1])
+    seg_tags = list(wing.segments.keys())
+    index = seg_tags.index( fuel_tank.aft_tank_segment_bound)
     seg_names = seg_tags[:index + 1]
 
     for _,tag in enumerate(seg_names):
@@ -146,19 +143,16 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
             geometry = compute_naca_4series('0012')
         # Get segment chord
         segment_chord = segments[seg_names[seg_i]].root_chord_percent * root_chord
-        
         # Get upper and lower points and scale by chord
         x_points_upper = segment_chord * geometry.x_upper_surface
         x_points_lower = segment_chord * geometry.x_lower_surface
         y_points_upper = segment_chord * geometry.y_upper_surface
         y_points_lower = segment_chord * geometry.y_lower_surface
-        
         # position points correct using segment origin (this is based on sweep and dihedral)
         x_points_upper_positioned = x_points_upper + wing_segment_origins[seg_i][0]
         x_points_lower_positioned = x_points_lower + wing_segment_origins[seg_i][0]
         y_points_upper_positioned = y_points_upper + wing_segment_origins[seg_i][2] - fuel_tank.wall_clearance
         y_points_lower_positioned = y_points_lower + wing_segment_origins[seg_i][2] + fuel_tank.wall_clearance
-        
         # Use interpolant to evaluate polygon points
         upper_y_function = interp1d(x_points_upper_positioned  ,y_points_upper_positioned, kind='linear')
         lower_y_function = interp1d(x_points_lower_positioned  ,y_points_lower_positioned, kind='linear')
@@ -234,25 +228,20 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     # Inner Volume
     fuel_tank.inner_length    = (fuel_tank.aspect_ratio * fuel_tank.inner_diameter) -fuel_tank.inner_diameter
     tank_volume_i             = max_volume
-    
-    if overwrite_fuel_volume:
-        fuel_tank.volume_properties.net_volume         = tank_volume_i
-        fuel_tank.volume_properties.gross_volume       = tank_volume_o
-        if fuel_tank.fuel.mass_properties.mass != 0:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
-            tol = 1E-8
-            if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-                raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
-            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-        else:
-            fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
-            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i  
-        
+    fuel_tank.volume_properties.net_volume         = tank_volume_i
+    fuel_tank.volume_properties.gross_volume       = tank_volume_o
+    if fuel_tank.fuel.mass_properties.mass != 0:
+        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+            raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+    else:
+        fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
     # fuel tank origin
     fuel_tank.origin[0][0]  = circle_origins[max_idx][0] - fuel_tank.outer_diameter / 2
     fuel_tank.origin[0][1]  = 0
     fuel_tank.origin[0][2]  = circle_origins[max_idx][1]
-    
     # fuel tank C.G.
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]]
     fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.outer_length /2, 0, 0]]
@@ -263,7 +252,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing, overwrite_fuel_volume):
     
     return
 
-def compute_prismatic_fuel_tank_volume(fuel_tank, overwrite_fuel_volume):
+def compute_prismatic_fuel_tank_volume(fuel_tank):
     """
     Computes the volume of a Prismatic non-integral fuel tanks.
  
@@ -298,20 +287,16 @@ def compute_prismatic_fuel_tank_volume(fuel_tank, overwrite_fuel_volume):
     tank_volume_o = l * w * h
     tank_volume_i = inner_length * inner_width *  inner_height
  
-    if overwrite_fuel_volume:
-        fuel_tank.volume_properties.net_volume         = tank_volume_i
-        fuel_tank.volume_properties.gross_volume       = tank_volume_o
-        
-        if fuel_tank.fuel.mass_properties.mass != 0:
-            actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
-            fuel_tank.fuel.volume_properties.net_volume = actual_fuel_volume
-            tol = 1E-8
-            if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-                raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-        else:
-            fuel_tank.fuel.mass_properties.mass     = float(tank_volume_i *  fuel_tank.fuel.density)
-            fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-        
+    fuel_tank.volume_properties.net_volume         = tank_volume_i
+    fuel_tank.volume_properties.gross_volume       = tank_volume_o
+
+    if fuel_tank.fuel.mass_properties.mass != 0:
+        actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
+        if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+            raise ValueError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+    else:
+        fuel_tank.fuel.mass_properties.mass     = float(tank_volume_i *  fuel_tank.fuel.density)
+        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i 
     
     fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.outer_length /2, 0, 0]] 
     fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.outer_length /2, 0, 0]]
@@ -319,7 +304,7 @@ def compute_prismatic_fuel_tank_volume(fuel_tank, overwrite_fuel_volume):
          
     return
 
-def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks,overwrite_fuel_volume):
+def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
     """
     Computes the volume of non-integral fuel tanks within wing segments.
 
@@ -362,42 +347,41 @@ def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks,overwrite_f
         * Tank placement constraints are reasonable
     """ 
     if len(wing.segments) > 1: 
-        if len(fuel_tank.segments_bounding_tank) >1:   
-            inner_segment = wing.segments[fuel_tank.segments_bounding_tank[0]]
-            outer_segment = wing.segments[fuel_tank.segments_bounding_tank[1]] 
+        seg_tags = fuel_tank.segments_bounding_tank  
+        for i in range(len(seg_tags)-1):
+            inner_segment = wing.segments[seg_tags[i]]
+            outer_segment = wing.segments[seg_tags[i+1]] 
             try:
                 try:
                     tank_percent_span_location = inner_segment.tank_percent_span_location    
                 except:
                     tank_percent_span_location = 0
-                    
-                inner_segment_index = 0
-                outer_segment_index = -1
                 inner_segment.tank_percent_span_location, tank_volume_o, tank_volume_i\
-                                    = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,inner_segment_index, outer_segment,outer_segment_index, tank_percent_span_location)
-            except: 
+                                        = compute_wing_non_integral_tank_fuel_volume(fuel_tank,wing,inner_segment,outer_segment,tank_percent_span_location)
+            except:
+                print(f"[WARNING] Tank '{fuel_tank.tag}' does not fit in the segment. Removing from list.")
                 fuel_tanks.pop(fuel_tank.tag)
                 return 
-                  
-            fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
-            fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]                  
-            if overwrite_fuel_volume:
-                fuel_tank.volume_properties.net_volume         = tank_volume_i
-                fuel_tank.volume_properties.gross_volume       = tank_volume_o  
-            
-                if fuel_tank.fuel.mass_properties.mass != 0:
-                    actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density 
-                    tol = 1E-8 
-                    if (actual_fuel_volume - fuel_tank.volume_properties.net_volume) > tol :
-                        raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
-                    fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
-                else:
-                    fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
-                    fuel_tank.fuel.volume_properties.net_volume = tank_volume_i 
+             
+        fuel_tank.volume_properties.net_volume         = tank_volume_i
+        fuel_tank.volume_properties.gross_volume       = tank_volume_o
+
+        fuel_tank.fuel.mass_properties.center_of_gravity  =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]     
+        fuel_tank.mass_properties.center_of_gravity       =  [[(fuel_tank.outer_length + fuel_tank.outer_diameter) /2, 0,0]]   
+
+        if not isinstance(fuel_tank, RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank):
+            if fuel_tank.fuel.mass_properties.mass != 0:
+                actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
+                if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
+                    raise AttributeError('Specified fuel mass greater than mass of fuel capable of being stored in fuel tank') 
+                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+            else:
+                fuel_tank.fuel.mass_properties.mass = float(tank_volume_i *  fuel_tank.fuel.density)
+                fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
              
     return 
 
-def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,inner_segment_index, outer_segment,outer_segment_index, tank_percent_span_location):
+def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0, outer_segment, tank_percent_span_location):
     """
     Computes the fuel volume for a non-integral tank between two wing segments.
 
@@ -490,20 +474,20 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
         inner_segment.origin[0][1] = inner_segment.percent_span_location * semi_span
         inner_segment.origin[0][2] = inner_segment_0.origin[0][2] +  delta_y *np.tan(inner_segment.dihedral_outboard)
 
-    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank, 0)
+    inner_front_rib_yu,inner_rear_rib_yu,inner_front_rib_yl,inner_rear_rib_yl = compute_non_dimensional_rib_coordinates(inner_segment,fuel_tank,fuel_tank.segments_percent_chord_start[0], fuel_tank.segments_percent_chord_end[0])
     inner_segment_chord     = wing.chords.root * inner_segment.root_chord_percent
     inner_front_rib_length  = inner_segment_chord * (abs(inner_front_rib_yu) + abs(inner_front_rib_yl)) 
     inner_rear_rib_length   = inner_segment_chord * (abs(inner_rear_rib_yu) + abs(inner_rear_rib_yl) )
-    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_end[0] -fuel_tank.segments_percent_chord_start[0])
+    inner_wingbox_length    = inner_segment_chord * (fuel_tank.segments_percent_chord_end[0] -fuel_tank.segments_percent_chord_start[0]) 
 
     clearance  = fuel_tank.wall_clearance
     delta_span = (outer_segment.percent_span_location - inner_segment.percent_span_location) * semi_span
 
-    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank, 1)
+    outer_front_rib_yu,outer_rear_rib_yu,outer_front_rib_yl,outer_rear_rib_yl = compute_non_dimensional_rib_coordinates(outer_segment,fuel_tank,fuel_tank.segments_percent_chord_start[1], fuel_tank.segments_percent_chord_end[1])
     outer_segment_chord     = wing.chords.root * outer_segment.root_chord_percent
     outer_front_rib_length  = outer_segment_chord * (abs(outer_front_rib_yu) + abs(outer_front_rib_yl)) 
     outer_rear_rib_length   = outer_segment_chord * (abs(outer_rear_rib_yu) + abs(outer_rear_rib_yl))
-    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_end[1] -fuel_tank.segments_percent_chord_start[1])
+    outer_wingbox_length    = outer_segment_chord * (fuel_tank.segments_percent_chord_end[1] -fuel_tank.segments_percent_chord_start[1]) 
 
     # inner segment coordinate  
     inner_segment_thickness =  np.minimum(inner_front_rib_length,inner_rear_rib_length)
@@ -557,7 +541,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     tank_percent_span_location = inner_segment.percent_span_location +  D / semi_span 
 
     # get orgin of fuel tank 
-    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segments_percent_chord_start[inner_segment_index] * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
+    origin_x              = inner_segment.origin[0][0] + (fuel_tank.segments_percent_chord_start[0] * inner_segment_chord) + (np.tan( np.pi/2 - spar_sweep) * D / 2) -D/2
     origin_y              = inner_segment.origin[0][1] + D / 2
     origin_z              = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin      = [[origin_x,origin_y,origin_z]]
@@ -591,7 +575,7 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
 
     return tank_percent_span_location, tank_volume_o, tank_volume_i
 
-def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,segment_index): 
+def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,front_rib_nondim_x,rear_rib_nondim_x): 
     """
     Computes non-dimensional rib coordinates for wing segments based on airfoil geometry.
 
@@ -607,9 +591,9 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,segment_index):
                 Airfoil object containing geometry data
             - fuel_tank : Fuel_Tank_Segment
                 Fuel tank segment properties
-                    - segments_percent_chord_start : float
+                    - percent_chord_start_location : float
                         Front rib location as fraction of chord
-                    - segments_percent_chord_end : float
+                    - percent_chord_end_location : float
                         Rear rib location as fraction of chord
 
     Returns
@@ -651,9 +635,7 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,segment_index):
     else:
         geometry = compute_naca_4series('0012')
 
-    clearance = 1.5E-2
-    front_rib_nondim_x       = fuel_tank.segments_percent_chord_start[segment_index]    
-    rear_rib_nondim_x        = fuel_tank.segments_percent_chord_end[segment_index] 
+    clearance = 1.5E-2 
     f_upper = interp1d(geometry.x_upper_surface  ,geometry.y_upper_surface, kind='linear')
     f_lower = interp1d(geometry.x_lower_surface  , geometry.y_lower_surface, kind='linear')
 
@@ -664,3 +646,81 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,segment_index):
     rear_rib_nondim_y_lower  = f_lower([rear_rib_nondim_x])[0]  + clearance   
 
     return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
+
+def compute_largest_circle(x_points, z_upper, z_lower):
+    """
+    Computes the largest circle that can fit within a polygon defined by airfoil coordinates.
+
+    This function finds the optimal center point and radius for the largest possible circle
+    that fits within the polygon formed by the upper and lower airfoil surfaces. It uses
+    a grid search approach to find the best center location.
+
+    Parameters
+    ----------
+    x_points : array_like
+        X-coordinates of the airfoil points
+    z_upper : array_like
+        Z-coordinates of the upper airfoil surface
+    z_lower : array_like
+        Z-coordinates of the lower airfoil surface
+
+    Returns
+    -------
+    max_diameter : float
+        Diameter of the largest possible circle
+    x_center : float
+        X-coordinate of the circle center
+    z_center : float
+        Z-coordinate of the circle center
+
+    Notes
+    -----
+    The function creates a polygon from the airfoil coordinates and performs a grid search
+    within the polygon's bounding box to find the optimal circle center. The radius is
+    limited by the distance to the closest polygon edge.
+
+    **Major Assumptions**
+        * Airfoil coordinates form a valid polygon
+        * Grid resolution is sufficient for accurate results
+        * Polygon is simply connected
+
+    **Theory**
+
+    The largest circle is found by maximizing the radius r such that:
+    
+    .. math::
+        r = \\min_{i} d(p, e_i)
+
+    where p is the circle center and e_i are the polygon edges.
+
+    **Definitions**
+
+    'Inscribed Circle'
+        The largest circle that can fit completely within a given polygon
+    """
+
+    coords = list(zip(x_points, z_upper)) + list(zip(x_points[::-1], z_lower[::-1]))
+    poly   = Polygon(coords)
+
+    #scan a fine grid inside the polygon's bounding box to find the best center
+    minx, minz, maxx, maxz = poly.bounds
+    nx, nz = 200, 200  
+    xs = np.linspace(minx, maxx, nx)
+    zs = np.linspace(minz, maxz, nz)
+
+    best_r = 0.0
+    best_pt = None
+
+    for x in xs:
+        for z in zs:
+            p = Point(x, z)
+            if not poly.contains(p):
+                continue
+            # the radius is limited by the closest polygon edge
+            r = p.distance(poly.exterior)
+            if r > best_r:
+                best_r = r
+                best_pt = (x, z)
+    max_diameter = 2 * best_r
+    
+    return max_diameter , best_pt[0],best_pt[1]

@@ -155,7 +155,7 @@ def plot_3d_vehicle(vehicle,
             if overwrite_geometry:
                 wing_planform(wing)  
                      
-    compute_fuel_volume(geometry, overwrite_fuel_volume=True) 
+    compute_fuel_volume(geometry, compute_fuel_volume=True) 
     
     for fuselage in  geometry.fuselages:    
         compute_layout_of_passenger_accommodations(fuselage)
@@ -261,25 +261,19 @@ def plot_3d_vehicle(vehicle,
                             make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity)
 
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
-                        if  len(fuel_tank.segments_bounding_tank) >1: 
-                            seg_tags = fuel_tank.segments_bounding_tank  
-                            if len(wing.segments)>0:
-                                dim =  len(seg_tags)
-                            else:
-                                dim = 2  
-                            GEOM = generate_integral_wing_tank_points(wing,5,dim,seg_tags,fuel_tank)
-                            make_object(renderer, GEOM, fuel_tank_rgb_color, fuel_tank_opacity)  
-                            if wing.xz_plane_symmetric:
-                                GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
-                                make_object(renderer, GEOM,fuel_tank_rgb_color, fuel_tank_opacity) 
+                        seg_bounds = fuel_tank.segments_bounding_tank   
+                        GEOM       = generate_integral_wing_tank_points(wing,5,seg_bounds,fuel_tank)
+                        make_object(renderer, GEOM, fuel_tank_rgb_color, fuel_tank_opacity)  
+                        if wing.xz_plane_symmetric:
+                            GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                            make_object(renderer, GEOM,fuel_tank_rgb_color, fuel_tank_opacity) 
 
                 elif fuel_tank.fuselage_tag != None:
                     fuselage = geometry.fuselages[fuel_tank.fuselage_tag]
-                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:   
-                        if len(fuel_tank.segments_bounding_tank) > 1: 
-                            seg_tags = fuel_tank.segments_bounding_tank  
-                            GEOM     = generate_integral_fuel_tank_points(fuselage,fuel_tank, seg_tags,tessellation )
-                            make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
+                    if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
+                        seg_bounds  = fuel_tank.segments_bounding_tank  
+                        GEOM        = generate_integral_fuel_tank_points(fuselage,fuel_tank, seg_bounds,tessellation )
+                        make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
 
                 elif issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
                     GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation ) 
