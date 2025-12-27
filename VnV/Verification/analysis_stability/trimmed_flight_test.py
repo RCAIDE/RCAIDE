@@ -105,7 +105,6 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Stability Analysis      
     stability   = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
-    stability.settings.compute_neutral_point = True
     analyses.append(stability)
 
     # ------------------------------------------------------------------

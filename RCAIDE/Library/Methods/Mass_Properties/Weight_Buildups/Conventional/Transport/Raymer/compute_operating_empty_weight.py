@@ -84,11 +84,10 @@ def compute_operating_empty_weight(vehicle, settings=None):
     
     ##-------------------------------------------------------------------------------                 
     # Pod Weight Weight 
-    ##-------------------------------------------------------------------------------         
-    WPOD  = 0.0             
+    ##-------------------------------------------------------------------------------          
     output.empty.propulsion.total               = W_energy_network_cumulative
-    output.empty.propulsion.battery             = 0 #W_energy_network.W_battery
-    output.empty.propulsion.motors              = 0 #W_energy_network.W_motor
+    output.empty.propulsion.battery             = 0  
+    output.empty.propulsion.motors              = 0  
     output.empty.propulsion.engines             = W_energy_network.W_engine
     output.empty.propulsion.thrust_reversers    = W_energy_network.W_thrust_reverser
     output.empty.propulsion.miscellaneous       = W_energy_network.W_engine_controls + W_energy_network.W_starter
@@ -96,10 +95,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
 
     ##-------------------------------------------------------------------------------                 
     # Wing Weight 
-    ##------------------------------------------------------------------------------- 
-    Al_rho   = Aluminum_Alloy().density
-    Al_sigma = Aluminum_Alloy().yield_tensile_strength      
-    
+    ##-------------------------------------------------------------------------------  
     num_main_wings      = 0
     W_main_wing        = 0.0
     W_tail_horizontal  = 0.0

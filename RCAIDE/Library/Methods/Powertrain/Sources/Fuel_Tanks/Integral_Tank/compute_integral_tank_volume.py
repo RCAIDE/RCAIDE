@@ -233,19 +233,10 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
         p4x = outer_segment_x_start
         p4y = outer_segment_y
 
-        A_num = (
-            p1x*p2y - p2x*p1y +
-            p2x*p3y - p3x*p2y +
-            p3x*p4y - p4x*p3y +
-            p4x*p1y - p1x*p4y
-        )
-        A = 0.5 * A_num
-        x_cg = (1/(6*A)) * (
-            (p1x + p2x)*(p1x*p2y - p2x*p1y) +
-            (p2x + p3x)*(p2x*p3y - p3x*p2y) +
-            (p3x + p4x)*(p3x*p4y - p4x*p3y) +
-            (p4x + p1x)*(p4x*p1y - p1x*p4y)
-        )
+        A_num = (p1x*p2y - p2x*p1y + p2x*p3y - p3x*p2y + p3x*p4y - p4x*p3y + p4x*p1y - p1x*p4y)
+        A     = 0.5 * A_num
+        x_cg  = (1/(6*A)) * ((p1x + p2x)*(p1x*p2y - p2x*p1y) + (p2x + p3x)*(p2x*p3y - p3x*p2y) +
+                (p3x + p4x)*(p3x*p4y - p4x*p3y) +  (p4x + p1x)*(p4x*p1y - p1x*p4y))
         
         
         fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, 0, 0])

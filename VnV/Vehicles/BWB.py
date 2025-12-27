@@ -73,8 +73,11 @@ def vehicle_setup():
     # Carbo Bays 
     # ------------------------------------------------------------------ 
     cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-    vehicle.append_component(cargo_bay)
-    
+    cargo_bay.origin  = [[5, 0, -1]]
+    cargo_bay.length  = 10
+    cargo_bay.width   = 3
+    cargo_bay.height  = 1
+    vehicle.append_component(cargo_bay) 
     
     # ------------------------------------------------------------------
     #  Main Wing 
