@@ -45,11 +45,7 @@ def fuselage_planform(fuselage, circular_cross_section = True):
     nose_length     = fuselage.fineness.nose * fuselage_width
     tail_length     = fuselage.fineness.tail  * fuselage_width 
     cabin_length    = fuselage.lengths.total -  nose_length - tail_length  
-    fuselage_height = fuselage.heights.maximum
-    
-    if fuselage.heights.maximum == 0:
-        fuselage.heights.maximum = fuselage_width
-        fuselage_height = fuselage_width 
+    fuselage_height = fuselage.heights.maximum 
     
     a     = fuselage_width/2.  # base semi-major axis  
     b     = fuselage_height/2. # base semi-minor axis  
