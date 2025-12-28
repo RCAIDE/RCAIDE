@@ -7,5 +7,5 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from .compute_operating_empty_weight   import compute_operating_empty_weight
+from .compute_operating_empty_weight    import compute_operating_empty_weight
 from .compute_propulsion_system_weight import compute_propulsion_system_weight
