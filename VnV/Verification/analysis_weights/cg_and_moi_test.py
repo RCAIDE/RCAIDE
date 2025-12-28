@@ -24,7 +24,7 @@ from Stopped_Rotor_EVTOL    import vehicle_setup as EVTOL_setup
 
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
-    update_regression_values = True  
+    update_regression_values = False  
     Transport_Aircraft_Test()
     General_Aviation_Test()
     EVTOL_Aircraft_Test(update_regression_values)
@@ -59,11 +59,11 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------    
     MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
 
-    print(vehicle.tag + ' Moment of Intertia')
+    print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
-    accepted  = np.array([[ 3.30247632e+07,  3.74823194e+06,  2.52281128e+06],
-                          [ 3.74823194e+06,  9.59375092e+07, -3.52133374e+03],
-                          [ 2.52281128e+06, -3.52133374e+03,  1.13110842e+08]])
+    accepted  = np.array([[ 2.64539142e+07,  1.82353123e+05, -1.92421668e+06],
+                          [ 1.82353123e+05,  5.36569644e+07, -3.52133374e+03],
+                          [-1.92421668e+06, -3.52133374e+03,  6.63284593e+07]])
                           
     MOI_error     = (MOI - accepted) / accepted
 
@@ -106,12 +106,12 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------    
     MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
 
-    print(vehicle.tag + ' Moment of Intertia')
+    print(vehicle.tag + ' Moment of Inertia')
     print(MOI)
 
-    accepted  = np.array([[3324.17527381, 459.36753169, -86.8899328 ], 
-                          [ 459.36753169,6770.16505484,  -8.98623559], 
-                          [ -86.8899328 ,  -8.98623559,5845.74117634]])
+    accepted  = np.array([[3264.91698044,  426.30343101,  -86.86442546],
+                          [ 426.30343101, 5351.47514676,   -8.98623559],
+                          [ -86.86442546,   -8.98623559, 4431.61785557]])
 
     MOI_error     = MOI - accepted
 

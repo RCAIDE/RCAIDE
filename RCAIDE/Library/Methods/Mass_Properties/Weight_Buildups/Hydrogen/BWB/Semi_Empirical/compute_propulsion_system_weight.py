@@ -64,7 +64,10 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
             N/A
     """
      
-    NENG =  0 
+    NENG   =  0
+    WEC    =  0
+    WNAC   =  0
+    WSTART =  0
     number_of_tanks =  0
     ref_nacelle =  None
     for network in  vehicle.networks:
@@ -74,7 +77,7 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
                or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):
                 ref_propulsor = propulsor  
                 NENG  += 1 
-            if 'nacelle' in propulsor: 
+            if propulsor.nacelle !=  None:          
                 if propulsor.nacelle !=  None:                
                     ref_nacelle =  propulsor.nacelle   
         for fuel_line in network.fuel_lines:
@@ -85,7 +88,8 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
         WNAC        = compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG ) 
     WFSYS           = compute_fuel_system_weight(vehicle, NENG)
     WENG            = compute_engine_weight(vehicle,ref_propulsor)
-    WEC, WSTART     = compute_misc_propulsion_system_weight(vehicle,ref_propulsor,ref_nacelle,NENG)
+    if ref_nacelle is not None:
+        WEC, WSTART     = compute_misc_propulsion_system_weight(vehicle,ref_propulsor,ref_nacelle,NENG)
     WTHR            = compute_thrust_reverser_weight(ref_propulsor,NENG)
     WPRO            = NENG * WENG + WFSYS + WEC + WSTART + WTHR # Nacelle weight is not included in the propulsion system weight. it is included in the structural weight. 
 

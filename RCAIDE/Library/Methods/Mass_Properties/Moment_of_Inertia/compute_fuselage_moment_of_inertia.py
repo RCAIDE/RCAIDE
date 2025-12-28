@@ -9,7 +9,7 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Fuselage Moment of Intertia
+#  Compute Fuselage Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]): 
     ''' computes the moment of ienrtia tensor for a generic fuselage about a given center of gravity. 

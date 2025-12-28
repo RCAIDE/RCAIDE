@@ -14,20 +14,20 @@ from RCAIDE.Library.Plots.Geometry.generate_3d_fuel_tank_points import *
 from RCAIDE.Library.Plots.Geometry.plot_3d_rotor                import generate_3d_blade_points
 from RCAIDE.Library.Plots.Geometry.generate_3d_nacelle_points   import *
 from RCAIDE.Library.Plots.Geometry.generate_3d_lopa_points      import generate_3d_lopa_points
+from RCAIDE.Library.Plots.Geometry.generate_3d_cargo_bay_points import generate_3d_cargo_bay_points
 from RCAIDE.Library.Methods.Geometry.Planform                   import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume  
 from RCAIDE.Library.Methods.Geometry.LOPA                       import  compute_layout_of_passenger_accommodations  
 
 # python imports 
 import numpy as np  
 from copy import deepcopy 
-import vtk
+import vtk 
 import matplotlib.colors as mcolors
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
-def plot_3d_vehicle(vehicle,
-                    show_axis                   = False,
+def plot_3d_vehicle(vehicle, 
                     save_figure                 = False,
                     save_filename               = "geometry", 
                     top_view                    = False, 
@@ -39,6 +39,9 @@ def plot_3d_vehicle(vehicle,
                     nacelle_color               = 'grey', 
                     fuel_tank_color             = 'orange', 
                     rotor_color                 = 'black', 
+                    cargo_bay_color             = 'blue',
+                    plot_actuator_disc          = False,
+                    show_LOPA                   = True, 
                     wing_opacity                = 0.5, 
                     fuselage_opacity            = 1.0,
                     boom_opacity                = 1.0,
@@ -46,8 +49,12 @@ def plot_3d_vehicle(vehicle,
                     fuel_tank_opacity           = 0.5,
                     lopa_opacity                = 1.0,
                     rotor_opacity               = 0.6, 
+                    cargo_bay_opacity           = 0.6, 
                     number_of_airfoil_points    = 101,
-                    tessellation                = 96,  
+                    tessellation                = 96,
+                    camera_eye_x                = None,
+                    camera_eye_y                = None,
+                    camera_eye_z                = None,
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """
@@ -128,9 +135,9 @@ def plot_3d_vehicle(vehicle,
         camera_eye_z  = 1  
 
     else: 
-        camera_eye_x  = -1 
-        camera_eye_y  = -1 
-        camera_eye_z  = 0.35  
+        camera_eye_x  = camera_eye_x if camera_eye_x is not None else -1
+        camera_eye_y  = camera_eye_y if camera_eye_y is not None else -1
+        camera_eye_z  = camera_eye_z if camera_eye_z is not None else 0.35  
     
     # -------------------------------------------------------------------------
     # Object RGB Colors  
@@ -141,6 +148,7 @@ def plot_3d_vehicle(vehicle,
     nacelle_rgb_color    = mcolors.to_rgb(nacelle_color) 
     rotor_rgb_color      = mcolors.to_rgb(rotor_color)
     boom_rgb_color       = mcolors.to_rgb(boom_color)
+    cargo_bay_rgb_color  = mcolors.to_rgb(cargo_bay_color)
      
     # -------------------------------------------------------------------------
     # Run Geoemtry Analysis
@@ -186,8 +194,9 @@ def plot_3d_vehicle(vehicle,
             GEOM.PTS[:, :, 2] = -GEOM.PTS[:, :, 2]
             make_object(renderer, GEOM,wing_rgb_color,wing_opacity)
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            lopa_geom = generate_3d_lopa_points(wing)
-            add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+            if show_LOPA:
+                lopa_geom = generate_3d_lopa_points(wing)
+                add_lopa_seats(renderer, lopa_geom, lopa_opacity)
 
     # -------------------------------------------------------------------------  
     # Plot fuselage
@@ -195,8 +204,17 @@ def plot_3d_vehicle(vehicle,
     for fuselage in geometry.fuselages:
         GEOM = generate_3d_fuselage_points(fuselage, tessellation)
         make_object(renderer, GEOM, fuselage_rgb_color,fuselage_opacity)
-        lopa_geom = generate_3d_lopa_points(fuselage)
-        add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+        if show_LOPA:
+            lopa_geom = generate_3d_lopa_points(fuselage)
+            add_lopa_seats(renderer, lopa_geom, lopa_opacity)
+        
+    
+    # -------------------------------------------------------------------------  
+    # Plot cargo bay
+    # -------------------------------------------------------------------------  
+    for cargo_bay in geometry.cargo_bays:
+        GEOM = generate_3d_cargo_bay_points(cargo_bay)
+        make_object(renderer, GEOM, cargo_bay_rgb_color,cargo_bay_opacity) 
         
     # -------------------------------------------------------------------------  
     # Plot boom
@@ -209,24 +227,23 @@ def plot_3d_vehicle(vehicle,
     # Plot Nacelle, Rotors and Fuel Tanks 
     # ------------------------------------------------------------------------- 
     for network in geometry.networks:     
-        for propulsor in network.propulsors: 
-            if 'nacelle' in propulsor: 
-                if propulsor.nacelle !=  None: 
-                    if type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
-                        GEOM = generate_3d_stack_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    elif type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle: 
-                        GEOM = generate_3d_BOR_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    else:
-                        GEOM= generate_3d_basic_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
-                    make_object(renderer, GEOM, nacelle_rgb_color,nacelle_opacity)
+        for propulsor in network.propulsors:  
+            if propulsor.nacelle !=  None: 
+                if type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Stack_Nacelle: 
+                    GEOM = generate_3d_stack_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                elif type(propulsor.nacelle) == RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle: 
+                    GEOM = generate_3d_BOR_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                else:
+                    GEOM= generate_3d_basic_nacelle_points(propulsor.nacelle,tessellation = tessellation,number_of_airfoil_points = number_of_airfoil_points)
+                make_object(renderer, GEOM, nacelle_rgb_color,nacelle_opacity)
                     
             if 'rotor' in propulsor:  
                 rot       = propulsor.rotor
                 rot_x     = rot.orientation_euler_angles[0]
-                rot_y     = rot.orientation_euler_angles[1]
+                rot_y     = np.pi / 2 +  rot.orientation_euler_angles[1]
                 rot_z     = rot.orientation_euler_angles[2]
                 num_B     = int(rot.number_of_blades) 
-                if rot.radius_distribution is None:
+                if (rot.radius_distribution) is None or (plot_actuator_disc == True):  
                     make_actuator_disc(renderer, rot.hub_radius, rot.tip_radius, rot.origin, rot_x,rot_y,rot_z, rotor_rgb_color,rotor_opacity) 
                 else:
                     dim       = len(rot.radius_distribution) 
@@ -240,7 +257,7 @@ def plot_3d_vehicle(vehicle,
                 rot_y     = np.pi / 2 +  prop.orientation_euler_angles[1]
                 rot_z     = prop.orientation_euler_angles[2]
                 num_B     = int(prop.number_of_blades) 
-                if prop.radius_distribution is None:
+                if (prop.radius_distribution is None ) or ( plot_actuator_disc == True):  
                     make_actuator_disc(renderer, prop.hub_radius, prop.tip_radius, prop.origin, rot_x,rot_y,rot_z,rotor_rgb_color,rotor_opacity) 
                 else:
                     dim       = len(prop.radius_distribution)
@@ -282,7 +299,7 @@ def plot_3d_vehicle(vehicle,
                     if wing.xz_plane_symmetric: 
                         GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
                         make_object(renderer, GEOM,  fuel_tank_rgb_color, fuel_tank_opacity) 
-
+        
     # Set camera and background
     camera = vtk.vtkCamera()
     camera.SetPosition(camera_eye_x, camera_eye_y, camera_eye_z)
@@ -481,3 +498,4 @@ def write_azimuthal_cell_values(f, n_cells, n_a):
         adjacent_cells[i, 2] = c
         adjacent_cells[i, 3] = d
     return adjacent_cells 
+ 

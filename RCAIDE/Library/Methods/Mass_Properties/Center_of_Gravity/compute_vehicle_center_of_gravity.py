@@ -18,7 +18,7 @@ import numpy as np
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True): 
-    ''' Computes the moment of intertia of aircraft 
+    ''' Computes the moment of inertia of aircraft 
     
     Source:
     Simplified Mass and Inertial Estimates for Aircraft with Components of Constant Density
@@ -79,13 +79,12 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
                 compute_cabin_center_of_gravity(cabin, wing,length_scale)   
             
             wing.aft_center_body.origin = [[wing.chords.root - 2/3 * wing.aft_center_body.length,0,0]]     
-            wing.aft_center_body.tag = 'aft_center_body'
-            wing.center_body.origin = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]]     
-            wing.center_body.tag = 'center_body'
-            wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.operational_items.total
+            wing.aft_center_body.tag    = 'aft_center_body'
+            wing.center_body.origin     = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]]     
+            wing.center_body.tag        = 'center_body' 
             wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.furnishings +\
-                                                     vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner 
-            wing.aft_center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.propulsion.fuel_system
+                                                     vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner +\
+                                                      vehicle.mass_properties.weight_breakdown.operational_items.total  
 
     #---------------------------------------------------------------------------------
     # Landing Gear 
@@ -116,9 +115,7 @@ def compute_vehicle_center_of_gravity(vehicle , update_center_of_gravity=True):
     aircraft_total_mass   = 0
 
     for key in vehicle.keys():
-        item = vehicle[key]
-        if key =='wings':
-            test = 0
+        item = vehicle[key] 
         if isinstance(item,Component.Container):
             Moment = np.array([[0.0,0.0,0.0]])
             Mass   = 0

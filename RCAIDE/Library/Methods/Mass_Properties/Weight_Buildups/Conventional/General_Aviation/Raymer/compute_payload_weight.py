@@ -43,44 +43,21 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
     # process
     num_pax    = vehicle.number_of_passengers
     W_pax      = W_passenger * num_pax
-    W_bag      = W_baggage * num_pax
-
-    ##-------------------------------------------------------------------------------   
-    # Cargo
-    ##-------------------------------------------------------------------------------     
-    # if cargo is not defined 
-    if vehicle.mass_properties.cargo == None:
-        if vehicle.mass_properties.payload != 0:
-            vehicle.mass_properties.cargo = vehicle.mass_properties.payload - W_pax - W_bag 
-        else:
-            vehicle.mass_properties.cargo = 0
-            vehicle.mass_properties.payload  = W_pax + W_bag 
- 
-    # check if cargo bays defined in aircraft, if none, define one 
-    if len(vehicle.cargo_bays) == 0: 
-        cargo_bay =  RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-        vehicle.cargo_bays.append(cargo_bay) 
-             
-    total_volume =  0
-    for cargo_bay in vehicle.cargo_bays:
-        total_volume += (cargo_bay.length * cargo_bay.width * cargo_bay.height)
-    
-    for cargo_bay in vehicle.cargo_bays:
-        cargo_bay_volume = (cargo_bay.length * cargo_bay.width * cargo_bay.height)
-        cargo_bay.mass_properties.mass         = (vehicle.mass_properties.cargo + W_bag) * (cargo_bay_volume / total_volume)
-        cargo_bay.baggage.mass_properties.mass = W_bag * (cargo_bay_volume / total_volume)
-        cargo_bay.cargo.mass_properties.mass   = vehicle.mass_properties.cargo * (cargo_bay_volume / total_volume)
-    
+    W_bag      = W_baggage * num_pax 
+            
+    if vehicle.mass_properties.payload == 0: 
+        vehicle.mass_properties.payload  = W_pax + W_bag + vehicle.mass_properties.cargo
+        
     ##-------------------------------------------------------------------------------   
     # Cabin
     ##------------------------------------------------------------------------------- 
     for fuselage in vehicle.fuselages:
         for cabin in fuselage.cabins:  
-            cabin.mass_properties.mass = W_pax* (cabin.number_of_passengers / fuselage.number_of_passengers )              
+            cabin.mass_properties.mass = W_pax* (cabin.number_of_passengers / vehicle.number_of_passengers )              
     for wing in vehicle.wings:
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            for cabin in fuselage.cabins:  
-                cabin.mass_properties.mass = W_pax * (cabin.number_of_passengers / fuselage.number_of_passengers )
+            for cabin in wing.cabins:  
+                cabin.mass_properties.mass = W_pax * (cabin.number_of_passengers / vehicle.number_of_passengers )
                 
     # packup outputs
     output              = Data()

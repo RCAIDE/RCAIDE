@@ -48,4 +48,6 @@ class Electric_General_Aviation(Electric):
         Properties Used:
         N/A
         """  
+        self.method                                        = 'Semi_Empirical'
+        self.aircraft_type                                 = 'General_Aviation'
      

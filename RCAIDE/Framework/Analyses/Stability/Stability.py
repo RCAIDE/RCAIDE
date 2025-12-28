@@ -65,6 +65,7 @@ class Stability(Analysis):
         self.settings.recalculate_total_wetted_area                      = False
         self.settings.oswald_efficiency_factor                           = None
         self.settings.span_efficiency                                    = None
+        self.settings.compute_neutral_point                              = True
 
         self.settings.supersonic                                         = Data() 
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.95

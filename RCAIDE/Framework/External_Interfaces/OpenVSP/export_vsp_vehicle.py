@@ -147,14 +147,13 @@ def export_vsp_vehicle(vehicle, vehicle_tag, fuel_tank_set_ind=3, verbose=True, 
             for  tag ,  item in  propulsor.items():
                 if isinstance(item, RCAIDE.Library.Components.Powertrain.Converters.Rotor):
                     vsp_bem_filename = item.tag + '.bem' 
-                    write_vsp_rotor_bem(vsp_bem_filename,item) 
-   
-            if 'nacelle' in propulsor: 
-                if propulsor.nacelle !=  None:                
-                    nacelle =  propulsor.nacelle
-                    if verbose:
-                        print('Writing '+ nacelle.tag +' to OpenVSP Model')
-                    write_vsp_nacelle(nacelle, OML_set_ind)
+                    write_vsp_rotor_bem(vsp_bem_filename,item)
+                    
+            if propulsor.nacelle !=  None:                
+                nacelle =  propulsor.nacelle
+                if verbose:
+                    print('Writing '+ nacelle.tag +' to OpenVSP Model')
+                write_vsp_nacelle(nacelle, OML_set_ind)
                      
     # ------------------------------------------------------------------------- 
     # Fuselage

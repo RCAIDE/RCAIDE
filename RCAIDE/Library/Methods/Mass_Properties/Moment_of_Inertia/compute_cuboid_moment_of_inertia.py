@@ -9,7 +9,7 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Cuboid Moment of Intertia
+#  Compute Cuboid Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_cuboid_moment_of_inertia(origin, mass, outer_length, width_outer, height_outer, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = np.array([[0,0,0]])):  
     ''' computes the moment of inertia tensor for a hollow cuboid

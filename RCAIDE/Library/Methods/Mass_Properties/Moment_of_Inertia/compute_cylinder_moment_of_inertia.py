@@ -10,7 +10,7 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Cylinder Moment of Intertia
+#  Compute Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
     ''' computes the moment of inertia tensor for a hollow cylinder
