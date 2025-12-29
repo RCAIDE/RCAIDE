@@ -303,7 +303,7 @@ class Network(Component):
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_mech_power 
         conditions.energy.thrust_moment_vector = total_moment 
-        conditions.weights.vehicle_mass_rate   = total_mdot  
+        conditions.weights.vehicle.mass_rate     = total_mdot  
     
         return
     
@@ -473,7 +473,12 @@ class Network(Component):
         segment.process.iterate.residuals.network           = self.residuals   
         
         return segment
- 
+    
+    def compute_center_of_gravity(self, vehicle):
+        return 
+
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]):
+        return  
 # ----------------------------------------------------------------------
 #  Component Container
 # ---------------------------------------------------------------------- 

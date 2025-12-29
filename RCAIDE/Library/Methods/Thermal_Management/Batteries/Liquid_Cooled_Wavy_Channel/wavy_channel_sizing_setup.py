@@ -145,7 +145,7 @@ def modify_wavy_channel_HAS(nexus):
 
     # Mass calculations - Liquid 
     mass_liquid  = rho*c*d 
-    total_mass   = mass_channel+mass_liquid 
+    mass.total   = mass_channel+mass_liquid 
 
     # heat transfer coefficient of the channeled coolant (eq 11)
     h = k*Nu/dh
@@ -169,7 +169,7 @@ def modify_wavy_channel_HAS(nexus):
     Q_convec = U_total*A_chan*T_lm*eff_HAS   
 
     # line level properties for optmization 
-    has_opt.mass_properties.mass       = total_mass
+    has_opt.mass_properties.mass       = mass.total
     has_opt.design_power_draw          = Power
     has_opt.heat_removed               = Q_convec 
     has_opt.heat_generated             = Q_module 
@@ -215,9 +215,9 @@ def post_process(nexus):
     # calculate objective 
     spacing                      = new_normal_spacing + new_parallel_spacing
     spacing                      = spacing*100
-    total_mass                   = has_opt.mass_properties.mass/100
+    mass.total                   = has_opt.mass_properties.mass/100
     Power                        = has_opt.design_power_draw * 10
-    summary.mass_power_objective =  (spacing**2+Power**2 + total_mass**2)**(0.5)  
+    summary.mass_power_objective =  (spacing**2+Power**2 + mass.total**2)**(0.5)  
 
     # calculate heat constraint  
     summary.heat_energy_constraint  = Q_line_rem - Q_line_gen  

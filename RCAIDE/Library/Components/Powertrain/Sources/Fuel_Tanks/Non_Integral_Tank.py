@@ -13,7 +13,8 @@ import RCAIDE
 from .Fuel_Tank  import Fuel_Tank 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.append_fuel_tank_conditions import append_fuel_tank_conditions 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume import *
-
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia, compute_cuboid_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_cuboid_center_of_gravity,  compute_cylinder_center_of_gravity
 # ----------------------------------------------------------------------------------------------------------------------
 #  Fuel Tank
 # ---------------------------------------------------------------------------------------------------------------------    
@@ -180,3 +181,53 @@ class Non_Integral_Tank(Fuel_Tank):
             if self.geometry_type == 'prismatic':
                 compute_prismatic_fuel_tank_volume(self)
         return
+    
+   
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for a fuel tank.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+ 
+        """
+        
+        if self.geometry_type == 'prismatic': 
+            _, _ = compute_cuboid_moment_of_inertia(self, self.outer_length, self.outer_width, self.outer_height,\
+                                                       self.outer_length- 2*self.wall_thickness, self.outer_width- 2*self.wall_thickness, self.outer_height- 2*self.wall_thickness, center_of_gravity)
+ 
+        else: 
+            _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, self.outer_length, self.outer_diameter/2, self.outer_length - 2*self.wall_thickness, self.inner_diameter/2, center_of_gravity)
+                
+        return
+    
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for a fuel tank.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2 
+        """
+        if self.geometry_type == 'prismatic': 
+            _  = compute_cuboid_center_of_gravity(self)
+        else:
+            length = self.outer_length +  self.outer_diameter
+            _, _ = compute_cylinder_center_of_gravity(self, length )
+            
+        return
+        

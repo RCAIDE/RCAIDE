@@ -93,8 +93,8 @@ def plot_altitude_sfc_weight(results,
     
     for i in range(len(results.segments)): 
         time      = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min 
-        Weight    = (results.segments[i].conditions.weights.total_mass[:, 0] * 9.81)  / Units.lbf
-        mdot      = results.segments[i].conditions.weights.vehicle_mass_rate[:, 0]/ Units.lb
+        Weight    = (results.segments[i].conditions.weights.vehicle.mass[:, 0] * 9.81)  / Units.lbf
+        mdot      = results.segments[i].conditions.weights.vehicle.mass_rate[:, 0]/ Units.lb
         thrust    = abs(results.segments[i].conditions.frames.body.thrust_force_vector[:, 0])/ Units.lbf
         fuel_mass = results.segments[i].conditions.energy.cumulative_fuel_consumption[:, 0]/ Units.lb
         

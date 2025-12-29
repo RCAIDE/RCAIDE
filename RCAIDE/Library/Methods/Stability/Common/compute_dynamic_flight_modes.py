@@ -58,10 +58,10 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         DS                 = conditions.dynamic_stability 
         num_cases          = len(AoA)  
         moments_of_inertia = vehicle.mass_properties.moments_of_inertia.tensor
-        Ixx    = moments_of_inertia[0][0]
-        Iyy    = moments_of_inertia[1][1]
-        Izz    = moments_of_inertia[2][2]     
-        m      = conditions.weights.total_mass
+        Ixx                = moments_of_inertia[0][0]
+        Iyy                = moments_of_inertia[1][1]
+        Izz                = moments_of_inertia[2][2]     
+        m                  = conditions.weights.vehicle.mass
         
         if np.all(conditions.static_stability.spiral_criteria) == 0: 
             conditions.static_stability.spiral_criteria = SSD.CL_beta*SSD.CN_r / (SSD.CL_r*SSD.CN_beta) 

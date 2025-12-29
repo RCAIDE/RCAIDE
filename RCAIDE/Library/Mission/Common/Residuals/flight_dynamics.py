@@ -62,7 +62,7 @@ def flight_dynamics(segment):
             Angular accelerations [rad/s²]
     
     state.conditions.weights:
-        - total_mass : array
+        - mass.total : array
             Vehicle mass [kg]
     
     analyses.vehicle.mass_properties:
@@ -140,7 +140,7 @@ def flight_dynamics(segment):
     MT_w      = segment.state.conditions.frames.wind.total_moment_vector
 
     ang_acc_w = segment.state.conditions.frames.wind.angular_acceleration_vector   
-    m         = segment.state.conditions.weights.total_mass
+    m         = segment.state.conditions.weights.vehicle.mass
     I         = segment.analyses.vehicle.mass_properties.moments_of_inertia.tensor               
             
     if ground_seg_flag:

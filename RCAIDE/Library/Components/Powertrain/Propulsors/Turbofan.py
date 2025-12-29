@@ -9,9 +9,13 @@
  # RCAIDE imports
 from RCAIDE.Framework.Core     import Data
 from .                         import Propulsor
-from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan          .append_turbofan_conditions     import append_turbofan_conditions 
-from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan          .compute_turbofan_performance   import compute_turbofan_performance, reuse_stored_turbofan_data
+from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan.append_turbofan_conditions     import append_turbofan_conditions 
+from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan.compute_turbofan_performance   import compute_turbofan_performance, reuse_stored_turbofan_data
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_cylinder_moment_of_inertia 
  
+# python imports 
+import numpy as np
+
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fan Component
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -207,3 +211,21 @@ class Turbofan(Propulsor):
         """
         thrust,moment,power_mech,power_elec  = reuse_stored_turbofan_data(turbofan,state,network,stored_propulsor_tag,center_of_gravity)
         return thrust,moment,power_mech,power_elec
+    
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for the propulsor.
+
+        Parameters
+        ---------- 
+        center_of_gravity : list, optional
+            Reference point coordinates, defaults to [[0, 0, 0]]
+        
+        Returns
+        -------
+        ndarray
+            3x3 moment of inertia tensor
+        """
+
+        _, _ =  compute_cylinder_moment_of_inertia(self, self.length, self.diameter/2, 0, 0, center_of_gravity = np.array([[0,0,0]]))  
+        return        

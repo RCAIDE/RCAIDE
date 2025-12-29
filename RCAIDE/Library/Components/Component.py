@@ -60,6 +60,14 @@ class Component(Data):
         self.mass_properties   = Mass_Properties()
         self.volume_properties = Volume_Properties()
         self.origin            = np.array([[0.0,0.0,0.0]])
+        
+    
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]):   
+        return
+
+    def compute_center_of_gravity(self,vehicle):  
+        return
+    
     
         
 # ----------------------------------------------------------------------------------------------------------------------

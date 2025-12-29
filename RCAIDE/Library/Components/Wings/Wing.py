@@ -8,8 +8,9 @@
 # RCAIDE imports
 import RCAIDE
 from RCAIDE.Framework.Core      import Data,Container 
-from RCAIDE.Library.Components  import Mass_Properties, Component   
+from RCAIDE.Library.Components  import Component   
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_wing_moment_of_inertia import  compute_wing_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_wing_center_of_gravity import  compute_wing_center_of_gravity
 
 import numpy as np
 
@@ -275,7 +276,7 @@ class Wing(Component):
 
         return
     
-    def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]], fuel_flag=False): 
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """
         Computes the moment of inertia tensor for the wing.
 
@@ -291,9 +292,33 @@ class Wing(Component):
         ndarray
             3x3 moment of inertia tensor
         """
-        mass= self.mass_properties.mass 
-        I = compute_wing_moment_of_inertia(self, mass, center_of_gravity, fuel_flag) 
-        return I   
+        
+        _, _ = compute_wing_moment_of_inertia(self, center_of_gravity) 
+        return
+    
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for the wing.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+
+        See Also
+        --------
+        RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
+            Implementation of the moment of inertia calculation
+        """
+        compute_wing_center_of_gravity(self, vehicle)
+        return
+    
     
 class Container(Component.Container):
     def get_children(self):

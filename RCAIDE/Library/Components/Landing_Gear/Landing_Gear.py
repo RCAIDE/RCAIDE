@@ -98,7 +98,7 @@ class Landing_Gear(Component):
         self.fairing                         = False
         
 
-    def compute_moment_of_inertia(self): 
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """
         Computes the moment of inertia tensor for the landing gear.
 
@@ -113,9 +113,9 @@ class Landing_Gear(Component):
             3x3 moment of inertia tensor
         """
 
-        length = self.tire_diameter   
-        width  = self.strut_length 
-        height = self.tire_diameter
+        length = self.tire_diameter* 1.1
+        width  = self.strut_length* 1.1
+        height = self.tire_diameter* 1.1
         
-        I = compute_cuboid_moment_of_inertia(self.origin, self.mass_properties.mass,length,width,height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
-        return I                   
+        _, _  = compute_cuboid_moment_of_inertia(self,self.origin, self.mass_properties.mass,length,width,height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
+        return                   

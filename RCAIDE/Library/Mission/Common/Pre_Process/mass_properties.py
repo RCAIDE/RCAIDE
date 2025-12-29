@@ -8,7 +8,7 @@
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE 
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_aircraft_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_vehicle_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
@@ -91,8 +91,7 @@ def mass_properties(mission):
  
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
-            mass_properties_preprocess_routine(segment.analyses,i=i)
-                            
+            mass_properties_preprocess_routine(segment,i=i) 
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
             segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights() 
@@ -101,7 +100,8 @@ def mass_properties(mission):
                   
     return 
 
-def mass_properties_preprocess_routine(analyses, i=0):
+def mass_properties_preprocess_routine(segment, i=0):
+    analyses         = segment.analyses
     weights_analysis = analyses.weights 
     if analyses.vehicle.mass_properties.max_takeoff == None:
         # For all weights analysis a maximum take off weight needs to be defined by the user
@@ -244,13 +244,13 @@ def mass_properties_preprocess_routine(analyses, i=0):
     
     # Compute Center of Gravity  
     if weights_analysis.settings.update_center_of_gravity:
-        CG ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity) 
+        CG ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,weights_analysis.settings.update_center_of_gravity,segment) 
     else:
         CG = analyses.vehicle.mass_properties.center_of_gravity
     # Compute Moment of Inertia
     if weights_analysis.settings.update_moment_of_inertia:
-        _, _ = compute_aircraft_moment_of_inertia(analyses.vehicle, CG, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
-
+        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,weights_analysis.settings.update_moment_of_inertia,segment)          
+    
     
 def apply_correction_factors(analyses): 
     weights_analysis = analyses.weights

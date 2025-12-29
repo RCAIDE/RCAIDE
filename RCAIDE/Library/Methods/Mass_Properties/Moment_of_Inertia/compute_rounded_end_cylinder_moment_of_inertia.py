@@ -12,7 +12,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Rounded-End Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_rounded_end_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
+def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
     """
     Computes the moment of inertia tensor for a hollow rounded-end cylinder.
 
@@ -71,7 +71,13 @@ def compute_rounded_end_cylinder_moment_of_inertia(origin,mass,outer_length,oute
 
     where :math:`\\vec{s}` is the vector from the component origin to the global center of gravity.
     """
-    
+
+    # ----------------------------------------------------------------------------------------------------------------------
+    # unpack 
+    # ----------------------------------------------------------------------------------------------------------------------
+    origin = component.origin
+    mass   = component.mass_properties.mass
+        
     # ----------------------------------------------------------------------------------------------------------------------    
     # Setup
     # ----------------------------------------------------------------------------------------------------------------------           
@@ -88,16 +94,14 @@ def compute_rounded_end_cylinder_moment_of_inertia(origin,mass,outer_length,oute
         outer_volume = (np.pi * outer_radius ** 2 * outer_length ) + ( 4 / 3 * np.pi * outer_radius ** 3)
         inner_volume = (np.pi * inner_radius ** 2 * inner_length ) + ( 4 / 3 * np.pi * inner_radius ** 3) 
         volume = outer_volume - inner_volume
-        
-    rho     = mass / volume
-    #I[0][0] = # WRONG rho * (1 / 2 * np.pi * (outer_radius ** 4 * outer_length) - 1 / 2 * np.pi * (inner_radius ** 4 * inner_length)) # Ixx
-    #I[1][1] = # WRONG rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Iyy
-    #I[2][2] = # WRONG rho * (1 / 12 * (3 *np.pi*(outer_radius ** 4)*outer_length + np.pi * outer_radius ** 2 * outer_length ** 2) - 1 / 12 * (3 * (inner_radius ** 4) *np.pi *inner_length + np.pi * inner_radius ** 2 * inner_length ** 2)) # Izz
-    
+         
     # ----------------------------------------------------------------------------------------------------------------------    
     # transform moment of inertia to the global system
     # ----------------------------------------------------------------------------------------------------------------------
     s        = np.array(center_of_gravity) - np.array(origin) # Vector between component and the CG    
     I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
-    
+
+    # Store moment of inertia tensor on component 
+    component.mass_properties.moments_of_inertia.tensor = I_global    
+        
     return I_global,  mass

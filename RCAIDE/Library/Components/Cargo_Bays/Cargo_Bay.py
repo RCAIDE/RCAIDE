@@ -1,4 +1,4 @@
-# RCAIDE/Library/Compoments/Cargo_Bays/Cargo_Bay.py
+# RCAIDE/Library/components/Cargo_Bays/Cargo_Bay.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 
@@ -46,7 +46,7 @@ class Cargo_Bay(Component):
         self.container  = Component() 
         self.power_draw = 0.0  
 
-    def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]]): 
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """
         Computes the moment of inertia tensor for the cargo bay.
 
@@ -60,5 +60,5 @@ class Cargo_Bay(Component):
         ndarray
             3x3 moment of inertia tensor
         """ 
-        I = compute_cuboid_moment_of_inertia(self.origin, self.mass_properties.mass,self.length,self.width,self.height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = np.array([[0,0,0]]))  
-        return I      
+        _,_ = compute_cuboid_moment_of_inertia(self,self.length,self.width,self.height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = np.array([[0,0,0]]))  
+        return       

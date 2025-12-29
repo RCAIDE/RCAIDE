@@ -12,6 +12,8 @@ from RCAIDE.Framework.Core import Units
 
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume       import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_tank_volume import compute_liquid_hydrogen_tank_volume
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_cylinder_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen Tank
@@ -147,4 +149,45 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                         wing = wings[self.wing_tag]  
                         compute_bwb_aft_tank_volume(self, wing)
                         compute_liquid_hydrogen_tank_volume(self)
+        return
+  
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for a fuel tank.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+ 
+        """
+         
+        _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, self.outer_length,self.outer_diameter/2, self.outer_length - 2*self.wall_thickness, self.inner_diameter/2, center_of_gravity) 
+                
+        return
+    
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for a fuel tank.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2 
+        """
+        
+        length = self.outer_length +  self.outer_diameter
+        _, _ = compute_cylinder_center_of_gravity(self, length )
+            
         return
