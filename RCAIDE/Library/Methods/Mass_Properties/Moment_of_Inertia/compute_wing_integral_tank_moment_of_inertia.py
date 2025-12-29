@@ -73,14 +73,16 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
                 if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                     outer_wing_flag = True
                 if outer_wing_flag:
-                    fuel_tank.segments_percent_chord_start[0]
-                    fuel_tank.segments_percent_chord_end[0]
+                    inner_start = fuel_tank.segments_percent_chord_start[i]
+                    outer_start = fuel_tank.segments_percent_chord_start[i+1]
+                    inner_end   = fuel_tank.segments_percent_chord_end[i]
+                    outer_end   = fuel_tank.segments_percent_chord_end[i+1]
                     tr          = inner_segment.thickness_to_chord                             
                     tt          = outer_segment.thickness_to_chord                             
-                    ct          = wing.chords.root  * outer_segment.root_chord_percent         
-                    cr          = wing.chords.root  * inner_segment.root_chord_percent
-                    # SAI AND AIDAN THIS IS INCORRECT ,WE NEED TO UDPATE WITH THE CORRECT CHORD START AND END LOCATION OF THE TANK
-                    # For some reason, the definition of the fuel tanks is old 
+                    ct          = wing.chords.root * outer_segment.root_chord_percent * (outer_start - outer_end)
+                    cr          = wing.chords.root * inner_segment.root_chord_percent * (inner_start - inner_end)       
+                    # SAI AND AIDAN THIS IS INCORRECT (  -- DONE as of 12/29/2025 ),WE NEED TO UDPATE WITH THE CORRECT CHORD START AND END LOCATION OF THE TANK
+                    # For some reason, the definition of the fuel tanks is old
                     b           = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)
                     A           = inner_segment.sweeps.quarter_chord                             
                     dihedral    = inner_segment.dihedral_outboard                                
@@ -93,10 +95,15 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
                     I_local_non_dim += I_section_local_non_dim
                      
             else:    
+                inner_start = fuel_tank.segments_percent_chord_start[i]
+                outer_start = fuel_tank.segments_percent_chord_start[i+1]
+                inner_end   = fuel_tank.segments_percent_chord_end[i]
+                outer_end   = fuel_tank.segments_percent_chord_end[i+1]
+                
                 tr          = inner_segment.thickness_to_chord   # root thickness as percent of chord
                 tt          = outer_segment.thickness_to_chord   #tip thickness as a percent of chord
-                ct          = wing.chords.root  * outer_segment.root_chord_percent        # tip chord 
-                cr          = wing.chords.root  * inner_segment.root_chord_percent          # root chord
+                ct          = wing.chords.root * outer_segment.root_chord_percent * (outer_start - outer_end)  # tip chord 
+                cr          = wing.chords.root * inner_segment.root_chord_percent * (inner_start - inner_end)  # root chord
                 b           = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)                               # half-span of the wing
                 A           = inner_segment.sweeps.quarter_chord                            # sweep angle (located at quarter chord)
                 dihedral    = inner_segment.dihedral_outboard                               # Wing dihedral
@@ -109,10 +116,15 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
                 I_local_non_dim += I_section_local_non_dim
         
     else: 
+        inner_start = fuel_tank.segments_percent_chord_start[i]
+        outer_start = fuel_tank.segments_percent_chord_start[i+1]
+        inner_end   = fuel_tank.segments_percent_chord_end[i]
+        outer_end   = fuel_tank.segments_percent_chord_end[i+1]
+        
         tr          = wing.thickness_to_chord # root thickness as percent of chord
         tt          = wing.thickness_to_chord #tip thickness as a percent of chord
-        ct          = wing.chords.tip # tip chord 
-        cr          = wing.chords.root # root chord
+        ct          = wing.chords.tip  * (outer_start - outer_end)# tip chord 
+        cr          = wing.chords.root * (inner_start - inner_end)# root chord
         b           = span/(1+xz_symm)           # half-span of the wing
         A           = wing.sweeps.quarter_chord # sweep angle (located at quarter chord)
         dihedral    = wing.dihedral # Wing dihedral

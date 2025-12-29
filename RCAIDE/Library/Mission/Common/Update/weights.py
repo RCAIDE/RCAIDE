@@ -94,10 +94,12 @@ def weights(segment):
                     M_fuel           = segment.conditions.weights.components.mass[fuel_tag][0,0]  +  m_fuel_loss
                     fuel_origin      = fuel_tank.fuel.origin
                     MOI_fuel_non_dim = fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor
-                                        
+                    I_fuel = np.zeros([len(segment.conditions.weights.vehicle.center_of_gravity), 3, 3])             
                     # compute moment of intertia of fuel in fuel tank
-                    s                = segment.conditions.weights.vehicle.center_of_gravity - np.array(fuel_origin) # Vector for the parallel axis theorem
-                    I_fuel           = M_fuel[:,:,None] * np.array(MOI_fuel_non_dim)[None,:,:]  # SAI AND AIDAN NEED TO FIX THIS LAST PART + M_fuel[:,:,None] * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))                    
+                    for i in range(len(segment.conditions.weights.vehicle.center_of_gravity)): # SAI AND AIDAN NEED TO FIX THIS LAST PART  -- DONE as of 12/29/2025    
+                        s                = segment.conditions.weights.vehicle.center_of_gravity[i] - np.array(fuel_origin) # Vector for the parallel axis theorem
+                        I_fuel[i]           = M_fuel[i] * np.array(MOI_fuel_non_dim)[None,:,:]  
+                        I_fuel[i]           = I_fuel[i] + M_fuel[i] * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))             
                     
                     
                     # update data strutures where masses and MOIs are stored 
