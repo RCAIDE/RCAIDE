@@ -60,6 +60,7 @@ def compute_wing_moment_of_inertia(wing, center_of_gravity = [[0, 0, 0]]):
             inner_segment = wing.segments[seg_keys[i]]
             outer_segment = wing.segments[seg_keys[i+1]]
             if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+                outer_wing_flag = False
                 if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                     outer_wing_flag = True
                 if outer_wing_flag:
