@@ -45,7 +45,7 @@ def sum_moment(component, total_mass, total_moment):
                     total_moment , total_mass  = sum_moment(item, total_mass, total_moment)
                 if isinstance(item,Component): 
                     total_mass, total_moment = update_mass_and_moment(total_mass,total_moment,item) 
-            
+                    
     return total_moment , total_mass
 
 def update_mass_and_moment(total_mass,total_moment,C): 
@@ -59,7 +59,6 @@ def update_mass_and_moment(total_mass,total_moment,C):
         M = C.mass_properties.mass 
         if M != 0:
             total_mass   += M                 
-            total_moment += M*global_cg_loc 
-    
+            total_moment += M*global_cg_loc
     return total_mass,total_moment
 

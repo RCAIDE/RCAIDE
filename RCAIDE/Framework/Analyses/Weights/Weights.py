@@ -57,22 +57,14 @@ class Weights(Analysis):
         self.print_weight_analysis_report                           = True
         self.settings                                               = Data() 
         self.settings.update_center_of_gravity                      = False
-        self.settings.update_moment_of_inertia                      = False 
-        
-        self.settings.weight_reduction_factors                      = Data()
-        self.settings.weight_reduction_factors.main_wing            = 0.   
-        self.settings.weight_reduction_factors.empennage            = 0.   
-        self.settings.weight_reduction_factors.fuselage             = 0.   
-        self.settings.weight_reduction_factors.structural           = 0.   
-        self.settings.weight_reduction_factors.systems              = 0.    
-        self.settings.weight_reduction_factors.nacelle              = 0.      
-
+        self.settings.update_moment_of_inertia                      = False
+        self.settings.overwrite_operating_empty_weight              = True
+    
         self.settings.weight_correction_factors                     = Data()
         self.settings.weight_correction_factors.empty               = Data()
         self.settings.weight_correction_factors.empty.propulsion    = Data()
         self.settings.weight_correction_factors.empty.structural    = Data()
         self.settings.weight_correction_factors.empty.systems       = Data()
-
 
         self.settings.weight_correction_additions                   = Data()
         self.settings.weight_correction_additions.empty             = Data()
@@ -81,9 +73,6 @@ class Weights(Analysis):
         self.settings.weight_correction_additions.empty.systems     = Data()
         self.settings.weight_correction_additions.operational_items = Data()
         
-
-
-
     def evaluate(self, vehicle):
         """Evaluate the weight analysis.
 
@@ -106,10 +95,5 @@ class Weights(Analysis):
         
         # Call the function
         results = compute_operating_empty_weight(vehicle, self.settings) 
-        vehicle.mass_properties.weight_breakdown = results
-        
-        # updating empty weight 
-        vehicle.mass_properties.operating_empty = results.empty.total
-            
-        # done!
+        vehicle.mass_properties.weight_breakdown = results 
         return results        

@@ -73,8 +73,9 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     # Remove Takeoff mass
     #------------------------------------------------------------------------   
     for segment in mission.segments: 
-        segment.analyses.vehicle.mass_properties.takeoff = None 
-        segment.analyses.geometry.settings.overwrite_fuel_volume = True 
+        segment.analyses.vehicle.mass_properties.takeoff          = None  
+        segment.analyses.geometry.settings.compute_fuel_volume    = True 
+        segment.analyses.stability.settings.compute_neutral_point = True
     
     #------------------------------------------------------------------------  
     # Check Input Args
@@ -109,6 +110,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     W_PAX         =  weight_breakdown.payload.passengers  
     W_PAX_per_pax =  W_PAX / vehicle_0.number_of_passengers 
     MTOW          =  vehicle_0.mass_properties.max_takeoff
+    MZFW          = vehicle_0.mass_properties.max_zero_fuel 
     OEW           =  weight_breakdown.empty.total
     MLW           =  estimate_maximum_landing_weight(MTOW)   
 
@@ -119,10 +121,16 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     # determine number is weight simulations
     cabin_tags_     = []
     cabin_x_origin_ = []
-    for fuslage in vehicle_0.fuselages:
+    for fuslage in vehicle_0.fuselages: 
         for cabin in  fuslage.cabins: 
             cabin_tags_.append(cabin.tag)
             cabin_x_origin_.append(cabin.origin[0][0])
+            
+    for wing in vehicle_0.wings:   
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
+            for cabin in  wing.cabins: 
+                cabin_tags_.append(cabin.tag)
+                cabin_x_origin_.append(cabin.origin[0][0])       
         
     cargo_bay_tags_     = []
     cargo_bay_x_origin_ = []
@@ -130,7 +138,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     for cargo_bay in vehicle_0.cargo_bays: 
         cargo_bay_tags_.append(cargo_bay.tag)
         cargo_bay_x_origin_.append(cargo_bay.origin[0][0])
-        W_CARGO += cargo_bay.mass_properties.mass
+        W_CARGO += cargo_bay.cargo.mass_properties.mass +   cargo_bay.baggage.mass_properties.mass
 
     fuel_tank_tags_ = []
     fuel_tank_x_origin_ = []
@@ -141,7 +149,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                 fuel_tank_x_origin_.append(fuel_tank.origin[0][0])
                 
     # total number of sumulations = 2 (loading and unloading) * discretization * total number of objects 
-    total_sims =   2 * (  discretization * len(cabin_tags_) * discretization * len(fuel_tank_tags_) * discretization * len(cargo_bay_tags_) )   
+    total_sims =   2 * (  discretization * len(cabin_tags_)) * (discretization * len(fuel_tank_tags_)) * (discretization * len(cargo_bay_tags_) )   
 
     
     # define discretization 
@@ -184,12 +192,13 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         # Reset all weights to 0
         #------------------------------------------------------------------------    
         weights_analysis_mission = deepcopy(mission) 
-        vehicle                         = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle 
-        vehicle.mass_properties.takeoff = None  
-        vehicle.mass_properties.payload = 0
-        vehicle.mass_properties.cargo   = 0   
-        vehicle.number_of_passengers    = 1
-        vehicle.mass_properties.fuel    = 0
+        vehicle                         = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle
+        vehicle.mass_properties.max_zero_fuel = MZFW  
+        vehicle.mass_properties.takeoff       = None  
+        vehicle.mass_properties.payload       = 0
+        vehicle.mass_properties.cargo         = 0   
+        vehicle.number_of_passengers          = 1
+        vehicle.mass_properties.fuel          = 0
          
         for network in vehicle.networks:
             for fuel_line in  network.fuel_lines:
@@ -197,8 +206,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     fuel_tank.fuel.mass_properties.mass = 0
                         
         for cargo_bay in vehicle.cargo_bays:  
-            cargo_bay.mass_properties.mass   =  0
-                 
+            cargo_bay.cargo.mass_properties.mass   =  0 
         
         reverse_flag =  False
         if filling_order[f_o] == 'descending':
@@ -229,11 +237,43 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     num_pax_cabin = 0
                     cabin.filled_seats_arrangement  = filling_order[f_o] 
                     for cabin_class in cabin.classes:
-                        pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                        cabin_class.number_of_passengers  = pax
-                        num_pax += cabin_class.number_of_passengers
-                        num_pax_cabin += cabin_class.number_of_passengers
+                        pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)  
+                        num_pax       += pax
+                        num_pax_cabin += pax
                     cabin.number_of_passengers = num_pax_cabin
+                    
+                    # run weights analysis and store results
+                    vehicle.number_of_passengers     =  num_pax  
+                
+                    # loop through fuel tanks
+                    remaining_tank_fuel = 0
+                    for network in vehicle.networks:
+                        for fuel_line in  network.fuel_lines:
+                            for tank_tag in fuel_tank_tags:
+                                fuel_tank = fuel_line.fuel_tanks[tank_tag] 
+                                for f_i in range(len(percent_fuel)): 
+                                    fuel_tank.fuel.mass_properties.mass = percent_fuel[f_i] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                
+                                    # run weights analysis and store results
+                                    vehicle.mass_properties.fuel = fuel_tank.fuel.mass_properties.mass + remaining_tank_fuel 
+                
+                                    #------------------------------------------------------------------------  
+                                    # Compute Loading Points for cargo   
+                                    #------------------------------------------------------------------------     
+                                    previous_cargo_bays = 0
+                                    for cargo_bay in vehicle.cargo_bays: 
+                                        for c_i in range(len(percent_cargo)): 
+                                            cargo_bay.cargo.mass_properties.mass     = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].cargo.mass_properties.mass 
+                                            cargo_bay.baggage.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].baggage.mass_properties.mass   
+                                            vehicle.mass_properties.cargo    =  cargo_bay.cargo.mass_properties.mass + cargo_bay.baggage.mass_properties.mass   + previous_cargo_bays 
+                                            vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo 
+                
+                                            # run weights analysis and store results
+                                            counter =  compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims, neutral_point_0,percent_pax[p_i], percent_fuel[f_i],  percent_cargo[c_i])
+                
+                                        previous_cargo_bays += cargo_bay.mass_properties.mass
+                
+                                remaining_tank_fuel = vehicle.mass_properties.fuel  
                             
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
@@ -241,45 +281,47 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                         num_pax_cabin = 0 
                         cabin.filled_seats_arrangement  =  filling_order[f_o]                 
                         for cabin_class in cabin.classes: 
-                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                            cabin_class.number_of_passengers  = pax                             
-                            num_pax += cabin_class.number_of_passengers
-                            num_pax_cabin += cabin_class.number_of_passengers
+                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)               
+                            num_pax       += pax
+                            num_pax_cabin += pax
                         cabin.number_of_passengers = num_pax_cabin 
                                            
-            # run weights analysis and store results
-            vehicle.number_of_passengers     =  num_pax  
-            
-            # loop through fuel tanks
-            remaining_tank_fuel = 0
-            for network in vehicle.networks:
-                for fuel_line in  network.fuel_lines:
-                    for tank_tag in fuel_tank_tags:
-                        fuel_tank = fuel_line.fuel_tanks[tank_tag] 
-                        for f_i in range(len(percent_fuel)): 
-                            fuel_tank.fuel.mass_properties.mass = percent_fuel[f_i] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
-                            
-                            # run weights analysis and store results
-                            vehicle.mass_properties.fuel = fuel_tank.fuel.mass_properties.mass + remaining_tank_fuel 
-                            
-                            #------------------------------------------------------------------------  
-                            # Compute Loading Points for cargo   
-                            #------------------------------------------------------------------------     
-                            previous_cargo_bays = 0
-                            for cargo_bay in vehicle.cargo_bays: 
-                                for c_i in range(len(percent_cargo)): 
-                                    cargo_bay.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  
-                                    vehicle.mass_properties.cargo    = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  + previous_cargo_bays 
-                                    vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo +   previous_cargo_bays
-                                    
-                                    # run weights analysis and store results
-                                    counter =  compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter,total_sims, neutral_point_0,percent_pax[p_i], percent_fuel[f_i],  percent_cargo[c_i])
-                                    
-                                    
-                                previous_cargo_bays += cargo_bay.mass_properties.mass
-                                
-                        remaining_tank_fuel = vehicle.mass_properties.fuel 
-     
+                        # run weights analysis and store results
+                        vehicle.number_of_passengers     =  num_pax  
+                        
+                        # loop through fuel tanks
+                        remaining_tank_fuel = 0
+                        for network in vehicle.networks:
+                            for fuel_line in  network.fuel_lines:
+                                for tank_tag in fuel_tank_tags:
+                                    fuel_tank = fuel_line.fuel_tanks[tank_tag] 
+                                    for f_i in range(len(percent_fuel)): 
+                                        fuel_tank.fuel.mass_properties.mass = percent_fuel[f_i] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                                        
+                                        # run weights analysis and store results
+                                        vehicle.mass_properties.fuel = fuel_tank.fuel.mass_properties.mass + remaining_tank_fuel 
+                                        
+                                        #------------------------------------------------------------------------  
+                                        # Compute Loading Points for cargo   
+                                        #------------------------------------------------------------------------     
+                                        previous_cargo_bays = 0
+                                        if len(vehicle.cargo_bays) == 0:
+                                            # run weights analysis and store results
+                                            counter =  compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims, neutral_point_0,percent_pax[p_i], percent_fuel[f_i],  percent_cargo[c_i])                                            
+                                        else:    
+                                            for cargo_bay in vehicle.cargo_bays: 
+                                                for c_i in range(len(percent_cargo)): 
+                                                    cargo_bay.cargo.mass_properties.mass     = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].cargo.mass_properties.mass 
+                                                    cargo_bay.baggage.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].baggage.mass_properties.mass   
+                                                    vehicle.mass_properties.cargo    =  cargo_bay.cargo.mass_properties.mass + cargo_bay.baggage.mass_properties.mass   + previous_cargo_bays 
+                                                    vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo 
+                                                    
+                                                    # run weights analysis and store results
+                                                    counter =  compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims, neutral_point_0,percent_pax[p_i], percent_fuel[f_i],  percent_cargo[c_i])
+                                                     
+                                                previous_cargo_bays += cargo_bay.mass_properties.mass
+                                            
+                                    remaining_tank_fuel = vehicle.mass_properties.fuel  
           
     # -------------------------------------------------------------------------
     # Trim Diagram Data
@@ -287,7 +329,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
 
     total_sims = len(percent_pax) * len(percent_cg_shift)
     counter    = 0        
-    for k in range(len(percent_pax)):
+    for k in range(len(percent_pax)):    
+        num_pax = 0   
         for l in range(len(percent_cg_shift)):
 
             aero_analysis_mission = deepcopy(mission)
@@ -303,41 +346,65 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
             # Update Passengers           
             for fuselage in  vehicle.fuselages: 
                 for cabin in fuselage.cabins:
+                    num_pax_cabin = 0
                     cabin.filled_seats_arrangement  = 'ascending'
                     for cabin_class in cabin.classes: 
-                        pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                        cabin_class.number_of_passengers  = pax 
+                        pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)  
+                        num_pax       += pax
+                        num_pax_cabin += pax
+                    cabin.number_of_passengers = num_pax_cabin                        
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                    for cabin in wing.cabins:    
+                    for cabin in wing.cabins: 
+                        num_pax_cabin = 0   
                         cabin.filled_seats_arrangement  = 'ascending'
                         for cabin_class in cabin.classes:  
-                            pax =  1 if k == 0 else int(percent_pax[k] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_passengers) 
-                            cabin_class.number_of_passengers  = pax 
-        
-            # Update Fuel            
+                            pax =  1 if k == 0 else int(percent_pax[k] *   vehicle_0.wings[wing.tag].cabins[cabin.tag].classes[cabin_class.tag].number_of_seats)                
+                            num_pax       += pax
+                            num_pax_cabin += pax
+                        cabin.number_of_passengers = num_pax_cabin 
+            
+            # run weights analysis and store results
+            vehicle.number_of_passengers     =  num_pax
+            
+            # Update Fuel
+            total_fuel = 0
             for network in  vehicle.networks:
                 for fuel_line in  network.fuel_lines: 
                     for fuel_tank in fuel_line.fuel_tanks:
                         fuel_tank.fuel.mass_properties.mass = percent_fuel[k] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
-         
-           
+                        total_fuel += fuel_tank.fuel.mass_properties.mass
+            vehicle.mass_properties.fuel = total_fuel
+            
+            # Update cargo bay
+            total_cargo = 0
+            for cargo_bay in vehicle.cargo_bays: 
+                for c_i in range(len(percent_cargo)): 
+                    cargo_bay.cargo.mass_properties.mass     = percent_cargo[k] * vehicle_0.cargo_bays[cargo_bay.tag].cargo.mass_properties.mass 
+                    cargo_bay.baggage.mass_properties.mass   = percent_cargo[k] * vehicle_0.cargo_bays[cargo_bay.tag].baggage.mass_properties.mass
+                    total_cargo  +=  cargo_bay.cargo.mass_properties.mass + cargo_bay.baggage.mass_properties.mass   + previous_cargo_bays
+                    
+            vehicle.mass_properties.cargo            = total_cargo
+            vehicle.mass_properties.payload          = np.minimum(vehicle.mass_properties.max_payload, (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo) - 1E-8
+                    
+            # Run aerodynamic analysis    
             counter =  compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims,neutral_point_0,k,l)
    
     return LT_results
 
 
-def compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter,total_sims,neutral_point,percent_pax, percent_fuel, percent_cargo):
+def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,LT_results,counter,total_sims,neutral_point,percent_pax, percent_fuel, percent_cargo):
     
     # update analysis settings 
     for segment in weights_analysis_mission.segments:
-        segment.analyses.geometry.settings.overwrite_fuel_volume      = False  
+        segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
         segment.analyses.weights.settings.update_moment_of_inertia    = True
         segment.analyses.weights.settings.update_center_of_gravity    = True 
-        segment.analyses.vehicle.neutral_point                        = neutral_point
-        segment.analyses.vehicle.neutral_point                        = neutral_point
+        segment.analyses.weights.print_weight_analysis_report         = False
+        segment.analyses.vehicle.neutral_point                        = neutral_point 
         segment.analyses.stability.settings.update_center_of_gravity  = True        
+        segment.analyses.stability.settings.compute_neutral_point     = False
 
          
     # run geometry and mass properties analyes
@@ -345,9 +412,9 @@ def compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter
     mass_properties(weights_analysis_mission) 
     
     # store results 
-    LT_results.loading_CG_location[counter]         = weights_analysis_mission.segments[0].analyses.vehicle.mass_properties.center_of_gravity[0][0] 
-    LT_results.loading_mass[counter]                = weights_analysis_mission.segments[0].analyses.vehicle.mass_properties.takeoff 
-    LT_results.loading_LEMAC_location[counter]      = 100 * (LT_results.loading_CG_location[counter]  - weights_analysis_mission.segments[0].analyses.vehicle.LEMAC) / weights_analysis_mission.segments[0].analyses.vehicle.reference_chord
+    LT_results.loading_CG_location[counter]         = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.center_of_gravity[0][0] 
+    LT_results.loading_mass[counter]                = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.takeoff 
+    LT_results.loading_LEMAC_location[counter]      = 100 * (LT_results.loading_CG_location[counter]  - weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC) / weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
      
     print('***************************************')
     print('Loading Diagram Data Point: ' + str(counter+1) + ' of ' +  str(total_sims))
@@ -355,8 +422,8 @@ def compute_aircraft_load_data_point(weights_analysis_mission,LT_results,counter
     print('Percent Fuel              : ', percent_fuel*100 )
     print('Percent Cargo             : ', percent_cargo*100 )
     print('Percent Pax               : ', percent_pax*100 )
-    print('Ref. Chord                : ', weights_analysis_mission.segments[0].analyses.vehicle.reference_chord)
-    print('LEMAC                     : ',  weights_analysis_mission.segments[0].analyses.vehicle.LEMAC )
+    print('Ref. Chord                : ', weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord)
+    print('LEMAC                     : ',  weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC )
     print('C.G. Location             : ', LT_results.loading_CG_location[counter] )    
     print('LEMAC                     : ', LT_results.loading_LEMAC_location[counter] )
     print('***************************************')     
@@ -370,13 +437,13 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
 
     # update analysis settings 
     for segment in aero_analysis_mission.segments:
-        segment.analyses.geometry.settings.overwrite_fuel_volume      = False  
+        segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
         segment.analyses.weights.settings.update_moment_of_inertia    = False
         segment.analyses.weights.settings.update_center_of_gravity    = False 
         segment.analyses.vehicle.neutral_point                        = neutral_point
-        segment.analyses.vehicle.neutral_point                        = neutral_point
-        segment.analyses.stability.settings.update_center_of_gravity  = False             
+        segment.analyses.stability.settings.update_center_of_gravity  = False    
+        segment.analyses.stability.settings.compute_neutral_point     = False           
 
     results  = aero_analysis_mission.evaluate()
 
@@ -391,8 +458,8 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
     LT_results.aerodynamic_moment[k,l]              = segment.state.conditions.frames.inertial.total_moment_vector[0][1]
     LT_results.aerodynamic_neutral_point[k,l]       = segment.state.conditions.static_stability.neutral_point[0][0]  
     LT_results.aerodynamic_static_margin[k,l]       = segment.state.conditions.static_stability.static_margin[0][0]    
-    LT_results.aerodynamic_mass[k,l]                = aero_analysis_mission.segments[0].analyses.vehicle.mass_properties.takeoff 
-    LT_results.aerodynamic_LEMAC_location[k,l]      = 100 * (vehicle.mass_properties.center_of_gravity[0][0] - aero_analysis_mission.segments[0].analyses.vehicle.LEMAC) / aero_analysis_mission.segments[0].analyses.vehicle.reference_chord
+    LT_results.aerodynamic_mass[k,l]                = aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.takeoff 
+    LT_results.aerodynamic_LEMAC_location[k,l]      = 100 * (vehicle.mass_properties.center_of_gravity[0][0] - aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC) / aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
 
     print('***************************************')
     print('Trim Diagram Data Point  : ' + str(counter+1) + ' of ' +  str(total_sims))

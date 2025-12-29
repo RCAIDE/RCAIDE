@@ -48,7 +48,7 @@ class Electric(Weights):
         Properties Used:
         N/A
         """
-        self.method                                        = 'Physics_Based'
+        self.method                                        = 'Semi_Empirical'
         self.aircraft_type                                 = 'General_Aviation'
         self.propulsion_architecture                       = 'Electric' 
         self.settings.advanced_composites                  = False

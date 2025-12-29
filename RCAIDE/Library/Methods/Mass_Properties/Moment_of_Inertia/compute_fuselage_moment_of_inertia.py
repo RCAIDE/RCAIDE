@@ -9,7 +9,7 @@
 import numpy as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Compute Fuselage Moment of Intertia
+#  Compute Fuselage Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]): 
     ''' computes the moment of ienrtia tensor for a generic fuselage about a given center of gravity. 
@@ -66,7 +66,7 @@ def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]):
 
     # global system
     s        = np.array(center_of_gravity) - np.array(origin_hemisphere)
-    I_global = np.array(I) + mass_hemisphere * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s*np.transpose(s)) # global inertia tensor for hemisphere
+    I_global = np.array(I) + mass_hemisphere * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s)) # global inertia tensor for hemisphere
     
     # Add hemisphere to the fuselage inertia tensor
     I_total  = np.array(I_total) + np.array(I_global)
@@ -86,7 +86,7 @@ def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]):
       
     # transform moment of inertia to global system   
     s        = np.array(center_of_gravity) - np.array(origin_cylinder)
-    I_global = np.array(I) + mass_cylinder * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s*np.transpose(s))
+    I_global = np.array(I) + mass_cylinder * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
     
     # Add cylinder to fuselage inertia matrix
     I_total = np.array(I_total) + np.array(I_global)
@@ -108,7 +108,7 @@ def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]):
 
     # transform moment of inertia to global system   
     s        = np.array(center_of_gravity) - np.array(origin_cone) # vector from the cone base to the center of gravity of the aircraft. 
-    I_global = np.array(I) + mass_cone * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - s*np.transpose(s))
+    I_global = np.array(I) + mass_cone * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
     
     # Add cone to the fuselage inertia tensor
     I_total = np.array(I_total) + np.array(I_global)

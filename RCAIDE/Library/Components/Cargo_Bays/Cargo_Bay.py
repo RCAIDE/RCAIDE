@@ -43,6 +43,7 @@ class Cargo_Bay(Component):
         self.density    = 0.0
         self.cargo      = Component() 
         self.baggage    = Component() 
+        self.container  = Component() 
         self.power_draw = 0.0  
 
     def compute_moment_of_inertia(self, center_of_gravity=[[0, 0, 0]]): 

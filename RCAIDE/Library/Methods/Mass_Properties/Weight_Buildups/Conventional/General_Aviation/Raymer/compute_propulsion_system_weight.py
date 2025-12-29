@@ -20,22 +20,22 @@ def compute_propulsion_system_weight(network):
     for propulsor in network.propulsors: # Check this 
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
                 number_of_jet_engines += 1
-                W_engine_jet            = compute_jet_engine_weight(propulsor)
-                W_propulsion            = integrated_propulsion_jet(W_engine_jet) 
+                W_engine_jet                   = compute_jet_engine_weight(propulsor)
+                W_propulsion                   = integrated_propulsion_jet(W_engine_jet) 
                 propulsor.mass_properties.mass = W_propulsion
-                W_energy_network_total  += W_propulsion                
+                W_energy_network_total         += W_propulsion                
             elif isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Internal_Combustion_Engine):    
                 number_of_piston_engines += 1
-                W_engine_piston          = compute_piston_engine_weight(propulsor)
-                W_propulsion             = integrated_propulsion_piston(W_engine_piston) 
+                W_engine_piston                = compute_piston_engine_weight(propulsor)
+                W_propulsion                   = integrated_propulsion_piston(W_engine_piston) 
                 propulsor.mass_properties.mass = W_propulsion
-                W_energy_network_total  += W_propulsion
+                W_energy_network_total         += W_propulsion
             elif type(propulsor) ==  RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop:      
                 number_of_piston_engines += 1
-                W_turboprop          = compute_turboprop_engine_weight(propulsor)
-                W_propulsion             = integrated_propulsion_piston(W_turboprop) 
+                W_turboprop                    = compute_turboprop_engine_weight(propulsor)
+                W_propulsion                   = integrated_propulsion_piston(W_turboprop) 
                 propulsor.mass_properties.mass = W_propulsion
-                W_energy_network_total  += W_propulsion     
+                W_energy_network_total         += W_propulsion     
     
     output = Data()
     output.W_prop = W_propulsion

@@ -47,13 +47,12 @@ def evaluate(state,settings,vehicle):
     # Vehicle Properties 
     # --------------------------------------------------------------------------------------------      
     c_ref         = vehicle.reference_chord   
-    NP            = vehicle.neutral_point
     
     # --------------------------------------------------------------------------------------------      
     # Store Results 
     # --------------------------------------------------------------------------------------------      
     conditions.static_stability.center_of_gravity      = CG       
-    conditions.static_stability.neutral_point[:,0]     = NP 
-    conditions.static_stability.static_margin          = (NP - CG) / c_ref      
+    conditions.static_stability.neutral_point[:,0]     = vehicle.neutral_point 
+    conditions.static_stability.static_margin          = (vehicle.neutral_point  - CG) / c_ref      
         
     return  

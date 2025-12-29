@@ -7,10 +7,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
-import RCAIDE
+import RCAIDE 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_aircraft_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity
-from copy import deepcopy 
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -92,7 +91,7 @@ def mass_properties(mission):
  
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights != None: 
-            mass_properties_preprocess_routine(i, segment.analyses)
+            mass_properties_preprocess_routine(segment.analyses,i=i)
                             
         else:
             # If there is no analysis defined, it copies over the vehicle from the geometry analysis
@@ -102,7 +101,7 @@ def mass_properties(mission):
                   
     return 
 
-def mass_properties_preprocess_routine(i, analyses):
+def mass_properties_preprocess_routine(analyses, i=0):
     weights_analysis = analyses.weights 
     if analyses.vehicle.mass_properties.max_takeoff == None:
         # For all weights analysis a maximum take off weight needs to be defined by the user
@@ -129,16 +128,19 @@ def mass_properties_preprocess_routine(i, analyses):
             analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff
         else:
             if analyses.vehicle.mass_properties.payload >analyses.vehicle.mass_properties.max_payload:
-                        raise AssertionError('Prescribed payload is greater than maxmimum payload')
+                raise AssertionError('Prescribed payload is greater than maxmimum payload')
 
-            if analyses.vehicle.mass_properties.max_fuel == None or analyses.vehicle.mass_properties.max_zero_fuel == None:
+            if analyses.vehicle.mass_properties.max_zero_fuel == None:
                 # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW
                 if i == 0: 
                     print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
                 # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
-                analyses.vehicle.mass_properties.max_fuel =  0.477*analyses.vehicle.mass_properties.max_takeoff -13455
+                compute_max_fuel = False
+                if analyses.vehicle.mass_properties.max_fuel == None:
+                    analyses.vehicle.mass_properties.max_fuel =  0.477*analyses.vehicle.mass_properties.max_takeoff -13455
+                    compute_max_fuel = True
                 analyses.vehicle.mass_properties.max_zero_fuel = 0.6269*analyses.vehicle.mass_properties.max_takeoff + 20505
-
+                
                 max_iterations = 100
                 iteration = 0
 
@@ -147,41 +149,45 @@ def mass_properties_preprocess_routine(i, analyses):
                     # Run weights analysis ! 
                     _ = weights_analysis.evaluate(analyses.vehicle)
                     
-                    # Compute OEW 
-                    analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total + \
-                                                                            analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                    # Compute OEW
+                    if weights_analysis.settings.overwrite_operating_empty_weight: 
+                        analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
                                     
                     # Apply Correction Factors if any
                     apply_correction_factors(analyses)
+                    apply_component_weights(analyses)
 
-                    analyses.vehicle.mass_properties.takeoff       = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
-                    mew_max_zero_fuel                                      = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
-                    new_max_fuel                                           = analyses.vehicle.mass_properties.max_takeoff - analyses.vehicle.mass_properties.operating_empty - analyses.vehicle.mass_properties.min_payload
-                    residual_max_fuel                                      =  abs(new_max_fuel - analyses.vehicle.mass_properties.max_fuel)
-                    residual_max_zero_fuel                                 = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
-                    analyses.vehicle.mass_properties.max_zero_fuel = mew_max_zero_fuel
-                    analyses.vehicle.mass_properties.max_fuel      = new_max_fuel
+                    analyses.vehicle.mass_properties.takeoff         = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
+                    mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
+                    residual_max_zero_fuel                           = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
+                    analyses.vehicle.mass_properties.max_zero_fuel   = mew_max_zero_fuel
+                   
+                    residual_max_fuel = 0
+                    if compute_max_fuel:
+                        new_max_fuel  = analyses.vehicle.mass_properties.max_takeoff - analyses.vehicle.mass_properties.operating_empty - analyses.vehicle.mass_properties.min_payload
+                        residual_max_fuel =  abs(new_max_fuel - analyses.vehicle.mass_properties.max_fuel) 
+                        analyses.vehicle.mass_properties.max_fuel = new_max_fuel                
                     
                     iteration += 1
                     if residual_max_fuel < 10 and residual_max_zero_fuel <10:
                         break
                     else:
                         analyses.vehicle.mass_properties.max_zero_fuel += residual_max_zero_fuel * 0.1
-                        analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1
+                        if compute_max_fuel: 
+                            analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
-            else:
-                if analyses.vehicle.mass_properties.fuel >analyses.vehicle.mass_properties.max_fuel:
-                    raise AssertionError('Prescribed fuel is greater than maxmimum fuel')   
-                
+            else: 
                 # Run weights analysis ! 
                 _ = weights_analysis.evaluate(analyses.vehicle)
                 
                 # Compute OEW 
-                analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total + \
-                                                                           analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                if weights_analysis.settings.overwrite_operating_empty_weight: 
+                    analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total \
+                                                                         +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
                                 
                 # Apply correction factors  if any
                 apply_correction_factors(analyses)
+                apply_component_weights(analyses)
 
                 # Compute takeoff weight and max zero fuel weight
                 analyses.vehicle.mass_properties.takeoff       = analyses.vehicle.mass_properties.operating_empty \
@@ -239,8 +245,9 @@ def mass_properties_preprocess_routine(i, analyses):
     # Compute Center of Gravity  
     if weights_analysis.settings.update_center_of_gravity:
         CG ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle, update_center_of_gravity= weights_analysis.settings.update_center_of_gravity) 
-    
-    # Compute Moment of Intertia
+    else:
+        CG = analyses.vehicle.mass_properties.center_of_gravity
+    # Compute Moment of Inertia
     if weights_analysis.settings.update_moment_of_inertia:
         _, _ = compute_aircraft_moment_of_inertia(analyses.vehicle, CG, update_moment_of_inertia= weights_analysis.settings.update_moment_of_inertia)          
 
@@ -281,4 +288,38 @@ def apply_correction_factors(analyses):
                 analyses.vehicle.mass_properties.weight_breakdown[tag].total  += subitem
                 analyses.vehicle.mass_properties.operating_empty += subitem
     return
-                                    
+
+def apply_component_weights(analyses):
+    weight_correction_factors = analyses.weights.settings.weight_correction_factors
+    for key in analyses.vehicle.keys():
+        if key =='wings':
+            for wing in analyses.vehicle.wings:
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Main_Wing):
+                    if hasattr(weight_correction_factors.empty.structural, 'wing'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.wing
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Horizontal_Tail):
+                    if hasattr(weight_correction_factors.empty.structural, 'empennage'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.empennage
+                if isinstance(wing, RCAIDE.Library.Components.Wings.Vertical_Tail):
+                    if hasattr(weight_correction_factors.empty.structural, 'empennage'):
+                        wing.mass_properties.mass *= weight_correction_factors.empty.structural.empennage
+        elif key == 'fuselages':
+            for fuselage in analyses.vehicle.fuselages:
+                if isinstance(fuselage, RCAIDE.Library.Components.Fuselages.Fuselage):
+                    if hasattr(weight_correction_factors.empty.structural, 'fuselage'):
+                        fuselage.mass_properties.mass *= weight_correction_factors.empty.structural.fuselage
+        elif key == 'networks':
+            for network in analyses.vehicle.networks:
+                for propulsor in network.propulsors:
+                    propulsor.mass_properties.mass *= 1 
+                    if hasattr(weight_correction_factors.empty.structural, 'nacelle'):
+                        propulsor.nacelle.mass_properties.mass *= weight_correction_factors.empty.structural.nacelle
+                    # Add to this nacelles, thrust reversers, etc
+        elif key == 'landing_gears':
+            for landing_gear in analyses.vehicle.landing_gears:
+                if hasattr(weight_correction_factors.empty.structural, 'landing_gear'):
+                    landing_gear.mass_properties.mass *= weight_correction_factors.empty.structural.landing_gear
+        elif key == 'booms':
+            for boom in analyses.vehicle.booms:
+                if hasattr(weight_correction_factors.empty.structural, 'boom'):
+                    boom.mass_properties.mass *= weight_correction_factors.empty.structural.boom                            

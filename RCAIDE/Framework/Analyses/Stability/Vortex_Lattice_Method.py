@@ -102,7 +102,10 @@ class Vortex_Lattice_Method(Stability):
     def initialize(self, vehicle): 
         
         # compute neutral point 
-        compute_neutral_point(self, vehicle)            
+        if self.settings.compute_neutral_point:
+            compute_neutral_point(self, vehicle)  
+        elif vehicle.neutral_point == None:
+            raise AttributeError('Neutral point not defined.')
         return 
     
          

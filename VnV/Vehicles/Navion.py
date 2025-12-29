@@ -39,7 +39,7 @@ def vehicle_setup():
     vehicle.mass_properties.center_of_gravity         = [[2.239696797,0,-0.131189711 ]]
      
     vehicle.reference_area                            = 17.112 
-    vehicle.number_of_passengers                                = 2 
+    vehicle.number_of_passengers                      = 2 
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "commuter"       
     

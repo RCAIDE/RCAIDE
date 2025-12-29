@@ -9,6 +9,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Data, Container
 from .Main_Wing import Main_Wing
+from RCAIDE.Library.Components  import Component  
 
 # python imports 
 import numpy as np
@@ -71,14 +72,13 @@ class Blended_Wing_Body(Main_Wing):
           
         self.tag                                    = 'blended_wing_body'  
 
-        self.center_body                            = Data()             
+        self.center_body                            = Component()            
         self.center_body.area                       = 0.0
-        self.aft_center_body                        = Data()
+        self.aft_center_body                        = Component()
         self.aft_center_body.taper                  = 1.0
         self.aft_center_body.length                 = 0.0
         self.aft_center_body.area                   = 0.0
-        self.cabin_area                             = 0.0
-        self.cabin_offset                           = 0.0
+        self.cabin_area                             = 0.0 
           
         self.number_of_passengers                   = 1  
         self.number_of_seats                        = 1 

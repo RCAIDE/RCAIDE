@@ -115,23 +115,29 @@ def compute_propulsion_system_weight(vehicle,network):
     RCAIDE.Library.Methods.Weights.Correlation_Buildups.FLOPS.compute_piston_engine_weight
     """
 
-    NENG    =  0 
-    WENG    =  0
+    NENG            =  0 
+    WENG            =  0
     number_of_tanks =  0
+    ref_nacelle     = None
     for network in  vehicle.networks:
         for fuel_line in network.fuel_lines:
             for _ in fuel_line.fuel_tanks:
                 number_of_tanks +=  1
-            for propulsor in network.propulsors:
-                if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet): 
-                    NENG  += 1
-                    BPR    =  propulsor.bypass_ratio
-                    WENG   += 0.084 *  (propulsor.sealevel_static_thrust/Units.lbf)**1.1 * np.exp(-0.045*BPR) * Units.lbs # Raymer 3rd Edition eq. 10.4 
-                if 'nacelle' in propulsor:
-                    ref_nacelle =  propulsor.nacelle 
+        for propulsor in network.propulsors:
+            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet): 
+                NENG  += 1
+                BPR    =  propulsor.bypass_ratio
+                WENG   += 0.084 *  (propulsor.sealevel_static_thrust/Units.lbf)**1.1 * np.exp(-0.045*BPR) * Units.lbs # Raymer 3rd Edition eq. 10.4 
+            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):
+                NENG  += 1
+                WENG   +=  0.1448/(9.81)*(propulsor.sealevel_static_thrust/2)**1.1*np.e**(-0.045*5) 
+            if propulsor.nacelle != None:
+                ref_nacelle =  propulsor.nacelle 
                     
     WFSYS           = compute_fuel_system_weight(vehicle, NENG)
-    WNAC            = compute_nacelle_weight(vehicle,ref_nacelle, NENG, WENG)
+    
+    if ref_nacelle != None: 
+        WNAC = compute_nacelle_weight(vehicle,ref_nacelle, NENG, WENG)
     WEC, WSTART     = compute_misc_engine_weight(vehicle,NENG, WENG)
     WTHR            = 0
     WPRO            = WENG + WFSYS + WEC + WSTART + WTHR + WNAC
@@ -150,7 +156,7 @@ def compute_propulsion_system_weight(vehicle,network):
     # append nacelle weight to object: 
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
-            if 'nacelle' in propulsor:                 
+            if propulsor.nacelle !=  None:               
                 nacelle = propulsor.nacelle
                 nacelle.mass_properties.mass = WNAC    
     return output

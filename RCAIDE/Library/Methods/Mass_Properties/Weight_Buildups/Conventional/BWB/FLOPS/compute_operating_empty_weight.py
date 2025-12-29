@@ -11,7 +11,7 @@ from .compute_aft_center_body_weight import compute_aft_center_body_weight
 from .compute_cabin_weight import compute_cabin_weight
 from .compute_systems_weight import compute_systems_weight
 from .compute_bwb_wing_weight import compute_wing_weight
-from .compute_operating_items import compute_operating_items_weight
+from .compute_operating_items_weight import compute_operating_items_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport import FLOPS 
 from RCAIDE.Library.Methods.Geometry.Planform                          import segment_properties  
@@ -96,25 +96,6 @@ def compute_operating_empty_weight(vehicle,settings=None):
     """
 
     # Set the factors
-    if not hasattr(settings, 'weight_reduction_factors'):
-        W_factors              = Data()
-        W_factors.main_wing    = 0.
-        W_factors.empennage    = 0.
-        W_factors.fuselage     = 0.
-        W_factors.structural   = 0.
-        W_factors.systems      = 0.
-    else:
-        W_factors = settings.weight_reduction_factors
-        if 'structural' in W_factors and W_factors.structural != 0.:
-            print('Overriding individual structural weight factors')
-            W_factors.main_wing    = 0.
-            W_factors.empennage    = 0.
-            W_factors.fuselage     = 0.
-            W_factors.systems      = 0.
-        else:
-            W_factors.structural   = 0.
-            W_factors.systems      = 0.
-    
     Wings = RCAIDE.Library.Components.Wings  
 
     if vehicle.flight_envelope.design_mach_number  == None: # Added design mach number
@@ -148,9 +129,6 @@ def compute_operating_empty_weight(vehicle,settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = compute_systems_weight(vehicle)
-   
-    for item in W_systems.keys():
-        W_systems[item] *= (1. - W_factors.systems)    
 
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -190,12 +168,14 @@ def compute_operating_empty_weight(vehicle,settings=None):
         W_energy_network.W_engine_controls  += W_propulsion.W_engine_controls
         W_energy_network.W_starter          += W_propulsion.W_starter
         W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system 
-        W_energy_network.W_nacelle          += W_propulsion.W_nacelle * (1. - W_factors.nacelle)
+        W_energy_network.W_nacelle          += W_propulsion.W_nacelle
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
         for propulsor in network.propulsors:
-            propulsor.mass_properties.mass = W_energy_network_total / number_of_engines
-        
+            propulsor.mass_properties.mass = (W_energy_network.W_engine +W_energy_network.W_thrust_reverser+W_energy_network.W_starter +\
+                                            W_energy_network.W_engine_controls) / number_of_engines
+            propulsor.nacelle.mass_properties.mass = W_energy_network.W_nacelle / number_of_engines
+    
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
@@ -224,7 +204,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
         WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                 + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
                 + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
-        WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle* (1. - W_factors.nacelle)    / np.max(
+        WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle  / np.max(
             [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
  
     output.empty.propulsion.total               = W_energy_network_cumulative
@@ -254,9 +234,6 @@ def compute_operating_empty_weight(vehicle,settings=None):
             fidelity = settings.FLOPS.fidelity 
             sym_wing = generate_represenative_main_wing(wing, vehicle) 
             W_wing = compute_wing_weight(vehicle, sym_wing, WPOD, fidelity, settings, num_main_wings)
-
-            # Apply weight factor
-            W_wing = W_wing * (1. - W_factors.main_wing) * (1. - W_factors.structural)
             if np.isnan(W_wing):
                 W_wing = 0.
             wing.mass_properties.mass = W_wing
@@ -265,15 +242,11 @@ def compute_operating_empty_weight(vehicle,settings=None):
             W_tail = FLOPS.compute_horizontal_tail_weight(vehicle, wing)
             if type(W_tail) == np.ndarray:
                 W_tail = sum(W_tail)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_horizontal += W_tail
         if isinstance(wing, Wings.Vertical_Tail):
             W_tail = FLOPS.compute_vertical_tail_weight(vehicle, wing)
-            # Apply weight factor
-            W_tail = W_tail * (1. - W_factors.empennage) * (1. - W_factors.structural)
             # Pack and sum
             wing.mass_properties.mass = W_tail
             W_tail_vertical += W_tail 
@@ -284,7 +257,8 @@ def compute_operating_empty_weight(vehicle,settings=None):
     TOW                = vehicle.mass_properties.max_takeoff
     W_cabin            = compute_cabin_weight(vehicle,settings) 
     W_aft_center_body   = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW)
-    
+    vehicle.wings.main_wing.aft_center_body.mass_properties.mass = W_aft_center_body
+    vehicle.wings.main_wing.center_body.mass_properties.mass = W_cabin
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 
@@ -294,13 +268,14 @@ def compute_operating_empty_weight(vehicle,settings=None):
     # Accumulate Structural Weight
     ##-------------------------------------------------------------------------------   
     output.empty.structural                       = Data()
-    output.empty.structural.wings                 = W_main_wing +   W_tail_horizontal +  W_tail_vertical 
+    output.empty.structural.wings                 = W_main_wing 
+    output.empty.structural.empennage             = W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.center_body           = W_cabin
     output.empty.structural.aft_center_body       = W_aft_center_body
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
-    output.empty.structural.nacelle               = W_energy_network.W_nacelle* (1. - W_factors.nacelle)
+    output.empty.structural.nacelle               = W_energy_network.W_nacelle
     output.empty.structural.total = output.empty.structural.wings   + output.empty.structural.center_body + output.empty.structural.aft_center_body + output.empty.structural.landing_gear\
-                                    + output.empty.structural.nacelle 
+                                    + output.empty.structural.nacelle +output.empty.structural.empennage 
     
     ##-------------------------------------------------------------------------------                 
     # Accumulate Systems Weight

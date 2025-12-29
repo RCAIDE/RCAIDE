@@ -30,8 +30,8 @@ class Hydrogen(Weights):
     """
 
     def __defaults__(self):
-        """This sets the default values and methods for the tube and wing
-        aircraft weight analysis.
+        """This sets the default values and methods for aircraft weight analysis. 
+        It uses a mix of FLOPS and physics based approaches to deteremine weight.
 
         Assumptions:
         None
@@ -49,7 +49,6 @@ class Hydrogen(Weights):
         N/A
         """
         self.method                                        = 'Semi_Empirical'
-        self.aircraft_type                                 = 'Transport'
         self.propulsion_architecture                       = 'Hydrogen'
  
         self.settings.advanced_composites                  = False

@@ -39,13 +39,14 @@ except ImportError:
 #  vsp read 
 # ---------------------------------------------------------------------------------------------------------------------- 
 def import_vsp_vehicle(tag,
-                       main_wing_tag = None,
-                       network_type=None, propulsor_type = None, 
+                       main_wing_tag     = None,
+                       network_type      = None,
+                       propulsor_type    = None, 
                        blended_wing_body = False ,
                        last_blended_wing_body_center_body_section_index = None, 
-                       units_type='SI',
-                       use_scaling=True,
-                       calculate_wetted_area=True,): 
+                       units_type           = 'SI',
+                       use_scaling          = True,
+                       calculate_wetted_area= True,): 
     """This reads an OpenVSP vehicle geometry and writes it into a RCAIDE vehicle format.
     Includes wings, fuselages, and rotors.
 
@@ -134,10 +135,10 @@ def import_vsp_vehicle(tag,
     """  	
 
     if isinstance(network_type,RCAIDE.Framework.Networks.Network) != True:
-        raise Exception('Vehicle energy network type must be defined. \n Choose from list in RCAIDE.Framework.Networks') 
+        raise Exception('Vehicle energy network type must be defined. \n Choose from list in RCAIDE.Framework.Networks, i.e. \n  RCAIDE.Framework.Networks.Fuel()  \n  RCAIDE.Framework.Networks.Electric()  \n  RCAIDE.Framework.Networks.Hybrid()') 
 
     if isinstance(propulsor_type,RCAIDE.Library.Components.Powertrain.Propulsors.Propulsor ) != True:
-        raise Exception('Vehicle propulsor type must be defined. \n Choose from list in RCAIDE.Library.Components.Propulsors')     
+        raise Exception('Vehicle propulsor type must be defined. \n Choose from list in RCAIDE.Library.Components.Propulsors, i.e. \n RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan() \n RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet() \n RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop() \n RCAIDE.Library.Components.Powertrain.Propulsors.ElectricRotor(), etc.' )     
 
     # Get the last path from sys.path
     system_path = sys.path[0]

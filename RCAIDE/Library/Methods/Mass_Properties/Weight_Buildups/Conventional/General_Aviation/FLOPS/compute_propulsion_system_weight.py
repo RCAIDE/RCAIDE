@@ -68,10 +68,15 @@ def compute_propulsion_system_weight(vehicle,network):
         * All nacelles are identical
     """
      
-    JNENG =  0 
-    PNENG =  0
-    WENG  = 0.0
+    JNENG  =  0 
+    PNENG  =  0
+    WENG   = 0.0
+    WTHR   = 0.0
+    WEC    = 0.0
+    WSTART = 0.0
+    WNAC   = 0.0
     number_of_tanks =  0
+    ref_nacelle =  None
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) or\
@@ -83,39 +88,37 @@ def compute_propulsion_system_weight(vehicle,network):
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Internal_Combustion_Engine) or\
                isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Constant_Speed_Internal_Combustion_Engine):
                 WENG          += compute_piston_engine_weight(propulsor)
-                PNENG  += 1 
+                PNENG  += 1
+            
+            if propulsor.nacelle !=  None:                    
+                ref_nacelle =  propulsor.nacelle                   
                 
         for fuel_line in network.fuel_lines:
             for _ in fuel_line.fuel_tanks:
                 number_of_tanks +=  1
     
-    WTHR = 0.0
-    WEC = 0.0
-    WSTART = 0.0
-    WNAC = 0.0
-    for network in  vehicle.networks:
-        for propulsor in network.propulsors: 
-            if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan) \
-               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet)\
-               or  isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turboprop):            
-                if 'nacelle' in propulsor: 
-                    if propulsor.nacelle !=  None:                    
-                        ref_nacelle =  propulsor.nacelle   
-                        WNAC = compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
-                WTHR = compute_thrust_reverser_weight(propulsor,JNENG)
-                WEC, WSTART = compute_misc_propulsion_system_weight(vehicle,propulsor,ref_nacelle,JNENG )
+    # nacelle weight
+    if ref_nacelle != None: 
+        WNAC = compute_nacelle_weight(propulsor,ref_nacelle,JNENG)
+        
+    # thrust reverser weight 
+    WTHR = compute_thrust_reverser_weight(propulsor,JNENG)
     
+    # engine starter and controls weight
+    if ref_nacelle != None: 
+        WEC, WSTART = compute_misc_propulsion_system_weight(vehicle,propulsor,ref_nacelle,JNENG )
+    
+    # total number of engines 
     NENG = JNENG + PNENG
-                  
-    WFSYS           = compute_fuel_system_weight(vehicle, NENG)
-    
-    WPRO            = NENG * WENG + WFSYS
+                
+    # fuel systems weight  
+    WFSYS           = compute_fuel_system_weight(vehicle, NENG) 
 
     output                      = Data()
-    output.W_prop               = WPRO
+    output.W_prop               = WENG + WFSYS + WTHR + WSTART + WEC + WNAC
     output.W_thrust_reverser    = WTHR
-    output.W_starter            = WSTART
-    output.W_engine_controls    = WEC
+    output.W_starter            = WSTART*JNENG
+    output.W_engine_controls    = WEC*JNENG
     output.W_fuel_system        = WFSYS
     output.W_nacelle            = WNAC
     output.W_engine             = WENG
@@ -125,9 +128,8 @@ def compute_propulsion_system_weight(vehicle,network):
     # append nacelle weight to object: 
     for network in  vehicle.networks:
         for propulsor in network.propulsors:
-            if 'nacelle' in propulsor:                 
-                nacelle = propulsor.nacelle
-                nacelle.mass_properties.mass = WNAC    
+            if propulsor.nacelle != None:
+                propulsor.nacelle.mass_properties.mass = WNAC    
     return output
 
 def compute_piston_engine_weight(ref_propulsor):

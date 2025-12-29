@@ -10,7 +10,6 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                     import Units, Data
 from RCAIDE.Library.Components                                 import Component    
-from RCAIDE.Library.Attributes.Gases                           import Air  
 from RCAIDE.Library.Methods.Powertrain.Converters.Fuel_Cells.Larminie_Model.compute_fuel_cell_performance import *
 from RCAIDE.Library.Methods.Powertrain.Converters.Fuel_Cells.Larminie_Model.append_fuel_cell_conditions   import *
 
@@ -60,7 +59,7 @@ class Generic_Fuel_Cell_Stack(Component):
                      
         self.fuel_cell                                  = Data()  
         self.fuel_cell.propellant                       = RCAIDE.Library.Attributes.Propellants.Gaseous_Hydrogen()
-        self.fuel_cell.oxidizer                         = Air()
+        self.fuel_cell.oxidizer                         = RCAIDE.Library.Attributes.Gases.Air()
         self.fuel_cell.efficiency                       = .65                                 # normal fuel cell operating efficiency at sea level
         self.fuel_cell.specific_power                   = 2080                                # specific power of fuel cell [W/kg]; default is Nissan 2011 level
         self.fuel_cell.mass_density                     = 1203.208556                         # take default as specs from Nissan 2011 fuel cell      

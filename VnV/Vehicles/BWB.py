@@ -33,12 +33,12 @@ def vehicle_setup():
     vehicle                                           = RCAIDE.Vehicle()    
     vehicle.tag                                       = 'BWB' 
     vehicle.mass_properties.max_takeoff               = 280000. * Units.lbs 
-    vehicle.mass_properties.payload                   = 35000
+    vehicle.mass_properties.payload                   = 67000. * Units.lbs 
     vehicle.mass_properties.fuel                      = 55000  
     vehicle.mass_properties.max_fuel                  = 100000  
     vehicle.mass_properties.takeoff                   = 280000 * Units.lbs
     vehicle.mass_properties.max_zero_fuel             = 206000 * Units.lbs 
-    vehicle.mass_properties.max_payload               = 69600.  * Units.lb   
+    vehicle.mass_properties.max_payload               = 69600.  * Units.lb 
     vehicle.mass_properties.center_of_gravity         = [[27.0, 0, 0]]
     vehicle.flight_envelope.ultimate_load             = 3.75 
     vehicle.flight_envelope.positive_limit_load       = 2.5  
@@ -46,7 +46,7 @@ def vehicle_setup():
     vehicle.flight_envelope.design_cruise_altitude    = 45000.0*Units.feet 
     vehicle.flight_envelope.design_range              = 5000.0 * Units.nmi
     vehicle.reference_area                            = 592.6575476422672 # 2424.9 * Units['feet**2']    
-    vehicle.number_of_passengers                                = 248 # Single class. 242 in dual class (24 business, 21 economy) 
+    vehicle.number_of_passengers                      = 248 # Single class. 242 in dual class (24 business, 21 economy) 
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "long range"  
      
@@ -73,8 +73,11 @@ def vehicle_setup():
     # Carbo Bays 
     # ------------------------------------------------------------------ 
     cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-    vehicle.append_component(cargo_bay)
-    
+    cargo_bay.origin  = [[5, 0, -1]]
+    cargo_bay.length  = 10
+    cargo_bay.width   = 3
+    cargo_bay.height  = 1
+    vehicle.append_component(cargo_bay) 
     
     # ------------------------------------------------------------------
     #  Main Wing 

@@ -104,7 +104,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Stability Analysis      
-    stability   = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()    
+    stability   = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     analyses.append(stability)
 
     # ------------------------------------------------------------------

@@ -20,11 +20,18 @@ import numpy as np
 #  PLOTS
 # ---------------------------------------------------------------------------------------------------------------------- 
 def plot_load_diagram(results,
-                      save_figure = False,
-                      show_legend = True,
-                      save_filename = "Aircraft_Loading_Trim_Dragram",
-                      file_type = ".png",
-                      width = 11, height = 7):
+                      save_figure               = False,
+                      show_legend               = True,
+                      save_filename             = "Aircraft_Loading_Trim_Dragram",
+                      file_type                 = ".png",
+                      static_margin_lower_limit = -0.05, 
+                      static_margin_upper_limit = 0.5,
+                      x_axis_lower_limit        = None,
+                      x_axis_upper_limit        = None,
+                      y_axis_lower_limit        = None,
+                      y_axis_upper_limit        = None,
+                      width                     = 11,
+                      height                    = 7):
     """
     Creates a comprehensive aircraft loading diagram showing mass and center of gravity relationships.
 
@@ -94,10 +101,7 @@ def plot_load_diagram(results,
  
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height)
-    axis = fig.add_subplot(1,1,1)
-    
-    min_range = 0
-    max_range = 0
+    axis = fig.add_subplot(1,1,1) 
     
     # ------------------------------------------------------------------------    
     # cumulative
@@ -117,15 +121,31 @@ def plot_load_diagram(results,
     polygon = Polygon(hull_points) 
     
     # Plot the convex hull polygon boundary
-    x_hull, y_hull = polygon.exterior.xy
+    x_hull, y_hull = polygon.exterior.xy 
+
+    # ------------------------------------------------------------------------    
+    # PLot Bounds 
+    # ------------------------------------------------------------------------
+    x_bound     = max(x_hull) - min(x_hull)
+    if x_axis_lower_limit == None: 
+        x_axis_lower_limit = min(x_hull) - x_bound / 2
+    if x_axis_upper_limit == None: 
+        x_axis_upper_limit = max(x_hull) + x_bound / 2
+    if y_axis_lower_limit == None: 
+        y_axis_lower_limit =  min(y_hull)
+    if y_axis_upper_limit == None: 
+        y_axis_upper_limit =  max(y_hull) 
     
+    # ------------------------------------------------------------------------    
+    # Loading -Trim Bounds  
+    # ------------------------------------------------------------------------    
     axis.fill(x_hull, y_hull, color='grey', alpha=0.3, edgecolor='black', linewidth=2)
     axis.plot(x_hull, y_hull, 'k-')
 
     # ------------------------------------------------------------------------    
     # Maximum Takeoff Weight line
     # ------------------------------------------------------------------------
-    x_pts_MTOW = np.linspace(0, 100)
+    x_pts_MTOW = np.linspace(x_axis_lower_limit, x_axis_upper_limit)
     y_pts_MTOW = np.ones_like(x_pts_MTOW)  * results.MTOW
     axis.plot(x_pts_MTOW, y_pts_MTOW, 'r-', label = 'MTOW') 
     
@@ -133,14 +153,14 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------    
     # Maximum Landing Weight line
     # ------------------------------------------------------------------------
-    x_pts_MLW = x_pts_MTOW
+    x_pts_MLW = np.linspace(x_axis_lower_limit, x_axis_upper_limit)
     y_pts_MLW = np.ones_like(x_pts_MLW)  * results.MLW
     axis.plot(x_pts_MLW, y_pts_MLW, 'r--', label = 'MLW')  
 
     # ------------------------------------------------------------------------
     # Stability Contours 
     # ------------------------------------------------------------------------
-    SM_levels = np.linspace(-5, 100, 22)
+    SM_levels = np.linspace(static_margin_lower_limit*100, static_margin_upper_limit*100, 22)
     CS   =  axis.contourf(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, cmap='viridis') 
     CS2  =  axis.contour(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, colors='black') 
     cbar = fig.colorbar(CS, ax=axis)
@@ -150,7 +170,8 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------    
     # Axis Items
     # ------------------------------------------------------------------------     
-    axis.set_xlim(0, 100)
+    axis.set_xlim(x_axis_lower_limit, x_axis_upper_limit) 
+    axis.set_ylim(y_axis_lower_limit, y_axis_upper_limit)
     axis.legend(loc='upper right')
     axis.set_xlabel(r'$X_{CG}$ (%MAC)')
     axis.set_ylabel('Mass (kg)')
