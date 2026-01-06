@@ -17,3 +17,4 @@ from .compute_cabin_center_of_gravity        import compute_cabin_center_of_grav
 from .compute_landing_gear_center_of_gravity import compute_landing_gear_center_of_gravity
 from .compute_wing_center_of_gravity         import compute_wing_center_of_gravity
 from .compute_vehicle_center_of_gravity      import compute_vehicle_center_of_gravity
+from .update_center_of_gravity               import update_center_of_gravity

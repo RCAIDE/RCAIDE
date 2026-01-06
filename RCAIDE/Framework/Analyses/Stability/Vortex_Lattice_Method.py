@@ -13,6 +13,7 @@ from RCAIDE.Framework.Analyses                                 import Process
 from RCAIDE.Library.Methods.Stability                          import Common
 from .Stability                                                import Stability     
 from RCAIDE.Library.Methods.Stability.Vortex_Lattice_Method    import *  
+import  numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice_Method

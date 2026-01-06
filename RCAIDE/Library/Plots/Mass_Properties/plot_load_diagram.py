@@ -1,4 +1,4 @@
-# RCAIDE/Library/Plots/Weights/plot_load_diagram.py
+# RCAIDE/Library/Plots/Mass_Properties/plot_load_diagram.py
 # 
 # 
 # Created:  Aug 2025, M. Clarke

@@ -1,4 +1,4 @@
-# RCAIDE/Library/Plots/Energy/plot_battery_degradation.py
+# RCAIDE/Library/Plots/Performance/plot_battery_degradation.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke

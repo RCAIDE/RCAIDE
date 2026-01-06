@@ -1,5 +1,4 @@
-## @ingroup Library-Plots-Energy
-# RCAIDE/Library/Plots/Energy/plot_battery_module_conditions.py
+# RCAIDE/Library/Plots/Performance/plot_battery_module_conditions.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
 def plot_battery_module_conditions(results,
                                   save_figure = False,
                                   show_legend = True,

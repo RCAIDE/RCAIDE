@@ -73,23 +73,19 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
                 if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                     outer_wing_flag = True
                 if outer_wing_flag:
-                    inner_start = fuel_tank.segments_percent_chord_start[i]
-                    outer_start = fuel_tank.segments_percent_chord_start[i+1]
-                    inner_end   = fuel_tank.segments_percent_chord_end[i]
-                    outer_end   = fuel_tank.segments_percent_chord_end[i+1]
-                    tr          = inner_segment.thickness_to_chord                             
-                    tt          = outer_segment.thickness_to_chord                             
-                    ct          = wing.chords.root * outer_segment.root_chord_percent * (outer_start - outer_end)
-                    cr          = wing.chords.root * inner_segment.root_chord_percent * (inner_start - inner_end)       
-                    # SAI AND AIDAN THIS IS INCORRECT (  -- DONE as of 12/29/2025 ),WE NEED TO UDPATE WITH THE CORRECT CHORD START AND END LOCATION OF THE TANK
-                    # For some reason, the definition of the fuel tanks is old
-                    b           = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)
-                    A           = inner_segment.sweeps.quarter_chord                             
-                    dihedral    = inner_segment.dihedral_outboard                                
-                    origin_wing = inner_segment.origin + np.array([[cr / 4, 0, 0]])              
-                 
-                    m_wing      = fuel_tank.fuel.mass_properties.mass * (inner_segment.volume_properties.fuel /fuel_tank.volume_properties.gross_volume)  
-                 
+                    inner_start     = fuel_tank.segments_percent_chord_start[i]
+                    outer_start     = fuel_tank.segments_percent_chord_start[i+1]
+                    inner_end       = fuel_tank.segments_percent_chord_end[i]
+                    outer_end       = fuel_tank.segments_percent_chord_end[i+1]
+                    tr              = inner_segment.thickness_to_chord                             
+                    tt              = outer_segment.thickness_to_chord                             
+                    ct              = wing.chords.root * outer_segment.root_chord_percent * (outer_start - outer_end)
+                    cr              = wing.chords.root * inner_segment.root_chord_percent * (inner_start - inner_end)      
+                    b               = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)
+                    A               = inner_segment.sweeps.quarter_chord                             
+                    dihedral        = inner_segment.dihedral_outboard                                
+                    origin_wing     = inner_segment.origin + np.array([[cr / 4, 0, 0]])     
+                    m_wing          = fuel_tank.fuel.mass_properties.mass * (inner_segment.volume_properties.fuel /fuel_tank.volume_properties.gross_volume)   
                     I_section ,I_section_local_non_dim  = compute_wing_section_moment_of_intertia(m_wing,tr,tt,ct,cr, b, A,dihedral,origin_wing,xz_symm,vertical,center_of_gravity)
                     I_global        += I_section
                     I_local_non_dim += I_section_local_non_dim
@@ -98,17 +94,15 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
                 inner_start = fuel_tank.segments_percent_chord_start[i]
                 outer_start = fuel_tank.segments_percent_chord_start[i+1]
                 inner_end   = fuel_tank.segments_percent_chord_end[i]
-                outer_end   = fuel_tank.segments_percent_chord_end[i+1]
-                
+                outer_end   = fuel_tank.segments_percent_chord_end[i+1] 
                 tr          = inner_segment.thickness_to_chord   # root thickness as percent of chord
                 tt          = outer_segment.thickness_to_chord   #tip thickness as a percent of chord
                 ct          = wing.chords.root * outer_segment.root_chord_percent * (outer_start - outer_end)  # tip chord 
                 cr          = wing.chords.root * inner_segment.root_chord_percent * (inner_start - inner_end)  # root chord
-                b           = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)                               # half-span of the wing
+                b           = span * (outer_segment.percent_span_location - inner_segment.percent_span_location)/(1+xz_symm)   # half-span of the wing
                 A           = inner_segment.sweeps.quarter_chord                            # sweep angle (located at quarter chord)
                 dihedral    = inner_segment.dihedral_outboard                               # Wing dihedral
                 origin_wing = inner_segment.origin + np.array([[cr / 4, 0, 0]]) # moves the origin of the wing to the quarter chord of the root airfoil.  
-                
                 m_wing      = fuel_tank.fuel.mass_properties.mass * (inner_segment.volume_properties.fuel /fuel_tank.volume_properties.gross_volume)  
                  
                 I_section , I_section_local_non_dim  = compute_wing_section_moment_of_intertia(m_wing,tr,tt,ct,cr, b, A,dihedral,origin_wing,xz_symm,vertical,center_of_gravity)
@@ -126,14 +120,13 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
         ct          = wing.chords.tip  * (outer_start - outer_end)# tip chord 
         cr          = wing.chords.root * (inner_start - inner_end)# root chord
         b           = span/(1+xz_symm)           # half-span of the wing
-        A           = wing.sweeps.quarter_chord # sweep angle (located at quarter chord)
-        dihedral    = wing.dihedral # Wing dihedral
+        A           = wing.sweeps.quarter_chord  # sweep angle (located at quarter chord)
+        dihedral    = wing.dihedral              # Wing dihedral
         origin_wing = wing.origin + np.array([[cr / 4, 0, 0]]) # moves the origin of the wing to the quarter chord of the root airfoil.
         
    
         I_global,I_local_non_dim   = compute_wing_section_moment_of_intertia(m_wing,tr,tt,ct,cr, b, A,dihedral,origin_wing,xz_symm,vertical,center_of_gravity)
         
-    
     # Store moment of inertia tensor on component 
     fuel_tank.fuel.mass_properties.moments_of_inertia.tensor                 = I_global
     fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor = I_local_non_dim

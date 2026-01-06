@@ -1,4 +1,4 @@
-# RCAIDE/Library/Plots/Weights/plot_weight_breakdown.py
+# RCAIDE/Library/Plots/Mass_Properties/plot_weight_breakdown.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

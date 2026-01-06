@@ -126,13 +126,16 @@ def base_analysis(vehicle):
     return analyses  
 
 def plot_mission(results): 
-
-    # Plot Aircraft Stability 
+ 
     plot_longitudinal_stability(results)  
     
     plot_lateral_stability(results) 
     
-    plot_flight_forces_and_moments(results) 
+    plot_flight_forces_and_moments(results)
+    
+    plot_center_of_gravity_drift(results)
+    
+    plot_moment_of_intertia_drift(results)
       
     return
  

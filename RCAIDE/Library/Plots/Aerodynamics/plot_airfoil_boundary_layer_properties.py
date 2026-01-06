@@ -1,4 +1,3 @@
-## @ingroup Library-Plots-Performance-Aerodynamics  
 # RCAIDE/Library/Plots/Performance/Aerodynamics/plot_airfoil_boundary_layer_properties.py
 # 
 # 

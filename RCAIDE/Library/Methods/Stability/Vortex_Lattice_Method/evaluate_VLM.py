@@ -4,12 +4,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-# RCAIDE imports   
-from RCAIDE.Framework.Core     import Data    
-from RCAIDE.Library.Methods.Stability.Common.update_center_of_gravity import update_center_of_gravity
-
-# package imports
-import numpy   as np
+# RCAIDE imports      
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.update_center_of_gravity import update_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moment_of_inertia import update_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
@@ -31,28 +28,14 @@ def evaluate(state,settings,vehicle):
     Returns: 
         None  
     """ 
-   
-    # --------------------------------------------------------------------------
-    # unpack 
-    # --------------------------------------------------------------------------
-    conditions    = state.conditions 
-    AoA           = conditions.aerodynamics.angles.alpha  
-    
-    if settings.update_center_of_gravity:
-        CG = update_center_of_gravity(vehicle, conditions)
-    else:
-        CG = np.ones_like(AoA) * vehicle.mass_properties.center_of_gravity[0][0] 
- 
-    # --------------------------------------------------------------------------------------------      
-    # Vehicle Properties 
-    # --------------------------------------------------------------------------------------------      
-    c_ref         = vehicle.reference_chord   
-    
-    # --------------------------------------------------------------------------------------------      
-    # Store Results 
-    # --------------------------------------------------------------------------------------------      
-    conditions.static_stability.center_of_gravity      = CG       
-    conditions.static_stability.neutral_point[:,0]     = vehicle.neutral_point 
-    conditions.static_stability.static_margin          = (vehicle.neutral_point  - CG) / c_ref      
+    # update center of gravity
+    update_center_of_gravity(state, vehicle)
+     
+    # update static margin 
+    c_ref                                              = vehicle.reference_chord   
+    state.conditions.static_stability.static_margin    = (vehicle.neutral_point  - state.conditions.weights.vehicle.global_center_of_gravity) / c_ref          
         
+    # update moment of inertia
+    update_moment_of_inertia(state, vehicle)
+    
     return  

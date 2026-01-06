@@ -1,5 +1,4 @@
-## @ingroup Library-Plots-Energy
-# RCAIDE/Library/Plots/Energy/plot_electric_propulsor_efficiencies.py
+# RCAIDE/Library/Plots/Performance/plot_electric_propulsor_efficiencies.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -17,7 +16,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------   
-## @ingroup Library-Plots-Energy
 def plot_electric_propulsor_efficiencies(results,
                                   save_figure = False,
                                   show_legend = True,

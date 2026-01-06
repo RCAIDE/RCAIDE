@@ -243,13 +243,14 @@ def mass_properties_preprocess_routine(segment, i=0):
                     print("\n===============================\n")
     
     # Compute Center of Gravity  
-    if weights_analysis.settings.update_center_of_gravity:
-        CG ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,weights_analysis.settings.update_center_of_gravity,segment) 
+    if weights_analysis.settings.compute_center_of_gravity:
+        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,segment) 
     else:
-        CG = analyses.vehicle.mass_properties.center_of_gravity
+        _ = analyses.vehicle.mass_properties.center_of_gravity
+        
     # Compute Moment of Inertia
-    if weights_analysis.settings.update_moment_of_inertia:
-        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,weights_analysis.settings.update_moment_of_inertia,segment)          
+    if weights_analysis.settings.compute_moment_of_inertia:
+        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,segment)          
     
     
 def apply_correction_factors(analyses): 

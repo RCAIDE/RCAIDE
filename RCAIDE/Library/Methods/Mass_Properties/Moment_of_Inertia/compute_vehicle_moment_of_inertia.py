@@ -46,8 +46,7 @@ def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, se
         # store aircraft MOI
         segment.state.conditions.weights.vehicle.moments_of_inertia = total_MOI * ones_row(1) 
     
-    # Update MOI if flag is true 
-    if update_moment_of_inertia:
-        vehicle.mass_properties.moments_of_inertia.tensor = total_MOI 
+    # Update MOI if flag is true  
+    vehicle.mass_properties.moments_of_inertia.tensor = total_MOI 
         
     return total_MOI 

@@ -17,7 +17,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_vehicle_center_of_gravity(vehicle,update_center_of_gravity=True, segment=None): 
+def compute_vehicle_center_of_gravity(vehicle, segment=None): 
     ''' Computes the moment of inertia of aircraft 
     
     Source:
@@ -59,7 +59,7 @@ def compute_vehicle_center_of_gravity(vehicle,update_center_of_gravity=True, seg
         segment.state.conditions.weights.vehicle.center_of_gravity = CG * ones_row(1) 
      
     # Update CG if flag is true         
-    if update_center_of_gravity and total_mass != 0.0: 
+    if total_mass != 0.0: 
         vehicle.mass_properties.center_of_gravity = CG.tolist()
         
     return vehicle.mass_properties.center_of_gravity, total_moment, total_mass 

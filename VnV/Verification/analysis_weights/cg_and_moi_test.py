@@ -7,7 +7,7 @@
 # cg_and_moi_test.py
 
 from RCAIDE.Framework.Core                                     import Units,  Data  
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_aircraft_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_vehicle_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity
 from RCAIDE.Library.Methods.Geometry.Planform                  import wing_planform
 import numpy as  np
@@ -57,7 +57,7 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
+    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
@@ -104,7 +104,7 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location) 
+    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI)
@@ -158,7 +158,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_aircraft_moment_of_inertia(vehicle, CG_location)
+    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location)
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 

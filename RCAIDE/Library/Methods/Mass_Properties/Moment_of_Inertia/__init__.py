@@ -14,3 +14,4 @@ from .compute_cylinder_moment_of_inertia             import compute_cylinder_mom
 from .compute_rounded_end_cylinder_moment_of_inertia import compute_rounded_end_cylinder_moment_of_inertia
 from .compute_wing_integral_tank_moment_of_inertia   import compute_wing_integral_tank_moment_of_inertia
 from .compute_vehicle_moment_of_inertia              import compute_vehicle_moment_of_inertia
+from .update_moment_of_inertia                       import update_moment_of_inertia

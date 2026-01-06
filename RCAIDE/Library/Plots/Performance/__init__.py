@@ -1,5 +1,5 @@
 ## @defgroup Library-Plots-Energy 
-# RCAIDE/Library/Plots/Energy/__init__.py
+# RCAIDE/Library/Plots/Performance/__init__.py
 # 
 
 """
