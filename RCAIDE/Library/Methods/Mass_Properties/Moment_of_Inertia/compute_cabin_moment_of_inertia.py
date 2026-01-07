@@ -31,7 +31,7 @@ def compute_cabin_moment_of_inertia(cabin,center_of_gravity = np.array([[0,0,0]]
         Implementation of the moment of inertia calculation
     """
     # moment of inertia of arbitrary cabin
-    I_cg  = 0  # MATTHEW NEED TO UPDATE - either compute it using integration (based on seat location) or based in simple blocks
+    I_cg  = 0  # AIDAN TO UPDATE
     
     # additional MOI due to parallel axis theorm 
     s     = np.array(center_of_gravity) - np.array(cabin.mass_properties.center_of_gravity ) 
