@@ -12,7 +12,7 @@ import numpy as  np
 # ------------------------------------------------------------------        
 #  Component moments of inertia (MOI) tensors
 # ------------------------------------------------------------------  
-def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, segment = None): 
+def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, segment = None,verbose=True): 
     ''' sums the moments of inertia of each component in the aircraft. Components summed: fuselages,
     wings (main, horizontal, tail + others), turbofan engines, batteries, motors, batteries, fuel tanks
 
@@ -34,12 +34,16 @@ def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, se
 
     # unpack 
     ones_row      = segment.state.ones_row
+
+    if verbose:
+        print("\n\n=== COMPONENT MOMENT OF INTERTIA BREAKDOWN REPORT ===" )    
+        print("Component \t \t Ixx \t \t Iyy  \t \t Izz" )        
      
     # Compute the moment of intertia of all components   
     total_MOI    = np.zeros((3, 3))               
     for key in vehicle.keys():
-        item      = vehicle[key]  
-        total_MOI = compute_component_moment_of_intertia(item,vehicle,total_MOI ,segment)
+        item       = vehicle[key]  
+        total_MOI  = compute_component_moment_of_intertia(item,vehicle,total_MOI ,segment)
     
     # if simulations is part of a mission, store MOI in results vector 
     if segment != None:        

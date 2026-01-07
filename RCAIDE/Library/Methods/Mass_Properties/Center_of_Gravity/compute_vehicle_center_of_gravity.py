@@ -6,9 +6,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 
-# RCAIDE imports   
-import RCAIDE 
-from RCAIDE.Library.Components import Component   
+# RCAIDE imports      
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_component_center_of_gravity import compute_component_center_of_gravity 
 
 # package imports 
@@ -17,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_vehicle_center_of_gravity(vehicle, segment=None): 
+def compute_vehicle_center_of_gravity(vehicle,segment=None,verbose=True): 
     ''' Computes the moment of inertia of aircraft 
     
     Source:
@@ -40,6 +38,10 @@ def compute_vehicle_center_of_gravity(vehicle, segment=None):
 
     # unpack 
     ones_row      = segment.state.ones_row
+
+    if verbose:
+        print("\n\n=== COMPONENT CENTER OF GRAVITY BREAKDOWN REPORT ===" )    
+        print("Component \t \t Mass \t \t Location [[x,y,z]]" )    
     
     #==========================================================================================
     # Compute the center of gravity of all components  
@@ -48,12 +50,14 @@ def compute_vehicle_center_of_gravity(vehicle, segment=None):
     total_mass   = np.array([0.0])                
     for key in vehicle.keys():
         item = vehicle[key]  
-        total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment ,segment)    
+        total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment ,segment, verbose)    
     
     # compute center of gravity 
     CG =  total_moment / total_mass
-
-    # if simulations is part of a mission, store MOI in results vector 
+    if verbose:
+        print('\n \t ***** Aircraft center of gravity ***** ')
+        print('\t ', CG) 
+ 
     if segment != None:        
         # store aircraft MOI
         segment.state.conditions.weights.vehicle.center_of_gravity = CG * ones_row(1) 

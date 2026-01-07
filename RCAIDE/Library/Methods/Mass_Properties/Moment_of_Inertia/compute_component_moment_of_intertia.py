@@ -13,7 +13,7 @@ from RCAIDE.Library.Components                                 import Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  Recursive MOI
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_component_moment_of_intertia(component,vehicle,total_MOI,segment):
+def compute_component_moment_of_intertia(component,vehicle,total_MOI,segment=None,verbose=True):
     """ Recursively computes the compute moment of inertia all components and subcomponents
 
     Assumptions:
@@ -32,24 +32,29 @@ def compute_component_moment_of_intertia(component,vehicle,total_MOI,segment):
     if isinstance(component,Component.Container): 
         for key in component.keys():
             item = component[key]        
-            compute_component_moment_of_intertia(item,vehicle,total_MOI,segment)
+            total_MOI = compute_component_moment_of_intertia(item,vehicle,total_MOI,segment)
     if isinstance(component,Component):
-        component.compute_moments_of_inertia(vehicle)
-        update_moment_of_inertia(total_MOI,component,segment) 
+        component.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle.mass_properties.center_of_gravity)
+        update_moment_of_inertia(total_MOI,component,segment, verbose) 
         if isinstance(component,RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank):
-            update_moment_of_inertia(total_MOI,component.fuel,segment) 
+            update_moment_of_inertia(total_MOI,component.fuel,segment, verbose) 
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
-                compute_component_moment_of_intertia(item,vehicle,total_MOI,segment)
+                total_MOI = compute_component_moment_of_intertia(item,vehicle,total_MOI,segment)
         
     return total_MOI
  
 
-def update_moment_of_inertia(total_MOI,C,segment=None):  
+def update_moment_of_inertia(total_MOI,C,segment,verbose):  
     ones_row      = segment.state.ones_row  
     I             = C.mass_properties.moments_of_inertia.tensor
-    total_MOI    += I  
+    total_MOI    += I
+     
+    if verbose:
+        name_column_width = 20
+        num_column_width  = 6
+        print(f"{C.tag.ljust(name_column_width)}",'\t', f"{str(round(I[0][0],2)).ljust(num_column_width)}", '\t', f"{str(round(I[1][1],2)).ljust(num_column_width)}", '\t'f"{str(round(I[2][2],2)).ljust(num_column_width)}", '\t'  )    
     if segment != None:
         segment.state.conditions.weights.components.moments_of_inertia_Ixx[C.tag] = I[0][0]  * ones_row(1) 
         segment.state.conditions.weights.components.moments_of_inertia_Ixy[C.tag] = I[0][1]  * ones_row(1)

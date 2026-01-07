@@ -16,7 +16,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Recursive C.G.
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_component_center_of_gravity(component,vehicle,total_mass,total_moment,segment):
+def compute_component_center_of_gravity(component,vehicle,total_mass,total_moment,segment=None,verbose=True):
     """ Recursively computes the center of gravity all components and subcomponents
 
     Assumptions:
@@ -35,25 +35,30 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
     if isinstance(component,Component.Container): 
         for key in component.keys():
             item = component[key]        
-            compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
+            total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
     if isinstance(component,Component):
         component.compute_center_of_gravity(vehicle)
-        update_mass_and_moment(total_mass,total_moment,component,segment)    
+        update_mass_and_moment(total_mass,total_moment,component,segment,verbose)    
         if isinstance(component,RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank):
-            update_mass_and_moment(total_mass,total_moment,component.fuel,segment)        
+            update_mass_and_moment(total_mass,total_moment,component.fuel,segment,verbose)        
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
-                compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
+                total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
     return total_mass,total_moment
  
 
-def update_mass_and_moment(total_mass,total_moment,C,segment=None): 
+def update_mass_and_moment(total_mass,total_moment,C,segment,verbose): 
     ones_row      = segment.state.ones_row
     global_cg_loc = np.array(C.mass_properties.center_of_gravity) + np.array(C.origin) 
     if isinstance(C,RCAIDE.Library.Components.Landing_Gear.Landing_Gear) or isinstance(C,RCAIDE.Library.Components.Wings.Wing):
         if C.xz_plane_symmetric:
-            global_cg_loc[0][1] = 0  
+            global_cg_loc[0][1] = 0
+            
+    if verbose:
+        name_column_width = 20
+        num_column_width  = 6
+        print(f"{C.tag.ljust(name_column_width)}",'\t', f"{str(round(C.mass_properties.mass,2)).ljust(num_column_width)}", '\t',  global_cg_loc     )
     total_mass   += C.mass_properties.mass                 
     total_moment += C.mass_properties.mass*global_cg_loc 
     if segment != None:

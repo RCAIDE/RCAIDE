@@ -300,7 +300,8 @@ class Vehicle_Mass_Properties(Components.Mass_Properties):
         self.landing                     = None
         self.max_cargo                   = None
         self.cargo                       = 0
-        self.max_payload                 = None 
+        self.max_payload                 = 0 
+        self.min_payload                 = 0 
         self.payload                     = 0
         self.passenger                   = None
         self.crew                        = None

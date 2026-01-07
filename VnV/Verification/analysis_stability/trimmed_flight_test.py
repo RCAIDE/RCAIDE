@@ -27,7 +27,8 @@ from Navion    import vehicle_setup, configs_setup
 def main(): 
     
     # vehicle data
-    vehicle  = vehicle_setup() 
+    vehicle  = vehicle_setup()
+    vehicle.mass_properties.takeoff = None
 
     # Set up vehicle configs
     configs  = configs_setup(vehicle)
@@ -91,10 +92,15 @@ def base_analysis(vehicle):
     analyses = RCAIDE.Framework.Analyses.Vehicle()  
     analyses.vehicle =  vehicle
 
+    # ------------------------------------------------------------------
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry() 
-    analyses.append(geometry)
+    analyses.append(geometry) 
 
+    # ------------------------------------------------------------------
+    #  Weights
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation() 
+    analyses.append(weights) 
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis

@@ -34,7 +34,7 @@ def compute_cabin_moment_of_inertia(cabin,center_of_gravity = np.array([[0,0,0]]
     I_cg  = 0  # MATTHEW NEED TO UPDATE - either compute it using integration (based on seat location) or based in simple blocks
     
     # additional MOI due to parallel axis theorm 
-    s     = cabin.center_of_gravity - center_of_gravity  
+    s     = np.array(center_of_gravity) - np.array(cabin.mass_properties.center_of_gravity ) 
     I_par = cabin.mass_properties.mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))             
     
     cabin.mass_properties.moments_of_inertia.tensor =  I_cg + I_par

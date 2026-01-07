@@ -127,10 +127,10 @@ def mass_properties_preprocess_routine(segment, i=0):
                 print('Warning: Payload or fuel weight not defined; assuming takeoff weight is MTOW')
             analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff
         else:
-            if analyses.vehicle.mass_properties.payload >analyses.vehicle.mass_properties.max_payload:
+            if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
                 raise AssertionError('Prescribed payload is greater than maxmimum payload')
 
-            if analyses.vehicle.mass_properties.max_zero_fuel == None:
+            if analyses.vehicle.mass_properties.max_zero_fuel == None and  analyses.vehicle.mass_properties.max_fuel == None:
                 # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW
                 if i == 0: 
                     print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
@@ -244,13 +244,13 @@ def mass_properties_preprocess_routine(segment, i=0):
     
     # Compute Center of Gravity  
     if weights_analysis.settings.compute_center_of_gravity:
-        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,segment) 
+        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,segment=segment,verbose=weights_analysis.print_weight_analysis_report) 
     else:
         _ = analyses.vehicle.mass_properties.center_of_gravity
         
     # Compute Moment of Inertia
     if weights_analysis.settings.compute_moment_of_inertia:
-        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,segment)          
+        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,segment=segment,verbose=weights_analysis.print_weight_analysis_report) 
     
     
 def apply_correction_factors(analyses): 
