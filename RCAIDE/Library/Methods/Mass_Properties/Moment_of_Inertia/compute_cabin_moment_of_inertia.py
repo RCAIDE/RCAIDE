@@ -5,13 +5,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# package imports 
-import numpy as np  
-import trimesh
-import RCAIDE
-from RCAIDE.Framework.Core import Data, Units
+# package imports  
+from RCAIDE.Framework.Core import Data
 from RCAIDE.Library.Methods.Geometry.LOPA.compute_layout_of_passenger_accommodations import compute_layout_of_passenger_accommodations
 
+# python imports
+import numpy as np  
+import trimesh
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Cabin Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   

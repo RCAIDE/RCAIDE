@@ -86,15 +86,24 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     # ----------------------------------------------------------------------------------------------------------------------    
     # Moment of inertia in local system 
     # ----------------------------------------------------------------------------------------------------------------------
+    #I_cylinder_ax_1      = # AIDAN
+    #I_sperical_caps_ax_1 = # AIDAN
+    #I_tot_ax_1           = I_cylinder_ax_1 + I_sperical_caps_ax_1 + #parallel axis theoem compoment of caps
+
+    #I_cylinder_ax_2      = # AIDAN
+    #I_sperical_caps_ax_2 = # AIDAN
+    #I_tot_ax_2           = I_cylinder_ax_2 + I_sperical_caps_ax_2 + #parallel axis theoem compoment of caps     
+     
+    ## depending on orientation of cylindrical tank
+    #if:
+        #I[0][0]
+        #I[1][1]
+        #I[2][2]
+    #else:
+        #I[0][0]
+        #I[1][1]
+        #I[2][2] 
     
-    # Avoid divide by zero error for a point mass
-    if  (outer_radius == 0 or outer_length == 0):
-        volume = 1
-    else:
-        outer_volume = (np.pi * outer_radius ** 2 * outer_length ) + ( 4 / 3 * np.pi * outer_radius ** 3)
-        inner_volume = (np.pi * inner_radius ** 2 * inner_length ) + ( 4 / 3 * np.pi * inner_radius ** 3) 
-        volume = outer_volume - inner_volume
-         
     # ----------------------------------------------------------------------------------------------------------------------    
     # transform moment of inertia to the global system
     # ----------------------------------------------------------------------------------------------------------------------
@@ -102,6 +111,7 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
 
     # Store moment of inertia tensor on component 
-    component.mass_properties.moments_of_inertia.tensor = I_global    
+    component.mass_properties.moments_of_inertia.tensor = I_global   
+    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I / mass 
         
     return I_global,  mass

@@ -123,7 +123,6 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
         A           = wing.sweeps.quarter_chord  # sweep angle (located at quarter chord)
         dihedral    = wing.dihedral              # Wing dihedral
         origin_wing = wing.origin + np.array([[cr / 4, 0, 0]]) # moves the origin of the wing to the quarter chord of the root airfoil.
-        
    
         I_global,I_local_non_dim   = compute_wing_section_moment_of_intertia(m_wing,tr,tt,ct,cr, b, A,dihedral,origin_wing,xz_symm,vertical,center_of_gravity)
         
