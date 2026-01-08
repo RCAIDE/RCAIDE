@@ -86,25 +86,39 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     # ----------------------------------------------------------------------------------------------------------------------    
     # Moment of inertia in local system 
     # ----------------------------------------------------------------------------------------------------------------------
-    # MOI about cylindrical axis 
-    #I_cylinder_cylin_axis     = # AIDAN
-    #I_sperical_caps_cylin_axis= # AIDAN
-    #I_tot_cylin_axis          = I_cylinder_cylin_axis+ I_sperical_caps_cylin_axis+ #parallel axis theoem compoment of caps
+    # volume of cylindrical part 
+    volume_cyl = (np.pi * outer_radius ** 2 * outer_length ) -  (np.pi * inner_radius ** 2 * inner_length )
+   
+    # volume of sperical end caps 
+    volume_sph =   ( 4 / 3 * np.pi * outer_radius ** 3) -  ( 4 / 3 * np.pi * inner_radius ** 3)  
+   
+    # total volume 
+    volume     = volume_cyl + volume_sph
+    
+    # use volume to determine mass split (assume constant density)
+    mass_cyl = mass * (volume_cyl / volume  )
+    mass_sph = mass * (volume_sph / volume  )
+        
+    # MOI about cylindrical axis
+    d = outer_length / 2 + (3/8)*outer_radius
+    I_cylinder_cylin_axis      = mass_cyl *  ( (outer_radius**2 + inner_radius**2)/4 + (outer_length**2)/12 )
+    I_sperical_caps_cylin_axis = 2/5 * 2*mass_sph  *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
+    I_tot_cylin_axis           = I_cylinder_cylin_axis + I_sperical_caps_cylin_axis + 2*mass_sph*(d**2)
 
-    # MOI about longitudinal axis
-    #I_cylinder_long_axis      = # AIDAN
-    #I_sperical_caps_long_axis = # AIDAN
-    #I_tot_long_axis           = I_cylinder_long_axis + I_sperical_caps_long_axis + #parallel axis theoem compoment of caps     
+    # MOI about longitudinal axis (passing through the center of the circle)
+    I_cylinder_long_axis       = 0.5 * mass_cyl * (outer_radius**2 + inner_radius**2)
+    I_sperical_caps_long_axis  = 2/5 * 2*mass_sph *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
+    I_tot_long_axis            = I_cylinder_long_axis + I_sperical_caps_long_axis    
      
     ## depending on orientation of cylindrical tank
     #if:
-        #I[0][0]
-        #I[1][1]
-        #I[2][2]
+        #I[0][0] =
+        #I[1][1] =
+        #I[2][2] =
     #else:
-        #I[0][0]
-        #I[1][1]
-        #I[2][2] 
+        #I[0][0] =
+        #I[1][1] =
+        #I[2][2] =
     
     # ----------------------------------------------------------------------------------------------------------------------    
     # transform moment of inertia to the global system
