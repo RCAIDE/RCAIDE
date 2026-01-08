@@ -86,13 +86,15 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     # ----------------------------------------------------------------------------------------------------------------------    
     # Moment of inertia in local system 
     # ----------------------------------------------------------------------------------------------------------------------
-    #I_cylinder_ax_1      = # AIDAN
-    #I_sperical_caps_ax_1 = # AIDAN
-    #I_tot_ax_1           = I_cylinder_ax_1 + I_sperical_caps_ax_1 + #parallel axis theoem compoment of caps
+    # MOI about cylindrical axis 
+    #I_cylinder_cylin_axis     = # AIDAN
+    #I_sperical_caps_cylin_axis= # AIDAN
+    #I_tot_cylin_axis          = I_cylinder_cylin_axis+ I_sperical_caps_cylin_axis+ #parallel axis theoem compoment of caps
 
-    #I_cylinder_ax_2      = # AIDAN
-    #I_sperical_caps_ax_2 = # AIDAN
-    #I_tot_ax_2           = I_cylinder_ax_2 + I_sperical_caps_ax_2 + #parallel axis theoem compoment of caps     
+    # MOI about longitudinal axis
+    #I_cylinder_long_axis      = # AIDAN
+    #I_sperical_caps_long_axis = # AIDAN
+    #I_tot_long_axis           = I_cylinder_long_axis + I_sperical_caps_long_axis + #parallel axis theoem compoment of caps     
      
     ## depending on orientation of cylindrical tank
     #if:
