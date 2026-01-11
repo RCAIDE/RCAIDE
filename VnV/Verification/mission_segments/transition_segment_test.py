@@ -172,7 +172,7 @@ def TW_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Weights
     weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL()  
-    weights.settings.update_center_of_gravity    = True    
+    weights.settings.overwrite_center_of_gravity    = True    
     analyses.append(weights)
 
     # ------------------------------------------------------------------
@@ -214,8 +214,8 @@ def SR_base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Weights
     weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL() 
-    weights.settings.update_center_of_gravity   = True
-    weights.settings.update_moment_of_inertia   = True
+    weights.settings.overwrite_center_of_gravity   = True
+    weights.settings.overwrite_moment_of_inertia   = True
     analyses.append(weights)
 
     # ------------------------------------------------------------------

@@ -82,12 +82,18 @@ def noise_base_analysis(vehicle):
     analyses = RCAIDE.Framework.Analyses.Vehicle()
     analyses.vehicle = vehicle
 
+    # ------------------------------------------------------------------
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
-    #  Aerodynamics Analysis
+    #  Weights
+    weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
+    analyses.append(weights)
+    
+    # ------------------------------------------------------------------
+    #  Aerodynamics  
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     analyses.append(aerodynamics)
 

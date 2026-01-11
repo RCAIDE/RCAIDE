@@ -60,5 +60,5 @@ class Cargo_Bay(Component):
         ndarray
             3x3 moment of inertia tensor
         """ 
-        _,_ = compute_cuboid_moment_of_inertia(self,self.length,self.width,self.height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = np.array([[0,0,0]]))  
+        _,_ = compute_cuboid_moment_of_inertia(self,self.length,self.width,self.height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = np.array([[0,0,0]]))  
         return       

@@ -100,13 +100,10 @@ def mass_properties(mission):
     """
  
     for i ,  segment in enumerate(mission.segments):
-        if segment.analyses.weights != None: 
-            mass_properties_preprocess_routine(segment,i=i) 
+        if segment.analyses.weights == None:
+            raise AssertionError('Define weights analysis method')
         else:
-            # If there is no analysis defined, it copies over the vehicle from the geometry analysis
-            segment.analyses.weights = RCAIDE.Framework.Analyses.Weights.Weights() 
-            if segment.analyses.vehicle.mass_properties.takeoff == None:
-                segment.analyses.vehicle.mass_properties.takeoff = segment.analyses.vehicle.mass_properties.max_takeoff
+            mass_properties_preprocess_routine(segment,i=i)  
                   
     return 
 
@@ -131,7 +128,7 @@ def mass_properties_preprocess_routine(segment, i=0):
         analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff
     else:
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
-            raise AssertionError('Prescribed payload is greater than maxmimum payload')
+            print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
         
         if analyses.vehicle.mass_properties.max_zero_fuel == None and  analyses.vehicle.mass_properties.max_fuel == None:
             # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW
@@ -180,7 +177,10 @@ def mass_properties_preprocess_routine(segment, i=0):
                         analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
         # Run weights analysis ! 
-        _ = weights_analysis.evaluate(analyses.vehicle)
+        _ = weights_analysis.evaluate(analyses.vehicle) 
+
+        if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
+            print('Warning: Computed payload weight is greater than maxmimum payload weight')        
         
         # Compute OEW 
         if weights_analysis.settings.overwrite_operating_empty_weight: 
@@ -199,7 +199,7 @@ def mass_properties_preprocess_routine(segment, i=0):
                                                                 + analyses.vehicle.mass_properties.max_payload
         
     
-    if weights_analysis.print_weight_analysis_report:
+    if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights:
         if i == 0: 
             print("\nPerforming Weights Analysis")
             print("--------------------------------------------------------")
@@ -241,7 +241,7 @@ def mass_properties_preprocess_routine(segment, i=0):
             print(f"{'Fuel Weight':<25}{analyses.vehicle.mass_properties.fuel:>15.2f}")
             print(f"{'Takeoff Weight':<25}{analyses.vehicle.mass_properties.takeoff:>15.2f}")
             if analyses.weights.settings.overwrite_takeoff_weight == False and orig_takeoff_weight != None:
-                print(f"Above takeoff weight is NOT used in analyses. User defined takeoff weight of {orig_takeoff_weight} is used")
+                print(f"Above takeoff weight is NOT used in analyses. \nUser defined takeoff weight of {orig_takeoff_weight} is used")
             print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
             print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
             print("\n===============================\n")
@@ -256,15 +256,17 @@ def mass_properties_preprocess_routine(segment, i=0):
     else:
         print('\n Note: user defined Takeoff Weight is used for other analyses')
     
-    # Compute Center of Gravity  
-    if weights_analysis.settings.compute_center_of_gravity:
-        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,segment=segment,verbose=weights_analysis.print_weight_analysis_report) 
-    else:
-        _ = analyses.vehicle.mass_properties.center_of_gravity
+    # Compute Center of Gravity   
+    _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,
+                                                overwrite_center_of_gravity=weights_analysis.settings.overwrite_center_of_gravity,
+                                                segment=segment,
+                                                verbose=weights_analysis.print_weight_analysis_report)  
         
-    # Compute Moment of Inertia
-    if weights_analysis.settings.compute_moment_of_inertia:
-        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,segment=segment,verbose=weights_analysis.print_weight_analysis_report) 
+    # Compute Moment of Inertia 
+    _  = compute_vehicle_moment_of_inertia(analyses.vehicle,
+                                           overwrite_moment_of_intertia = weights_analysis.settings.overwrite_moment_of_inertia,
+                                           segment=segment,
+                                           verbose=weights_analysis.print_weight_analysis_report) 
     
     
 def apply_correction_factors(analyses): 

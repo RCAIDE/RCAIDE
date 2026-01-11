@@ -140,8 +140,10 @@ def flight_dynamics(segment):
     MT_w      = segment.state.conditions.frames.wind.total_moment_vector
 
     ang_acc_w = segment.state.conditions.frames.wind.angular_acceleration_vector   
-    m         = segment.state.conditions.weights.vehicle.mass
-    I         = segment.analyses.vehicle.mass_properties.moments_of_inertia.tensor               
+    m         = segment.state.conditions.weights.vehicle.mass 
+    MOI_Ixx   = segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx      
+    MOI_Iyy   = segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy    
+    MOI_Izz   = segment.state.conditions.weights.vehicle.moments_of_inertia_Izz      
             
     if ground_seg_flag:
         vf = segment.velocity_end
@@ -156,9 +158,9 @@ def flight_dynamics(segment):
         if segment.flight_dynamics.force_z: 
             segment.state.residuals.force_z[:,0] = FT_w[:,2]/m[:,0] - a_w[:,2]  
         if  segment.flight_dynamics.moment_x:
-            segment.state.residuals.moment_x[:,0] = MT_w[:,0]/I[0,0] - ang_acc_w[:,0]   
+            segment.state.residuals.moment_x[:,0] = MT_w[:,0]/MOI_Ixx[:,0] - ang_acc_w[:,0]   
         if  segment.flight_dynamics.moment_y:
-            segment.state.residuals.moment_y[:,0] = MT_w[:,1]/I[1,1] - ang_acc_w[:,1]   
+            segment.state.residuals.moment_y[:,0] = MT_w[:,1]/MOI_Iyy[:,0] - ang_acc_w[:,1]   
         if  segment.flight_dynamics.moment_z:
-            segment.state.residuals.moment_z[:,0] = MT_w[:,2]/I[2,2] - ang_acc_w[:,2]
+            segment.state.residuals.moment_z[:,0] = MT_w[:,2]/MOI_Izz[:,0] - ang_acc_w[:,2]
     return

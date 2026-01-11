@@ -115,7 +115,7 @@ def geometry_preprocess_routine(analyses):
             total_seats += cabin.number_of_seats 
         for cabin in fuselage.cabins:     
             if cabin.number_of_passengers == 0: # if cabin class  passengers are not defined, use ratio of cabin to aircraft
-                cabin.number_of_passengers = int((cabin.number_of_seats / total_seats) *  vehicle.number_of_passengers)
+                cabin.number_of_passengers = min(total_seats,int((cabin.number_of_seats / total_seats) *  vehicle.number_of_passengers))
             
     # update landing gear properties 
     for landing_gear in  vehicle.landing_gears:

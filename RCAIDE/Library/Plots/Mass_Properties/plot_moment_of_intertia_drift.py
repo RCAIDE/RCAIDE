@@ -90,15 +90,15 @@ def plot_moment_of_intertia_drift(results,
     
     for i in range(len(results.segments)): 
         time = results.segments[i].conditions.frames.inertial.time[:, 0] / Units.min   
-        I_xx = results.segments[i].conditions.weights.components.moments_of_inertia_Ixx[:,0]    
-        I_xy = results.segments[i].conditions.weights.components.moments_of_inertia_Ixy[:,0]    
-        I_xz = results.segments[i].conditions.weights.components.moments_of_inertia_Ixz[:,0]    
-        I_yx = results.segments[i].conditions.weights.components.moments_of_inertia_Iyx[:,0]    
-        I_yy = results.segments[i].conditions.weights.components.moments_of_inertia_Iyy[:,0]    
-        I_yz = results.segments[i].conditions.weights.components.moments_of_inertia_Iyz[:,0]    
-        I_zx = results.segments[i].conditions.weights.components.moments_of_inertia_Izx[:,0]    
-        I_zy = results.segments[i].conditions.weights.components.moments_of_inertia_Izy[:,0]    
-        I_zz = results.segments[i].conditions.weights.components.moments_of_inertia_Izz[:,0]            
+        I_xx = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Ixx[:,0]    
+        I_xy = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Ixy[:,0]    
+        I_xz = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Ixz[:,0]    
+        I_yx = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Iyx[:,0]    
+        I_yy = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Iyy[:,0]    
+        I_yz = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Iyz[:,0]    
+        I_zx = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Izx[:,0]    
+        I_zy = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Izy[:,0]    
+        I_zz = results.segments[i].conditions.weights.vehicle.moments_of_inertia_Izz[:,0]            
         
       
         axis_1.set_ylabel(r'I_{xx}')

@@ -210,7 +210,7 @@ class Boom(Component):
         RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
             Implementation of the moment of inertia calculation
         """
-        _ , _ = compute_cylinder_moment_of_inertia(self,center_of_gravity) 
+        _ , _ = compute_cylinder_moment_of_inertia(self,self.lengths.total,self.width,center_of_gravity= center_of_gravity) 
         return
     
 

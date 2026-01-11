@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Electric/General_Aviation/operating_empty_weight.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Electric/Drone/operating_empty_weight.py
 # 
 # Created: Sep 2024, M. Clarke 
 
@@ -17,8 +17,6 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 def compute_operating_empty_weight(vehicle, settings=None):
     """"
-
-
         Properties Used:
             N/A
 
@@ -34,7 +32,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         flap_ratio = 0.33
         for wing in vehicle.wings:
             if isinstance(wing, Wings.Main_Wing):
-                wing.flap_ratio = flap_ratio 
+                wing.flap_ratio = flap_ratio
                 
     ##-------------------------------------------------------------------------------             
     # Payload Weight
@@ -44,12 +42,28 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------             
     # Operating Items Weight
     ##------------------------------------------------------------------------------- 
-    W_oper = FLOPS.compute_operating_items_weight(vehicle)    
+    W_oper = Data()
+    W_oper.misc                      = 0.0
+    W_oper.flight_crew               = 0.0
+    W_oper.flight_attendants         = 0.0
+    W_oper.total                     = 0.0
+                                      
     
     ##-------------------------------------------------------------------------------         
     # System Weight
-    ##------------------------------------------------------------------------------- 
-    W_systems = FLOPS.compute_systems_weight(vehicle)
+    ##-------------------------------------------------------------------------------  
+    W_systems                     = Data()
+    W_systems.W_flight_control    = 0.0
+    W_systems.W_hyd_pnu           = 0.0
+    W_systems.W_instruments       = 0.0
+    W_systems.W_avionics          = 0.0
+    W_systems.W_apu               = 0.0
+    W_systems.W_anti_ice          = 0.0
+    W_systems.W_electrical        = 0.0
+    W_systems.W_ac                = 0.0
+    W_systems.W_furnish           = 0.0
+    W_systems.total               = 0.0
+    
       
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -170,7 +184,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------   
     output.empty.structural                      = Data()
     output.empty.structural.wings                = W_main_wing 
-    output.empty.structural.empennage             = W_tail_horizontal +  W_tail_vertical 
+    output.empty.structural.empennage            = W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.fuselage             = W_fuselage_total
     output.empty.structural.landing_gear         = landing_gear.main +  landing_gear.nose  
     output.empty.structural.nacelle              = W_energy_network.W_nacelle 
@@ -195,7 +209,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
                                                     + output.empty.systems.hydraulics + output.empty.systems.furnishings \
                                                     + output.empty.systems.air_conditioner + output.empty.systems.instruments
  
-    output.payload    = payload 
+    output.payload              = payload 
     output.operational_items    = Data()
     output.operational_items    = W_oper 
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 

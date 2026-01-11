@@ -88,5 +88,5 @@ class Main_Landing_Gear(Landing_Gear):
         width  = self.strut_length* 1.1
         height = self.tire_diameter* 1.1   
         
-        _, _  = compute_cuboid_moment_of_inertia(self,length,width,height, inner_length = 0, width_inner = 0, height_inner = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
+        _, _  = compute_cuboid_moment_of_inertia(self,length,width,height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
         return                           

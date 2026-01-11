@@ -35,9 +35,9 @@ def compute_component_moment_of_intertia(component,vehicle,total_MOI,segment=Non
             total_MOI = compute_component_moment_of_intertia(item,vehicle,total_MOI,segment)
     if isinstance(component,Component):
         component.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle.mass_properties.center_of_gravity)
-        update_moment_of_inertia(total_MOI,component,segment, verbose) 
+        update_total_moment_of_inertia(total_MOI,component,segment, verbose) 
         if isinstance(component,RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank):
-            update_moment_of_inertia(total_MOI,component.fuel,segment, verbose) 
+            update_total_moment_of_inertia(total_MOI,component.fuel,segment, verbose) 
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
@@ -45,9 +45,7 @@ def compute_component_moment_of_intertia(component,vehicle,total_MOI,segment=Non
         
     return total_MOI
  
-
-def update_moment_of_inertia(total_MOI,C,segment,verbose):  
-    ones_row      = segment.state.ones_row  
+def update_total_moment_of_inertia(total_MOI,C,segment,verbose):  
     I             = C.mass_properties.moments_of_inertia.tensor
     total_MOI    += I
      
@@ -56,6 +54,7 @@ def update_moment_of_inertia(total_MOI,C,segment,verbose):
         num_column_width  = 6
         print(f"{C.tag.ljust(name_column_width)}",'\t', f"{str(round(I[0][0],2)).ljust(num_column_width)}", '\t', f"{str(round(I[1][1],2)).ljust(num_column_width)}", '\t'f"{str(round(I[2][2],2)).ljust(num_column_width)}", '\t'  )    
     if segment != None:
+        ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.components.moments_of_inertia_Ixx[C.tag] = I[0][0]  * ones_row(1) 
         segment.state.conditions.weights.components.moments_of_inertia_Ixy[C.tag] = I[0][1]  * ones_row(1)
         segment.state.conditions.weights.components.moments_of_inertia_Ixz[C.tag] = I[0][2]  * ones_row(1)

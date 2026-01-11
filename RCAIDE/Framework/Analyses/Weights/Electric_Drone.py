@@ -1,6 +1,6 @@
-# RCAIDE/Framework/Analyses/Weights/Electric.py
+# RCAIDE/Framework/Analyses/Weights/Electric_Drone.py
 #
-# Created:  Feb 2025, S. Shekar
+# Created:  Jun 2025, M. Clarke
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -8,13 +8,13 @@ from RCAIDE.Framework.Core import Data
 from .Weights import Weights
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  
+#  Electric General Aviation weights class
 # ----------------------------------------------------------------------------------------------------------------------
-class Electric(Weights):
-    """ This is class that evaluates the weight of Transport class aircraft
+class Electric_Drone(Weights):
+    """ This is class that evaluates the weight of an electric drone class aircraft
 
     Assumptions:
-        None
+        Uses GA aircraft component buildup
 
     Source:
         N/A
@@ -47,9 +47,9 @@ class Electric(Weights):
 
         Properties Used:
         N/A
-        """
+        """  
         self.method                                        = 'Semi_Empirical'
-        self.aircraft_type                                 = 'General_Aviation'
+        self.aircraft_type                                 = 'Drone'
         self.propulsion_architecture                       = 'Electric' 
         self.settings.advanced_composites                  = False
         self.settings.fuselage_mounted_landing_gear_factor = 1.12 # assumes fuselage mounted landing gear. Change to 1 if False
@@ -63,8 +63,5 @@ class Electric(Weights):
         self.settings.FLOPS.strut_braced_wing_factor       = 0.   # Wing strut bracing factor [0 for no struts, 1 for struts]
         
         # EVTOL settings factor
-        self.settings.miscelleneous_weight_factor          = 1.1
-        
-
-        
+        self.settings.miscelleneous_weight_factor          = 1.0 
      

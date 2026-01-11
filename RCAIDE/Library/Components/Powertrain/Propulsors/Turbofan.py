@@ -155,10 +155,7 @@ class Turbofan(Propulsor):
         self.high_pressure_turbine                      = None 
         self.combustor                                  = None 
         self.core_nozzle                                = None 
-        self.fan_nozzle                                 = None       
-        self.diameter                                   = 0.0      
-        self.length                                     = 0.0
-        self.height                                     = 0.0     # Engine centerline heigh above the ground plane 
+        self.fan_nozzle                                 = None      
         self.plug_diameter                              = 0.1     # dimater of the engine plug
         self.geometry_xe                                = 1.      # Geometry information for the installation effects function
         self.geometry_ye                                = 1.      # Geometry information for the installation effects function

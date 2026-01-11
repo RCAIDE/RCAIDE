@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_vehicle_center_of_gravity(vehicle,segment=None,verbose=True): 
+def compute_vehicle_center_of_gravity(vehicle,overwrite_center_of_gravity=True,segment=None,verbose=True): 
     ''' Computes the moment of inertia of aircraft 
     
     Source:
@@ -34,11 +34,7 @@ def compute_vehicle_center_of_gravity(vehicle,segment=None,verbose=True):
     Outputs:
     I                 - mass moment of inertia matrix    [kg-m^2]
     
-    ''' 
-
-    # unpack 
-    ones_row      = segment.state.ones_row
-
+    '''  
     if verbose:
         print("\n\n=== COMPONENT CENTER OF GRAVITY BREAKDOWN REPORT ===" )    
         print("Component \t \t Mass \t \t Location [[x,y,z]]" )    
@@ -52,18 +48,18 @@ def compute_vehicle_center_of_gravity(vehicle,segment=None,verbose=True):
         item = vehicle[key]  
         total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment ,segment, verbose)    
     
-    # compute center of gravity 
+    # print center of gravity 
     CG =  total_moment / total_mass
     if verbose:
-        print('\n \t ***** Aircraft center of gravity ***** ')
-        print('\t ', CG) 
+        print('\n ***** Aircraft center of gravity ***** ')
+        print(CG) 
  
-    if segment != None:        
-        # store aircraft MOI
+    if segment != None:         
+        ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.vehicle.center_of_gravity = CG * ones_row(1) 
      
     # Update CG if flag is true         
-    if total_mass != 0.0: 
+    if overwrite_center_of_gravity and (total_mass != 0.0): 
         vehicle.mass_properties.center_of_gravity = CG.tolist()
         
     return vehicle.mass_properties.center_of_gravity, total_moment, total_mass 

@@ -172,7 +172,7 @@ class Non_Integral_Tank(Fuel_Tank):
         if self.wing_tag is not None and self.bwb_aft_tank is False:
             if self.geometry_type == 'cylindrical':
                 wing = wings[self.wing_tag]  
-                compute_wing_non_integral_tank_volume(self,wing,fuel_tanks) 
+                compute_wing_non_integral_tank_volume(self,wing,fuel_tanks)             
         elif self.bwb_aft_tank is True:
             if self.bwb_aft_tank == True:
                 wing = wings[self.wing_tag]  
@@ -180,6 +180,8 @@ class Non_Integral_Tank(Fuel_Tank):
         else:
             if self.geometry_type == 'prismatic':
                 compute_prismatic_fuel_tank_volume(self)
+            if self.geometry_type == 'cylindrical':
+                compute_rounded_end_cylindical_tank_volume(self)
         return
     
    
@@ -200,11 +202,24 @@ class Non_Integral_Tank(Fuel_Tank):
         """
         
         if self.geometry_type == 'prismatic': 
-            _, _ = compute_cuboid_moment_of_inertia(self, self.outer_length, self.outer_width, self.outer_height,\
-                                                       self.outer_length- 2*self.wall_thickness, self.outer_width- 2*self.wall_thickness, self.outer_height- 2*self.wall_thickness, center_of_gravity)
+            _, _ = compute_cuboid_moment_of_inertia(self,
+                                                    outer_length=self.lengths.external,
+                                                    outer_width=self.widths.external,
+                                                    outer_height=self.heights.external,\
+                                                    inner_length=self.lengths.external- 2*self.wall_thickness,
+                                                    inner_width=self.widths.external- 2*self.wall_thickness,
+                                                    inner_height=self.heights.external- 2*self.wall_thickness,
+                                                    center_of_gravity=center_of_gravity,
+                                                    fuel_tank=True)
  
         else: 
-            _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, self.outer_length, self.outer_diameter/2, self.outer_length - 2*self.wall_thickness, self.inner_diameter/2, center_of_gravity)
+            _, _ = compute_rounded_end_cylinder_moment_of_inertia(self,
+                                                                  outer_length=self.lengths.external,
+                                                                  outer_radius=self.diameters.external/2,
+                                                                  inner_length=self.lengths.external - 2*self.wall_thickness,
+                                                                  inner_radius=self.diameters.external/2 - self.wall_thickness,
+                                                                  center_of_gravity=center_of_gravity, 
+                                                                  fuel_tank = True)
                 
         return
     
@@ -224,10 +239,10 @@ class Non_Integral_Tank(Fuel_Tank):
             3x3 moment of inertia tensor in kg*m^2 
         """
         if self.geometry_type == 'prismatic': 
-            _  = compute_cuboid_center_of_gravity(self)
+            _  = compute_cuboid_center_of_gravity(self,length=self.lengths.external) 
         else:
-            length = self.outer_length +  self.outer_diameter
-            _, _ = compute_cylinder_center_of_gravity(self, length )
+            length = self.lengths.external +  self.diameters.external
+            _ = compute_cylinder_center_of_gravity(self, length )
             
         return
         

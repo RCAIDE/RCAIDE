@@ -187,7 +187,7 @@ class Generic_Battery_Module(Component):
             3x3 moment of inertia tensor in kg*m^2
  
         """
-        _ , _ = compute_cuboid_moment_of_inertia(self,center_of_gravity, self.length, self.width, self.height, 0, 0, 0, center_of_gravity)
+        _ , _ = compute_cuboid_moment_of_inertia(self, self.length, self.width, self.height, 0, 0, 0, center_of_gravity)
                 
         return
     

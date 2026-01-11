@@ -99,13 +99,13 @@ class Cabin(Component):
         
         for fuselage in  vehicle.fuselages:
             for cabin in fuselage.cabins:
-                if cabin.tag == self.tag: 
+                if cabin.tag == self.tag and fuselage.layout_of_passenger_accommodations != None:
                     _  = compute_cabin_center_of_gravity(self, fuselage) 
             
         for wing in vehicle.wings:
             if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                 for cabin in wing.cabins:
-                    if cabin.tag == self.tag: 
+                    if cabin.tag == self.tag and wing.layout_of_passenger_accommodations != None: 
                         _  = compute_cabin_center_of_gravity(self, wing)                     
         return           
     

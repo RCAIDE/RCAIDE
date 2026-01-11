@@ -94,12 +94,12 @@ def base_analysis(vehicle):
     #  Geometry
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.settings.update_center_of_gravity     = True 
+    geometry.settings.overwrite_center_of_gravity     = True 
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Weights
-    weights         = RCAIDE.Framework.Analyses.Weights.Electric()
+    weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL()
     weights.aircraft_type = "VTOL"
     analyses.append(weights)
 

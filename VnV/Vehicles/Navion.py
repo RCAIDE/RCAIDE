@@ -35,10 +35,11 @@ def vehicle_setup():
     # mass properties
     vehicle.mass_properties.max_takeoff               = 2948 * Units.pounds
     vehicle.mass_properties.takeoff                   = 2948 * Units.pounds
-    vehicle.mass_properties.moments_of_inertia.tensor = np.array([[164627.7,0.0,0.0],[0.0,471262.4,0.0],[0.0,0.0,554518.7]])
+    vehicle.mass_properties.moments_of_inertia.tensor = [[1420.8784,0.0,0.0],[0.0,4067.4,0.0],[0.0,0.0,4785.974]]
     vehicle.mass_properties.center_of_gravity         = [[2.239696797,0,-0.131189711 ]] 
     vehicle.mass_properties.max_fuel                  =  60 * Units.pounds
     vehicle.mass_properties.fuel                      =  60 * Units.pounds
+    vehicle.mass_properties.max_payload               =  700 *  Units.lbs 
      
     vehicle.reference_area                            = 17.112 
     vehicle.number_of_passengers                      = 2 
@@ -349,13 +350,13 @@ def vehicle_setup():
     fuel_tank                                             = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Fuel_Tank() 
     fuel_tank.origin                                      = vehicle.wings.main_wing.origin  
     fuel_tank.origin                                      = [[2.44,0, -0.6]]
-    fuel_tank.fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline() 
-    fuel_tank.fuel.mass_properties.mass                   = 40 *Units.lbs 
+    fuel_tank.fuel                                        = RCAIDE.Library.Attributes.Propellants.Aviation_Gasoline()  
     fuel_tank.fuel.mass_properties.center_of_gravity      = wing.mass_properties.center_of_gravity
+    fuel_tank.fuel.mass_properties.mass                   = 40 *Units.lbs 
     fuel_tank.fuel.origin                                 = [[2.44,0, -0.6]] 
-    fuel_tank.outer_length                                = 0.25
-    fuel_tank.outer_width                                 = 0.1 
-    fuel_tank.outer_height                                = 0.25    
+    fuel_tank.lengths.external                            = 0.5
+    fuel_tank.widths.external                             = 0.5
+    fuel_tank.heights.external                            = 0.15    
     fuel_tank.volume_properties.internal                  = fuel_tank.fuel.mass_properties.mass/fuel_tank.fuel.density
     fuel_line.fuel_tanks.append(fuel_tank)  
     #------------------------------------------------------------------------------------------------------------------------------------  

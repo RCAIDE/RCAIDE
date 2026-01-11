@@ -48,8 +48,7 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
     return total_mass,total_moment
  
 
-def update_mass_and_moment(total_mass,total_moment,C,segment,verbose): 
-    ones_row      = segment.state.ones_row
+def update_mass_and_moment(total_mass,total_moment,C,segment,verbose):  
     global_cg_loc = np.array(C.mass_properties.center_of_gravity) + np.array(C.origin) 
     if isinstance(C,RCAIDE.Library.Components.Landing_Gear.Landing_Gear) or isinstance(C,RCAIDE.Library.Components.Wings.Wing):
         if C.xz_plane_symmetric:
@@ -62,6 +61,7 @@ def update_mass_and_moment(total_mass,total_moment,C,segment,verbose):
     total_mass   += C.mass_properties.mass                 
     total_moment += C.mass_properties.mass*global_cg_loc 
     if segment != None:
+        ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.components.mass[C.tag]                            = C.mass_properties.mass  * ones_row(1)   
         segment.state.conditions.weights.components.global_center_of_gravity[C.tag]        = global_cg_loc * ones_row(1)  
     return total_mass,total_moment

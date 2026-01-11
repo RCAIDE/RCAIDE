@@ -14,7 +14,8 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Rounded-End Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
+def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length = 0,inner_radius = 0,
+                                                   center_of_gravity = np.array([[0,0,0]]), fuel_tank=False):  
     """
     Computes the moment of inertia tensor for a hollow rounded-end cylinder.
 
@@ -135,7 +136,14 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
 
     # Store moment of inertia tensor on component 
-    component.mass_properties.moments_of_inertia.tensor = I_global   
-    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I / mass 
+    component.mass_properties.moments_of_inertia.tensor                 = I_global   
+    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I_global / mass
+    
+    if fuel_tank == True:
+        # unpack fuel 
+        fuel      = component.fuel
+        
+        # compute MOI of fuel assume inner walls of tank is boundary of fuel
+        _,_ = compute_rounded_end_cylinder_moment_of_inertia(fuel,inner_length, inner_radius,center_of_gravity = center_of_gravity,fuel_tank=False)        
         
     return I_global,  mass

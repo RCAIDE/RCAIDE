@@ -199,7 +199,7 @@ def compute_wing_section_moment_of_intertia(m_wing,tr,tt,ct,cr, b, A,dihedral,or
     s        = np.array(center_of_gravity) - np.array(origin_wing) # Vector for the parallel axis theorem
     I_global = np.array(I_RCAIDE) + m_wing * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))
   
-    I_RCAIDE_non_dimensional = I_RCAIDE /m_wing 
+    I_RCAIDE_non_dimensional = I_global /m_wing 
         
     return I_global , I_RCAIDE_non_dimensional
 

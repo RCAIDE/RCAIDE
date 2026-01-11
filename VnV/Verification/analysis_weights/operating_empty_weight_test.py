@@ -41,7 +41,6 @@ def Electric_Transport_Test(update_regression_values, show_figure):
     method_types = ['Raymer', 'FLOPS']
 
     vehicle = electric_transport_setup()
-    vehicle.mass_properties.takeoff = None
     for method_type in method_types:
         print(f'Testing Electric Transport Aircraft Method: {method_type} | Method: {"Complex"}')        
         weight_analysis = RCAIDE.Framework.Analyses.Weights.Electric_Transport()

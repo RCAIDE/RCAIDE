@@ -37,17 +37,8 @@ def update_center_of_gravity(state,vehicle):
                                 Fuel tank origin location [m]
     conditions : RCAIDE.Framework.Core.Data
         Flight conditions and state data
-            - aerodynamics : Data
-                - angles : Data
-                    - alpha : float
-                        Angle of attack [radians]
-            - energy : Data
-                - fuel_lines : dict
-                    Dictionary of fuel line results
-                        - fuel_tanks : dict
-                            Dictionary of fuel tank results
-                                - fuel_mass : float
-                                    Current fuel mass [kg]
+            - aerodynamics : Data 
+            - weights      : Data 
 
     Returns
     -------

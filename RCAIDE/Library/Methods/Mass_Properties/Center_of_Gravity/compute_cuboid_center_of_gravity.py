@@ -6,7 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Cuboid Center of Gravity
 # ---------------------------------------------------------------------------------------------------------------------- 
-def compute_cuboid_center_of_gravity(component, length):
+def compute_cuboid_center_of_gravity(component, length=0):
     
     if component.mass_properties.center_of_gravity[0][0] == 0: 
         component.mass_properties.center_of_gravity[0][0] = .5*length    

@@ -12,7 +12,7 @@ import numpy as  np
 # ------------------------------------------------------------------        
 #  Component moments of inertia (MOI) tensors
 # ------------------------------------------------------------------  
-def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, segment = None,verbose=True): 
+def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True, segment = None,verbose=True): 
     ''' sums the moments of inertia of each component in the aircraft. Components summed: fuselages,
     wings (main, horizontal, tail + others), turbofan engines, batteries, motors, batteries, fuel tanks
 
@@ -31,10 +31,6 @@ def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, se
     Properties Used:
     N/A
     '''    
-
-    # unpack 
-    ones_row      = segment.state.ones_row
-
     if verbose:
         print("\n\n=== COMPONENT MOMENT OF INTERTIA BREAKDOWN REPORT ===" )    
         print("Component \t \t Ixx \t \t Iyy  \t \t Izz" )        
@@ -45,12 +41,25 @@ def compute_vehicle_moment_of_inertia(vehicle, update_moment_of_inertia=True, se
         item       = vehicle[key]  
         total_MOI  = compute_component_moment_of_intertia(item,vehicle,total_MOI ,segment)
     
-    # if simulations is part of a mission, store MOI in results vector 
-    if segment != None:        
-        # store aircraft MOI
-        segment.state.conditions.weights.vehicle.moments_of_inertia = total_MOI * ones_row(1) 
+    # print center of gravity  
+    if verbose:
+        print('\n ***** Aircraft moment of intertia tensor ***** ')
+        print(total_MOI)         
     
-    # Update MOI if flag is true  
-    vehicle.mass_properties.moments_of_inertia.tensor = total_MOI 
+    # if simulations is part of a mission, store MOI in results vector 
+    if segment != None:         
+        ones_row  = segment.state.ones_row   
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx  = total_MOI[0,0] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy  = total_MOI[0,1] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz  = total_MOI[0,2] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Iyx  = total_MOI[1,0] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy  = total_MOI[1,1] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Iyz  = total_MOI[1,2] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Izx  = total_MOI[2,0] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Izy  = total_MOI[2,1] * ones_row(1)
+        segment.state.conditions.weights.vehicle.moments_of_inertia_Izz  = total_MOI[2,2] * ones_row(1)        
+    
+    if overwrite_moment_of_intertia:
+        vehicle.mass_properties.moments_of_inertia.tensor = total_MOI 
         
     return total_MOI 

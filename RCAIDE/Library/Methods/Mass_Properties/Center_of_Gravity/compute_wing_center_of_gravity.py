@@ -44,17 +44,17 @@ def compute_wing_center_of_gravity(component,vehicle):
                 inner_segment = wing.segments[seg_keys[i]]
                 outer_segment = wing.segments[seg_keys[i+1]]
                 v_seg         = compute_segment_volume(wing,inner_segment,outer_segment)
-                wing.segments[seg_keys[i]].volume_properties.gross_volume = v_seg
+                inner_segment.volume_properties.gross_volume = v_seg
                 v_wing        += v_seg
                 m_seg         = v_seg * 1
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
                         outer_wing_flag = True
                     if outer_wing_flag:
-                        total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
+                        total_moment += m_seg * np.array(inner_segment.mass_properties.center_of_gravity)
                         total_mass   += m_seg 
                 else:
-                    total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
+                    total_moment += m_seg * np.array(inner_segment.mass_properties.center_of_gravity)
                     total_mass   += m_seg 
                      
             cg_wing = total_moment / total_mass

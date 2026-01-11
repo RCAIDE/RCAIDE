@@ -166,8 +166,13 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             3x3 moment of inertia tensor in kg*m^2
  
         """
+        
+        outer_length = self.lengths.external
+        outer_radius = self.diameters.external/2
+        inner_length = self.lengths.external - 2*self.wall_thickness
+        inner_radius = self.diameters.internal/2 - self.wall_thickness
          
-        _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, self.outer_length,self.outer_diameter/2, self.outer_length - 2*self.wall_thickness, self.inner_diameter/2, center_of_gravity) 
+        _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, outer_length,outer_radius,inner_length=inner_length, inner_radius=inner_radius, center_of_gravity=center_of_gravity, fuel_tank=True) 
                 
         return
     
@@ -187,7 +192,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             3x3 moment of inertia tensor in kg*m^2 
         """
         
-        length = self.outer_length +  self.outer_diameter
-        _, _ = compute_cylinder_center_of_gravity(self, length )
+        length = self.lengths.external +  self.diameters.external
+        _      = compute_cylinder_center_of_gravity(self, length )
             
         return

@@ -53,9 +53,9 @@ def tube_and_wing_load_trim_test():
     
     save_results(load_data,'taw_loading_results')
  
-    LEMAC_truth = np.array([[-54.67980201,  30.8460146 , 116.37183121],
-                            [-54.67980201,  30.8460146 , 116.37183121],
-                            [-54.67980201,  30.8460146 , 116.37183121]])
+    LEMAC_truth = np.array([[-46.15080215,  41.50726442, 129.16533099],
+                            [-46.15080215,  41.50726442, 129.16533099],
+                            [-46.15080215,  41.50726442, 129.16533099]])
     plot_load_diagram(load_data,save_filename  = "TW_Aircraft_Loading_Trim_Dragram") 
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
@@ -85,9 +85,9 @@ def blended_wing_body_load_trim_test():
     
     save_results(load_data,'bwb_loading_results')
  
-    LEMAC_truth = np.array([[46.41808495, 70.51568162, 94.6132783 ],
-                            [46.41808495, 70.51568162, 94.6132783 ],
-                            [46.41808495, 70.51568162, 94.6132783 ]])
+    LEMAC_truth = np.array([[20.60437225, 38.24854075, 55.89270925],
+                            [20.60437225, 38.24854075, 55.89270925],
+                            [20.60437225, 38.24854075, 55.89270925]])
     plot_load_diagram(load_data,save_filename  = "BWB_Aircraft_Loading_Trim_Dragram") 
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))

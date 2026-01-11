@@ -41,7 +41,7 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------
     #   Weight Breakdown 
     # ------------------------------------------------------------------  
-    weight_analysis                               = RCAIDE.Framework.Analyses.Weights.Conventional()
+    weight_analysis                               = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()
     weight_analysis.aircraft_type                 = "Transport" 
     weight_analysis.method                        = 'Raymer'
     weight_analysis.settings.use_max_fuel_weight  = False  
@@ -57,13 +57,13 @@ def Transport_Aircraft_Test():
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
+    MOI  = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
-    accepted  = np.array([[ 2.64539142e+07,  1.82353123e+05, -1.92421668e+06],
-                          [ 1.82353123e+05,  5.36569644e+07, -3.52133374e+03],
-                          [-1.92421668e+06, -3.52133374e+03,  6.63284593e+07]])
+    accepted  = np.array([[14494941.30523383,  3695324.97106896, -8301872.85025937],
+                          [ 3695324.97106896, 62664455.1577182 ,   795596.5190995 ],
+                          [-8301872.85025937,   795596.5190995 , 61155064.82111214]])    
                           
     MOI_error     = (MOI - accepted) / accepted
 
@@ -104,14 +104,14 @@ def General_Aviation_Test():
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
+    MOI  = compute_vehicle_moment_of_inertia(vehicle, CG_location) 
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI)
 
-    accepted  = np.array([[3264.91698044,  426.30343101,  -86.86442546],
-                          [ 426.30343101, 5351.47514676,   -8.98623559],
-                          [ -86.86442546,   -8.98623559, 4431.61785557]])
+    accepted  = np.array([[3288.10044506,  -10.87334507,  -25.75791262],
+                          [ -10.87334507, 3334.01021502,   -9.44417805],
+                          [ -25.75791262,   -9.44417805, 2447.28386565]])
 
     MOI_error     = MOI - accepted
 
@@ -140,7 +140,7 @@ def EVTOL_Aircraft_Test(update_regression_values):
     # ------------------------------------------------------------------
     #   Weight Breakdown 
     # ------------------------------------------------------------------  
-    weight_analysis          = RCAIDE.Framework.Analyses.Weights.Electric()
+    weight_analysis          = RCAIDE.Framework.Analyses.Weights.Electric_VTOL()
     weight_analysis.method    = 'Physics_Based'
     weight_analysis.aircraft_type = 'VTOL'
     weight_analysis.settings.safety_factor               = 1.5    
@@ -158,13 +158,13 @@ def EVTOL_Aircraft_Test(update_regression_values):
     # ------------------------------------------------------------------
     #   Operating Aircraft MOI
     # ------------------------------------------------------------------    
-    MOI, total_mass = compute_vehicle_moment_of_inertia(vehicle, CG_location)
+    MOI  = compute_vehicle_moment_of_inertia(vehicle, CG_location)
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
-    accepted  = np.array([[ 6471.17439456,   -565.1443644,  -959.96859584],
-                          [ -565.1443644 ,  11907.5075887,  -111.06534981],
-                          [ -959.96859584,  -111.06534981, 16723.33305502]])
+    accepted  = np.array([[ 3.37524078e+03,  1.82297247e+02,  1.19960117e+02],
+                          [ 1.82297247e+02,  7.54931711e+03, -8.04781792e+00],
+                          [ 1.19960117e+02, -8.04781792e+00,  1.02487448e+04]])
     MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors

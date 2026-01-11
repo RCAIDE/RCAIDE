@@ -68,9 +68,9 @@ def weights(segment):
     if segment.state.initials:
         m_initial = segment.state.initials.conditions.weights.vehicle.mass[-1,0]
         
-        segment.state.conditions.weights.vehicle.mass[:,0]                     = segment.state.initials.conditions.weights.vehicle.mass[-1,0] 
-        segment.state.conditions.weights.vehicle.global_center_of_gravity[:,0] = segment.state.initials.conditions.weights.vehicle.global_center_of_gravity[-1,0] 
-        segment.state.conditions.weights.vehicle.mass_rate[0,:]                = segment.state.initials.conditions.weights.vehicle.mass_rate[-1,0]
+        segment.state.conditions.weights.vehicle.mass[:,0]                         = segment.state.initials.conditions.weights.vehicle.mass[-1,0] 
+        segment.state.conditions.weights.vehicle.global_center_of_gravity[:,0]     = segment.state.initials.conditions.weights.vehicle.global_center_of_gravity[-1,0] 
+        segment.state.conditions.weights.vehicle.mass_rate[0,:]                    = segment.state.initials.conditions.weights.vehicle.mass_rate[-1,0]
         segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx[0,:]       = segment.state.initials.conditions.weights.vehicle.moments_of_inertia_Ixx[-1,0]
         segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy[0,:]       = segment.state.initials.conditions.weights.vehicle.moments_of_inertia_Ixy[-1,0]
         segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz[0,:]       = segment.state.initials.conditions.weights.vehicle.moments_of_inertia_Ixz[-1,0]
@@ -82,9 +82,8 @@ def weights(segment):
         segment.state.conditions.weights.vehicle.moments_of_inertia_Izz[0,:]       = segment.state.initials.conditions.weights.vehicle.moments_of_inertia_Izz[-1,0]
                 
         for tag,item in segment.state.initials.conditions.weights.components.mass.items():
-            segment.state.conditions.weights.components.mass[tag][:,0]                     = segment.state.initials.conditions.weights.components.mass[tag][-1,0] 
-            segment.state.conditions.weights.components.global_center_of_gravity[tag][:,0] = segment.state.initials.conditions.weights.components.global_center_of_gravity[tag][-1,0] 
-            #segment.state.conditions.weights.components.mass_rate[tag][:,0]                = segment.state.initials.conditions.weights.components.mass_rate[tag][-1,0]
+            segment.state.conditions.weights.components.mass[tag][:,0]                         = segment.state.initials.conditions.weights.components.mass[tag][-1,0] 
+            segment.state.conditions.weights.components.global_center_of_gravity[tag][:,0]     = segment.state.initials.conditions.weights.components.global_center_of_gravity[tag][-1,0] 
             segment.state.conditions.weights.components.moments_of_inertia_Ixx[tag][:,0]       = segment.state.initials.conditions.weights.components.moments_of_inertia_Ixx[tag][-1,0]
             segment.state.conditions.weights.components.moments_of_inertia_Ixy[tag][:,0]       = segment.state.initials.conditions.weights.components.moments_of_inertia_Ixy[tag][-1,0]
             segment.state.conditions.weights.components.moments_of_inertia_Ixz[tag][:,0]       = segment.state.initials.conditions.weights.components.moments_of_inertia_Ixz[tag][-1,0]
