@@ -307,7 +307,7 @@ def plot_battery_pack_conditions(plot_data,
             # ---------------------------------------------------------------------------
 
             time         = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min 
-            Weight       = results.segments[i].conditions.weights.total_mass[:, 0] * 9.81   
+            Weight       = results.segments[i].conditions.weights.vehicle.mass[:, 0] * 9.81   
             mdot         = results.segments[i].conditions.weights.vehicle.mass_rate[:, 0]
             thrust       = results.segments[i].conditions.frames.body.thrust_force_vector[:, 0]
             sfc          = (mdot / Units.lb) / (thrust / Units.lbf) * Units.hr    

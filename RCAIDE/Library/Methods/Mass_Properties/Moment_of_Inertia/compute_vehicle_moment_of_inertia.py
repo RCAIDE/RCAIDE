@@ -5,7 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_component_moment_of_intertia import compute_component_moment_of_intertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_component_moment_of_inertia import compute_component_moment_of_inertia
 
 # python imports
 import numpy as  np
@@ -39,7 +39,7 @@ def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True,
     total_MOI    = np.zeros((3, 3))               
     for key in vehicle.keys():
         item       = vehicle[key]  
-        total_MOI  = compute_component_moment_of_intertia(item,vehicle,total_MOI ,segment)
+        total_MOI  = compute_component_moment_of_inertia(item,vehicle,total_MOI ,segment)
     
     # print center of gravity  
     if verbose:

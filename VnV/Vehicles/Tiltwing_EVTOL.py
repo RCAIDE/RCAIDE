@@ -359,10 +359,10 @@ def vehicle_setup(new_regression=True):
     # Additional Bus Loads
     #------------------------------------------------------------------------------------------------------------------------------------            
     # Payload   
-    payload                         = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
-    payload.power_draw              = 10. # Watts 
-    payload.mass_properties.mass    = 1.0 * Units.kg
-    bus.payload                     = payload 
+    systems                         = RCAIDE.Library.Components.Powertrain.Systems.Systems()
+    systems.power_draw              = 10. # Watts 
+    systems.mass_properties.mass    = 1.0 * Units.kg
+    bus.systems                     = systems 
                              
     # Avionics                            
     avionics                        = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
