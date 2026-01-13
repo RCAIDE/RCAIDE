@@ -5,6 +5,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
+# RCAIDE imports 
+from RCAIDE.Library.Methods.Geometry.LOPA.compute_layout_of_passenger_accommodations import compute_layout_of_passenger_accommodations
 
 # package imports 
 import numpy as np  
@@ -12,7 +14,11 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Cabin Center of Gravity
 # ---------------------------------------------------------------------------------------------------------------------- 
-def compute_cabin_center_of_gravity(cabin,comp):  
+def compute_cabin_center_of_gravity(cabin,comp):
+
+    if comp.layout_of_passenger_accommodations == None:
+        compute_layout_of_passenger_accommodations(comp)
+        
     num_seats          = cabin.number_of_seats
     num_pax            = cabin.number_of_passengers
     cabin_mass         = cabin.mass_properties.mass

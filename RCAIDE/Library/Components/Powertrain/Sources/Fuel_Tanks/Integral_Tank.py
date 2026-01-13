@@ -176,7 +176,7 @@ class Integral_Tank(Fuel_Tank):
             wing = vehicle.wings[self.wing_tag]  
             _, _ = compute_wing_integral_tank_moment_of_inertia(self, wing, center_of_gravity = center_of_gravity)
         elif self.fuselage_tag != None:
-            fuselage = vehicle.wings[self.fuselage_tag] 
+            fuselage = vehicle.fuselages[self.fuselage_tag] 
             _, _     = compute_fuselage_integral_tank_moment_of_inertia(self, fuselage, center_of_gravity = center_of_gravity)
          
         return

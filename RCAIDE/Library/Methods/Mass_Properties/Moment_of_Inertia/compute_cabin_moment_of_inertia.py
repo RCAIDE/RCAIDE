@@ -5,8 +5,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-# package imports  
-from RCAIDE.Framework.Core import Data
+# RCAIDE imports 
 from RCAIDE.Library.Methods.Geometry.LOPA.compute_layout_of_passenger_accommodations import compute_layout_of_passenger_accommodations
 
 # python imports
@@ -15,7 +14,7 @@ import trimesh
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Cabin Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_cabin_moment_of_inertia(cabin,center_of_gravity = np.array([[0,0,0]])):  
+def compute_cabin_moment_of_inertia(cabin,fuselage,center_of_gravity = np.array([[0,0,0]])):  
     """
     Computes the moment of inertia tensor for the cabin.
     
@@ -36,17 +35,15 @@ def compute_cabin_moment_of_inertia(cabin,center_of_gravity = np.array([[0,0,0]]
     """
 
     # Gather x,y points of the cabin
-    fuselage = Data()
-    fuselage.cabins = Data()
-    fuselage.cabins.append(cabin)
-    compute_layout_of_passenger_accommodations(fuselage)
+    if fuselage.layout_of_passenger_accommodations == None:
+        compute_layout_of_passenger_accommodations(fuselage)
     half_coords = fuselage.layout_of_passenger_accommodations.cabin_area_coordinates # one side of the x,y coordiantes of the cabin
     coordinates = np.vstack([np.hstack([half_coords[:,0], half_coords[::-1,0]]), np.hstack([half_coords[:,1], -1*half_coords[::-1,1]])]) # Full coordinates
 
     # Create 3D mesh of the cabin area
-    L = cabin.height + 0.1 # cabin height with arbitrarily small value to avoid 0 thickness error
-    pts1 = np.column_stack((coordinates[0], coordinates[1], np.zeros(len(coordinates[0]))))   # z = 0 top surface points
-    pts2 = np.column_stack((coordinates[0], coordinates[1], np.full(len(coordinates[0]), L))) # z = L bottom surface points
+    L       = max(cabin.height,0.1) # cabin height with arbitrarily small value to avoid 0 thickness error
+    pts1    = np.column_stack((coordinates[0], coordinates[1], np.zeros(len(coordinates[0]))))   # z = 0 top surface points
+    pts2    = np.column_stack((coordinates[0], coordinates[1], np.full(len(coordinates[0]), L))) # z = L bottom surface points
     all_pts = np.vstack([pts1, pts2]) # Combine all points for the 3D geometry
 
     solid_segment = trimesh.convex.convex_hull(all_pts) # Convex hull → watertight volume mesh
@@ -55,14 +52,15 @@ def compute_cabin_moment_of_inertia(cabin,center_of_gravity = np.array([[0,0,0]]
     solid_segment.apply_transform(R)
 
     # Calculate MOI of the cabin
-    mass = cabin.mass_properties.mass
+    mass                  = cabin.mass_properties.mass
     solid_segment.density = mass / solid_segment.volume # Assign the density of the solid so that the total mass is equal to the assigned mass
-    I = solid_segment.moment_inertia
-    centroid = solid_segment.centroid
+    I                     = solid_segment.moment_inertia
+    centroid              = solid_segment.centroid
     
     # additional MOI due to parallel axis theorm with respect to the centroid of the calcualted shape
     s     = np.array(center_of_gravity) - np.array(centroid) 
     I_par = cabin.mass_properties.mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))             
     
     cabin.mass_properties.moments_of_inertia.tensor =  I + I_par # Combine inertia tensors for the full tensor w.r.t. the designated center of gravity
+
     return  cabin.mass_properties.moments_of_inertia.tensor, cabin.mass_properties.mass

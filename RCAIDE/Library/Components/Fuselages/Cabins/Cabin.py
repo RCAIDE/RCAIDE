@@ -74,7 +74,16 @@ class Cabin(Component):
         RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
             Implementation of the moment of inertia calculation
         """
-        _ , _ = compute_cabin_moment_of_inertia(self,center_of_gravity) 
+        
+        for fuselage in vehicle.fuselages:
+            for cabin in fuselage.cabins:
+                if cabin.tag == self.tag: 
+                    _ , _ = compute_cabin_moment_of_inertia(self,fuselage,center_of_gravity) 
+        for wing in vehicle.wings:
+            if type(wing) == RCAIDE.Library.Components.Wings.Blended_Wing_Body:
+                for cabin in wing.cabins:
+                    if cabin.tag == self.tag: 
+                        _ , _ = compute_cabin_moment_of_inertia(self,wing,center_of_gravity) 
         return
 
     def compute_center_of_gravity(self,vehicle): 
