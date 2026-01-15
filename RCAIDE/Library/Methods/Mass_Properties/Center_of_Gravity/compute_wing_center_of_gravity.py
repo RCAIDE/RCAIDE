@@ -88,16 +88,15 @@ def compute_wing_center_of_gravity(component,vehicle):
                 wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
                 wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[1]
                 wing.mass_properties.center_of_gravity[0][2] = cg_wing[2] 
-
-    # # SAI& AIDAN : WE NEED TO REMOVE THE CODE BELOW
+ 
     if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
-        wing.aft_center_body.origin = [[wing.chords.root - 2/3 * wing.aft_center_body.length,0,0]]    # IMPROVE HOW WE HANDLE THIS ASSUMPTION     
+        wing.aft_center_body.origin = [[wing.chords.root - 2/3 * wing.aft_center_body.length,0,0]]    
         wing.aft_center_body.tag    = 'aft_center_body'
-        wing.center_body.origin     = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]] # IMPROVE HOW WE HANDLE THIS ASSUMPTION    
+        wing.center_body.origin     = [[0.5*(wing.chords.root - wing.aft_center_body.length),0,0]] 
         wing.center_body.tag        = 'center_body' 
         wing.center_body.mass_properties.mass += vehicle.mass_properties.weight_breakdown.empty.systems.furnishings +\
                                                  vehicle.mass_properties.weight_breakdown.empty.systems.air_conditioner +\
-                                                  vehicle.mass_properties.weight_breakdown.operational_items.total  # NO SHOULD BE COMPONENTS   
+                                                  vehicle.mass_properties.weight_breakdown.operational_items.total  
    
        
     return wing.mass_properties.center_of_gravity

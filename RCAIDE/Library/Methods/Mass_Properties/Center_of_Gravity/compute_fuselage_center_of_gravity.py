@@ -9,6 +9,6 @@
 def compute_fuselage_center_of_gravity(fuselage):
     
     if fuselage.mass_properties.center_of_gravity[0][0] == 0: 
-        fuselage.mass_properties.center_of_gravity[0][0] = .51*fuselage.lengths.total# IMPROVE HOW WE HANDLE THIS ASSUMPTION    
+        fuselage.mass_properties.center_of_gravity[0][0] = .51*fuselage.lengths.total 
     
     return fuselage.mass_properties.center_of_gravity

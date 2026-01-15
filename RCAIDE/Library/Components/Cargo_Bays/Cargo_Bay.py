@@ -1,4 +1,4 @@
-# RCAIDE/Library/components/Cargo_Bays/Cargo_Bay.py
+# RCAIDE/Library/Components/Cargo_Bays/Cargo_Bay.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

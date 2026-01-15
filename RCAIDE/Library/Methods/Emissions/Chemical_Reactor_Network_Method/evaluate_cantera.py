@@ -456,13 +456,13 @@ def compute_combustor_performance(results, combustor, Temp_air, Pres_air, mdot_a
 
         # Joint Mixing 
         mixed_gas_joint                     = ct.Solution(gas)             # [-] Joint mode gas object
-        mass.total_flow                     = mdot_total_sm + mdot_total_fm # [kg/s] Total mass flow rate after slow and fast modes
+        total_mass_flow                     = mdot_total_sm + mdot_total_fm # [kg/s] Total mass flow rate after slow and fast modes
         sm_qty                              = ct.Quantity(mixed_gas_sm)    # [-] Slow mode quantity
         fm_qty                              = ct.Quantity(mixed_gas_fm)    # [-] Fast mode quantity
         joint_mixture                       = sm_qty + fm_qty              # [-] Combined mixture
         mixed_gas_joint.TP                  = joint_mixture.T, joint_mixture.P # [K, Pa] Initial temperature and pressure
         mixed_gas_joint.Y                   = joint_mixture.Y              # [-] Initial composition
-        mdot_total_joint                    = mass.total_flow              # [kg/s] Initial total mass flow rate
+        mdot_total_joint                    = total_mass_flow              # [kg/s] Initial total mass flow rate
         reactor_joint                       = ct.ConstPressureReactor(mixed_gas_joint) # [-] Joint mode reactor
         sim_joint                           = ct.ReactorNet([reactor_joint]) # [-] Joint mode reactor network
 
