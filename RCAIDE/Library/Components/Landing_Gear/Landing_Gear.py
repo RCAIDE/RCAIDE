@@ -145,5 +145,5 @@ class Landing_Gear(Component):
         width  = self.strut_length*self.wheel_clearance_factor 
         height = self.tire_diameter*self.wheel_clearance_factor 
         
-        _, _  = compute_cuboid_moment_of_inertia(self,self.origin, self.mass_properties.mass,length,width,height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
+        _, _  = compute_cuboid_moment_of_inertia(self,length,width,height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
         return                   
