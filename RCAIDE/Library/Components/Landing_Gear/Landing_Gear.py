@@ -93,9 +93,6 @@ class Landing_Gear(Component):
         self.width                           = 0 
         self.height                          = 0
         self.wheel_clearance_factor          = 1.1
-        self.xz_plane_symmetric              = False
-        self.xy_plane_symmetric              = False
-        self.yz_plane_symmetric              = False
         self.number_of_gear_types_in_tandem  = None
         self.number_of_wheels_in_gear_type   = None  
         self.gear_extended                   = False
@@ -141,9 +138,14 @@ class Landing_Gear(Component):
             3x3 moment of inertia tensor
         """
 
-        length = self.tire_diameter*self.wheel_clearance_factor 
-        width  = self.strut_length*self.wheel_clearance_factor 
-        height = self.tire_diameter*self.wheel_clearance_factor 
+        if type(self) == RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear():
+            length = self.strut_length*self.wheel_clearance_factor  
+            width  = self.tire_diameter*self.wheel_clearance_factor 
+            height = self.tire_diameter*self.wheel_clearance_factor 
+        else: 
+            length = self.tire_diameter*self.wheel_clearance_factor 
+            width  = self.strut_length*self.wheel_clearance_factor 
+            height = self.tire_diameter*self.wheel_clearance_factor 
         
-        _, _  = compute_cuboid_moment_of_inertia(self,length,width,height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = [[length / 2,width / 2, height / 2]] )  
+        _, _  = compute_cuboid_moment_of_inertia(self,length,width,height, inner_length = 0, inner_width = 0, inner_height = 0, center_of_gravity = center_of_gravity  )  
         return                   

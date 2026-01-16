@@ -16,11 +16,66 @@ import numpy as np
 # Operating Empty Weight 
 # ----------------------------------------------------------------------------------------------------------------------
 def compute_operating_empty_weight(vehicle, settings=None):
-    """"
+    """ Computes the empty weight breakdown of a drone aircraft: 
+
+        Source:
+            None
+            
+       Inputs:
+            vehicle - data dictionary with vehicle properties               [dimensionless]
+            
+       Outputs:
+            output - data dictionary with the weight breakdown of the vehicle
+                        -.structures: structural weight
+                            -.wing: wing weight
+                            -.horizontal_tail: horizontal tail weight
+                            -.vertical_tail: vertical tail weight
+                            -.fuselage: fuselage weight
+                            -.main_landing_gear: main landing gear weight
+                            -.nose_landing_gear: nose landing gear weight
+                            -.nacelle: nacelle weight
+                            -.paint: paint weight
+                            -.total: total strucural weight
+
+                        -.propulsion: propulsive system weight
+                            -.engines: dry engine weight
+                            -.thrust_reversers: thrust reversers weight
+                            -.miscellaneous: miscellaneous items includes electrical system for engines and starter engine
+                            -.fuel_system: fuel system weight
+                            -.total: total propulsive system weight
+
+                        -.systems: system weight
+                            -.control_systems: control system weight
+                            -.apu: apu weight
+                            -.electrical: electrical system weight
+                            -.avionics: avionics weight
+                            -.hydraulics: hydraulics and pneumatic system weight
+                            -.furnish: furnishing weight
+                            -.air_conditioner: air conditioner weight
+                            -.instruments: instrumentation weight
+                            -.anti_ice: anti ice system weight
+                            -.total: total system weight
+
+                        -.payload: payload weight
+                            -.passengers: passenger weight
+                            -.bagage: baggage weight
+                            -.cargo: cargo weight
+                            -.total: total payload weight
+
+                        -.operational_items: operational items weight
+                            -.misc: unusable fuel, engine oil, passenger service weight and cargo containers
+                            -.flight_crew: flight crew weight
+                            -.flight_attendants: flight attendants weight
+                            -.total: total operating items weight
+
+                        -.empty = structures.total + propulsion.total + systems.total
+                        -.operating_empty = empty + operational_items.total
+                        -.zero_fuel_weight = operating_empty + payload.total
+                        -.fuel = vehicle.mass_properties.max_takeoff - zero_fuel_weight
+
+
         Properties Used:
             N/A
-
-        Also creates system components and assigns weights to them. These are appended to the vehicle.
     """
     Wings = RCAIDE.Library.Components.Wings  
 

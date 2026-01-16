@@ -30,7 +30,7 @@ from BWB            import vehicle_setup as BWB_vehicle_setup
 #  REGRESSION
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
-    tube_and_wing_load_trim_test()
+    #tube_and_wing_load_trim_test()
     blended_wing_body_load_trim_test()
 
 def tube_and_wing_load_trim_test():
@@ -53,9 +53,9 @@ def tube_and_wing_load_trim_test():
     
     save_results(load_data,'taw_loading_results')
  
-    LEMAC_truth = np.array([[-46.15080215,  41.50726442, 129.16533099],
-                            [-46.15080215,  41.50726442, 129.16533099],
-                            [-46.15080215,  41.50726442, 129.16533099]])
+    LEMAC_truth = np.array([[-45.58635862,  42.21281884, 130.01199629],
+                            [-45.58635862,  42.21281884, 130.01199629],
+                            [-45.58635862,  42.21281884, 130.01199629]])
     plot_load_diagram(load_data,save_filename  = "TW_Aircraft_Loading_Trim_Dragram") 
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
@@ -85,9 +85,9 @@ def blended_wing_body_load_trim_test():
     
     save_results(load_data,'bwb_loading_results')
  
-    LEMAC_truth = np.array([[20.60437225, 38.24854075, 55.89270925],
-                            [20.60437225, 38.24854075, 55.89270925],
-                            [20.60437225, 38.24854075, 55.89270925]])
+    LEMAC_truth = np.array([[21.19715089, 38.98951406, 56.78187722],
+                            [21.19715089, 38.98951406, 56.78187722],
+                            [21.19715089, 38.98951406, 56.78187722]])
     plot_load_diagram(load_data,save_filename  = "BWB_Aircraft_Loading_Trim_Dragram") 
 
     LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))

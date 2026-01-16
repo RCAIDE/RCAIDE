@@ -9,6 +9,6 @@
 def compute_boom_center_of_gravity(boom):
     
     if boom.mass_properties.center_of_gravity[0][0] == 0: 
-        boom.mass_properties.center_of_gravity[0][0] = .51*boom.lengths.total  
+        boom.mass_properties.center_of_gravity[0][0] = .5*boom.lengths.total  
     
     return boom.mass_properties.center_of_gravity

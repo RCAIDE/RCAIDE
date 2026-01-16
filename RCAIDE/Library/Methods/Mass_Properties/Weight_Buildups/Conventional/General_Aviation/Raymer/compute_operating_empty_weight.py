@@ -16,8 +16,7 @@ import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Gener
 # Main Wing Weight 
 # ---------------------------------------------------------------------------------------------------------------------- 
 def compute_operating_empty_weight(vehicle, settings=None):
-    """ output = RCAIDE.Methods.Weights.Correlations.Tube_Wing.empty(engine,wing,aircraft,fuselage,horizontal,vertical)
-        Computes the empty weight breakdown of a General Aviation type aircraft  
+    """ Computes the empty weight breakdown of a General Aviation type aircraft  
         
         Inputs:
             engine - a data dictionary with the fields:                    

@@ -16,11 +16,8 @@ import numpy as np
 # Operating Empty Weight 
 # ----------------------------------------------------------------------------------------------------------------------
 def compute_operating_empty_weight(vehicle, settings=None):
-    """ Main function that estimates the zero-fuel weight of a transport aircraft:
-        - MTOW = WZFW + FUEL
-        - WZFW = WOE + WPAYLOAD
-        - WOE = WE + WOPERATING_ITEMS
-        - WE = WSTRCT + WPROP + WSYS
+    """ Computes the empty weight breakdown of a transport aircraft:
+    
         Assumptions:
             1) All nacelles are identical
             2) The number of nacelles is the same as the number of engines 
