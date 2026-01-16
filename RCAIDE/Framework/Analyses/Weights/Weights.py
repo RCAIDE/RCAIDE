@@ -57,7 +57,7 @@ class Weights(Analysis):
         self.print_weight_analysis_report                           = True
         self.settings                                               = Data() 
         self.settings.overwrite_center_of_gravity                   = True
-        self.settings.overwrite_moment_of_inertia                   = True
+        self.settings.overwrite_moments_of_inertia                  = True
         self.settings.overwrite_operating_empty_weight              = True
         self.settings.overwrite_takeoff_weight                      = False
     

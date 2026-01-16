@@ -43,7 +43,40 @@ def vehicle_setup(new_regression=True) :
     vehicle.mass_properties.operating_empty     = vehicle.mass_properties.max_takeoff
     vehicle.flight_envelope.ultimate_load       = 5.7   
     vehicle.flight_envelope.positive_limit_load = 3.  
-    vehicle.number_of_passengers                          = 5 
+    vehicle.number_of_passengers                = 5
+    
+
+
+    #------------------------------------------------------------------------------------------------------------------------------------
+    # ##################################################### Landing Gear ################################################################    
+    #------------------------------------------------------------------------------------------------------------------------------------ 
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  = 6  *  Units.inches 
+    main_gear.rim_diameter                   = 3  *  Units.inches 
+    main_gear.tire_width                     = 6  *  Units.inches 
+    main_gear.strut_length                   = 12  * Units.ft 
+    main_gear.wheels                         = 1   
+    main_gear.number_of_gear_types_in_tandem = 1
+    main_gear.number_of_wheels_in_gear_type  = 1
+    main_gear.origin                         = [[4.0,0, 0]]
+    main_gear.fairing                        = True
+    main_gear.xz_plane_symmetric             = True
+    main_gear.gear_extended                  = True
+    vehicle.append_component(main_gear)  
+
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  =  5 *  Units.inches   
+    nose_gear.rim_diameter                   =  3 *  Units.inches 
+    nose_gear.tire_width                     =  5 *  Units.inches 
+    nose_gear.strut_length                   =  6.* Units.ft 
+    nose_gear.wheels                         = 1
+    nose_gear.origin                         = [[0.5,0, 0]]
+    nose_gear.fairing                        = True 
+    nose_gear.gear_extended                  = True
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 1    
+    vehicle.append_component(nose_gear)
+    
         
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  
@@ -225,6 +258,18 @@ def vehicle_setup(new_regression=True) :
     fuselage.areas.front_projected              = 0.14 * Units.feet**2   # change 
     fuselage.effective_diameter                 = 1.276     # change 
     fuselage.differential_pressure              = 0. 
+
+    # define cabin    
+    cabin                                       = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
+    cabin.origin                                = [[1, 0, 0]] 
+    economy_class                               = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
+    economy_class.number_of_seats_abrest        = 2
+    economy_class.number_of_rows                = 3 
+    economy_class.seat_arm_rest_width           = 2 *  Units.inches 
+    economy_class.seat_width                    = 15 *  Units.inches
+    economy_class.aisle_width                   = 0  *  Units.inches   
+    cabin.append_cabin_class(economy_class)
+    fuselage.append_cabin(cabin)
     
     # Segment  
     segment                                     = RCAIDE.Library.Components.Fuselages.Segments.Segment() 
@@ -332,8 +377,7 @@ def vehicle_setup(new_regression=True) :
     boom.areas.wetted                       = 0.018
     boom.areas.front_projected              = 0.018 
     boom.effective_diameter                 = 0.15  
-    boom.differential_pressure              = 0.  
-    boom.xz_plane_symmetric                 = True 
+    boom.differential_pressure              = 0.   
     boom.index                              = 1
     
     # Segment  

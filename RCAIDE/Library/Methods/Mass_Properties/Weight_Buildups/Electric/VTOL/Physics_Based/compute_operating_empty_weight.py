@@ -12,6 +12,7 @@ import RCAIDE
 from RCAIDE.Framework.Core                                          import Units, Data 
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Electric.VTOL.Physics_Based as EVTOL
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Electric.Common as EVTOL_Common
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common import compute_payload_weight
 
 # package imports 
 import numpy as np
@@ -106,8 +107,14 @@ def compute_operating_empty_weight(vehicle,settings = None):
         #-------------------------------------------------------------------------------
         # Fixed Weights
         #-------------------------------------------------------------------------------
+    
+        #-------------------------------------------------------------------------------             
+        # Payload Weight
+        #-------------------------------------------------------------------------------  
+        payload = compute_payload_weight(vehicle, W_passenger=70.   * Units.kg, W_baggage=0 * Units.lbs) 
+        
         weight.seats        = vehicle.number_of_passengers * 15.   * Units.kg
-        weight.passengers   = vehicle.number_of_passengers * 70.   * Units.kg
+        weight.passengers   = payload.passengers
         weight.avionics     = 15.                        * Units.kg
         weight.landing_gear = MTOW * 0.02                * Units.kg
         weight.ECS          = vehicle.number_of_passengers * 7.    * Units.kg
@@ -276,14 +283,22 @@ def compute_operating_empty_weight(vehicle,settings = None):
         # Landing Gear Weight
         #-------------------------------------------------------------------------------
         main_landing_gear =  False
+        nose_landing_gear =  False
         for LG in vehicle.landing_gears:
             if isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear):
-                LG.mass_properties.mass =  weight.landing_gear
+                LG.mass_properties.mass =  2 / 3 *  weight.landing_gear
                 main_landing_gear = True
+            if isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear):
+                LG.mass_properties.mass = 1 / 3 *  weight.landing_gear
+                nose_landing_gear = True
         if main_landing_gear == False:
             main_gear = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
-            main_gear.mass_properties.mass =  weight.landing_gear
+            main_gear.mass_properties.mass =   2 / 3 *weight.landing_gear
             vehicle.landing_gears.append(main_gear)
+        if nose_landing_gear == False:
+            nose_gear = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()
+            nose_gear.mass_properties.mass =  1 / 3 * weight.landing_gear
+            vehicle.landing_gears.append(nose_gear)
 
         #-------------------------------------------------------------------------------
         # Fuselage  Weight

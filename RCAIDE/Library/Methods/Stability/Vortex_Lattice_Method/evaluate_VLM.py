@@ -6,7 +6,7 @@
 
 # RCAIDE imports      
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.update_center_of_gravity import update_center_of_gravity
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moment_of_inertia import update_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moments_of_inertia import update_moments_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Vortex_Lattice
@@ -29,13 +29,15 @@ def evaluate(state,settings,vehicle):
         None  
     """ 
     # update center of gravity
-    update_center_of_gravity(state, vehicle)
+    if settings.update_center_of_gravity: 
+        update_center_of_gravity(state, vehicle)
      
     # update static margin 
     c_ref                                              = vehicle.reference_chord   
     state.conditions.static_stability.static_margin    = (vehicle.neutral_point  - state.conditions.weights.vehicle.global_center_of_gravity) / c_ref          
         
     # update moment of inertia
-    update_moment_of_inertia(state, vehicle)
+    if settings.update_moments_of_inertia: 
+        update_moments_of_inertia(state, vehicle)
     
     return  

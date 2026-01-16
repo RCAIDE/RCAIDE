@@ -399,7 +399,7 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
     for segment in weights_analysis_mission.segments:
         segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
-        segment.analyses.weights.settings.overwrite_moment_of_inertia = True
+        segment.analyses.weights.settings.overwrite_moments_of_inertia= True
         segment.analyses.weights.settings.overwrite_center_of_gravity = True 
         segment.analyses.weights.print_weight_analysis_report         = False
         segment.analyses.vehicle.neutral_point                        = neutral_point        
@@ -438,7 +438,7 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
     for segment in aero_analysis_mission.segments:
         segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
-        segment.analyses.weights.settings.overwrite_moment_of_inertia = False
+        segment.analyses.weights.settings.overwrite_moments_of_inertia= False
         segment.analyses.weights.settings.overwrite_center_of_gravity = False 
         segment.analyses.vehicle.neutral_point                        = neutral_point 
         segment.analyses.stability.settings.compute_neutral_point     = False           

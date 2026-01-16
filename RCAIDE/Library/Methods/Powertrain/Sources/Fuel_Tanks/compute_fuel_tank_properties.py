@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moment_of_inertia import update_fuel_tank_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moments_of_inertia import update_fuel_tank_moment_of_inertia
 
 # package imports 
 import numpy as np  

@@ -34,7 +34,37 @@ def vehicle_setup(new_regression=True):
     vehicle.mass_properties.center_of_gravity   = [[ 2.0144,   0.  ,  0.]] 
     vehicle.number_of_passengers                = 0
     vehicle.flight_envelope.ultimate_load       = 5.7
-    vehicle.flight_envelope.positive_limit_load = 3.     
+    vehicle.flight_envelope.positive_limit_load = 3.
+
+    #------------------------------------------------------------------------------------------------------------------------------------
+    # ##################################################### Landing Gear ################################################################    
+    #------------------------------------------------------------------------------------------------------------------------------------ 
+    main_gear                                = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear() 
+    main_gear.tire_diameter                  = 6  *  Units.inches 
+    main_gear.rim_diameter                   = 3  *  Units.inches 
+    main_gear.tire_width                     = 6  *  Units.inches 
+    main_gear.strut_length                   = 12  * Units.ft 
+    main_gear.wheels                         = 1   
+    main_gear.number_of_gear_types_in_tandem = 1
+    main_gear.number_of_wheels_in_gear_type  = 1
+    main_gear.origin                         = [[4.0,0, 0]]
+    main_gear.fairing                        = True
+    main_gear.xz_plane_symmetric             = True
+    main_gear.gear_extended                  = True
+    vehicle.append_component(main_gear)  
+
+    nose_gear                                = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()   
+    nose_gear.tire_diameter                  =  5 *  Units.inches   
+    nose_gear.rim_diameter                   =  3 *  Units.inches 
+    nose_gear.tire_width                     =  5 *  Units.inches 
+    nose_gear.strut_length                   =  6.* Units.ft 
+    nose_gear.wheels                         = 1
+    nose_gear.origin                         = [[0.5,0, 0]]
+    nose_gear.fairing                        = True 
+    nose_gear.gear_extended                  = True
+    nose_gear.number_of_gear_types_in_tandem = 1
+    nose_gear.number_of_wheels_in_gear_type  = 1    
+    vehicle.append_component(nose_gear)    
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ######################################################## Wings ####################################################################  
@@ -110,17 +140,18 @@ def vehicle_setup(new_regression=True):
     fuselage                                    = RCAIDE.Library.Components.Fuselages.Fuselage()
     fuselage.tag                                = 'fuselage' 
 
-    # define cabin
-    # cabin                                             = RCAIDE.Library.Components.Fuselages.Cabins.Cabin() 
-    # economy_class                                     = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
-    # economy_class.number_of_seats_abrest              = 2
-    # economy_class.number_of_rows                      = 3
-    # economy_class.galley_lavatory_percent_x_locations = []  
-    # economy_class.emergency_exit_percent_x_locations  = []      
-    # economy_class.type_A_exit_percent_x_locations     = [] 
-    # cabin.append_cabin_class(economy_class)
-    # fuselage.append_cabin(cabin)
-       
+    # define cabin    
+    cabin                                       = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
+    cabin.origin                                = [[1, 0, 0]] 
+    economy_class                               = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
+    economy_class.number_of_seats_abrest        = 2
+    economy_class.number_of_rows                = 3 
+    economy_class.seat_arm_rest_width           = 2 *  Units.inches 
+    economy_class.seat_width                    = 15 *  Units.inches
+    economy_class.aisle_width                   = 0  *  Units.inches   
+    cabin.append_cabin_class(economy_class)
+    fuselage.append_cabin(cabin)
+
     fuselage.fineness.nose                      = 1.5 
     fuselage.fineness.tail                      = 4.0 
     fuselage.lengths.nose                       = 1.7   
@@ -206,11 +237,7 @@ def vehicle_setup(new_regression=True):
     fuselage.segments.append(segment)        
 
     # add to vehicle
-    vehicle.append_component(fuselage)    
-   
-    sys                            = RCAIDE.Library.Components.Powertrain.Systems.Systems()
-    sys.mass_properties.mass       = 5 # kg   
-    vehicle.append_component(sys)    
+    vehicle.append_component(fuselage)     
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ########################################################  Energy Network  ######################################################### 
@@ -354,7 +381,8 @@ def vehicle_setup(new_regression=True):
         prop_rotor_propulsor_i.nacelle.origin                        = [origins[i]]
         assigned_propulsor_list.append(prop_rotor_propulsor_i.tag)
         network.propulsors.append(prop_rotor_propulsor_i)  
-    bus.assigned_propulsors = [assigned_propulsor_list]       
+    bus.assigned_propulsors = [assigned_propulsor_list]
+    
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Additional Bus Loads
     #------------------------------------------------------------------------------------------------------------------------------------            

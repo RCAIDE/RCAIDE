@@ -29,10 +29,10 @@ def main():
     # make true only when resizing aircraft. should be left false for regression
     update_regression_values = False
          
-    TW_vehicle  = vehicle_setup(redesign_rotors=update_regression_values)  
+    vehicle  = vehicle_setup(redesign_rotors=update_regression_values)  
         
     # Set up configs
-    configs  = configs_setup(TW_vehicle)
+    configs  = configs_setup(vehicle)
 
     # vehicle analyses
     analyses = analyses_setup(configs)
@@ -112,6 +112,8 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Stability Analysis
     stability         = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
+    stability.settings.update_center_of_gravity             = False  
+    stability.settings.update_moments_of_inertia            = False
     analyses.append(stability)    
 
     # ------------------------------------------------------------------

@@ -264,7 +264,7 @@ def mass_properties_preprocess_routine(segment, i=0):
         
     # Compute Moment of Inertia 
     _  = compute_vehicle_moment_of_inertia(analyses.vehicle,
-                                           overwrite_moment_of_intertia = weights_analysis.settings.overwrite_moment_of_inertia,
+                                           overwrite_moment_of_intertia = weights_analysis.settings.overwrite_moments_of_inertia,
                                            segment=segment,
                                            verbose=weights_analysis.print_weight_analysis_report) 
     

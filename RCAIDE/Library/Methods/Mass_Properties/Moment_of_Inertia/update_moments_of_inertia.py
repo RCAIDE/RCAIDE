@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Stability/Common/update_moment_of_inertia.py
+# RCAIDE/Library/Methods/Stability/Common/update_moments_of_inertia.py
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -10,9 +10,9 @@
 import numpy   as np 
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  update_moment_of_inertia
+#  update_moments_of_inertia
 # ---------------------------------------------------------------------------------------------------------------------- 
-def update_moment_of_inertia(state,vehicle):
+def update_moments_of_inertia(state,vehicle):
     """
     Updates the vehicle center of gravity accounting for fuel consumption during flight.
 
@@ -84,8 +84,7 @@ def update_moment_of_inertia(state,vehicle):
         MOI_Iyz  += conditions.weights.components.moments_of_inertia_Iyz[item]
         MOI_Izx  += conditions.weights.components.moments_of_inertia_Izx[item]
         MOI_Izy  += conditions.weights.components.moments_of_inertia_Izy[item]
-        MOI_Izz  += conditions.weights.components.moments_of_inertia_Izz[item] 
-        
+        MOI_Izz  += conditions.weights.components.moments_of_inertia_Izz[item]
          
     conditions.weights.vehicle.moments_of_inertia_Ixx  = MOI_Ixx 
     conditions.weights.vehicle.moments_of_inertia_Ixy  = MOI_Ixy 

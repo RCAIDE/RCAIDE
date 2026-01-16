@@ -117,8 +117,7 @@ def base_analysis(vehicle, configs):
     aerodynamics.stability_derivatives.CM_delta_f   =  0.0001  
     analyses.append(aerodynamics) 
      
-    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
-    stability.settings.overwrite_center_of_gravity  = False
+    stability                                       = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()   
     analyses.append(stability)
 
     # ------------------------------------------------------------------

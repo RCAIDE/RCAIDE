@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Mass_Properties/Moment_of_Intertia/sum_component_moments_of_intertia.py 
+# RCAIDE/Library/Methods/Mass_Properties/Moment_of_Intertia/sum_component_moments_of_inertia.py 
 # 
 # Created:  Jul 2025, M. Clarke 
 
