@@ -193,7 +193,7 @@ class Boom(Component):
 
     def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """
-        Computes the moment of inertia tensor for the fuselage.
+        Computes the moment of inertia tensor for the boom.
 
         Parameters
         ----------
@@ -210,13 +210,13 @@ class Boom(Component):
         RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
             Implementation of the moment of inertia calculation
         """
-        _ , _ = compute_cylinder_moment_of_inertia(self,self.lengths.total,self.width,center_of_gravity= center_of_gravity) 
+        _ , _ = compute_cylinder_moment_of_inertia(self,outer_length=self.lengths.total,outer_radius=self.width/2,center_of_gravity= center_of_gravity) 
         return
     
 
     def compute_center_of_gravity(self,vehicle): 
         """
-        Computes the center of gravity for the fuselage.
+        Computes the center of gravity for the boom.
 
         Parameters
         ----------

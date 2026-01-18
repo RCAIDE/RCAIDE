@@ -37,7 +37,7 @@ def compute_vehicle_center_of_gravity(vehicle,overwrite_center_of_gravity=True,s
     '''  
     if verbose:
         print("\n\n=== COMPONENT CENTER OF GRAVITY BREAKDOWN REPORT ===" )    
-        print("Component \t \t Mass \t \t Location [[x,y,z]]" )    
+        print("Component \t \t \t Mass \t \t C.G. Location [[x,y,z]]" )    
     
     #==========================================================================================
     # Compute the center of gravity of all components  
@@ -53,10 +53,13 @@ def compute_vehicle_center_of_gravity(vehicle,overwrite_center_of_gravity=True,s
     if verbose:
         print('\n ***** Aircraft center of gravity ***** ')
         print(CG) 
+        mass_percentage = (total_mass[0] / vehicle.mass_properties.takeoff) * 100
+        print('Mass percentage used in C.G and MOI calculations: ', round(mass_percentage,2), '%')
+        
  
     if segment != None:         
         ones_row  = segment.state.ones_row  
-        segment.state.conditions.weights.vehicle.center_of_gravity = CG * ones_row(1) 
+        segment.state.conditions.weights.vehicle.global_center_of_gravity = CG * ones_row(1)
      
     # Update CG if flag is true         
     if overwrite_center_of_gravity and (total_mass != 0.0): 

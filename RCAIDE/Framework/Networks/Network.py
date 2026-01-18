@@ -473,11 +473,6 @@ class Network(Component):
         
         return segment
     
-    def compute_center_of_gravity(self, vehicle):
-        return 
-
-    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]):
-        return  
 # ----------------------------------------------------------------------
 #  Component Container
 # ---------------------------------------------------------------------- 

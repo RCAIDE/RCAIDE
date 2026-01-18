@@ -72,13 +72,12 @@ class Component(Data):
         self.xz_plane_symmetric = False
         self.xy_plane_symmetric = False
         self.yz_plane_symmetric = False
-        
-    
-    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]):   
-        return
+         
+    def compute_center_of_gravity(self, vehicle):
+        return 
 
-    def compute_center_of_gravity(self,vehicle):  
-        return
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]):
+        return      
     
     
         

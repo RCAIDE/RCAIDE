@@ -35,6 +35,7 @@ def vehicle_setup(new_regression=True):
     vehicle.number_of_passengers                = 0
     vehicle.flight_envelope.ultimate_load       = 5.7
     vehicle.flight_envelope.positive_limit_load = 3.
+    vehicle.number_of_passengers                = 1
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##################################################### Landing Gear ################################################################    
@@ -144,8 +145,8 @@ def vehicle_setup(new_regression=True):
     cabin                                       = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
     cabin.origin                                = [[1, 0, 0]] 
     economy_class                               = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
-    economy_class.number_of_seats_abrest        = 2
-    economy_class.number_of_rows                = 3 
+    economy_class.number_of_seats_abrest        = 1
+    economy_class.number_of_rows                = 1 
     economy_class.seat_arm_rest_width           = 2 *  Units.inches 
     economy_class.seat_width                    = 15 *  Units.inches
     economy_class.aisle_width                   = 0  *  Units.inches   

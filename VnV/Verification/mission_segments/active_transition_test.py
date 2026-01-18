@@ -44,7 +44,7 @@ def main():
     results = missions.base_mission.evaluate()  
     
     # Extract sample values from computation    
-    transition_throttle            = results.segments.departure_transition_3.conditions.energy.propulsors['prop_rotor_propulsor_1'].throttle[1][0]
+    transition_throttle            = results.segments.departure_transition_3.conditions.energy.propulsors['front_port_propulsor'].throttle[1][0]
     
     #print values for resetting regression
     show_vals = True
@@ -95,6 +95,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.settings.overwrite_center_of_gravity     = True 
+    geometry.settings.unique_geometry                 = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
@@ -114,6 +115,7 @@ def base_analysis(vehicle):
     stability         = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
     stability.settings.update_center_of_gravity             = False  
     stability.settings.update_moments_of_inertia            = False
+    stability.settings.compute_neutral_point                = False
     analyses.append(stability)    
 
     # ------------------------------------------------------------------
@@ -146,27 +148,26 @@ def mission_setup(analyses):
     # unpack Segments module
     Segments = RCAIDE.Framework.Mission.Segments  
     base_segment = Segments.Segment() 
-    base_segment.state.numerics.solver.type = 'optimize' 
     
 
-    beta_cruise = analyses.low_speed_transition.vehicle.networks.electric.propulsors.prop_rotor_propulsor_1.rotor.cruise.design_blade_pitch_command
+    beta_cruise = analyses.low_speed_transition.vehicle.networks.electric.propulsors.front_port_propulsor.rotor.cruise.design_blade_pitch_command
     
     # ------------------------------------------------------------------
     #  Second Transition Segment
     # ------------------------------------------------------------------ 
     segment                           = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
-    segment.tag                       = "departure_transition_3"  
+    segment.tag                       = "departure_transition_1"  
     segment.analyses.extend(analyses.high_speed_transition)   
     segment.air_speed_start           = 90.  * Units['mph']  
     segment.air_speed_end             = 91.  * Units['mph']  
     segment.acceleration              = 9.81/5 
     segment.true_course               = 90 * Units.degree
-    segment.altitude                  = 1000 * Units.ft
-    
+    segment.altitude                  = 1000 * Units.ft 
 
-    segment.state.numerics.solver.step_size                 = 1E-2 
-    segment.state.numerics.solver.tolerance_solution        = 1E-6 
-    segment.state.numerics.solver.objective                 = None
+    segment.state.numerics.solver.type                      = 'optimize' 
+    segment.state.numerics.solver.step_size                 = 1E-3 
+    segment.state.numerics.solver.tolerance_solution        = 1E-2
+    segment.state.numerics.solver.objective                 = 'energy' 
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
@@ -174,16 +175,19 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.assigned_control_variables.throttle.active                                = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
-                                                                                          'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]  
+    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['front_port_propulsor','front_starboard_propulsor',
+                                                                                           'outboard_port_propulsor','outboard_starboard_propulsor', 
+                                                                                           'rear_port_propulsor','rear_starboard_propulsor']]  
     
     segment.assigned_control_variables.thrust_vector_angle.active                     = True        
-    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        =  [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
-                                                                                        'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]   
+    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        = [['front_port_propulsor','front_starboard_propulsor',
+                                                                                           'outboard_port_propulsor','outboard_starboard_propulsor', 
+                                                                                           'rear_port_propulsor','rear_starboard_propulsor']]   
     
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
-    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
-                                                                                        'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
+    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor',
+                                                                                           'outboard_port_rotor','outboard_starboard_rotor', 
+                                                                                           'rear_port_rotor','rear_starboard_rotor']]   
     segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
      
     mission.append_segment(segment)
@@ -194,18 +198,18 @@ def mission_setup(analyses):
     #  Second Transition Segment
     # ------------------------------------------------------------------ 
     segment                           = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
-    segment.tag                       = "departure_transition_3"  
+    segment.tag                       = "departure_transition_2"  
     segment.analyses.extend(analyses.high_speed_transition)    
     segment.acceleration              = 9.81/5 
     segment.true_course               = 90 * Units.degree
     segment.altitude                  = 1000 * Units.ft
     segment.air_speed_start           = 91.  * Units['mph']   
-    segment.air_speed_end             = 92.  * Units['mph']
-    
+    segment.air_speed_end             = 92.  * Units['mph'] 
 
-    segment.state.numerics.solver.step_size                 = 1E-2 
-    segment.state.numerics.solver.tolerance_solution        = 1E-6 
-    segment.state.numerics.solver.objective                 = None
+    segment.state.numerics.solver.type                      = 'optimize' 
+    segment.state.numerics.solver.step_size                 = 1E-3 
+    segment.state.numerics.solver.tolerance_solution        = 1E-2
+    segment.state.numerics.solver.objective                 = 'energy' 
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                       = True  
@@ -213,16 +217,19 @@ def mission_setup(analyses):
     
     # define flight controls 
     segment.assigned_control_variables.throttle.active                                = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
-                                                                                          'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]  
+    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['front_port_propulsor','front_starboard_propulsor',
+                                                                                           'outboard_port_propulsor','outboard_starboard_propulsor', 
+                                                                                           'rear_port_propulsor','rear_starboard_propulsor']]  
     
     segment.assigned_control_variables.thrust_vector_angle.active                     = True        
-    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        =  [['prop_rotor_propulsor_1','prop_rotor_propulsor_2','prop_rotor_propulsor_3',
-                                                                                        'prop_rotor_propulsor_4','prop_rotor_propulsor_5','prop_rotor_propulsor_6']]   
+    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        =  [['front_port_propulsor','front_starboard_propulsor',
+                                                                                           'outboard_port_propulsor','outboard_starboard_propulsor', 
+                                                                                           'rear_port_propulsor','rear_starboard_propulsor']] 
     
     segment.assigned_control_variables.blade_pitch_command.active                     = True        
-    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['prop_rotor_1','prop_rotor_2','prop_rotor_3',
-                                                                                        'prop_rotor_4','prop_rotor_5','prop_rotor_6']]   
+    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor',
+                                                                                           'outboard_port_rotor','outboard_starboard_rotor', 
+                                                                                           'rear_port_rotor','rear_starboard_rotor']]  
     segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
      
     mission.append_segment(segment)

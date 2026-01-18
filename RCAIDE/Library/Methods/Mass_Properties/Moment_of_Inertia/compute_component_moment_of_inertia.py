@@ -42,6 +42,9 @@ def compute_component_moment_of_inertia(component,vehicle,total_MOI,segment=None
             item = component[key]
             if isinstance(item,Component.Container):
                 total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment)
+            if isinstance(item,Component):
+                item.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle.mass_properties.center_of_gravity)
+                update_total_moment_of_inertia(total_MOI,item,segment, verbose) 
         
     return total_MOI
  
@@ -52,7 +55,7 @@ def update_total_moment_of_inertia(total_MOI,C,segment,verbose):
     if verbose:
         name_column_width = 20
         num_column_width  = 6
-        print(f"{C.tag.ljust(name_column_width)}",'\t', f"{str(round(I[0][0],2)).ljust(num_column_width)}", '\t', f"{str(round(I[1][1],2)).ljust(num_column_width)}", '\t'f"{str(round(I[2][2],2)).ljust(num_column_width)}", '\t'  )    
+        print(f"{C.tag.ljust(name_column_width)}",'\t \t', f"{str(round(I[0][0],2)).ljust(num_column_width)}", '\t', f"{str(round(I[1][1],2)).ljust(num_column_width)}", '\t'f"{str(round(I[2][2],2)).ljust(num_column_width)}", '\t'  )    
     if segment != None:
         ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.components.moments_of_inertia_Ixx[C.tag] = I[0][0]  * ones_row(1) 

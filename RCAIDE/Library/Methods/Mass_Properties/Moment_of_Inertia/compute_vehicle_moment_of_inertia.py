@@ -33,7 +33,7 @@ def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True,
     '''    
     if verbose:
         print("\n\n=== COMPONENT MOMENT OF INTERTIA BREAKDOWN REPORT ===" )    
-        print("Component \t \t Ixx \t \t Iyy  \t \t Izz" )        
+        print("Component \t \t \t Ixx \t \t Iyy  \t \t Izz" )        
      
     # Compute the moment of intertia of all components   
     total_MOI    = np.zeros((3, 3))               
@@ -44,8 +44,8 @@ def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True,
     # print center of gravity  
     if verbose:
         print('\n ***** Aircraft moment of intertia tensor ***** ')
-        print(total_MOI)         
-    
+        print(total_MOI) 
+ 
     # if simulations is part of a mission, store MOI in results vector 
     if segment != None:         
         ones_row  = segment.state.ones_row   

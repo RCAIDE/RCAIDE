@@ -102,7 +102,7 @@ def base_analysis(vehicle):
 
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.settings.unique_geometry               = True
+    geometry.settings.unique_geometry               = True # just for regression purposes
     geometry.settings.overwrite_reference           = False
     analyses.append(geometry)
     

@@ -45,6 +45,9 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
             item = component[key]
             if isinstance(item,Component.Container):
                 total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
+            if isinstance(item,Component):
+                item.compute_center_of_gravity(vehicle)
+                update_mass_and_moment(total_mass,total_moment,item,segment,verbose)   
     return total_mass,total_moment
  
 
@@ -56,7 +59,7 @@ def update_mass_and_moment(total_mass,total_moment,C,segment,verbose):
     if verbose:
         name_column_width = 20
         num_column_width  = 6
-        print(f"{C.tag.ljust(name_column_width)}",'\t', f"{str(round(C.mass_properties.mass,2)).ljust(num_column_width)}", '\t',  global_cg_loc     )
+        print(f"{C.tag.ljust(name_column_width)}",'\t \t', f"{str(round(C.mass_properties.mass,2)).ljust(num_column_width)}", '\t',  global_cg_loc     )
     total_mass   += C.mass_properties.mass                 
     total_moment += C.mass_properties.mass*global_cg_loc 
     if segment != None:

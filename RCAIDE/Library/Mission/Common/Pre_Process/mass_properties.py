@@ -9,7 +9,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_vehicle_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity 
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity
+# python imports
+from copy import deepcopy 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -102,12 +104,33 @@ def mass_properties(mission):
     for i ,  segment in enumerate(mission.segments):
         if segment.analyses.weights == None:
             raise AssertionError('Define weights analysis method')
-        else:
-            mass_properties_preprocess_routine(segment,i=i)  
-                  
+        else: 
+            if i == 0 or segment.analyses.geometry.settings.unique_geometry: 
+                mass_properties_preprocess_routine(segment) 
+            else:
+                vehicle_0 = deepcopy(segment.analyses.vehicle)
+                segment.analyses.vehicle = deepcopy(mission.segments[i-1].analyses.vehicle)
+                for wing in segment.analyses.vehicle.wings:
+                    for control_surface in wing.control_surfaces:
+                        control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
+                for landing_gear in segment.analyses.vehicle.landing_gears:
+                    landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended 
+                for network in segment.analyses.vehicle.networks: 
+                    for bus in network.busses:
+                        bus.active = vehicle_0.networks[network.tag].busses[bus.tag].active
+                    for propulsor in network.propulsors:
+                        if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
+                            propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
+                            propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity        
+                            propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
+                            propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity 
+                        if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
+                            propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
+                            propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
+                            propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command  
     return 
 
-def mass_properties_preprocess_routine(segment, i=0):
+def mass_properties_preprocess_routine(segment):
     analyses         = segment.analyses
     weights_analysis = analyses.weights 
     if analyses.vehicle.mass_properties.max_takeoff == None:
@@ -116,24 +139,21 @@ def mass_properties_preprocess_routine(segment, i=0):
     orig_takeoff_weight = analyses.vehicle.mass_properties.takeoff
     
     if weights_analysis.aircraft_type == None :
-        # If an aircraft type is not defined analysis cannot be performed, and the maximum take off weight will be assumed to be the takeoff weight
-        if i == 0: 
-            print('\n Warning: Weight Analysis type not defined, using Maximum Takeoff Weight.')
+        # If an aircraft type is not defined analysis cannot be performed, and the maximum take off weight will be assumed to be the takeoff weight 
+        print('\n Warning: Weight Analysis type not defined, using Maximum Takeoff Weight.')
         analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff  
     
     elif analyses.vehicle.mass_properties.payload == None and analyses.vehicle.mass_properties.fuel == None:
-        # Without either fuel on board or payload on board, takeoff weight cannot be computed thus the takeoff weight is assumed to be max takeoff
-        if i == 0: 
-            print('Warning: Payload or fuel weight not defined; assuming takeoff weight is MTOW')
+        # Without either fuel on board or payload on board, takeoff weight cannot be computed thus the takeoff weight is assumed to be max takeoff 
+        print('Warning: Payload or fuel weight not defined; assuming takeoff weight is MTOW')
         analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff
     else:
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
             print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
         
         if analyses.vehicle.mass_properties.max_zero_fuel == None and  analyses.vehicle.mass_properties.max_fuel == None:
-            # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW
-            if i == 0: 
-                print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
+            # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
+            print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
             # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
             compute_max_fuel = False
             if analyses.vehicle.mass_properties.max_fuel == None:
@@ -199,58 +219,56 @@ def mass_properties_preprocess_routine(segment, i=0):
                                                                 + analyses.vehicle.mass_properties.max_payload
         
     
-    if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights:
-        if i == 0: 
-            print("\nPerforming Weights Analysis")
-            print("--------------------------------------------------------")
-            print("Propulsion Architecture:", weights_analysis.propulsion_architecture)
-            print("Aircraft Type          :", weights_analysis.aircraft_type)
-            print("Method                 :", weights_analysis.method)
-            def print_section(title, data):
-                print(f"{title}")
-                print(f"{'Component':<25}{'Weight (kg)':>15}")
-                print("-" * 40)
-                for item, value in data.items():
-                    if item != 'total':
-                        print(f"{item.replace('_', ' ').title():<25}{value:>15.2f}")
-                print("-" * 40)
-                print(f"{'Total':<25}{data.get('total', 0):>15.2f}\n")
-
-            print("\n=== WEIGHT BREAKDOWN REPORT ===\n")
-
-            # Extract data
-            structural = analyses.vehicle.mass_properties.weight_breakdown.empty.get('structural', {})
-            propulsion = analyses.vehicle.mass_properties.weight_breakdown.empty.get('propulsion', {})
-            systems    = analyses.vehicle.mass_properties.weight_breakdown.empty.get('systems', {})
-            payload    = analyses.vehicle.mass_properties.weight_breakdown.get('payload', {})
-            ops        = analyses.vehicle.mass_properties.weight_breakdown.get('operational_items', {})
-
-            # Print sections
-            print_section("Structural Components:", structural)
-            print_section("Propulsion Components:", propulsion)
-            print_section("Systems:", systems)
-            print_section("Payload Breakdown:", payload)
-            print_section("Operational Items Breakdown:", ops)
-
-            # Overall Summary
-            print("Overall Summary:")
-            print(f"{'Metric':<25}{'Weight (kg)':>15}")
+    if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights: 
+        print("\nPerforming Weights Analysis")
+        print("--------------------------------------------------------")
+        print("Propulsion Architecture:", weights_analysis.propulsion_architecture)
+        print("Aircraft Type          :", weights_analysis.aircraft_type)
+        print("Method                 :", weights_analysis.method)
+        def print_section(title, data):
+            print(f"{title}")
+            print(f"{'Component':<25}{'Weight (kg)':>15}")
             print("-" * 40)
-            print(f"{'Operating Empty Weight':<25}{analyses.vehicle.mass_properties.operating_empty:>15.2f}")
-            print(f"{'Payload Weight':<25}{analyses.vehicle.mass_properties.payload:>15.2f}")
-            print(f"{'Fuel Weight':<25}{analyses.vehicle.mass_properties.fuel:>15.2f}")
-            print(f"{'Takeoff Weight':<25}{analyses.vehicle.mass_properties.takeoff:>15.2f}")
-            if analyses.weights.settings.overwrite_takeoff_weight == False and orig_takeoff_weight != None:
-                print(f"Above takeoff weight is NOT used in analyses. \nUser defined takeoff weight of {orig_takeoff_weight} is used")
-            print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
-            print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
-            print("\n===============================\n")
+            for item, value in data.items():
+                if item != 'total':
+                    print(f"{item.replace('_', ' ').title():<25}{value:>15.2f}")
+            print("-" * 40)
+            print(f"{'Total':<25}{data.get('total', 0):>15.2f}\n")
+
+        print("\n=== WEIGHT BREAKDOWN REPORT ===\n")
+
+        # Extract data
+        structural = analyses.vehicle.mass_properties.weight_breakdown.empty.get('structural', {})
+        propulsion = analyses.vehicle.mass_properties.weight_breakdown.empty.get('propulsion', {})
+        systems    = analyses.vehicle.mass_properties.weight_breakdown.empty.get('systems', {})
+        payload    = analyses.vehicle.mass_properties.weight_breakdown.get('payload', {})
+        ops        = analyses.vehicle.mass_properties.weight_breakdown.get('operational_items', {})
+
+        # Print sections
+        print_section("Structural Components:", structural)
+        print_section("Propulsion Components:", propulsion)
+        print_section("Systems:", systems)
+        print_section("Payload Breakdown:", payload)
+        print_section("Operational Items Breakdown:", ops)
+
+        # Overall Summary
+        print("Overall Summary:")
+        print(f"{'Metric':<25}{'Weight (kg)':>15}")
+        print("-" * 40)
+        print(f"{'Operating Empty Weight':<25}{analyses.vehicle.mass_properties.operating_empty:>15.2f}")
+        print(f"{'Payload Weight':<25}{analyses.vehicle.mass_properties.payload:>15.2f}")
+        print(f"{'Fuel Weight':<25}{analyses.vehicle.mass_properties.fuel:>15.2f}")
+        print(f"{'Takeoff Weight':<25}{analyses.vehicle.mass_properties.takeoff:>15.2f}")
+        if analyses.weights.settings.overwrite_takeoff_weight == False and orig_takeoff_weight != None:
+            print(f"Above takeoff weight is NOT used in analyses. \nUser defined takeoff weight of {orig_takeoff_weight} is used")
+        print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
+        print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
+        print("\n===============================\n")
     if analyses.weights.settings.overwrite_takeoff_weight  == False and orig_takeoff_weight != None:
         analyses.vehicle.mass_properties.takeoff = orig_takeoff_weight
         if analyses.vehicle.mass_properties.takeoff > analyses.vehicle.mass_properties.max_takeoff:
-            # Lets the user know that the takeoff weight is greater than the maximum takeoff weight defined. Will still continue with simulation
-            if i == 0: 
-                print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
+            # Lets the user know that the takeoff weight is greater than the maximum takeoff weight defined. Will still continue with simulation            
+            print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
     elif orig_takeoff_weight == None:
         print('\n Warning: takeoff weight is None. Using weight buildup takeoff weight')
     else:

@@ -14,7 +14,6 @@ from RCAIDE.Library.Methods.Powertrain.Propulsors.Electric_Rotor  import design_
 from RCAIDE.Library.Plots                                         import * 
 from RCAIDE import  load 
 from RCAIDE import  save  
-from RCAIDE.Framework.External_Interfaces.OpenVSP.export_vsp_vehicle  import export_vsp_vehicle 
 
 import os
 import numpy as np 
@@ -59,6 +58,7 @@ def vehicle_setup(redesign_rotors=True) :
     vehicle.flight_envelope.ultimate_load             = 5.7   
     vehicle.flight_envelope.positive_limit_load       = 3.  
     vehicle.number_of_passengers                      = 5
+    vehicle.neutral_point                             = 2.600 
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##################################################### Landing Gear ################################################################    
@@ -71,7 +71,7 @@ def vehicle_setup(redesign_rotors=True) :
     main_gear.wheels                         = 1   
     main_gear.number_of_gear_types_in_tandem = 1
     main_gear.number_of_wheels_in_gear_type  = 1
-    main_gear.origin                         = [[4.0,0, 0]]
+    main_gear.origin                         = [[3.5,0, 0]]
     main_gear.fairing                        = True
     main_gear.xz_plane_symmetric             = True
     main_gear.gear_extended                  = True
@@ -83,7 +83,7 @@ def vehicle_setup(redesign_rotors=True) :
     nose_gear.tire_width                     =  5 *  Units.inches 
     nose_gear.strut_length                   =  6.* Units.ft 
     nose_gear.wheels                         = 1
-    nose_gear.origin                         = [[0.5,0, 0]]
+    nose_gear.origin                         = [[0.25,0, 0]]
     nose_gear.fairing                        = True 
     nose_gear.gear_extended                  = True
     nose_gear.number_of_gear_types_in_tandem = 1
@@ -123,8 +123,9 @@ def vehicle_setup(redesign_rotors=True) :
                                               
     # Segment                                              
     segment                                   = RCAIDE.Library.Components.Wings.Segments.Segment()
-    segment.tag                               = 'Section_1'   
+    segment.tag                               = 'root'   
     segment.percent_span_location             = 0.0
+    segment.twist                             = 0. * Units.degrees
     segment.root_chord_percent                = 1 
     segment.dihedral_outboard                 = 8.  * Units.degrees
     segment.sweeps.quarter_chord              = 0. * Units.degrees  
@@ -133,9 +134,10 @@ def vehicle_setup(redesign_rotors=True) :
                                               
     # Segment                                               
     segment                                   = RCAIDE.Library.Components.Wings.Segments.Segment()
-    segment.tag                               = 'Section_2'    
+    segment.tag                               = 'mid_section'    
     segment.percent_span_location             = 0.4875
     segment.root_chord_percent                = 0.6496
+    segment.twist                             = 0. * Units.degrees
     segment.dihedral_outboard                 = 0. * Units.degrees
     segment.sweeps.quarter_chord              = 0. * Units.degrees 
     segment.append_airfoil(airfoil)
@@ -143,7 +145,7 @@ def vehicle_setup(redesign_rotors=True) :
                                               
     # Segment                                              
     segment                                   = RCAIDE.Library.Components.Wings.Segments.Segment()
-    segment.tag                               = 'Section_5'   
+    segment.tag                               = 'tip'   
     segment.percent_span_location             = 1.0
     segment.twist                             = 0. 
     segment.root_chord_percent                = 0.42038
@@ -259,7 +261,7 @@ def vehicle_setup(redesign_rotors=True) :
 
     # define cabin    
     cabin                                       = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-    cabin.origin                                = [[1, 0, 0]] 
+    cabin.origin                                = [[0.5, 0, 0]] 
     economy_class                               = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     economy_class.number_of_seats_abrest        = 2
     economy_class.number_of_rows                = 3 
@@ -351,9 +353,6 @@ def vehicle_setup(redesign_rotors=True) :
     fuselage.append_segment(segment)                   
                                                 
     vehicle.append_component(fuselage)  
- 
-
-
 
     #------------------------------------------------------------------------------------------------------------------------------------
     # ########################################################  Energy Network  ######################################################### 
@@ -376,12 +375,12 @@ def vehicle_setup(redesign_rotors=True) :
     battery_module.tag                                                = 'bus_battery'
     battery_module.electrical_configuration.series                    = 60
     battery_module.electrical_configuration.parallel                  = 60          
-    battery_module.geometrtic_configuration.normal_count              = 140
-    battery_module.geometrtic_configuration.parallel_count            = 25
+    battery_module.geometrtic_configuration.normal_count              = 60
+    battery_module.geometrtic_configuration.parallel_count            = 60
     battery_module.geometrtic_configuration.stacking_rows             = 2
     
                        # starboard   | port        | front  | rear 
-    modules_origins = [[1.8, 2.0,1.0 ],[1.8, -2.0, 1.0  ],[0.5, 0.0, 0.0 ],[3.5, 0.0, 0.0]]  
+    modules_origins = [[1.8, 2.0,1.0 ],[1.8, -2.0, 1.0  ],[0.3, 0.0, 0.0 ],[2, 0.0, 0.0]]  
     orientation     = [[0, 0.0, np.pi],[0, 0.0, np.pi ],[0, 0.0, 0 ],[0, 0.0,0 ]]   
     for m_i in range(bus.number_of_battery_modules):
         module =  deepcopy(battery_module)
@@ -408,12 +407,12 @@ def vehicle_setup(redesign_rotors=True) :
     
     # Lift Rotor Design
     g                                             = 9.81                                    # gravitational acceleration   
-    Hover_Load                                    = vehicle.mass_properties.max_takeoff*g * 1.0 # hover load   
+    Hover_Load                                    = vehicle.mass_properties.max_takeoff*g * 1.1 # hover load   
 
     prop_rotor                                    = RCAIDE.Library.Components.Powertrain.Converters.Prop_Rotor()   
     prop_rotor.tag                                = 'prop_rotor'   
     prop_rotor.tip_radius                         = 2.85 / 2 
-    prop_rotor.hub_radius                         = 0.15 * prop_rotor.tip_radius
+    prop_rotor.hub_radius                         = 0.1 * prop_rotor.tip_radius
     prop_rotor.number_of_blades                   = 5
 
     prop_rotor.hover.design_altitude              = 40 * Units.feet  
@@ -555,23 +554,27 @@ def vehicle_setup(redesign_rotors=True) :
          
     # Front Rotors Locations 
     origins =[[0.6 , -2.2,  1.195],[0.6 , 2.2,  1.195],
-              [1.3 ,5.000,1.320],[1.3 ,-5.000,1.320],
-              [  4.55 , 2.1 ,   2 ],[   4.55, -2.1 ,   2 ]] 
+              [1.3 , -5.000,1.320],[1.3 ,5.000,1.320],
+              [  4.55 , -2.1 ,   2 ],[   4.55, 2.1 ,   2 ]] 
     nacelle_origins =[[0.3, -2.2,  1.195],[0.3, 2.2,  1.195],
-              [1.00,5.000,1.320],[1.0,-5.000,1.320],
-              [  4.25 , 2.1 ,   2. ],[   4.25 , -2.1 ,   2. ]] 
+              [1.00, -5.000,1.320],[1.0,5.000,1.320],
+              [  4.25 , -2.1 ,   2. ],[   4.25 , 2.1 ,   2. ]]
+    
+    tags  = ['front_port_','front_starboard_',
+             'outboard_port_','outboard_starboard_', 
+             'rear_port_','rear_starboard_']
      
     assigned_propulsor_list = []    
     for i in range(len(origins)): 
         propulsor_i                                       = deepcopy(propulsor)
-        propulsor_i.tag                                   = 'prop_rotor_propulsor_' + str(i + 1)
-        propulsor_i.rotor.tag                             = 'prop_rotor_' + str(i + 1) 
+        propulsor_i.tag                                   = tags[i] +  'propulsor' 
+        propulsor_i.rotor.tag                             = tags[i] +'rotor' 
         propulsor_i.rotor.origin                          = [origins[i]]  
-        propulsor_i.motor.tag                             = 'prop_rotor_motor_' + str(i + 1)   
+        propulsor_i.motor.tag                             = tags[i] +'motor' 
         propulsor_i.motor.origin                          = [origins[i]]  
-        propulsor_i.electronic_speed_controller.tag       = 'prop_rotor_esc_' + str(i + 1)  
+        propulsor_i.electronic_speed_controller.tag       = tags[i] +'esc' 
         propulsor_i.electronic_speed_controller.origin    = [origins[i]]  
-        propulsor_i.nacelle.tag                           = 'prop_rotor_nacelle_' + str(i + 1)  
+        propulsor_i.nacelle.tag                           = tags[i] +'nacelle' 
         propulsor_i.nacelle.origin                        = [nacelle_origins[i]]   
         network.propulsors.append(propulsor_i)   
         assigned_propulsor_list.append(propulsor_i.tag) 
