@@ -71,11 +71,7 @@ def flight_dynamics(segment):
     
     **Segment Types**
     
-    Special handling for:
-    - Transition segments
-        * Constant acceleration
-        * Constant angle
-        * Linear climb
+    Special handling for: 
     - Ground segments
         * Takeoff
         * Landing
@@ -106,15 +102,14 @@ def flight_dynamics(segment):
     
     See Also
     --------
-    RCAIDE.Framework.Mission.Segments
-    RCAIDE.Framework.Mission.Segments.Transition
+    RCAIDE.Framework.Mission.Segments 
     RCAIDE.Framework.Mission.Segments.Ground
     """
 
     T_wind2inertial = segment.state.conditions.frames.wind.transform_to_inertial  
     T_inertia2wind  = orientation_transpose(T_wind2inertial)
 
-    transition_seg_flag =  type(segment) == RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb
+    transition_seg_flag =  type(segment) == RCAIDE.Framework.Mission.Segments.Climb.Constant_Acceleration_Constant_Pitchrate_Constant_Angle
     ground_seg_flag =  (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing) or\
         (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Takeoff) or \
         (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Ground)

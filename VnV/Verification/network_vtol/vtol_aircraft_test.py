@@ -565,7 +565,7 @@ def SR_mission_setup(analyses,vehicle):
     # Low-Speed Transition
     #------------------------------------------------------------------------------------------------------------------------------------  
  
-    segment                                               = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(base_segment)
+    segment                                               = Segments.Cruise.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(base_segment)
     segment.tag                                           = "Low_Speed_Transition"  
     segment.analyses.extend( analyses.transition_flight )   
     segment.altitude                                      = 200.  * Units.ft           
@@ -590,7 +590,7 @@ def SR_mission_setup(analyses,vehicle):
     #------------------------------------------------------------------------------------------------------------------------------------  
     # High-Speed Climbing Transition 
     #------------------------------------------------------------------------------------------------------------------------------------  
-    segment                                               = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb(base_segment)
+    segment                                               = Segments.Climb.Constant_Acceleration_Constant_Pitchrate_Constant_Angle(base_segment)
     segment.tag                                           = "High_Speed_Climbing_Transition" 
     segment.analyses.extend( analyses.transition_flight)    
     segment.altitude_start                                = 200.0 * Units.ft   

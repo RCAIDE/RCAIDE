@@ -1,4 +1,4 @@
-# RCAIDE/Library/Missions/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb.py
+# RCAIDE/Library/Missions/Segments/Climb/Constant_Acceleration_Constant_Pitchrate_Constant_Angle.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb.py
+# RCAIDE/Framework/Analyses/Mission/Segments/Cruise/Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.py 
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -10,12 +10,12 @@
 # RCAIDE imports 
 from RCAIDE.Framework.Core                            import Units 
 from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
-from RCAIDE.Library.Mission                           import Common,Segments
+from RCAIDE.Library.Mission                   import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb
+#  Constant_Acceleration_Constant_Pitchrate_Constant_Altitude
 # ----------------------------------------------------------------------------------------------------------------------
-class Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb(Evaluate):
+class Constant_Acceleration_Constant_Pitchrate_Constant_Altitude(Evaluate):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     
         Assumptions:
@@ -29,7 +29,7 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb(Evaluate):
         """ This sets the default solver flow. Anything in here can be modified after initializing a segment.
     
             Assumptions:
-            None
+            Prop-rotor pitch command is automatically applied linearly throughout segment
     
             Source:
             N/A
@@ -47,24 +47,20 @@ class Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb(Evaluate):
         # --------------------------------------------------------------
         #   User Inputs
         # --------------------------------------------------------------
-        self.altitude_start         = None
-        self.altitude_end           = None
-        self.air_speed_start        = None
-        self.climb_angle            = 0.0 * Units['rad'] 
-        self.acceleration           = 1.  * Units['m/s/s'] 
-        self.pitch_initial          = None
-        self.pitch_final            = 0.0 * Units['rad']
-        self.true_course            = 0.0 * Units.degrees  
-        
+        self.altitude                     = None
+        self.acceleration                 = 1.  * Units['m/s/s']
+        self.air_speed_start              = None
+        self.air_speed_end                = 1.0 * Units['m/s']        
+        self.pitch_initial                = None
+        self.pitch_final                  = 0.0 * Units['rad']   
+        self.true_course                  = 0.0 * Units.degrees   
+         
         # -------------------------------------------------------------------------------------------------------------- 
         #  Mission specific processes 
-        # --------------------------------------------------------------------------------------------------------------  
+        # --------------------------------------------------------------------------------------------------------------          
         initialize                         = self.process.initialize 
-        initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb.initialize_conditions  
-        iterate                            = self.process.iterate  
-        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
-        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
+        initialize.conditions              = Segments.Cruise.Constant_Acceleration_Constant_Pitchrate_Constant_Altitude.initialize_conditions      
+        iterate                            = self.process.iterate    
         iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics
         
         return
-
