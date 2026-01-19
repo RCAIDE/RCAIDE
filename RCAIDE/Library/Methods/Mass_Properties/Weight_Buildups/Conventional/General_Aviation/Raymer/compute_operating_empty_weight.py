@@ -17,7 +17,7 @@ import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Gener
 # ---------------------------------------------------------------------------------------------------------------------- 
 def compute_operating_empty_weight(vehicle, settings=None):
     """ Computes the empty weight breakdown of a General Aviation type aircraft  
-        
+        documentatin is in wrong format
         Inputs:
             engine - a data dictionary with the fields:                    
                 thrust_sls - sea level static thrust of a single engine [Newtons]

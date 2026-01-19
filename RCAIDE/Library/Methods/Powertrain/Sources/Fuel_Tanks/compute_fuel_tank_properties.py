@@ -37,7 +37,7 @@ def compute_fuel_tank_properties(tank,state,distributor):
         h   =  0 # NEED TO UPDATE 
         
         # unpack tank properties
-        epsilon = 0 # tant.  NEED TO UPDATE 
+        epsilon = 0 # tant.  NEED TO UPDATE # check this
         h_fg    = 0 #  tank.fuel  NEED TO UPDATE 
         sigma   = 0 #  NEED TO UPDATE  
                         
