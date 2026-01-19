@@ -157,7 +157,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         ALat = np.zeros((n_cpts,4,4))
         BLat = np.zeros((n_cpts,4,1))
         
-        # Need to compute Ixx, Izz, and Ixz as a function of alpha
+        # Need to compute Ixx, Izz, and Ixz as a function of alpha. Which alpha? I wouldn't expect this to change.
         R    = np.zeros((n_cpts,2,2))
         modI = np.zeros((n_cpts,2,2)) 
 
@@ -189,6 +189,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         Nr = 0.25 * rho * u0 * b_ref**2 * S_ref * SSD.CN_r
         
         # Aileron effectiveness  
+        # WHat is we don't have ailerons? Will this work? Check this
         ail = conditions.control_surfaces.aileron.static_stability.coefficients                  
         Ya = 0.5 * rho * u0 * u0 * S_ref * ail.Y 
         La = 0.5 * rho * u0 * u0 * S_ref * b_ref * ail.L 
@@ -231,20 +232,21 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
         dutchRoll_mode_real         = np.zeros((n_cpts,1))
          
         try: 
-            D  , V = np.linalg.eig(ALat) # State order: u, w, q, theta
-            LatModes[:,:] =  D[:,:]  
+            LatModes  , V = np.linalg.eig(ALat) # State order: u, w, q, theta
+            # Change to LatModes? If we changed D above then mind as well change this too
+            # LatModes[:,:] =  D[:,:]  
             
-            real_parts = D.real
+            real_parts = LatModes.real
             unique_elements, counts = np.unique(real_parts, return_counts=True, axis=1)
             idx = np.where(counts==2)[0]
     
-            dutchRollFreqHz         = abs(D[:,idx]) / (2 * np.pi)
-            dutchRollDamping        = np.sqrt(1/ (1 + ( D[:,idx].imag/ D[:,idx].real )**2 ))  
+            dutchRollFreqHz         = abs(LatModes[:,idx]) / (2 * np.pi)
+            dutchRollDamping        = np.sqrt(1/ (1 + ( LatModes[:,idx].imag/ LatModes[:,idx].real )**2 ))  
             dutchRollTimeDoubleHalf = np.log(2) / abs(2 * np.pi * dutchRollFreqHz * dutchRollDamping)
-            dutchRoll_mode_real     = D[:,idx].real / (2 * np.pi)
+            dutchRoll_mode_real     = LatModes[:,idx].real / (2 * np.pi)
              
-            dutch_roll_idx                = np.where( unique_elements[:, idx] != D.real ) 
-            remaining_modes               = D[dutch_roll_idx].reshape(n_cpts,2)
+            dutch_roll_idx                = np.where( unique_elements[:, idx] != LatModes.real ) 
+            remaining_modes               = LatModes[dutch_roll_idx].reshape(n_cpts,2)
             rollInd                       = np.argmin(remaining_modes,axis=1)
             rollSubsistenceFreqHz         = np.atleast_2d(abs(remaining_modes[Ind,rollInd]) / 2 / np.pi).T
             rollSubsistenceDamping        =  np.atleast_2d(- np.sign(remaining_modes[Ind,rollInd].real)).T

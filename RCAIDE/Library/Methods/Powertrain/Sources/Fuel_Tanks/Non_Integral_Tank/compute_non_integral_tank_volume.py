@@ -319,7 +319,7 @@ def compute_rounded_end_cylindical_tank_volume(fuel_tank):
     L_o = L
     R_o = D / 2
     R_i = R_o -  t
-    L_i = L_o - 2 * t
+    L_i = L_o - 2 * t # There are two different conventions in this script. One where L is from hemisphere tip to hemisphere tip the other where it is from cylinder end to cylinder end. 
          
     # volume of external tank
     V_i_cyl = (np.pi * R_i ** 2 * L_i )  
