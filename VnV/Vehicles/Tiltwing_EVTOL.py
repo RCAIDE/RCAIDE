@@ -19,7 +19,13 @@ import numpy as np
 from copy import deepcopy 
 
 def vehicle_setup(new_regression=True): 
-    
+
+    ospath      = os.path.abspath(__file__) 
+    separator   = os.path.sep
+    local_path  = os.path.dirname(ospath) + separator   
+    current_dir = os.path.abspath(os.path.dirname(__file__))
+    test_dir    = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'network_vtol')) 
+        
     #------------------------------------------------------------------------------------------------------------------------------------
     # ################################################# Vehicle-level Properties ########################################################  
     #------------------------------------------------------------------------------------------------------------------------------------
@@ -94,10 +100,6 @@ def vehicle_setup(new_regression=True):
     wing.aerodynamic_center                     = [0., 0., 0.]     
     wing.winglet_fraction                       = 0.0 
     wing.xz_plane_symmetric                     = True
-    
-    ospath                                      = os.path.abspath(__file__) 
-    separator                                   = os.path.sep
-    local_path                                  = os.path.dirname(ospath) + separator  
     airfoil                                     = RCAIDE.Library.Components.Airfoils.Airfoil()
     airfoil.coordinate_file                     = local_path + 'Airfoils' + separator + 'NACA_63_412.txt'
     
@@ -334,17 +336,13 @@ def vehicle_setup(new_regression=True):
     nacelle.flow_through              = False    
     prop_rotor_propulsor.nacelle      = nacelle       
     
-    current_dir = os.path.abspath(os.path.dirname(__file__))
-    test_dir = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'network_vtol'))
-     
-            
     if new_regression:
         design_electric_rotor(prop_rotor_propulsor)
-        save_propulsor(prop_rotor_propulsor, os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))
+        save_propulsor(prop_rotor_propulsor, os.path.join(local_path, 'tilt_wing_propulsor.res'))
     else:
         regression_prop_rotor_propulsor = deepcopy(prop_rotor_propulsor)        
         design_electric_rotor(regression_prop_rotor_propulsor, iterations=2)
-        loaded_propulsor = load_propulsor(os.path.join(test_dir, 'vahana_tilt_rotor_propulsor.res'))  
+        loaded_propulsor = load_propulsor(os.path.join(local_path, 'tilt_wing_propulsor.res'))  
         for key,item in prop_rotor_propulsor.rotor.items(): 
             prop_rotor_propulsor.rotor[key] = loaded_propulsor.rotor[key] 
                

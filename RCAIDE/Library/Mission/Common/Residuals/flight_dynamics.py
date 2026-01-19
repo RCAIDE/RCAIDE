@@ -114,7 +114,7 @@ def flight_dynamics(segment):
     T_wind2inertial = segment.state.conditions.frames.wind.transform_to_inertial  
     T_inertia2wind  = orientation_transpose(T_wind2inertial)
 
-    transition_seg_flag =  type(segment) == RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb
+    transition_seg_flag =  type(segment) == RCAIDE.Framework.Mission.Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb
     ground_seg_flag =  (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing) or\
         (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Takeoff) or \
         (type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Ground)
@@ -131,7 +131,7 @@ def flight_dynamics(segment):
 
     if transition_seg_flag: 
         omega = segment.state.conditions.frames.inertial.angular_velocity_vector
-        D   = segment.state.numerics.time.differentiate
+        D     = segment.state.numerics.time.differentiate
         ang_acc_i = np.dot(D,omega)
         segment.state.conditions.frames.inertial.angular_acceleration_vector = ang_acc_i 
         segment.state.conditions.frames.wind.angular_acceleration_vector     = orientation_product(T_inertia2wind,ang_acc_i )

@@ -1,4 +1,4 @@
-# RCAIDE/Framework/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Angle_Linear_Climb.py
+# RCAIDE/Framework/Analyses/Mission/Segments/Transition/Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -13,9 +13,9 @@ from RCAIDE.Framework.Mission.Segments.Evaluate       import Evaluate
 from RCAIDE.Library.Mission                           import Common,Segments
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  Constant_Acceleration_Constant_Angle_Linear_Climb
+#  Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb
 # ----------------------------------------------------------------------------------------------------------------------
-class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
+class Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb(Evaluate):
     """ Vehicle accelerates at a constant rate between two airspeeds.
     
         Assumptions:
@@ -60,7 +60,7 @@ class Constant_Acceleration_Constant_Angle_Linear_Climb(Evaluate):
         #  Mission specific processes 
         # --------------------------------------------------------------------------------------------------------------  
         initialize                         = self.process.initialize 
-        initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Angle_Linear_Climb.initialize_conditions  
+        initialize.conditions              = Segments.Transition.Constant_Acceleration_Constant_Pitchrate_Constant_Angle_Climb.initialize_conditions  
         iterate                            = self.process.iterate  
         iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces
