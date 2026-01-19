@@ -48,7 +48,7 @@ def vehicle_setup(cell_chemistry, btms_type):
     vehicle.flight_envelope.ultimate_load            = 5.7
     vehicle.flight_envelope.limit_load               = 3.8       
     vehicle.flight_envelope.positive_limit_load      = 2.5  
-    vehicle.flight_envelope.design_range             = 3500 * Units.nmi 
+    vehicle.flight_envelope.design_range             = 350 * Units.nmi
     
     #------------------------------------------------------------------------------------------------------------------------------------
     # ##################################################### Landing Gear ################################################################    
