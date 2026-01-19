@@ -89,11 +89,11 @@ def tiltrotor_transition_test(update_regression_values):
     error.hover_throttle                 = np.max(np.abs( hover_throttle_truth - hover_throttle )/ hover_throttle_truth )
     error.transition_throttle             = np.max(np.abs( transition_throttle_truth - transition_throttle )/ transition_throttle_truth )
     
-    #print('Errors:')
-    #print(error)
+    print('Errors:')
+    print(error)
      
-    #for k,v in list(error.items()):
-        #assert(np.abs(v)<1e-1)  
+    for k,v in list(error.items()):
+        assert(np.abs(v)<1e-1)  
     return
  
 
@@ -135,11 +135,11 @@ def tiltwing_transition_test(update_regression_values):
     error.vertical_climb_1_throttle  = np.max(np.abs( vertical_climb_1_throttle_truth - vertical_climb_1_throttle )/ vertical_climb_1_throttle_truth ) 
     error.vertical_descent_throttle  = np.max(np.abs( vertical_descent_throttle_truth - vertical_descent_throttle )/ vertical_descent_throttle_truth )
  
-    #print('Errors:')
-    #print(error)
+    print('Errors:')
+    print(error)
      
-    #for k,v in list(error.items()):
-        #assert(np.abs(v)<1e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
+    for k,v in list(error.items()):
+        assert(np.abs(v)<1e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
     return
 
 def stopped_rotor_transition_test(update_regression_values):
@@ -180,11 +180,11 @@ def stopped_rotor_transition_test(update_regression_values):
     error.lst_throttle   = np.max(np.abs( lst_throttle_truth    - lst_throttle    )/ lst_throttle_truth   ) 
     error.hsct_throttle  = np.max(np.abs( hsct_throttle_truth   - hsct_throttle   )/ hsct_throttle_truth  )
  
-    #print('Errors:')
-    #print(error)
+    print('Errors:')
+    print(error)
      
-    #for k,v in list(error.items()):
-        #assert(np.abs(v)<1.5e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
+    for k,v in list(error.items()):
+        assert(np.abs(v)<1.5e-1)   # lower tolerance due to lose bounds on prop-rotor blade design 
     return     
  
 # ----------------------------------------------------------------------
