@@ -114,10 +114,10 @@ def optimization_setup(rotor, number_of_stations, print_iterations):
         tm_ul_c          = rotor.optimization_parameters.tip_mach_range[1]    
         
     inputs = []  # parameter                  initial val    , lower bound,upper bound,scaling  , units
-    inputs.append([ 'chord_r'               ,  0.1*R    , 0.05*R     , 0.2*R     , 1.0     ,  1*Units.less])
+    inputs.append([ 'chord_r'               ,  0.2*R    , 0.05*R     , 0.2*R     , 1.0     ,  1*Units.less])
     inputs.append([ 'chord_p'               ,  2        , 0.25       , 2.0       , 1.0     ,  1*Units.less])
     inputs.append([ 'chord_q'               ,  1        , 0.25       , 1.5       , 1.0     ,  1*Units.less])
-    inputs.append([ 'chord_t'               ,  0.05*R   , 0.02*R     , 0.1*R     , 1.0     ,  1*Units.less])  
+    inputs.append([ 'chord_t'               ,  0.1*R    , 0.02*R     , 0.1*R     , 1.0     ,  1*Units.less])  
     inputs.append([ 'twist_r'               ,  np.pi/6  ,  0         , np.pi/4   , 1.0     ,  1*Units.less])
     inputs.append([ 'twist_p'               ,  1        , 0.25       , 2.0       , 1.0     ,  1*Units.less])
     inputs.append([ 'twist_q'               ,  0.5      , 0.25       , 1.5       , 1.0     ,  1*Units.less])

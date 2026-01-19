@@ -737,11 +737,9 @@ def vehicle_setup(new_regression=True) :
     nacelle.orientation_euler_angles  = [0,-90*Units.degrees,0.]    
     nacelle.flow_through              = False    
     nacelle.origin                    = [[  -0.073,  1.950, 1.2]]
-    lift_propulsor_1.nacelle          =  nacelle
+    lift_propulsor_1.nacelle          =  nacelle 
     
-
-    
-    test_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Verification/analysis_weights')) 
+    test_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), 'Verification' + separator + 'network_vtol'))
     if new_regression:
         design_electric_rotor(lift_propulsor_1)
         save_propulsor(lift_propulsor_1, os.path.join(test_dir, 'stopped_rotor_lift_rotor.res'))

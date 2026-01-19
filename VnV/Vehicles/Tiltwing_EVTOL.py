@@ -298,8 +298,8 @@ def vehicle_setup(new_regression=True):
     prop_rotor.oei.design_thrust                  = Hover_Load/7  
     prop_rotor.oei.design_freestream_velocity     = np.sqrt(prop_rotor.oei.design_thrust/(2*1.2*np.pi*(prop_rotor.tip_radius**2)))   
     prop_rotor.cruise.design_altitude             = 1500 * Units.feet
-    prop_rotor.cruise.design_thrust               = 200    
-    prop_rotor.cruise.design_freestream_velocity  = 130.* Units['mph']  
+    prop_rotor.cruise.design_thrust               = 500#200    
+    prop_rotor.cruise.design_freestream_velocity  = 150.* Units['mph']  #130.* Units['mph']  
     
     airfoil                                       = RCAIDE.Library.Components.Airfoils.Airfoil()   
     airfoil.coordinate_file                       =  local_path + 'Airfoils' + separator + 'NACA_4412.txt'
@@ -335,7 +335,7 @@ def vehicle_setup(new_regression=True):
     prop_rotor_propulsor.nacelle      = nacelle       
     
     current_dir = os.path.abspath(os.path.dirname(__file__))
-    test_dir = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'mission_segments'))
+    test_dir = os.path.abspath(os.path.join(current_dir, '..' + separator + 'Verification' + separator + 'network_vtol'))
      
             
     if new_regression:

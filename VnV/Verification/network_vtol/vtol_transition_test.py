@@ -18,13 +18,17 @@ import numpy as np
 import sys
 import matplotlib.pyplot as plt    
 import os
+import time
 
 # local imports 
 sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
+from Tiltrotor_EVTOL        import vehicle_setup as  TR_vehicle_setup 
+from Tiltrotor_EVTOL        import configs_setup as  TR_configs_setup 
 from Tiltwing_EVTOL         import vehicle_setup as  TW_vehicle_setup 
 from Tiltwing_EVTOL         import configs_setup as  TW_configs_setup 
 from Stopped_Rotor_EVTOL    import vehicle_setup as  SR_vehicle_setup 
 from Stopped_Rotor_EVTOL    import configs_setup as  SR_configs_setup
+
 
 # ----------------------------------------------------------------------
 #   Main
@@ -32,14 +36,66 @@ from Stopped_Rotor_EVTOL    import configs_setup as  SR_configs_setup
 def main(): 
     # make true only when resizing aircraft. should be left false for regression
     update_regression_values = True
-     
+    
     # TEST 1
+    #tiltrotor_transition_test(update_regression_values)
+     
+    # TEST 2
     tiltwing_transition_test(update_regression_values)
     
-    # TEST 2
-    stopped_rotor_transition_test(update_regression_values)
+    # TEST 3
+    #stopped_rotor_transition_test(update_regression_values)
     
-    return 
+    return
+
+def tiltrotor_transition_test(update_regression_values): 
+         
+    vehicle  = TR_vehicle_setup(redesign_rotors=update_regression_values)  
+        
+    # Set up configs
+    configs  = TR_configs_setup(vehicle)
+    
+    # vehicle analyses
+    analyses = TR_analyses_setup(configs)
+    
+    # mission analyses
+    mission  = TR_mission_setup(analyses)
+    missions = missions_setup(mission) 
+    
+    ti                   = time.time()       
+    TR_results = missions.base_mission.evaluate()  
+    
+    # Extract sample values from computation     
+    hover_throttle          = TR_results.segments.vertical_climb.conditions.energy.propulsors['front_port_propulsor'].throttle[1][0]
+    transition_throttle     = TR_results.segments.departure_transition_1.conditions.energy.propulsors['front_port_propulsor'].throttle[1][0]  
+      
+    tf                   = time.time()
+    elapsed_time         = round((tf-ti)/60,2)
+    print('Simulation Time: ' + str(elapsed_time) + ' mins')      
+    
+    #print values for resetting regression
+    show_vals = True
+    if show_vals:
+        data = [ hover_throttle,transition_throttle ]
+        for val in data:
+            print(val)
+    
+    # Truth values 
+    hover_throttle_truth              = 0.5150143546115612
+    transition_throttle_truth         = 0.5150143546115612
+    
+    # Store errors 
+    error = Data() 
+    error.hover_throttle                 = np.max(np.abs( hover_throttle_truth - hover_throttle )/ hover_throttle_truth )
+    error.transition_throttle             = np.max(np.abs( transition_throttle_truth - transition_throttle )/ transition_throttle_truth )
+    
+    print('Errors:')
+    print(error)
+     
+    for k,v in list(error.items()):
+        assert(np.abs(v)<1e-1)  
+    return
+ 
 
 def tiltwing_transition_test(update_regression_values):    
     TW_vehicle  = TW_vehicle_setup(update_regression_values)  
@@ -52,7 +108,7 @@ def tiltwing_transition_test(update_regression_values):
 
     # mission analyses
     TW_mission  = TW_mission_setup(TW_analyses)
-    TW_missions = TW_missions_setup(TW_mission) 
+    TW_missions = missions_setup(TW_mission) 
      
     TW_results = TW_missions.base_mission.evaluate()  
     
@@ -97,7 +153,7 @@ def stopped_rotor_transition_test(update_regression_values):
 
     # mission analyses
     SR_mission  = SR_mission_setup(SR_analyses,SR_vehicle)
-    SR_missions = SR_missions_setup(SR_mission) 
+    SR_missions = missions_setup(SR_mission) 
      
     SR_results = SR_missions.base_mission.evaluate()  
     
@@ -155,6 +211,73 @@ def SR_analyses_setup(configs):
         analyses[tag] = analysis
 
     return analyses
+
+ 
+# ----------------------------------------------------------------------
+#   Define the Vehicle Analyses
+# ----------------------------------------------------------------------
+def TR_analyses_setup(configs):
+
+    analyses = RCAIDE.Framework.Analyses.Analysis.Container()
+
+    # build a base analysis for each config
+    for tag,config in configs.items():
+        analysis = TR_base_analysis(config)
+        if config.networks.electric.propulsors['front_port_propulsor'].rotor.orientation_euler_angles[1] > 45*Units.degrees: 
+            analysis.aerodynamics.settings.drag_coefficient_increment =  0.10
+        elif config.networks.electric.propulsors['front_port_propulsor'].rotor.orientation_euler_angles[1] > 15*Units.degrees: 
+            analysis.aerodynamics.settings.drag_coefficient_increment =  0.05
+        analyses[tag] = analysis
+
+    return analyses
+
+def TR_base_analysis(vehicle): 
+
+    # ------------------------------------------------------------------
+    #   Initialize the Analyses
+    # ------------------------------------------------------------------     
+    analyses = RCAIDE.Framework.Analyses.Vehicle()
+    analyses.vehicle = vehicle 
+
+    # ------------------------------------------------------------------
+    #  Geometry
+    # ------------------------------------------------------------------
+    geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
+    geometry.vehicle                               = vehicle 
+    geometry.settings.update_center_of_gravity     = True 
+    analyses.append(geometry)
+
+    # ------------------------------------------------------------------
+    #  Weights
+    weights         = RCAIDE.Framework.Analyses.Weights.Electric_VTOL()
+    weights.aircraft_type = "VTOL"
+    analyses.append(weights)
+
+    # ------------------------------------------------------------------
+    #  Aerodynamics Analysis
+    aerodynamics         = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
+    aerodynamics.settings.maximum_lift_coefficient   =  1.5 
+    aerodynamics.settings.drag_coefficient_increment =  0.01  
+    analyses.append(aerodynamics)
+      
+    # ------------------------------------------------------------------
+    #  Energy 
+    energy          = RCAIDE.Framework.Analyses.Energy.Energy() 
+    analyses.append(energy)
+
+    # ------------------------------------------------------------------
+    #  Planet Analysis
+    planet = RCAIDE.Framework.Analyses.Planets.Earth()
+    analyses.append(planet)
+
+    # ------------------------------------------------------------------
+    #  Atmosphere Analysis
+    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
+    analyses.append(atmosphere)   
+
+    # done!
+    return analyses    
+
 
 def TW_base_analysis(vehicle):
 
@@ -237,7 +360,89 @@ def SR_base_analysis(vehicle):
     analyses.append(atmosphere)   
 
     # done!
-    return analyses    
+    return analyses
+
+
+def TR_mission_setup(analyses): 
+    
+   
+    # ------------------------------------------------------------------
+    #   Initialize the Mission
+    # ------------------------------------------------------------------
+    mission = RCAIDE.Framework.Mission.Sequential_Segments()
+    mission.tag = 'mission'
+
+    # unpack Segments module
+    Segments = RCAIDE.Framework.Mission.Segments  
+    base_segment = Segments.Segment() 
+    base_segment.state.numerics.solver.type = 'optimize' 
+    
+
+    beta_cruise = analyses.low_speed_transition.vehicle.networks.electric.propulsors.front_port_propulsor.rotor.cruise.design_blade_pitch_command
+    
+    
+    # ------------------------------------------------------------------
+    #   First Climb Segment: Constant Speed, Constant Rate
+    # ------------------------------------------------------------------ 
+    segment                                            = Segments.Vertical_Flight.Climb(base_segment)
+    segment.tag                                        = "Vertical_Climb"   
+    segment.analyses.extend(analyses.vertical_flight) 
+    segment.altitude_start                             = 0.0  * Units.ft  
+    segment.altitude_end                               = 50.  * Units.ft   
+    segment.climb_rate                                 = 300. * Units['ft/min'] 
+    segment.initial_battery_state_of_charge            = 1.0 
+    segment.true_course                                = 0   * Units.degree  
+    segment.state.numerics.solver.type = 'root_finder' 
+
+    # define flight dynamics to model  
+    segment.flight_dynamics.force_z                    = True 
+
+    # define flight controls  
+    segment.assigned_control_variables.throttle.active               = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors  = [['front_port_propulsor','front_starboard_propulsor','outboard_port_propulsor',
+                                                                          'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']] 
+    segment.assigned_control_variables.throttle.initial_guess_values = [[0.8]]
+    
+    mission.append_segment(segment)   
+ 
+    
+    # ------------------------------------------------------------------
+    #  First Transition Segment
+    # ------------------------------------------------------------------ 
+    segment                                               = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
+    segment.tag                                           = "departure_transition_1"  
+    segment.analyses.extend( analyses.transition_setting_1)       
+    segment.air_speed_end                                 = 35 * Units['mph']     
+    segment.acceleration                                  = 0.2
+    
+    
+    segment.state.numerics.solver.type                    = 'optimize' 
+    segment.state.numerics.solver.step_size               = 1E-3 
+    segment.state.numerics.solver.tolerance_solution      = 1E-2 
+    segment.state.numerics.solver.objective               = None 
+    
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
+    
+    # define flight controls 
+    segment.assigned_control_variables.throttle.active                                = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors                   = [['front_port_propulsor','front_starboard_propulsor','outboard_port_propulsor',
+                                                                                          'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']] 
+    
+    segment.assigned_control_variables.thrust_vector_angle.active                     = True        
+    segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        = [['front_port_propulsor','front_starboard_propulsor','outboard_port_propulsor',
+                                                                                          'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']] 
+    
+    segment.assigned_control_variables.blade_pitch_command.active                     = True        
+    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor','outboard_port_rotor',
+                                                                                           'outboard_starboard_rotor', 'rear_port_rotor','rear_starboard_rotor']]   
+    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
+     
+    mission.append_segment(segment)    
+    
+    return mission 
+
 
 def TW_mission_setup(analyses ): 
 
@@ -412,17 +617,7 @@ def SR_mission_setup(analyses,vehicle):
    
     return mission 
 
-def TW_missions_setup(mission): 
- 
-    missions         = RCAIDE.Framework.Mission.Missions()
-    
-    # base mission 
-    mission.tag  = 'base_mission'
-    missions.append(mission)
- 
-    return missions
-
-def SR_missions_setup(mission): 
+def missions_setup(mission): 
  
     missions         = RCAIDE.Framework.Mission.Missions()
     

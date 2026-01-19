@@ -8,10 +8,10 @@
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE 
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                             import compute_vehicle_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                             import compute_vehicle_center_of_gravity
-# python imports
-from copy import deepcopy 
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_vehicle_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity
+from RCAIDE.Library.Mission.Common.Pre_Process.use_previous_segment_pre_processed_data import use_previous_segment_pre_processed_data
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
 # ----------------------------------------------------------------------------------------------------------------------  
@@ -108,26 +108,33 @@ def mass_properties(mission):
             if i == 0 or segment.analyses.geometry.settings.unique_geometry: 
                 mass_properties_preprocess_routine(segment) 
             else:
-                vehicle_0 = deepcopy(segment.analyses.vehicle)
-                segment.analyses.vehicle = deepcopy(mission.segments[i-1].analyses.vehicle)
-                for wing in segment.analyses.vehicle.wings:
-                    for control_surface in wing.control_surfaces:
-                        control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
-                for landing_gear in segment.analyses.vehicle.landing_gears:
-                    landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended 
-                for network in segment.analyses.vehicle.networks: 
-                    for bus in network.busses:
-                        bus.active = vehicle_0.networks[network.tag].busses[bus.tag].active
-                    for propulsor in network.propulsors:
-                        if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
-                            propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                            propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity        
-                            propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
-                            propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity 
-                        if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
-                            propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                            propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
-                            propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command  
+                use_previous_segment_pre_processed_data(mission,segment,i) 
+                
+                prev_segment =  mission.segments[i-1]
+                segment.state.conditions.weights.vehicle.mass                     =  prev_segment.state.conditions.weights.vehicle.mass                  
+                segment.state.conditions.weights.vehicle.global_center_of_gravity = prev_segment.state.conditions.weights.vehicle.global_center_of_gravity
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyx   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyz   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Izx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izx   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Izy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izy   
+                segment.state.conditions.weights.vehicle.moments_of_inertia_Izz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izz   
+                
+                for tag,item in prev_segment.state.conditions.weights.components.mass.items():
+                    segment.state.conditions.weights.components.mass[tag]                          = prev_segment.state.conditions.weights.components.mass[tag] 
+                    segment.state.conditions.weights.components.global_center_of_gravity[tag]      = prev_segment.state.conditions.weights.components.global_center_of_gravity[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Ixx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixx[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Ixy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixy[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Ixz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixz[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Iyx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyx[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Iyy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyy[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Iyz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyz[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Izx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izx[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Izy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izy[tag] 
+                    segment.state.conditions.weights.components.moments_of_inertia_Izz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izz[tag]                 
     return 
 
 def mass_properties_preprocess_routine(segment):
