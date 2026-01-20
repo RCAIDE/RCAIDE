@@ -34,7 +34,7 @@ def evaluate(state,settings,vehicle):
      
     # update static margin 
     c_ref                                                   = vehicle.reference_chord   
-    state.conditions.static_stability.static_margin[:,0]    = (vehicle.neutral_point  - state.conditions.weights.vehicle.global_center_of_gravity[:,0]) / c_ref          
+    state.conditions.static_stability.static_margin[:,0]    = (vehicle.neutral_point  - state.conditions.weights.vehicle.global_center_of_gravity[0,0]) / c_ref          
         
     # update moment of inertia
     if settings.update_moments_of_inertia: 
