@@ -32,7 +32,7 @@ def compute_component_moment_of_inertia(component,vehicle,total_MOI,segment=None
     if isinstance(component,Component.Container): 
         for key in component.keys():
             item = component[key]        
-            total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment)
+            total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment,verbose)
     if isinstance(component,Component):
         component.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle.mass_properties.center_of_gravity)
         update_total_moment_of_inertia(total_MOI,component,segment, verbose) 
@@ -41,7 +41,7 @@ def compute_component_moment_of_inertia(component,vehicle,total_MOI,segment=None
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
-                total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment)
+                total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment,verbose)
             if isinstance(item,Component):
                 item.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle.mass_properties.center_of_gravity)
                 update_total_moment_of_inertia(total_MOI,item,segment, verbose) 

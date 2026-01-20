@@ -76,6 +76,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         segment.analyses.vehicle.mass_properties.takeoff          = None  
         segment.analyses.geometry.settings.compute_fuel_volume    = True 
         segment.analyses.stability.settings.compute_neutral_point = True
+        segment.analyses.weights.print_weight_analysis_report     = True
     
     #------------------------------------------------------------------------  
     # Check Input Args

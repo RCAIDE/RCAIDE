@@ -1,3 +1,4 @@
+
 # RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/compute_integral_tank_volume.py
 # 
 # 
@@ -188,8 +189,11 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     total_fuel_volume  = 0
 
     # get orgin of fuel tank     
-    fuel_tank.origin      = wing.origin 
-    fuel_tank.fuel.origin = wing.origin 
+    fuel_tank.origin                  = wing.origin 
+    fuel_tank.fuel.origin             = wing.origin  
+    fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
+    fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
+    fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
     
     if len(wing.segments) > 1: 
         segment_tank_moment = np.array([0.0, 0.0, 0.0])

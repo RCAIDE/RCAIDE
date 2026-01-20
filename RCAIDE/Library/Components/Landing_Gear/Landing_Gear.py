@@ -119,10 +119,7 @@ class Landing_Gear(Component):
             length = self.tire_diameter*self.wheel_clearance_factor 
         _  = compute_cuboid_center_of_gravity(self,length) 
         return
-                
-        
-        
-        
+                 
     def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """
         Computes the moment of inertia tensor for the landing gear.

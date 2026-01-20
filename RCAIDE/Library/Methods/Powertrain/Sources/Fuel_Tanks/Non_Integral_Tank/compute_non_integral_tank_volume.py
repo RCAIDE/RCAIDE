@@ -249,7 +249,11 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     if fuel_tank.orientation_euler_angles   == [0.,0.,np.pi/2]:
         fuel_tank.fuel.mass_properties.center_of_gravity  =  [[fuel_tank.diameters.external /2, 0, 0]]
         fuel_tank.mass_properties.center_of_gravity       =  [[fuel_tank.diameters.external /2, 0, 0]]
+        
     fuel_tank.fuel.origin = fuel_tank.origin
+    fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
+    fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
+    fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
     
     return
 
@@ -590,6 +594,9 @@ def compute_wing_non_integral_tank_fuel_volume(fuel_tank, wing, inner_segment_0,
     origin_z              = inner_segment.origin[0][2] + (D / 2) *np.tan(inner_segment.dihedral_outboard)
     fuel_tank.origin      = [[origin_x,origin_y,origin_z]]
     fuel_tank.fuel.origin = [[origin_x,origin_y,origin_z]] 
+    fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
+    fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
+    fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
 
     # get length of tank 
     m_2 =  (outer_wingbox_length -  inner_wingbox_length) / (outer_segment.percent_span_location - inner_segment_0.percent_span_location)  

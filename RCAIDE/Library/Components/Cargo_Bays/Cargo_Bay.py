@@ -9,6 +9,8 @@
 # RCAIDE imports   
 from RCAIDE.Library.Components  import Component   
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia import compute_cuboid_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity import compute_cargo_bay_center_of_gravity
+
 
 import  numpy as  np
 
@@ -44,7 +46,25 @@ class Cargo_Bay(Component):
         self.cargo      = Component() 
         self.baggage    = Component() 
         self.container  = Component() 
-        self.power_draw = 0.0  
+        self.power_draw = 0.0
+        
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for the  cargo bay.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        ------- 
+        center_of_gravity : list, optional
+            Reference point coordinates, defaults to [[0, 0, 0]]
+ 
+        """
+        _ = compute_cargo_bay_center_of_gravity(self)
+        return
 
     def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
         """

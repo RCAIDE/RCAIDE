@@ -35,7 +35,7 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
     if isinstance(component,Component.Container): 
         for key in component.keys():
             item = component[key]        
-            total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
+            total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment,verbose)
     if isinstance(component,Component):
         component.compute_center_of_gravity(vehicle)
         update_mass_and_moment(total_mass,total_moment,component,segment,verbose)    
@@ -44,7 +44,7 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
-                total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment)
+                total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment,segment,verbose)
             if isinstance(item,Component):
                 item.compute_center_of_gravity(vehicle)
                 update_mass_and_moment(total_mass,total_moment,item,segment,verbose)   
@@ -54,8 +54,7 @@ def compute_component_center_of_gravity(component,vehicle,total_mass,total_momen
 def update_mass_and_moment(total_mass,total_moment,C,segment,verbose):  
     global_cg_loc = np.array(C.mass_properties.center_of_gravity) + np.array(C.origin)  
     if C.xz_plane_symmetric:
-        global_cg_loc[0][1] = 0
-            
+        global_cg_loc[0][1] = 0 
     if verbose:
         name_column_width = 20
         num_column_width  = 6

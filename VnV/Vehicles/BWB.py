@@ -56,16 +56,18 @@ def vehicle_setup():
     # ------------------------------------------------------------------  
     main_gear               = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()
     main_gear.tire_diameter = 50.0 * Units.inches
-    main_gear.strut_length  = 5.5 * Units.ft 
+    main_gear.strut_length  = 20.0 * Units.ft 
     main_gear.units         = 2    # Number of main landing gear
     main_gear.wheels        = 4    # Number of wheels on the main landing gear
+    main_gear.origin        = [[20.95,0., -2 ]]  # positioned using 30 degree (15 ground strike angle + 15 degree airfoil closeout angle )
     vehicle.append_component(main_gear)  
 
     nose_gear               = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()       
     nose_gear.tire_diameter = 40. * Units.inches
     nose_gear.units         = 1    # Number of nose landing gear
     nose_gear.wheels        = 2    # Number of wheels on the nose landing gear
-    nose_gear.strut_length  = 9.0 * Units.ft 
+    nose_gear.strut_length  = 20.0 * Units.ft 
+    nose_gear.origin        = [[3. ,0., -2 ]] 
     vehicle.append_component(nose_gear)
          
 
