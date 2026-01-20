@@ -38,15 +38,18 @@ class Cargo_Bay(Component):
         Properties Used:
         N/A
         """             
-        self.tag        = 'cargo_bay'
-        self.length     = 1.0
-        self.width      = 1.0
-        self.height     = 1.0 
-        self.density    = 0.0
-        self.cargo      = Component() 
-        self.baggage    = Component() 
-        self.container  = Component() 
-        self.power_draw = 0.0
+        self.tag           = 'cargo_bay'
+        self.length        = 1.0
+        self.width         = 1.0
+        self.height        = 1.0 
+        self.density       = 0.0
+        self.cargo         = Component() 
+        self.cargo.tag     = 'cargo'
+        self.baggage       = Component() 
+        self.baggage.tag   = 'baggage'
+        self.container     = Component() 
+        self.container.tag = 'container'
+        self.power_draw    = 0.0
         
     def compute_center_of_gravity(self,vehicle): 
         """
