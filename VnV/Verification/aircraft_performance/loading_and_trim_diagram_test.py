@@ -30,7 +30,7 @@ from BWB            import vehicle_setup as BWB_vehicle_setup
 #  REGRESSION
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
-    #tube_and_wing_load_trim_test()
+    tube_and_wing_load_trim_test()
     blended_wing_body_load_trim_test()
 
 def tube_and_wing_load_trim_test():
