@@ -262,7 +262,6 @@ class Results(Conditions):
         # ----------------------------------------------------------------------------------------------------------------------
         # Stability 
         # ----------------------------------------------------------------------------------------------------------------------  
-        self.stability                                                         = Conditions()
         self.static_stability                                                  = Conditions()
  
         self.static_stability.forces                                           = Conditions()

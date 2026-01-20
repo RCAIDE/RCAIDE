@@ -83,19 +83,19 @@ def payload_range_mission_setup(analyses):
     #   Takeoff Roll
     # ------------------------------------------------------------------------------------------------------------------------------------ 
 
-    segment = Segments.Ground.Takeoff(base_segment)
-    segment.tag = "Takeoff_Ground_Run" 
-    segment.analyses.extend( analyses.takeoff )
-    segment.velocity_start           = 30.* Units.knots
-    segment.velocity_end             = 167.0 * Units['knots']
-    segment.friction_coefficient     = 0.03
-    segment.altitude                 = 0.0   
-    segment.throttle                 = 1.0
+    # segment = Segments.Ground.Takeoff(base_segment)
+    # segment.tag = "Takeoff_Ground_Run" 
+    # segment.analyses.extend( analyses.takeoff )
+    # segment.velocity_start           = 30.* Units.knots
+    # segment.velocity_end             = 167.0 * Units['knots']
+    # segment.friction_coefficient     = 0.03
+    # segment.altitude                 = 0.0   
+    # segment.throttle                 = 1.0
 
-    segment.assigned_control_variables.ground_velocity.active  = True  
-    segment.assigned_control_variables.ground_velocity.bounds  = [[-2, 120]]
+    # segment.assigned_control_variables.ground_velocity.active  = True  
+    # segment.assigned_control_variables.ground_velocity.bounds  = [[-2, 120]]
 
-    mission.append_segment(segment)
+    # mission.append_segment(segment)
       
     #------------------------------------------------------------------
     #   First Climb Segment: Constant Speed Constant Rate  

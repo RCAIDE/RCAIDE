@@ -105,36 +105,7 @@ def mass_properties(mission):
         if segment.analyses.weights == None:
             raise AssertionError('Define weights analysis method')
         else: 
-            if i == 0 or segment.analyses.geometry.settings.unique_geometry: 
-                mass_properties_preprocess_routine(segment) 
-            else:
-                use_previous_segment_pre_processed_data(mission,segment,i) 
-                
-                prev_segment =  mission.segments[i-1]
-                segment.state.conditions.weights.vehicle.mass                     = prev_segment.state.conditions.weights.vehicle.mass                  
-                segment.state.conditions.weights.vehicle.global_center_of_gravity = prev_segment.state.conditions.weights.vehicle.global_center_of_gravity
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixz   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyx   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyy   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Iyz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Iyz   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Izx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izx   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Izy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izy   
-                segment.state.conditions.weights.vehicle.moments_of_inertia_Izz   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Izz   
-                
-                for tag,item in prev_segment.state.conditions.weights.components.mass.items():
-                    segment.state.conditions.weights.components.mass[tag]                          = prev_segment.state.conditions.weights.components.mass[tag] 
-                    segment.state.conditions.weights.components.global_center_of_gravity[tag]      = prev_segment.state.conditions.weights.components.global_center_of_gravity[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Ixx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixx[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Ixy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixy[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Ixz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Ixz[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Iyx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyx[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Iyy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyy[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Iyz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Iyz[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Izx[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izx[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Izy[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izy[tag] 
-                    segment.state.conditions.weights.components.moments_of_inertia_Izz[tag]        = prev_segment.state.conditions.weights.components.moments_of_inertia_Izz[tag]                 
+            mass_properties_preprocess_routine(segment) 
     return 
 
 def mass_properties_preprocess_routine(segment):
