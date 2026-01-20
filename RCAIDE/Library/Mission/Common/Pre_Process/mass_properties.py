@@ -111,6 +111,10 @@ def mass_properties(mission):
 def mass_properties_preprocess_routine(segment):
     analyses         = segment.analyses
     weights_analysis = analyses.weights 
+
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # STEP 1:  Pre-checks for weights analysis 
+    # ---------------------------------------------------------------------------------------------------------------------------      
     if analyses.vehicle.mass_properties.max_takeoff == None:
         # For all weights analysis a maximum take off weight needs to be defined by the user
         raise AttributeError("Max Takeoff Weight for aircraft not defined")
@@ -126,6 +130,10 @@ def mass_properties_preprocess_routine(segment):
         print('Warning: Payload or fuel weight not defined; assuming takeoff weight is MTOW')
         analyses.vehicle.mass_properties.takeoff = analyses.vehicle.mass_properties.max_takeoff
     else:
+    
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # STEP 2: Run weights analysis 
+    # ---------------------------------------------------------------------------------------------------------------------------         
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
             print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
         
@@ -174,7 +182,8 @@ def mass_properties_preprocess_routine(segment):
                     if compute_max_fuel: 
                         analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
-        # Run weights analysis ! 
+        
+        
         _ = weights_analysis.evaluate(analyses.vehicle) 
 
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
@@ -189,14 +198,17 @@ def mass_properties_preprocess_routine(segment):
         apply_correction_factors(analyses)
         apply_component_weights(analyses)
 
-        # Compute takeoff weight and max zero fuel weight
+        # Compute takeoff weight and max zero fuel weight 
         analyses.vehicle.mass_properties.takeoff       = analyses.vehicle.mass_properties.operating_empty \
                                                                 + analyses.vehicle.mass_properties.payload\
                                                                 + analyses.vehicle.mass_properties.fuel                    
         analyses.vehicle.mass_properties.max_zero_fuel = analyses.vehicle.mass_properties.operating_empty\
-                                                                + analyses.vehicle.mass_properties.max_payload
-        
+                                                                + analyses.vehicle.mass_properties.max_payload 
     
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # STEP 3: Print weight statements and apply weight factors  
+    # --------------------------------------------------------------------------------------------------------------------------- 
+        
     if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights: 
         print("\nPerforming Weights Analysis")
         print("--------------------------------------------------------")
@@ -242,23 +254,33 @@ def mass_properties_preprocess_routine(segment):
         print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
         print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
         print("\n===============================\n")
+      
+    # ---------------------------------------------------------------------------------------------------------------------------
+    #  STEP 4: Handle Takeoff weight overwriting 
+    # --------------------------------------------------------------------------------------------------------------------------- 
+        
     if analyses.weights.settings.overwrite_takeoff_weight  == False and orig_takeoff_weight != None:
         analyses.vehicle.mass_properties.takeoff = orig_takeoff_weight
         if analyses.vehicle.mass_properties.takeoff > analyses.vehicle.mass_properties.max_takeoff:
             # Lets the user know that the takeoff weight is greater than the maximum takeoff weight defined. Will still continue with simulation            
             print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
+            
     elif orig_takeoff_weight == None:
         print('\n Warning: takeoff weight is None. Using weight buildup takeoff weight')
     else:
         print('\n Note: user defined Takeoff Weight is used for other analyses')
     
-    # Compute Center of Gravity   
+    # ---------------------------------------------------------------------------------------------------------------------------     
+    #  STEP 5: Compute Center of Gravity   
+    # --------------------------------------------------------------------------------------------------------------------------- 
     _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,
                                                 overwrite_center_of_gravity=weights_analysis.settings.overwrite_center_of_gravity,
                                                 segment=segment,
                                                 verbose=weights_analysis.print_weight_analysis_report)  
-        
-    # Compute Moment of Inertia 
+
+    # ---------------------------------------------------------------------------------------------------------------------------         
+    # STEP 6: Compute Moment of Inertia 
+    # --------------------------------------------------------------------------------------------------------------------------- 
     _  = compute_vehicle_moment_of_inertia(analyses.vehicle,
                                            overwrite_moment_of_intertia = weights_analysis.settings.overwrite_moments_of_inertia,
                                            segment=segment,

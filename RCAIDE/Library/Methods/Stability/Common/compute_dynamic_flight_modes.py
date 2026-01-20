@@ -29,8 +29,7 @@ def compute_dynamic_flight_modes(state,settings,vehicle):
 
     Inputs:
        conditions.aerodynamics  
-       conditions.static_stability  
-       conditions.stability.dynamic 
+       conditions.static_stability
 
     Outputs: 
        conditions.dynamic_stability.LatModes
