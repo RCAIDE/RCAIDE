@@ -111,7 +111,7 @@ def mass_properties(mission):
                 use_previous_segment_pre_processed_data(mission,segment,i) 
                 
                 prev_segment =  mission.segments[i-1]
-                segment.state.conditions.weights.vehicle.mass                     =  prev_segment.state.conditions.weights.vehicle.mass                  
+                segment.state.conditions.weights.vehicle.mass                     = prev_segment.state.conditions.weights.vehicle.mass                  
                 segment.state.conditions.weights.vehicle.global_center_of_gravity = prev_segment.state.conditions.weights.vehicle.global_center_of_gravity
                 segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixx   
                 segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   = prev_segment.state.conditions.weights.vehicle.moments_of_inertia_Ixy   
