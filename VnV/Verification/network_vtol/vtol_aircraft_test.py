@@ -87,7 +87,7 @@ def tiltrotor_transition_test(update_regression_values):
     # Store errors 
     error = Data() 
     error.hover_throttle                 = np.max(np.abs( hover_throttle_truth - hover_throttle )/ hover_throttle_truth )
-    error.transition_throttle             = np.max(np.abs( transition_throttle_truth - transition_throttle )/ transition_throttle_truth )
+    error.transition_throttle            = np.max(np.abs( transition_throttle_truth - transition_throttle )/ transition_throttle_truth )
     
     print('Errors:')
     print(error)
@@ -438,14 +438,37 @@ def TR_mission_setup(analyses):
     
     segment.assigned_control_variables.thrust_vector_angle.active                     = True        
     segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        = [['front_port_propulsor','front_starboard_propulsor','outboard_port_propulsor',
-                                                                                          'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']] 
-    
-    # segment.assigned_control_variables.blade_pitch_command.active                     = True        
-    # segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor','outboard_port_rotor',
-    #                                                                                        'outboard_starboard_rotor', 'rear_port_rotor','rear_starboard_rotor']]   
-    # segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
+                                                                                          'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']]  
      
+    mission.append_segment(segment)
+    
+
+    # ------------------------------------------------------------------
+    #  First Transition Segment
+    # ------------------------------------------------------------------ 
+    segment                                               = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag                                           = "cruise"  
+    segment.analyses.extend( analyses.cruise)      
+    segment.air_speed                                     = 150 * Units['mph']    
+    segment.initial_battery_state_of_charge               = 1.0 
+    segment.altitude                                      = 1000 *  Units.feet 
+    segment.throttle                                      = 0.33197
+  
+    # define flight dynamics to model 
+    segment.flight_dynamics.force_x                       = True  
+    segment.flight_dynamics.force_z                       = True     
+    
+    # define flight controls                                       
+    segment.assigned_control_variables.body_angle                   
+    segment.assigned_control_variables.body_angle.active             = True                
+           
+    segment.assigned_control_variables.blade_pitch_command.active                     = True        
+    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor','outboard_port_rotor',
+                                                                                           'outboard_starboard_rotor', 'rear_port_rotor','rear_starboard_rotor']]
+
+    
     mission.append_segment(segment)    
+        
     
     return mission 
 
