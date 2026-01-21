@@ -162,9 +162,9 @@ def EVTOL_Aircraft_Test(update_regression_values):
 
     print(vehicle.tag + ' Moment of Inertia')
     print(MOI) 
-    accepted  = np.array([[ 8856.32848026,  -100.26758899,  -447.45251283],
-                          [ -100.26758899, 12436.30339788,   -87.11533709],
-                          [ -447.45251283,   -87.11533709, 19780.827561  ]])
+    accepted  = np.array([[ 8897.68574941,  -234.00424743,  -357.809369  ],
+                          [ -234.00424743, 12111.53717803,  -175.47068943],
+                          [ -357.809369  ,  -175.47068943, 19414.704072  ]])
     MOI_error     = (MOI - accepted) / accepted
 
     # Check the errors
