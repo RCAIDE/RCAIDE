@@ -82,7 +82,7 @@ def tiltrotor_transition_test(update_regression_values):
     
     # Truth values 
     hover_throttle_truth              = 0.5961266565749898
-    transition_throttle_truth         = 0.6085161835452566
+    transition_throttle_truth         = 0.5072857641977504
     
     # Store errors 
     error = Data() 
@@ -416,7 +416,8 @@ def TR_mission_setup(analyses):
     # ------------------------------------------------------------------ 
     segment                                               = Segments.Cruise.Constant_Acceleration_Constant_Altitude(base_segment)
     segment.tag                                           = "departure_transition_1"  
-    segment.analyses.extend( analyses.transition_setting_1)       
+    segment.analyses.extend( analyses.transition_setting_1)      
+    segment.air_speed_start                               = 15 * Units['mph']    
     segment.air_speed_end                                 = 35 * Units['mph']     
     segment.acceleration                                  = 0.2
     
@@ -439,10 +440,10 @@ def TR_mission_setup(analyses):
     segment.assigned_control_variables.thrust_vector_angle.assigned_propulsors        = [['front_port_propulsor','front_starboard_propulsor','outboard_port_propulsor',
                                                                                           'outboard_starboard_propulsor','rear_port_propulsor','rear_starboard_propulsor']] 
     
-    segment.assigned_control_variables.blade_pitch_command.active                     = True        
-    segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor','outboard_port_rotor',
-                                                                                           'outboard_starboard_rotor', 'rear_port_rotor','rear_starboard_rotor']]   
-    segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
+    # segment.assigned_control_variables.blade_pitch_command.active                     = True        
+    # segment.assigned_control_variables.blade_pitch_command.assigned_rotors            =  [['front_port_rotor','front_starboard_rotor','outboard_port_rotor',
+    #                                                                                        'outboard_starboard_rotor', 'rear_port_rotor','rear_starboard_rotor']]   
+    # segment.assigned_control_variables.blade_pitch_command.bounds                     = [[0,beta_cruise]] 
      
     mission.append_segment(segment)    
     
