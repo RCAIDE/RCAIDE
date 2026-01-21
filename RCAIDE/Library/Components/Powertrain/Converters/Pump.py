@@ -21,16 +21,17 @@ class Pump(Component):
         """
         Sets default values for the system attributes.
         """         
-        self.tag                               = 'pump'
-        self.power_density                     = 15
-        self.working_fluid                     = None
-        self.pump_efficiency                   = 1.0
-        self.turbine_efficiency                = 1.0
-        self.design_mass_flow_rate             = 0
-        self.design_inlet_pressure             = 0 
-        self.design_outlet_pressure            = 0
-        self.design_hydraulic_power            = 0
-        self.bearing_and_casting_weight_factor = 1
+        self.tag                     = 'pump'
+        self.diameter                = 0.0
+        self.length                  = 0.0
+        self.power_density           = 0.0
+        self.working_fluid           = None
+        self.pump_efficiency         = 1.0
+        self.turbine_efficiency      = 1.0
+        self.design_mass_flow_rate   = 0.0
+        self.design_inlet_pressure   = 0.0 
+        self.design_outlet_pressure  = 0.0
+        self.design_hydraulic_power  = 0 
 
  
     def compute_performance(self,state,fuel_line = None,bus = None):

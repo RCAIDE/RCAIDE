@@ -36,7 +36,7 @@ def compute_pump_mass_from_power_density(pump):
     Shaft_Power = Hydraulic_Power / total_efficiency
 
     # mass 
-    mass = Shaft_Power / pump.power_density * pump.bearing_and_casting_weight_factor 
+    mass = Shaft_Power / pump.power_density 
     pump.mass_properties.mass = mass   
 
     return  
