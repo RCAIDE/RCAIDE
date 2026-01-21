@@ -10,6 +10,8 @@
 from .Converter  import Converter
 from RCAIDE.Framework.Core                  import Data 
 from RCAIDE.Library.Methods.Powertrain.Converters.Motor.append_motor_conditions import  append_motor_conditions
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cylinder_center_of_gravity  import compute_cylinder_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cylinder_moment_of_inertia  import compute_cylinder_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  DC_Motor  
@@ -92,6 +94,8 @@ class DC_Motor(Converter):
         None
         """           
         self.tag                     = 'motor' 
+        self.diameter                = 0.0
+        self.length                  = 0.0
         self.resistance              = 0.0
         self.no_load_current         = 0.0
         self.speed_constant          = 0.0
@@ -106,5 +110,50 @@ class DC_Motor(Converter):
         
     def append_operating_conditions(self,segment,energy_conditions,noise_conditions=None): 
         append_motor_conditions(self,segment,energy_conditions)
+        return 
+
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for the motor.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+
+        See Also
+        --------
+        RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
+            Implementation of the moment of inertia calculation
+        """
+        _ , _ = compute_cylinder_moment_of_inertia(self,outer_length=self.length,outer_radius=self.diameter/2,center_of_gravity= center_of_gravity) 
         return
     
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for the motor.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+
+        See Also
+        --------
+        RCAIDE.Library.Methods.weights.vehicle.moments_of_inertia.compute_fuselage_moment_of_inertia
+            Implementation of the moment of inertia calculation
+        """
+        _  = compute_cylinder_center_of_gravity(self, length=self.length) 
+        return
+        

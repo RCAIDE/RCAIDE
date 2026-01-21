@@ -11,6 +11,8 @@
 from RCAIDE.Framework.Core        import Data
 from RCAIDE.Library.Components    import Component   
 from RCAIDE.Library.Methods.Powertrain.Sources.Batteries.Common.append_battery_conditions import append_battery_conditions, append_battery_segment_conditions
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cuboid_center_of_gravity import compute_cuboid_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cuboid_moment_of_inertia import compute_cuboid_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Battery
@@ -168,3 +170,42 @@ class Generic_Battery_Module(Component):
         """
         append_battery_segment_conditions(self,segment,bus)
         return
+    
+
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for a battery.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+ 
+        """
+        _ , _ = compute_cuboid_moment_of_inertia(self, self.length, self.width, self.height, 0, 0, 0, center_of_gravity)
+                
+        return
+    
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for a battery.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2 
+        """
+        _  = compute_cuboid_center_of_gravity(self, self.length) 
+        return
+        

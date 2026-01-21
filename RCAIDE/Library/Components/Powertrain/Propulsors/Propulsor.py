@@ -1,4 +1,4 @@
-# RCAIDE/Library/Components/Propulsors/Propuslor.py
+# RCAIDE/Library/Components/Propulsors/Propulsor.py
 #  
 # 
 # Created:  Mar 2024, M. Clarke 
@@ -9,8 +9,7 @@
 
 # RCAIDE imports  
 import RCAIDE
-from RCAIDE.Library.Components           import Component 
-from RCAIDE.Framework.Mission.Common     import Conditions
+from RCAIDE.Library.Components           import Component  
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -85,5 +84,8 @@ class Propulsor(Component):
         self.active                       = True 
         self.wing_mounted                 = True
         self.nacelle                      = None
-        self.sealevel_static_thrust       = 0.0
+        self.sealevel_static_thrust       = 0.0  
+        self.diameter                     = 0.0      
+        self.length                       = 0.0
+        self.height                       = 0.0    
         self.working_fluid                = RCAIDE.Library.Attributes.Gases.Air()

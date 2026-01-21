@@ -303,7 +303,7 @@ class Network(Component):
         conditions.energy.thrust_force_vector  = total_thrust
         conditions.energy.power                = total_mech_power 
         conditions.energy.thrust_moment_vector = total_moment 
-        conditions.weights.vehicle_mass_rate   = total_mdot  
+        conditions.weights.vehicle.mass_rate   = total_mdot  
     
         return
     
@@ -447,7 +447,6 @@ class Network(Component):
          
                 for fuel_tank in  bus.fuel_tanks: 
                     fuel_tank.append_operating_conditions(segment,bus)
-                                                    
     
             for coolant_line_i, coolant_line in enumerate(network.coolant_lines):  
                 # ------------------------------------------------------------------------------------------------------            
@@ -473,7 +472,7 @@ class Network(Component):
         segment.process.iterate.residuals.network           = self.residuals   
         
         return segment
- 
+    
 # ----------------------------------------------------------------------
 #  Component Container
 # ---------------------------------------------------------------------- 

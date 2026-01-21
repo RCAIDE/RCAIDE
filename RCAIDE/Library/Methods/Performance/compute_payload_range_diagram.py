@@ -254,7 +254,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
 
             # Current distance and fuel consuption in the cruise segment
             CruiseDist = np.diff( segment.conditions.frames.inertial.position_vector[[0,-1],0] )[0]        # Distance [m]
-            CruiseFuel = segment.conditions.weights.total_mass[0,0] - segment.conditions.weights.total_mass[-1,0]    # [kg]
+            CruiseFuel = segment.conditions.weights.vehicle.mass[0,0] - segment.conditions.weights.vehicle.mass[-1,0]    # [kg]
             
             # Current specific range (m/kg)
             CruiseSR    = CruiseDist / CruiseFuel        # [m/kg]
@@ -268,7 +268,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
             segment = results.segments[cruise_segment_tag]
 
             # Difference between burned fuel and target fuel
-            err = ( TOW[i] - results.segments[-1].conditions.weights.total_mass[-1,0] ) - FUEL[i] + reserve_fuel
+            err = ( TOW[i] - results.segments[-1].conditions.weights.vehicle.mass[-1,0] ) - FUEL[i] + reserve_fuel
 
             if iter == maxIter:
                 print(f"Did not converge.")

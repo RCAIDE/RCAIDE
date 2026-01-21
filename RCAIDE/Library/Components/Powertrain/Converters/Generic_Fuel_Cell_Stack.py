@@ -12,6 +12,8 @@ from RCAIDE.Framework.Core                                     import Units, Dat
 from RCAIDE.Library.Components                                 import Component    
 from RCAIDE.Library.Methods.Powertrain.Converters.Fuel_Cells.Larminie_Model.compute_fuel_cell_performance import *
 from RCAIDE.Library.Methods.Powertrain.Converters.Fuel_Cells.Larminie_Model.append_fuel_cell_conditions   import *
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cuboid_center_of_gravity import compute_cuboid_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cuboid_moment_of_inertia import compute_cuboid_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Generic_Fuel_Cell
@@ -128,4 +130,40 @@ class Generic_Fuel_Cell_Stack(Component):
     def reuse_stored_data(self,state,bus,stored_results_flag, stored_fuel_cell_tag):
         reuse_stored_fuel_cell_data(self,state,bus,stored_results_flag, stored_fuel_cell_tag)
         return     
+
+    def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
+        """
+        Computes the moment of inertia tensor for a fuel cell.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2
+ 
+        """
+        _ , _ = compute_cuboid_moment_of_inertia(self, self.length, self.width, self.height, 0, 0, 0, center_of_gravity)
+                
+        return
     
+
+    def compute_center_of_gravity(self,vehicle): 
+        """
+        Computes the center of gravity for a fuel cell.
+
+        Parameters
+        ----------
+        center_of_gravity : list, optional
+            Reference point coordinates for moment calculation, defaults to [[0, 0, 0]]
+
+        Returns
+        -------
+        I : ndarray
+            3x3 moment of inertia tensor in kg*m^2 
+        """
+        _  = compute_cuboid_center_of_gravity(self, self.length) 
+        return    

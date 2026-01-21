@@ -20,14 +20,17 @@ def get_seat_y_coords(cabin,cabin_class,cabin_class_origin):
     else:
         n_a = 2
     # max cabin class width
-    total_arm_rest_width =  ((n_a + 1) + n) * ar_w
-    total_seat_width     = n * s_w
-    total_aisle_width    = n_a * a_w
-    cabin_class_width    = total_arm_rest_width + total_seat_width + total_aisle_width
+    total_arm_rest_width           =  ((n_a + 1) + n) * ar_w
+    total_seat_width               = n * s_w
+    total_aisle_width              = n_a * a_w
+    cabin_class_width              = total_arm_rest_width + total_seat_width + total_aisle_width
     cabin_class.cabin_class_width  = cabin_class_width
-    ccw    = cabin_class.cabin_class_width
+    ccw                            = cabin_class.cabin_class_width 
     if n == 1:
-        s_y_coord = ccw/ 2 - ar_w - s_w /2
+        if total_aisle_width == 0.0: 
+            s_y_coord = np.array([0])            
+        else: 
+            s_y_coord = np.array([ccw/ 2 - ar_w - s_w /2])
     elif n == 2:
         y_1 = ccw/ 2 - ar_w - s_w /2
         y_2 = -y_1
@@ -108,7 +111,7 @@ def get_seat_y_coords(cabin,cabin_class,cabin_class_origin):
         y_10 = -y_9
         s_y_coord = np.array([ y_1, y_2, y_3,y_4, y_5,y_6,y_7,y_8,y_9,y_10 ])
     cabin.width = 2 * (np.max(s_y_coord) + s_w /2 + ar_w)
-    s_y_coord  += cabin_class_origin[1]
+    s_y_coord   += cabin_class_origin[1]
     return s_y_coord , cabin_class_origin
 # ----------------------------------------------------------------------------------------------------------------------
 #  get_seat_x_coords

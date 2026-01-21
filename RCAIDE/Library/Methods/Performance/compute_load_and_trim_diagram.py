@@ -76,6 +76,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         segment.analyses.vehicle.mass_properties.takeoff          = None  
         segment.analyses.geometry.settings.compute_fuel_volume    = True 
         segment.analyses.stability.settings.compute_neutral_point = True
+        segment.analyses.weights.print_weight_analysis_report     = True
     
     #------------------------------------------------------------------------  
     # Check Input Args
@@ -399,11 +400,10 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
     for segment in weights_analysis_mission.segments:
         segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
-        segment.analyses.weights.settings.update_moment_of_inertia    = True
-        segment.analyses.weights.settings.update_center_of_gravity    = True 
+        segment.analyses.weights.settings.overwrite_moments_of_inertia= True
+        segment.analyses.weights.settings.overwrite_center_of_gravity = True 
         segment.analyses.weights.print_weight_analysis_report         = False
-        segment.analyses.vehicle.neutral_point                        = neutral_point 
-        segment.analyses.stability.settings.update_center_of_gravity  = True        
+        segment.analyses.vehicle.neutral_point                        = neutral_point        
         segment.analyses.stability.settings.compute_neutral_point     = False
 
          
@@ -439,10 +439,9 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
     for segment in aero_analysis_mission.segments:
         segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
-        segment.analyses.weights.settings.update_moment_of_inertia    = False
-        segment.analyses.weights.settings.update_center_of_gravity    = False 
-        segment.analyses.vehicle.neutral_point                        = neutral_point
-        segment.analyses.stability.settings.update_center_of_gravity  = False    
+        segment.analyses.weights.settings.overwrite_moments_of_inertia= False
+        segment.analyses.weights.settings.overwrite_center_of_gravity = False 
+        segment.analyses.vehicle.neutral_point                        = neutral_point 
         segment.analyses.stability.settings.compute_neutral_point     = False           
 
     results  = aero_analysis_mission.evaluate()

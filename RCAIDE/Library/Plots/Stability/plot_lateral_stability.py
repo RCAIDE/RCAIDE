@@ -1,4 +1,4 @@
-# RCAIDE/Library/Plots/Performance/Stability/plot_lateral_stability.py
+# RCAIDE/Library/Plots/Stability/plot_lateral_stability.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke 

@@ -23,14 +23,14 @@ def weights(segment):
         Inputs:
              segment.state.
                  numerics.time.integrate               [-]
-                 conditions.weights.total_mass         [kg]
-                 conditions.weights.vehicle_mass_rate  [kg/s]
+                 conditions.weights.vehicle.mass         [kg]
+                 conditions.weights.vehicle.mass_rate  [kg/s]
                  conditions.freestream.gravity         [m/s^2]
 
                  
         Outputs: 
             segment.state.conditions.
-                 weights.total_mass
+                 weights.vehicle.mass
                  frames.inertial.gravity_force_vector
       
         Properties Used:
@@ -40,11 +40,11 @@ def weights(segment):
     
     # unpack
     conditions     = segment.state.conditions
-    I              = segment.state.numerics.time.integrate  
-    m_0_vehicle    = conditions.weights.total_mass[0,0]
-    m_dot_vehicle  = conditions.weights.vehicle_mass_rate
-    g              = conditions.freestream.gravity    
-
+    I              = segment.state.numerics.time.integrate 
+    m_0_vehicle    = conditions.weights.vehicle.mass[0,0]
+    m_dot_vehicle  = conditions.weights.vehicle.mass_rate
+    g              = conditions.freestream.gravity 
+ 
     # --------------------------------------------------------------------------       
     # update mass 
     # --------------------------------------------------------------------------       
@@ -64,7 +64,8 @@ def weights(segment):
         W = m*g
         
         # pack
-        conditions.weights.total_mass[1:,0]                  = m[1:,0]  
-        conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]     
+        conditions.weights.vehicle.mass[1:,0]                = m[1:,0]  
+        conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
+                
     return
  

@@ -473,10 +473,10 @@ def vehicle_setup():
     fuel_line.fuel_tanks.append(outboard_tank)    
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()  
-    fuel_tank.outer_length                      = 2 
-    fuel_tank.outer_width                       = 2
+    fuel_tank.lengths.external                      = 2 
+    fuel_tank.widths.external                       = 2
     fuel_tank.geometry_type                     = 'prismatic'   
-    fuel_tank.outer_height                      = 0.5
+    fuel_tank.heights.external                      = 0.5
     fuel_tank.origin                            = [[15.0,0.0, 0.0]]
     fuel_tank.fuel                              = RCAIDE.Library.Attributes.Propellants.Jet_A()
     fuel_tank.fuel.origin                       = [[15.0,0.0, 0.0]]

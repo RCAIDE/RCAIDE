@@ -69,7 +69,7 @@ def energy(segment):
     RCAIDE.Framework.Mission.Segments
     """ 
 
-    conditions = segment.state.conditions.energy
+    conditions = segment.state.conditions
     vehicle    = segment.analyses.vehicle
 
     # loop through battery modules in networks
@@ -77,12 +77,11 @@ def energy(segment):
         # if network has busses  
         for bus in network.busses:
             for fuel_tank in bus.fuel_tanks:
-                if segment.state.initials:
-                    bus_initials       = segment.state.initials.conditions.energy.busses[bus.tag]
-                    fuel_tank_initials = bus_initials.fuel_tanks[fuel_tank.tag]
-                    conditions.busses[bus.tag].fuel_tanks[fuel_tank.tag].fuel_mass[:,0]   = fuel_tank_initials.fuel_mass[-1,0]
+                fuel = fuel_tank.fuel 
+                if segment.state.initials: 
+                    conditions.weights.components.mass[fuel.tag][:,0] = segment.state.initials.conditions.weights.components.mass[fuel.tag][-1,0]
                 elif vehicle.networks[network.tag].busses[bus.tag].fuel_tanks[fuel_tank.tag].fuel != None:
-                        conditions.busses[bus.tag].fuel_tanks[fuel_tank.tag].fuel_mass[:,0]  = vehicle.networks[network.tag].busses[bus.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                        conditions.weights.components.mass[fuel.tag][:,0]  = vehicle.networks[network.tag].busses[bus.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
             bus.append_segment_conditions(segment)
             for battery_module in  bus.battery_modules:
                 battery_module.append_battery_segment_conditions(segment, bus)
@@ -103,9 +102,8 @@ def energy(segment):
         for fuel_line in  network.fuel_lines:
             fuel_line.append_segment_conditions(segment)
             for fuel_tank in fuel_line.fuel_tanks:
-                if segment.state.initials:
-                    fuel_line_initials = segment.state.initials.conditions.energy.fuel_lines[fuel_line.tag]
-                    fuel_tank_initials = fuel_line_initials.fuel_tanks[fuel_tank.tag]
-                    conditions.fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel_mass[:,0]   = fuel_tank_initials.fuel_mass[-1,0]
-                elif  vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel != None:
-                    conditions.fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel_mass[:,0]   = vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                fuel = fuel_tank.fuel 
+                if segment.state.initials: 
+                    conditions.weights.components.mass[fuel.tag][:,0] = segment.state.initials.conditions.weights.components.mass[fuel.tag][-1,0] 
+                elif vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel != None:
+                    conditions.weights.components.mass[fuel.tag][:,0] = vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass

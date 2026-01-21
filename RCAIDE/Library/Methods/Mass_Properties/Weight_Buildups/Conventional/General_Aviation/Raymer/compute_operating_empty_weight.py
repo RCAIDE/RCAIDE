@@ -16,9 +16,8 @@ import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Gener
 # Main Wing Weight 
 # ---------------------------------------------------------------------------------------------------------------------- 
 def compute_operating_empty_weight(vehicle, settings=None):
-    """ output = RCAIDE.Methods.Weights.Correlations.Tube_Wing.empty(engine,wing,aircraft,fuselage,horizontal,vertical)
-        Computes the empty weight breakdown of a General Aviation type aircraft  
-        
+    """ Computes the empty weight breakdown of a General Aviation type aircraft  
+        documentatin is in wrong format
         Inputs:
             engine - a data dictionary with the fields:                    
                 thrust_sls - sea level static thrust of a single engine [Newtons]
@@ -182,7 +181,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
-            W_energy_network_total  += bus.payload.mass_properties.mass * Units.kg
+            W_energy_network_total  += bus.systems.mass_properties.mass * Units.kg
      
             # Avionics Weight 
             W_energy_network_total  += bus.avionics.mass_properties.mass      

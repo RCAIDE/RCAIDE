@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Stability/Moment_of_Inertia/compute_cylinder_moment_of_inertia.py 
+# RCAIDE/Library/Methods/Mass_Properties/Moment_of_Inertia/compute_cylinder_moment_of_inertia.py 
 # 
 # Created:  Sept. 2024, A. Molloy  
  
@@ -12,7 +12,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
+def compute_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length = 0,inner_radius = 0,center_of_gravity = np.array([[0,0,0]])):  
     ''' computes the moment of inertia tensor for a hollow cylinder
 
     Assumptions:
@@ -35,7 +35,13 @@ def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inn
     Properties Used:
     N/A
     '''
-    
+
+    # ----------------------------------------------------------------------------------------------------------------------
+    # unpack 
+    # ----------------------------------------------------------------------------------------------------------------------
+    origin = component.origin
+    mass   = component.mass_properties.mass
+        
     # ----------------------------------------------------------------------------------------------------------------------    
     # Setup
     # ----------------------------------------------------------------------------------------------------------------------           
@@ -61,5 +67,8 @@ def compute_cylinder_moment_of_inertia(origin,mass,outer_length,outer_radius,inn
     # ----------------------------------------------------------------------------------------------------------------------
     s        = np.array(center_of_gravity) - np.array(origin) # Vector between component and the CG    
     I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))
-    
+
+    # Store moment of inertia tensor on component 
+    component.mass_properties.moments_of_inertia.tensor = I_global    
+        
     return I_global,  mass

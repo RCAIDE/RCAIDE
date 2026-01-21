@@ -1,3 +1,4 @@
+
 # RCAIDE/Methods/Powertrain/Sources/Fuel_Tanks/compute_integral_tank_volume.py
 # 
 # 
@@ -188,8 +189,11 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     total_fuel_volume  = 0
 
     # get orgin of fuel tank     
-    fuel_tank.origin      = wing.origin 
-    fuel_tank.fuel.origin = wing.origin 
+    fuel_tank.origin                  = wing.origin 
+    fuel_tank.fuel.origin             = wing.origin  
+    fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
+    fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
+    fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
     
     if len(wing.segments) > 1: 
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
@@ -212,8 +216,9 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
 
             # compute volume of fuel in wing
             volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment,fuel_tank)
+            inner_segment.volume_properties.fuel = volume
     
-            total_fuel_mass      += volume * fuel_tank.fuel.density  
+            total_fuel_mass      += volume * fuel_tank.fuel.density
             segment_tank_moment  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * volume * fuel_tank.fuel.density  
             total_fuel_volume    += volume
      
@@ -253,12 +258,10 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
     else:  
         # assume whole wing has fuel 
         total_fuel_volume                                 = compute_wing_integral_tank_fuel_volume(wing,fuel_tank) 
-        total_fuel_mass                                   = total_fuel_volume  * fuel_tank.fuel.density
-        
+        total_fuel_mass                                   = total_fuel_volume  * fuel_tank.fuel.density 
         fuel_tank.volume_properties.internal_volume       = total_fuel_volume
         fuel_tank.volume_properties.external_volume       = total_fuel_volume 
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
-        fuel_tank.fuel.mass_properties.center_of_gravity  = wing.mass_properties.center_of_gravity
 
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  

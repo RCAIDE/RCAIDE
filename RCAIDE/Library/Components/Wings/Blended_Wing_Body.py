@@ -72,9 +72,11 @@ class Blended_Wing_Body(Main_Wing):
           
         self.tag                                    = 'blended_wing_body'  
 
-        self.center_body                            = Component()            
+        self.center_body                            = Component()          
+        self.center_body.tag                        = 'center_body'
         self.center_body.area                       = 0.0
         self.aft_center_body                        = Component()
+        self.aft_center_body.tag                    = 'aft_center_body'
         self.aft_center_body.taper                  = 1.0
         self.aft_center_body.length                 = 0.0
         self.aft_center_body.area                   = 0.0

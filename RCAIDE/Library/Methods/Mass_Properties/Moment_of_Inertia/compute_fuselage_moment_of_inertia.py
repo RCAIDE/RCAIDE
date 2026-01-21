@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Stability/Moment_of_Inertia/compute_fuselage_moment_of_inertia.py 
+# RCAIDE/Library/Methods/Mass_Properties/Moment_of_Inertia/compute_fuselage_moment_of_inertia.py 
 # 
 # Created:  September 2024, A. Molloy  
  
@@ -112,6 +112,9 @@ def compute_fuselage_moment_of_inertia(fuselage,center_of_gravity=[[0, 0, 0]]):
     
     # Add cone to the fuselage inertia tensor
     I_total = np.array(I_total) + np.array(I_global)
+    
+    # Store moment of inertia tensor on component 
+    fuselage.mass_properties.moments_of_inertia.tensor = I_total
     
     return I_total,  mass_fuselage
 
