@@ -597,8 +597,8 @@ def write_vsp_wing(vehicle,wing, area_tags, fuel_tank_set_ind, OML_set_ind):
                     vsp.SetParmVal(wid, wing.airfoil.geometry.camber_location)
         
             else:
-                vsp.ReadFileAirfoil(xsec1,wing.Airfoil['airfoil'].coordinate_file)
-                vsp.ReadFileAirfoil(xsec2,wing.Airfoil['airfoil'].coordinate_file)
+                vsp.ReadFileAirfoil(xsec1,wing.airfoil.coordinate_file)
+                vsp.ReadFileAirfoil(xsec2,wing.airfoil.coordinate_file)
             vsp.Update()
     else:
         if wing.segments[segment_keys[0]].airfoil != None:

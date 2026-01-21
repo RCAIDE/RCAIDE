@@ -154,7 +154,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
     W_energy_network.W_battery         = 0
     W_energy_network.W_motor           = 0
     W_energy_network.W_TMS             = Data()
-    W_energy_network.W_propellers        = 0
+    W_energy_network.W_propellers      = 0
     number_of_engines                  = 0
     number_of_tanks                    = 0
     W_energy_network_cumulative        = 0 
@@ -165,7 +165,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
-            try: W_systems.W_electrical  += bus.payload.mass_properties.mass * Units.kg
+            try: W_systems.W_electrical  += bus.systems.mass_properties.mass * Units.kg
             except: pass
      
             # Avionics Weight 

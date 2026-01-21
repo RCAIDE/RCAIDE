@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Weights/Correlation_Buildups/Propulsion/compute_jet_engine_weight.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Conventional/General_Aviation/Raymer/compute_jet_engine_weight.py
 # 
 # 
 # Created:  Sep 2024, M. Clarke
@@ -12,7 +12,9 @@ import RCAIDE
 from RCAIDE.Framework.Core import  Units, Data
 import numpy as np
  
-
+# ----------------------------------------------------------------------------------------------------------------------
+#  compute_propulsion_system_weight
+# ----------------------------------------------------------------------------------------------------------------------
 def compute_propulsion_system_weight(network):
     W_energy_network_total = 0
     number_of_jet_engines = 0
@@ -64,12 +66,9 @@ def compute_jet_engine_weight(propulsor):
     Properties Used:
             N/A
     """     
-    # setup
-    thrust_sls    =  propulsor.sealevel_static_thrust 
-    thrust_sls_en = thrust_sls / Units.force_pound # Convert N to lbs force  
-    BPR = propulsor.bypass_ratio
-
-    WENG   = 0.084 *  (propulsor.sealevel_static_thrust/Units.lbf)**1.1 * np.exp(-0.045*BPR) * Units.lbs # Raymer 3rd Edition eq. 10.4 
+    # setup 
+    BPR  = propulsor.bypass_ratio 
+    WENG = 0.084 *  (propulsor.sealevel_static_thrust/Units.lbf)**1.1 * np.exp(-0.045*BPR) * Units.lbs # Raymer 3rd Edition eq. 10.4 
     
     return WENG
  

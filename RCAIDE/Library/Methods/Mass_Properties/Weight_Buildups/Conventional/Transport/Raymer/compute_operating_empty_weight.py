@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Weights/Correlation_Buildups/Transport/Raymer/operating_empty_weight.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Transport/Raymer/operating_empty_weight.py
 # 
 # Created: Sep 2024, M. Clarke 
 # Modifed:  Feb 2025, A. Molloy, S. Shekar
@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
 import RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport.Raymer as Raymer
-from RCAIDE.Framework.Core import Data, Units
-from RCAIDE.Library.Attributes.Materials.Aluminum_Alloy import Aluminum_Alloy
+from RCAIDE.Framework.Core import Data
 
 # python imports 
 import numpy as np

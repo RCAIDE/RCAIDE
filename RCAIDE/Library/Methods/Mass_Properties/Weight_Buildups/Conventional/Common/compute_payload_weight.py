@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Weights/Correlation_Buildups/Common/compute_payload_weight.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Conventional/Common/compute_payload_weight.py
 # 
 # Created: Sep 2024, M. Clarke 
 
@@ -112,8 +112,7 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
             for cabin in wing.cabins:  
                 cabin.mass_properties.mass = W_pax * (cabin.number_of_passengers / vehicle.number_of_passengers )                           
-        
-    
+
     # packup outputs
     output              = Data()
     output.total        = vehicle.mass_properties.payload

@@ -59,26 +59,21 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     * Thermal sizing balances convection/radiation with conduction through insulation.
     * Outer-diameter constraint is enforced by iterating on fuel volume until geometry closes.
     * Symmetry doubles volume and material where specified.
-    """
-    
-    fuel_tank.wall_thickness = None
-    fuel_tank.volume_properties.net_volume = None
-
+    """ 
     # Constants
     safety_factor   = 1.6          # structural factor of safety
     pressure_factor = 5.0          # internal pressure multiplier for sizing
     T_inlet         = fuel_tank.design_inlet_temperature
 
     # Saturation and design pressures
-    P_sat = fuel_tank.fuel.liquid_hydrogen_properties(T_inlet, "Pressure (MPa)") * Units.MPa
-    P_internal = pressure_factor * P_sat
-    P_external = fuel_tank.design_external_pressure
-
-    PI_Q = 1.5  # heat flow multiplier for thermal sizing
+    P_sat           = fuel_tank.fuel.liquid_hydrogen_properties(T_inlet, "Pressure (MPa)") * Units.MPa
+    P_internal      = pressure_factor * P_sat
+    P_external      = fuel_tank.design_external_pressure 
+    PI_Q            = 1.5  # heat flow multiplier for thermal sizing
 
     # Get atmospheric conditions at design altitude
-    atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,
+    atmosphere      = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
+    atmo_data       = atmosphere.compute_values(fuel_tank.design_altitude,
                                            fuel_tank.design_isa_deviation)
     Ta =  atmo_data.temperature[0][0]
 
@@ -158,38 +153,39 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
             ).x[0]
 
         # Convergence check
-        error                                          = fuel_tank.outer_diameter / 2 - (r_outer+t_ins)
-        rel_error                                      = error / (fuel_tank.outer_diameter / 2)
+        error                                          = fuel_tank.diameters.external / 2 - (r_outer+t_ins)
+        rel_error                                      = error / (fuel_tank.diameters.external / 2)
         fuel_tank.fuel.volume_properties.net_volume    = V_guess
         fuel_tank.fuel.volume_properties.gross_volume  = V_total
         fuel_tank.fuel.mass_properties.mass            = V_guess *  fuel_tank.fuel.density   
-        V_guess                                       += alpha * rel_error
-        iteration                                     += 1
+        V_guess                                        += alpha * rel_error
+        iteration                                      += 1
 
     if abs(error) > tol:
         print("[Warning] compute_liquid_hydrogen_tank_volume did not converge within the iteration limit.")
 
     # Store results
-    fuel_tank.inner_structure = Data()
-    fuel_tank.inner_structure.thickness = ro_ri
+    fuel_tank.inner_structure                = Data()
+    fuel_tank.inner_structure.thickness      = ro_ri
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
-    fuel_tank.inner_structure.inner_length = L_inner
-    fuel_tank.inner_structure.outer_length =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
-
-    fuel_tank.insulation_thickness   = t_ins
+    fuel_tank.inner_structure.inner_length   = L_inner
+    fuel_tank.inner_structure.outer_length   =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer 
+    fuel_tank.insulation_thickness           = t_ins
+    fuel_tank.wall_thickness                 = t_ins + ro_ri
+    
     # Insulation geometry and mass
-    a_ins = 2 * np.pi * fuel_tank.outer_diameter/2 * (fuel_tank.outer_length) + 4 * np.pi * (fuel_tank.outer_diameter/2)**2
-    v_ins = (np.pi * (fuel_tank.outer_diameter/2)**2 * (fuel_tank.outer_length) + (4/3) * np.pi * (fuel_tank.outer_diameter/2)**3)-\
-            (np.pi * (fuel_tank.inner_structure.outer_diameter/2)**2 * (fuel_tank.inner_structure.outer_length) + (4/3) * np.pi * (fuel_tank.inner_structure.outer_diameter/2)**3)
-         
+    a_ins    = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2
+    v_ins    = (np.pi * (fuel_tank.diameters.external/2)**2 * (fuel_tank.lengths.external) + (4/3) * np.pi * (fuel_tank.diameters.external/2)**3)-\
+               (np.pi * (fuel_tank.inner_structure.outer_diameter/2)**2 * (fuel_tank.inner_structure.outer_length) + (4/3) * np.pi * (fuel_tank.inner_structure.outer_diameter/2)**3)
+             
     mass_ins = (v_ins * fuel_tank.insulation_material.density
                + a_ins * fuel_tank.insulation_material.specific_density)
 
     # Material volume between inner and outer shells (cylinder + two hemispherical caps)
-    L_outer = fuel_tank.inner_structure.outer_length
-    V_outer = np.pi * r_outer**2 * L_outer + (4.0/3.0) * np.pi * r_outer**3
-    V_inner = np.pi * r_inner**2 * L_inner + (4.0/3.0) * np.pi * r_inner**3
+    L_outer    = fuel_tank.inner_structure.outer_length
+    V_outer    = np.pi * r_outer**2 * L_outer + (4.0/3.0) * np.pi * r_outer**3
+    V_inner    = np.pi * r_inner**2 * L_inner + (4.0/3.0) * np.pi * r_inner**3
     V_material = V_outer - V_inner
 
     if fuel_tank.xz_plane_symmetric:
@@ -198,8 +194,8 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         V_material *= 2
         mass_ins *=2
     
-    fuel_tank.fuel.mass_properties.mass =  fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
-    fuel_tank.mass_properties.insulation_mass =  mass_ins
+    fuel_tank.fuel.mass_properties.mass       = fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
+    fuel_tank.mass_properties.insulation_mass = mass_ins
     fuel_tank.mass_properties.structural_mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
     
     return

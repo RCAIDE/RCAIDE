@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Weights/Correlation_Buildups/Transport/operating_empty_weight.py
+# RCAIDE/Library/Methods/Mass_Properties/Weight_Buildups/Conventional/General_Aviation/operating_empty_weight.py
 # 
 # Created: Sep 2024, M. Clarke 
 
@@ -97,7 +97,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         # Electric-Powered Propulsors  
         for bus in network.busses: 
             # electrical payload 
-            W_systems.W_electrical  += bus.payload.mass_properties.mass * Units.kg
+            W_systems.W_electrical  += bus.systems.mass_properties.mass * Units.kg
      
             # Avionics Weight 
             W_systems.W_avionics  += bus.avionics.mass_properties.mass      

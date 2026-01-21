@@ -215,7 +215,7 @@ def plot_propulsor_data(results, propulsor, axis_1_1, axis_1_2, axis_1_3, axis_1
         eta          =  results.segments[i].conditions.energy.converters[thrustor.tag].efficiency[:,0]
         angle        =  results.segments[i].conditions.energy.converters[thrustor.tag].commanded_thrust_vector_angle[:,0]
         beta         =  results.segments[i].conditions.energy.converters[thrustor.tag].blade_pitch_command[:,0] 
-        DL           = results.segments[i].conditions.energy.converters[thrustor.tag].disc_loading[:,0]
+        DL           =  results.segments[i].conditions.energy.converters[thrustor.tag].disc_loading[:,0]
         PL           = results.segments[i].conditions.energy.converters[thrustor.tag].power_loading[:,0]  
         thrust       =  np.linalg.norm(results.segments[i].conditions.energy.converters[thrustor.tag].thrust , axis =1)
         torque       =  results.segments[i].conditions.energy.converters[thrustor.tag].torque[:,0] 
@@ -248,7 +248,7 @@ def plot_propulsor_data(results, propulsor, axis_1_1, axis_1_2, axis_1_3, axis_1
         axis_2_2.set_ylabel(r'Thrust Vector (deg)')
         set_axes(axis_2_2) 
 
-        axis_2_3.plot(time,beta, color = line_colors[i], marker = ps.markers[p_i] , linewidth = ps.line_width)
+        axis_2_3.plot(time,beta/Units.degrees, color = line_colors[i], marker = ps.markers[p_i] , linewidth = ps.line_width)
         axis_2_3.set_ylabel(r'Pitch Command  (deg)')
         set_axes(axis_2_3)
 

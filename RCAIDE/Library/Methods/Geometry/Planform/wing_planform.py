@@ -8,8 +8,8 @@
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments, convert_sweep 
-from RCAIDE.Library.Methods.Geometry.Airfoil                import  compute_naca_4series, import_airfoil_geometry 
-from .compute_segment_volume import compute_segment_volume
+from RCAIDE.Library.Methods.Geometry.Airfoil                import  compute_naca_4series, import_airfoil_geometry
+from RCAIDE.Library.Methods.Geometry.Planform.compute_segment_centroid import compute_segment_centroid
 
 # package imports 
 import numpy as np
@@ -53,7 +53,7 @@ def wing_planform(wing):
     Properties Used:
     N/A
     """ 
-    sym      = wing.xz_plane_symmetric
+    sym  = wing.xz_plane_symmetric
     if len(wing.segments) > 1: 
         # Unpack
         RC       = wing.chords.root
@@ -172,7 +172,7 @@ def wing_planform(wing):
         
         Cxys = []
         for i in range(len(lengths_dim)):
-            Cxys.append(segment_centroid(le_sweeps[i],lengths_dim[i],dxs[i],dys[i],dzs[i], tapers[i], 
+            Cxys.append(compute_segment_centroid(le_sweeps[i],lengths_dim[i],dxs[i],dys[i],dzs[i], tapers[i], 
                                          dihedrals[i], chords_dim[i], chords_dim[i+1]))
     
         aerodynamic_center = (np.dot(np.transpose(Cxys),As)/(ref_area/(1+sym)))
@@ -216,40 +216,7 @@ def wing_planform(wing):
         wing.aspect_ratio                    = AR
             
         # update remainder segment properties
-        segment_properties(wing)
-        
-        # estimate empty wing center of gravity
-        total_moment = np.array([[0.0,0.0,0.0]])
-        total_mass   = 0.0
-        
-        outer_wing_flag = False
-        for i in range(len(wing.segments)-1):
-            # compute volume and assume unit density to get mass
-            inner_segment = wing.segments[seg_keys[i]]
-            outer_segment = wing.segments[seg_keys[i+1]]
-            v_seg =  compute_segment_volume(wing,inner_segment,outer_segment)
-            m_seg =  v_seg * 1
-            if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-                if not isinstance(inner_segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment):
-                    outer_wing_flag = True
-                if outer_wing_flag:
-                    total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
-                    total_mass   += m_seg 
-            else:
-                total_moment += m_seg * np.array(wing.segments[seg_keys[i]].mass_properties.center_of_gravity)
-                total_mass   += m_seg 
-                 
-        cg_wing = total_moment / total_mass
-        
-        if vertical:
-            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
-            wing.mass_properties.center_of_gravity[0][1] = cg_wing[0][2] 
-            wing.mass_properties.center_of_gravity[0][2] = 0 if sym ==True else cg_wing[0][1]
-        
-        else:
-            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0][0]
-            wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[0][1]
-            wing.mass_properties.center_of_gravity[0][2] = cg_wing[0][2]
+        segment_properties(wing) 
         
     else: 
         # unpack
@@ -316,18 +283,7 @@ def wing_planform(wing):
         wing.total_length               = total_length 
 
         # estimate LEMAC
-        wing.LEMAC =  wing.origin[0][0] + np.tan(wing.sweeps.leading_edge) * y_coord 
-
-        # estimate empty wing center of gravity        
-        cg_wing   =  segment_centroid(le_sweep,semispan,0,0,0,taper,dihedral,chord_root,chord_tip) 
-        if vertical:
-            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
-            wing.mass_properties.center_of_gravity[0][1] = cg_wing[2]  
-            wing.mass_properties.center_of_gravity[0][2] = 0 if sym ==True else cg_wing[1]
-        else: 
-            wing.mass_properties.center_of_gravity[0][0] = cg_wing[0] 
-            wing.mass_properties.center_of_gravity[0][1] = 0 if sym ==True else cg_wing[1]
-            wing.mass_properties.center_of_gravity[0][2] = cg_wing[2]
+        wing.LEMAC =  wing.origin[0][0] + np.tan(wing.sweeps.leading_edge) * y_coord  
       
     # control surface  
     taper = wing.taper 
@@ -503,39 +459,3 @@ def segment_properties(wing):
     wing.areas.wetted    = total_wetted_area
         
     return wing
-
-# Segment centroid
-def segment_centroid(le_sweep,seg_span,dx,dy,dz,taper,dihedral,root_chord,tip_chord):
-    """Computes the centroid of a trapezoidal segment
-    
-    Assumptions:
-    Polygon
-    
-    Source:
-    None
-    
-    Inputs:
-    le_sweep      [rad]
-    seg_span      [m]
-    dx            [m]
-    dy            [m]
-    taper         [dimensionless]
-    dihedral      [radians]
-    root_chord    [m]
-    tip_chord     [m]
-
-    Outputs:
-    cx,cy         [m,m]
-
-    Properties Used:
-    N/A
-    """    
-    
-    a = tip_chord
-    b = root_chord
-    c = np.tan(le_sweep)*seg_span
-    cx = (2*a*c + a**2 + c*b + a*b + b**2) / (3*(a+b))
-    cy = seg_span / 3. * (( 1. + 2. * taper ) / (1. + taper))
-    cz = cy * np.tan(dihedral)    
-    
-    return np.array([cx+dx,cy+dy,cz+dz]) 

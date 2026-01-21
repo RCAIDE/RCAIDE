@@ -8,6 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
 import RCAIDE
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moments_of_inertia import update_fuel_tank_moment_of_inertia
 
 # package imports 
 import numpy as np  
@@ -18,7 +19,8 @@ def compute_fuel_tank_properties(tank,state,distributor):
     """ Computes fuel comsumtion of tanks
     """
     # unpack  
-    I  = state.numerics.time.integrate
+    I    = state.numerics.time.integrate
+    fuel = tank.fuel
     
     # pull out distributor
     if type(distributor) == RCAIDE.Library.Components.Powertrain.Distributors.Electrical_Bus:
@@ -35,7 +37,7 @@ def compute_fuel_tank_properties(tank,state,distributor):
         h   =  0 # NEED TO UPDATE 
         
         # unpack tank properties
-        epsilon = 0 # tant.  NEED TO UPDATE 
+        epsilon = 0 # tant.  NEED TO UPDATE # check this
         h_fg    = 0 #  tank.fuel  NEED TO UPDATE 
         sigma   = 0 #  NEED TO UPDATE  
                         
@@ -49,9 +51,13 @@ def compute_fuel_tank_properties(tank,state,distributor):
          
         tank_conditions.boil_off_flow_rate =  m_dot_boil_off 
      
-    m_0_fuel                                       = tank_conditions.fuel_mass[0,0]
+    m_0_fuel                                       = state.conditions.weights.components.mass[fuel.tag][0,0]  
     mass_flow_rate                                 = tank.fuel_selector_ratio*distributor_conditions.fuel_mass_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_mass_flow_rate             
     tank_conditions.mass_flow_rate                 = mass_flow_rate
-    if len(mass_flow_rate) > 1: 
-        tank_conditions.fuel_mass[:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten()   
+    if len(mass_flow_rate) > 1:
+        # update mass 
+        state.conditions.weights.components.mass[fuel.tag][:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten()
+        
+        # update moment of inertia of tank
+        update_fuel_tank_moment_of_inertia(tank,state)
     return 
