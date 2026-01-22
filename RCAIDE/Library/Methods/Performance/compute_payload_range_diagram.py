@@ -105,7 +105,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     for segment in  mission.segments:
         # perform inital weights analysis
         segment.analyses.vehicle.mass_properties.takeoff = None
-        segment.analyses.weights.settings.verbose = False
+        segment.analyses.weights.print_weight_analysis_report = False
     mass_properties(mission)
     vehicle = mission.segments[initial_segment].analyses.vehicle 
   
