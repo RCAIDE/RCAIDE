@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from RCAIDE.Library.Components import Component 
-from RCAIDE.Library.Methods.Powertrain.Converters.Pump import compute_pump_performance, compute_pump_mass_from_power_density, append_pump_conditions
+from RCAIDE.Library.Methods.Powertrain.Converters.Pump import compute_pump_performance, append_pump_conditions
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cylinder_center_of_gravity  import compute_cylinder_center_of_gravity
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cylinder_moment_of_inertia  import compute_cylinder_moment_of_inertia
  
@@ -32,6 +32,7 @@ class Pump(Component):
         self.design_inlet_pressure   = 0.0 
         self.design_outlet_pressure  = 0.0
         self.design_hydraulic_power  = 0 
+        self.casting_and_mount_factor= 2.0 
 
  
     def compute_performance(self,state,fuel_line = None,bus = None):
@@ -39,12 +40,7 @@ class Pump(Component):
         Computes Turboelectric_Generator performance including power.
         """
         P_mech,P_elec,stored_results_flag,stored_propulsor_tag =  compute_pump_performance(self,state,fuel_line, bus)
-        return P_mech,P_elec,stored_results_flag,stored_propulsor_tag
-    
-    def size_pump(self): 
-        compute_pump_mass_from_power_density(self)
-        return 
-    
+        return P_mech,P_elec,stored_results_flag,stored_propulsor_tag 
     
     def append_operating_conditions(self, segment, fuel_line): 
         """

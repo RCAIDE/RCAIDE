@@ -107,7 +107,6 @@ class Non_Integral_Tank(Fuel_Tank):
         self.tag                         = 'non_integral_tank' 
         self.orientation_euler_angles    = [0.,0.,0.]
         self.geometry_type               = 'cylindrical'   # ['prismatic', 'cylindrical']
-        self.bwb_aft_tank                = False
         self.aft_tank_segment_bound      = None # This only has one bound since it is more of a end bound and it will always start from the rootchord and grow symmetrically till bound
         self.radial_offset               = None
         self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank.

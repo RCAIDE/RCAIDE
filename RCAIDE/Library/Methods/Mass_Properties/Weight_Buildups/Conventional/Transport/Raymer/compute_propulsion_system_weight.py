@@ -16,7 +16,7 @@ import  numpy as  np
 # ----------------------------------------------------------------------------------------------------------------------
 # Propulsion System Weight 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_propulsion_system_weight(vehicle,network):
+def compute_propulsion_system_weight(vehicle,network, settings):
     """
     Calculates the total propulsion system weight using Raymer's method, including subsystems.
 
@@ -134,7 +134,7 @@ def compute_propulsion_system_weight(vehicle,network):
             if propulsor.nacelle != None:
                 ref_nacelle =  propulsor.nacelle 
                     
-    WFSYS           = compute_fuel_system_weight(vehicle, NENG)
+    WFSYS           = compute_fuel_system_weight(vehicle, NENG,settings)
     
     if ref_nacelle != None: 
         WNAC = compute_nacelle_weight(vehicle,ref_nacelle, NENG, WENG)
@@ -225,7 +225,7 @@ def compute_misc_engine_weight(vehicle, NENG, WENG):
     WSTART  = 49.19*((WENG/Units.lbs)/1000)**0.541
     return WEC * Units.lbs, WSTART * Units.lbs
  
-def compute_fuel_system_weight(vehicle, NENG):
+def compute_fuel_system_weight(vehicle, NENG,settings):
     """ Calculates the weight of the fuel system based on the Raymer method
         Assumptions:
 

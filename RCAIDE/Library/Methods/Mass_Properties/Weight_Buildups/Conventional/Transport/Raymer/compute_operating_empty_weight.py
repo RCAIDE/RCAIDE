@@ -68,7 +68,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
         W_energy_network_total   = 0 
         # Fuel-Powered Propulsors  
    
-        W_propulsion                        = Raymer.compute_propulsion_system_weight(vehicle, network) 
+        W_propulsion                        = Raymer.compute_propulsion_system_weight(vehicle, network, settings) 
         W_energy_network_total              += W_propulsion.W_prop 
         W_energy_network.W_engine           += W_propulsion.W_engine
         W_energy_network.W_thrust_reverser  += W_propulsion.W_thrust_reverser

@@ -68,6 +68,7 @@ class Fuel_Tank(Component):
         self.xz_plane_symmetric             = True
         self.wing_tag                       = None
         self.fuselage_tag                   = None
+        self.bwb_aft_tank                   = False
         self.lengths                        = Data()
         self.lengths.external               = 0.0
         self.lengths.interal                = 0.0  

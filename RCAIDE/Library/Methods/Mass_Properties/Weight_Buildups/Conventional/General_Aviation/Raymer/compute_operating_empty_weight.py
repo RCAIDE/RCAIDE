@@ -195,7 +195,7 @@ def compute_operating_empty_weight(vehicle, settings=None):
                     W_energy_network_cumulative  += motor_mass                
         
         # Fuel network
-        W_propulsion = Raymer.compute_propulsion_system_weight(network)      
+        W_propulsion = Raymer.compute_propulsion_system_weight(network, settings)      
                 
         W_energy_network_cumulative = W_propulsion.W_prop
         number_of_engines           =  W_propulsion.number_of_engines

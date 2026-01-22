@@ -1,4 +1,4 @@
-# RCAIDE/Library/Methods/Powertrain/Converters/Pump/compute_pump_mass_from_power_density.py
+# RCAIDE/Library/Methods/Powertrain/Converters/Pump/design_pump.py
 # 
 # Created:  Jan 2026, M. Clarke
 
@@ -8,12 +8,14 @@
 import RCAIDE
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  compute_pump_mass_from_power_density
+#  design_pump
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_pump_mass_from_power_density(pump):
+def design_pump(pump):
+    """size pump from power density
+    """
     
-    if isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Coolants) or\
-       isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Propellants):
+    if isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Coolants.Coolant) == False and\
+       isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Propellants.Propellant) == False:
         raise AssertionError('Working fluid must be either a coolant or propellant!')  
          
         
@@ -36,7 +38,7 @@ def compute_pump_mass_from_power_density(pump):
     Shaft_Power = Hydraulic_Power / total_efficiency
 
     # mass 
-    mass = Shaft_Power / pump.power_density 
+    mass = (Shaft_Power / pump.power_density ) * pump.casting_and_mount_factor
     pump.mass_properties.mass = mass   
 
     return  

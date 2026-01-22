@@ -10,14 +10,16 @@
 # RCAIDE
 import  RCAIDE 
 from RCAIDE.Framework.Core    import Units ,  Data
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_distributor_center_of_gravity import compute_distributor_center_of_gravity
 
 # python imports 
 import  numpy as  np
+from copy import deepcopy
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Propulsion Systems Weight 
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_propulsion_system_weight(vehicle,ref_propulsor):
+def compute_propulsion_system_weight(vehicle,ref_propulsor, settings):
     """ Calculate the weight of propulsion system, including:
         - dry engine weight
         - fuel system weight
@@ -86,7 +88,7 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
                   
     if ref_nacelle is not None:
         WNAC        = compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG ) 
-    WFSYS           = compute_fuel_system_weight(vehicle, NENG)
+    WFSYS           = compute_fuel_system_weight(vehicle, NENG,settings)
     WENG            = compute_engine_weight(vehicle,ref_propulsor)
     if ref_nacelle is not None:
         WEC, WSTART     = compute_misc_propulsion_system_weight(vehicle,ref_propulsor,ref_nacelle,NENG)
@@ -105,7 +107,7 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor):
     output.number_of_fuel_tanks = number_of_tanks  
     return output
 
-def compute_fuel_system_weight(vehicle, NENG):
+def compute_fuel_system_weight(vehicle, NENG,settings):
     """ Calculates the weight of the fuel system based on Wess ****update l
         Source:
             The Flight Optimization System Weight Estimation Method
@@ -122,12 +124,44 @@ def compute_fuel_system_weight(vehicle, NENG):
             N/A
     """
     WFSYS = 0
-    
-    for fuel_tank in vehicle.networks.fuel.fuel_lines.fuel_line.fuel_tanks:
-        WFSYS += getattr(fuel_tank.mass_properties, 'insulation_mass')
-        WFSYS += getattr(fuel_tank.mass_properties, 'structural_mass')
+ 
+    #if settings.physics_based_distributor_estimation: 
+    for network in vehicle.networks:
+        for fuel_line in network.fuel_lines:
+            for fuel_tank in fuel_line.fuel_tanks: 
+                WFSYS += getattr(fuel_tank.mass_properties, 'insulation_mass')
+                WFSYS += getattr(fuel_tank.mass_properties, 'structural_mass')
+                    
+            # Step 1.1 create a copy of the transfer lines and use a physics based approach to estimate line weight 
+            fuel_line_jet_A = deepcopy(fuel_line) 
+            fuel_line_jet_A.pipe.rigid_material                  = RCAIDE.Library.Attributes.Materials.Aluminum()
+            fuel_line_jet_A.pipe.flexible_material               = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
+            fuel_line_jet_A.pipe.flexible_material_ratio         = 0.25
+            fuel_line_jet_A.pipe.diameters                       = Data()
+            fuel_line_jet_A.pipe.diameters.external              = 0.625 *  Units.inches 
+            fuel_line_jet_A.pipe.diameters.internal              = 0.625 *  Units.inches -  (2 * 0.035)*  Units.inches
+            fuel_line_jet_A.insulation                           = Data()
+            fuel_line_jet_A.insulation.rigid_material            = RCAIDE.Library.Attributes.Materials.Aluminum() 
+            fuel_line_jet_A.insulation.flexible_material         = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304() 
+            fuel_line_jet_A.insulation.flexible_material_ratio   = 0.25
+            fuel_line_jet_A.insulation.diameters                 = Data()
+            fuel_line_jet_A.insulation.diameters.external        = 0.0
+            fuel_line_jet_A.insulation.diameters.internal        = 0.0 
+            
+            # Step 1.2 compute transfer line weight 
+            _ =  compute_distributor_center_of_gravity(fuel_line_jet_A,vehicle, length=0)
+            W_SYS_Jet_A = fuel_line_jet_A.mass_properties.mass
+            
+            # Step 2 estimate line weight of true transfer line
+            _ =  compute_distributor_center_of_gravity(fuel_line,vehicle, length=0)
+            W_SYS_truth = fuel_line.mass_properties.mass
+            
+            # compute adjustment of transfer line weight 
+            W_SYS_adjustment =  W_SYS_truth - W_SYS_Jet_A
+            
+            WFSYS += W_SYS_adjustment 
 
-    return WFSYS *1.5
+    return 
 
 
 def compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG):

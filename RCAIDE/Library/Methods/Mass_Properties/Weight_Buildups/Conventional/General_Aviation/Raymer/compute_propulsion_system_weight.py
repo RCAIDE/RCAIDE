@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  compute_propulsion_system_weight
 # ----------------------------------------------------------------------------------------------------------------------
-def compute_propulsion_system_weight(network):
+def compute_propulsion_system_weight(network, settings):
     W_energy_network_total = 0
     number_of_jet_engines = 0
     number_of_piston_engines = 0
