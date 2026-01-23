@@ -6,7 +6,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component 
+from .Converter  import Converter
 from RCAIDE.Library.Methods.Powertrain.Converters.Pump import compute_pump_performance, append_pump_conditions
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cylinder_center_of_gravity  import compute_cylinder_center_of_gravity
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cylinder_moment_of_inertia  import compute_cylinder_moment_of_inertia
@@ -14,7 +14,7 @@ from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cylinder_m
 # ----------------------------------------------------------------------------------------------------------------------
 # Pump
 # ----------------------------------------------------------------------------------------------------------------------            
-class Pump(Component):
+class Pump(Converter):
     """ 
     """  
     def __defaults__(self): 
@@ -29,9 +29,10 @@ class Pump(Component):
         self.pump_efficiency         = 1.0
         self.turbine_efficiency      = 1.0
         self.design_mass_flow_rate   = 0.0
+        self.design_power_rating     = 0.0 # W/(kg/s)
         self.design_inlet_pressure   = 0.0 
         self.design_outlet_pressure  = 0.0
-        self.design_hydraulic_power  = 0 
+        self.design_hydraulic_power  = 0.0 
         self.casting_and_mount_factor= 2.0 
 
  
@@ -42,7 +43,7 @@ class Pump(Component):
         P_mech,P_elec,stored_results_flag,stored_propulsor_tag =  compute_pump_performance(self,state,fuel_line, bus)
         return P_mech,P_elec,stored_results_flag,stored_propulsor_tag 
     
-    def append_operating_conditions(self, segment, fuel_line): 
+    def append_operating_conditions(self,segment,energy_conditions,noise_conditions=None): 
         """
         Adds operating conditions for the avionics system to a mission segment.
 
@@ -53,7 +54,7 @@ class Pump(Component):
         bus : Data
             Electrical bus supplying power to the avionics
         """
-        append_pump_conditions(self, segment, fuel_line)
+        append_pump_conditions(self,segment,energy_conditions) 
         return  
 
     def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 

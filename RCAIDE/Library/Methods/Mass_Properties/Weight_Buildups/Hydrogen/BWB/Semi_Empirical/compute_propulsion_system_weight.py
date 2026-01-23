@@ -161,7 +161,7 @@ def compute_fuel_system_weight(vehicle, NENG,settings):
             
             WFSYS += W_SYS_adjustment 
 
-    return 
+    return WFSYS
 
 
 def compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG):

@@ -17,24 +17,35 @@ import numpy as np
 #  compute_pump_performance
 # ----------------------------------------------------------------------------------------------------------------------   
 def compute_pump_performance(pump,state,fuel_line,bus):
-    """Computes the size of the pump"""
-     
-    # compute delta P
-    pressure_rise = pump.design_outlet_pressure - pump.design_inlet_pressure
+    """Computes the performance of the pump""" 
+
+    # Unpack
+    pump_conditions = state.conditions.energy.converters[pump.tag]
     
     # mass flow 
-    m_dot  = state.conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate
-    
+    m_dot  = state.conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate * pump.distributor_split
+
+    # compute delta P
+    pressure_rise = pump.design_outlet_pressure - pump.design_inlet_pressure     
+
     # volumetric flow rate
     Q  = m_dot /pump.working_fluid.density
     
-    # hydraulic power
-    Hydraulic_Power  =  Q * pressure_rise
-    
     # mass of pump 
-    total_efficiency =  pump.pump_efficiency * pump.turbine_efficiency
+    total_efficiency =  pump.pump_efficiency * pump.turbine_efficiency    
+
+    # hydraulic power
+    hydraulic_power  =  Q * pressure_rise     
     
     # shaft power 
-    Shaft_Power = Hydraulic_Power / total_efficiency
+    shaft_power      =  hydraulic_power /total_efficiency 
      
-    return  
+    pump_conditions.inputs.power  = shaft_power     # shaft power 
+    pump_conditions.outputs.power = hydraulic_power # hydraulic power
+    
+    # compute additional mdot required to produce power assuming it comes
+    m_dot_increment = shaft_power / pump.working_fluid.specific_energy
+    
+    pump_conditions.fuel_mass_flow_rate = m_dot_increment
+    
+    return 0,shaft_power,None,None

@@ -5,39 +5,20 @@
 from RCAIDE.Framework.Mission.Common     import   Conditions
 
 # ---------------------------------------------------------------------------------------------------------------------- 
-#  append_avionics_conditions
+#  append_pump_conditions
 # ----------------------------------------------------------------------------------------------------------------------    
-def append_pump_conditions(avionics, segment, bus):  
+def append_pump_conditions(pump, segment, energy_conditions):  
     """
-    Initializes and appends empty avionics conditions data structures to the segment state conditions.
+    Initializes and appends empty pump conditions data structures to the segment state conditions.
     
     Parameters
     ----------
-    avionics : Avionics
-        The avionics component for which conditions are being initialized.
-    segment : Segment
-        The mission segment in which the avionics is operating.
-    bus : ElectricalBus
-        The electrical bus that powers the avionics system.
-    
-    Returns
-    -------
-    None
-    
-    Notes
-    -----
-    This function creates an empty Conditions object for the avionics system within
-    the segment's energy conditions dictionary, indexed by the bus tag and avionics tag.
-    
-    The avionics power consumption is initialized as a zero array with the same
-    length as the segment's state vector. This will be updated during mission analysis
-    based on the avionics power requirements.
-    
-    See Also
-    -------- 
-    """
-    ones_row    = segment.state.ones_row
-    segment.state.conditions.energy.busses[bus.tag][avionics.tag]            = Conditions()
-    segment.state.conditions.energy.busses[bus.tag][avionics.tag].power      = 0 * ones_row(1)
+    pump : Pump 
+        The pump component for which conditions are being initialized. 
+    """ 
+    ones_row    = segment.state.ones_row 
+    energy_conditions.converters[pump.tag]                                 = Conditions()
+    energy_conditions.converters[pump.tag].inputs                          = Conditions()
+    energy_conditions.converters[pump.tag].outputs                         = Conditions() 
     
     return 
