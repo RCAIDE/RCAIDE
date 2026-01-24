@@ -214,18 +214,37 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
             inner_segment = wing.segments[seg_tags[i]]
             outer_segment = wing.segments[seg_tags[i+1]]
 
-            # compute volume of fuel in wing segment 
+            # compute volume of fuel in wing
             volume = compute_segmented_wing_integral_tank_fuel_volume(wing,inner_segment,outer_segment,fuel_tank)
             inner_segment.volume_properties.fuel = volume
-      
+    
             total_fuel_mass      += volume * fuel_tank.fuel.density
             segment_tank_moment  += np.array(inner_segment.mass_properties.center_of_gravity)[0] * volume * fuel_tank.fuel.density  
-            total_fuel_volume    += volume 
-            
-        center_of_gravity = [(segment_tank_moment / total_fuel_mass).tolist()]
+            total_fuel_volume    += volume
+     
+        inner_segment_x_start = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_start[0])
+        inner_segment_x_end   = wing.segments[seg_tags[0]].origin[0][0] + wing.segments[seg_tags[0]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_end[0])
+        outer_segment_x_start = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_start[1])
+        outer_segment_x_end   = wing.segments[seg_tags[-1]].origin[0][0] + wing.segments[seg_tags[-1]].root_chord_percent * wing.chords.root * (fuel_tank.segments_percent_chord_end[0])  
+        inner_segment_y       =  wing.segments[seg_tags[0]].origin[0][1]
+        outer_segment_y       =  wing.segments[seg_tags[-1]].origin[0][1]
+
+        p1x = inner_segment_x_start
+        p1y = inner_segment_y
+        p2x = inner_segment_x_end
+        p2y = inner_segment_y
+        p3x = outer_segment_x_end
+        p3y = outer_segment_y
+        p4x = outer_segment_x_start
+        p4y = outer_segment_y
+
+        A_num = (p1x*p2y - p2x*p1y + p2x*p3y - p3x*p2y + p3x*p4y - p4x*p3y + p4x*p1y - p1x*p4y)
+        A     = 0.5 * A_num
+        x_cg  = (1/(6*A)) * ((p1x + p2x)*(p1x*p2y - p2x*p1y) + (p2x + p3x)*(p2x*p3y - p3x*p2y) +
+                (p3x + p4x)*(p3x*p4y - p4x*p3y) +  (p4x + p1x)*(p4x*p1y - p1x*p4y))
         
-        fuel_tank.fuel.mass_properties.center_of_gravity  = center_of_gravity
-        fuel_tank.mass_properties.center_of_gravity       = center_of_gravity
+        
+        fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, 0, 0])
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          
