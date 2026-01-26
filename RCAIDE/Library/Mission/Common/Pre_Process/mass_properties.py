@@ -137,7 +137,7 @@ def mass_properties_preprocess_routine(segment):
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
             print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
         
-        if analyses.vehicle.mass_properties.max_zero_fuel == None and  analyses.vehicle.mass_properties.max_fuel == None:
+        if analyses.vehicle.mass_properties.max_zero_fuel == None:
             # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
             print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
             # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
