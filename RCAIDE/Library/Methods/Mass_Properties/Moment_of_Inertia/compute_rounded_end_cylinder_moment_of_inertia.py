@@ -137,7 +137,7 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
 
     # Store moment of inertia tensor on component 
     component.mass_properties.moments_of_inertia.tensor                 = I_global   
-    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I_global / mass
+    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I / mass  
     
     if fuel_tank == True:
         # unpack fuel 

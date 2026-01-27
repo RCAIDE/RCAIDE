@@ -115,17 +115,10 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
     combined_mesh_full.density = mass / combined_mesh_full.volume
     
     centroid = combined_mesh_full.centroid
-    cg_x     = fuel_tank.fuel.origin[0][0] +  centroid[0]
+    cg_x     = centroid[0]
     cg_y     = 0
     cg_z     = centroid[2]
     center_of_gravity = [[cg_x, cg_y, cg_z]]
-     
-    #fuel_cg_list   = []
-    #fuel_mass_list = [] 
-    #fuel_cg_list.append(fuel_tank.fuel.mass_properties.center_of_gravity[0][0] + fuel_tank.origin[0][0])
-    #fuel_mass_list.append(fuel_tank.fuel.mass_properties.mass) 
-    #fuel_cg = np.average(fuel_cg_list, weights=fuel_mass_list) 
-    #actual_centroid = np.array([fuel_cg, 0.0, 0.0], dtype=float).reshape(-1)[:3] 
     
     # Shift inertia tensor from origin to the requested (actual) centroid
     I_origin = combined_mesh_full.moment_inertia 

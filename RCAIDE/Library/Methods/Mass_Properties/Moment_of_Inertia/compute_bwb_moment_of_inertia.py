@@ -69,7 +69,7 @@ def compute_bwb_wing_moment_of_inertia(bwb_wing,center_of_gravity):
     I_component  = bwb_wing.mass_properties.moments_of_inertia.tensor
     centroid     = bwb_wing.mass_properties.center_of_gravity
      
-    delta    = centroid - center_of_gravity
+    delta    = np.array(centroid) - np.array(center_of_gravity)
     I_global = I_component + mass * ((np.dot(delta, delta) * np.eye(3)) - np.outer(delta, delta))
      
     # update moome
@@ -83,7 +83,7 @@ def compute_aft_center_body_moment_of_inertia(aft_center_body,center_of_gravity)
     I_component  = aft_center_body.mass_properties.moments_of_inertia.tensor
     centroid     = aft_center_body.mass_properties.center_of_gravity
      
-    delta    = centroid - center_of_gravity
+    delta    = np.array(centroid) - np.array(center_of_gravity)
     I_global = I_component + mass * ((np.dot(delta, delta) * np.eye(3)) - np.outer(delta, delta))
      
     # update MOI
@@ -95,7 +95,7 @@ def compute_center_body_moment_of_inertia(center_body,center_of_gravity):
     I_component  = center_body.mass_properties.moments_of_inertia.tensor 
     centroid     = center_body.mass_properties.center_of_gravity
      
-    delta    = centroid - center_of_gravity
+    delta    = np.array(centroid) - np.array(center_of_gravity)
     I_global = I_component + mass * ((np.dot(delta, delta) * np.eye(3)) - np.outer(delta, delta))
      
     # update MOI

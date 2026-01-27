@@ -301,7 +301,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.max_takeoff          = vehicle.mass_properties.max_takeoff  
  
     for wing in vehicle.wings:
-        if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):    
+        if isinstance(wing, Wings.Blended_Wing_Body):    
             wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous
             wing.center_body.mass_properties.mass     = output.empty.structural.center_body  + output.empty.structural.paint +\
                                                         output.empty.systems.furnishings +  output.empty.systems.air_conditioner +\
