@@ -305,10 +305,8 @@ def compute_operating_empty_weight(vehicle,settings=None):
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Blended_Wing_Body):    
             wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous
-            wing.center_body.mass_properties.mass     = output.empty.structural.center_body  + output.empty.structural.paint +\
-                                                        output.empty.systems.furnishings +  output.empty.systems.air_conditioner +\
-                                                        output.operational_items.misc +  output.operational_items.passenger_service +\
-                                                        output.operational_items.flight_attendants     
+            wing.center_body.mass_properties.mass     = output.empty.structural.center_body  +output.empty.systems.furnishings +  output.empty.systems.air_conditioner +\
+                                                        output.operational_items.misc +  output.operational_items.passenger_service +output.operational_items.flight_attendants     
     
     nose_landing_gear = False
     main_landing_gear = False

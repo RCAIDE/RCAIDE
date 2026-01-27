@@ -61,10 +61,10 @@ class Fuel_Tank(Component):
         """          
         self.tag                            = 'fuel_tank'  
         self.fuel                           = None
-        self.secondary_mass_flow_rate       = 0.0
-        self.fuel_selector_ratio            = 1.0    
+        self.secondary_mass_flow_rate       = 0.0  
         self.wall_clearance                 = 0.0
         self.wall_thickness                 = 1E-3
+        self.fuel_selector_ratio            = 1.0
         self.xz_plane_symmetric             = True
         self.wing_tag                       = None
         self.fuselage_tag                   = None
@@ -183,6 +183,9 @@ class Fuel_Tank(Component):
             3x3 moment of inertia tensor in kg*m^2 
         """
         
-        _  = compute_cuboid_center_of_gravity(self, length=self.lengths.external) 
+        _  = compute_cuboid_center_of_gravity(self, length=self.lengths.external)
+        
+        if self.fuel.mass_properties.mass != 0: 
+            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel  
             
         return

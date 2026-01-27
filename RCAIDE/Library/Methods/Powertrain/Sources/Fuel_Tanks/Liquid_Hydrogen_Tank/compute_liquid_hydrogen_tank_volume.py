@@ -197,7 +197,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     fuel_tank.fuel.mass_properties.mass       = fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
     fuel_tank.mass_properties.insulation_mass = mass_ins
     fuel_tank.mass_properties.structural_mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
-    
+    fuel_tank.mass_properties.mass            = fuel_tank.mass_properties.insulation_mass +   fuel_tank.mass_properties.structural_mass 
     return
 
 

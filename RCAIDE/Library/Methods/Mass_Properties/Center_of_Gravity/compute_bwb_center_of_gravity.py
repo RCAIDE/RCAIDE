@@ -17,7 +17,7 @@ import trimesh
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Blended Wing Body Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_bwb_center_of_gravity(bwb_wing): 
+def compute_bwb_center_of_gravity(bwb_wing, vehicle): 
     ''' computes the moment of inertia tensor for a blended wing body about a given center of gravity.
     Includes the ability to model a  wing fuel tank as a condensed wing
 
@@ -130,7 +130,7 @@ def compute_bwb_wing_center_of_gravity(bwb_wing):
     centroid = combined_mesh_full.centroid 
       
     # store values 
-    bwb_wing.mass_properties.center_of_gravity         =  centroid
+    bwb_wing.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.mass_properties.moments_of_inertia.tensor =  I
     return   
 
@@ -206,7 +206,7 @@ def compute_aft_center_body_center_of_gravity(bwb_wing):
     centroid                   = combined_mesh_full.centroid 
         
     # store values 
-    bwb_wing.aft_center_body.mass_properties.center_of_gravity         =  centroid
+    bwb_wing.aft_center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.aft_center_body.mass_properties.moments_of_inertia.tensor =  I
     
     return  
@@ -286,7 +286,7 @@ def compute_center_body_center_of_gravity(bwb_wing):
     centroid                   = combined_mesh_full.centroid
     
     # store values 
-    bwb_wing.center_body.mass_properties.center_of_gravity         =  centroid
+    bwb_wing.center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.center_body.mass_properties.moments_of_inertia.tensor =  I
     
     return   

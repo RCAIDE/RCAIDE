@@ -184,7 +184,7 @@ def compute_distributor_moment_of_inertia(component,vehicle, center_of_gravity =
     I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))    
 
     # Store moment of inertia tensor on component 
-    component.mass_properties.moments_of_inertia.tensor = I_global    
-    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I_global / mass        
+    component.mass_properties.moments_of_inertia.tensor                 = I_global    
+    component.mass_properties.moments_of_inertia.non_dimensional_tensor = I / mass        
        
     return I_global,  mass

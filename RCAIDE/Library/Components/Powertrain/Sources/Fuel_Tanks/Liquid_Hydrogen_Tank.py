@@ -194,5 +194,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         
         length = self.lengths.external +  self.diameters.external
         _      = compute_cylinder_center_of_gravity(self, length )
-            
+
+        if self.fuel.mass_properties.mass != 0: 
+            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel                
         return
