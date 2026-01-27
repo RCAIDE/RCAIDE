@@ -61,7 +61,12 @@ def update_moments_of_inertia(state,vehicle):
     
     # unoack
     conditions     = state.conditions
-    N              = state.numerics.number_of_control_points    
+    N              = state.numerics.number_of_control_points
+    
+    for network in vehicle.networks:
+        for fuel_line in network.fuel_lines: 
+            for fuel_tank in fuel_line.fuel_tanks:
+                update_fuel_tank_moment_of_inertia(fuel_tank,state) 
             
     # --------------------------------------------------------------------------     
     # update aircraft MOI
@@ -99,11 +104,16 @@ def update_moments_of_inertia(state,vehicle):
     return 
      
 def update_fuel_tank_moment_of_inertia(fuel_tank,state): 
-    conditions       = state.conditions 
-    fuel_tag         = fuel_tank.fuel.tag                     
-    M_fuel           = conditions.weights.components.mass[fuel_tag]  
-    MOI_fuel_non_dim = fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor 
-    I_fuel           = M_fuel[:,:, None]  * np.array(MOI_fuel_non_dim)[None,:,:]  
+    conditions        = state.conditions  
+    center_of_gravity = conditions.weights.vehicle.global_center_of_gravity   
+    fuel_tag          = fuel_tank.fuel.tag                     
+    M_fuel            = conditions.weights.components.mass[fuel_tag]  
+    MOI_fuel_non_dim  = fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor
+    I_fuel_local      = M_fuel[:,:, None]  * np.array(MOI_fuel_non_dim)[None,:,:] 
+    origin            = fuel_tank.fuel.mass_properties.center_of_gravity
+    s                 = np.array(center_of_gravity) - np.array(origin)  
+    I_fuel_par        = M_fuel[:,:, None] * s
+    I_fuel            = I_fuel_local  + I_fuel_par     
     
     # update data structures  
     conditions.weights.components.moments_of_inertia_Ixx[fuel_tag][:,0] = I_fuel[:,0,0]
