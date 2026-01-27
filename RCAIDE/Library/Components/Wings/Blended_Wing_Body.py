@@ -7,8 +7,9 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 # RCAIDE imports
 import RCAIDE
-from RCAIDE.Framework.Core import Data, Container
+from RCAIDE.Framework.Core import Data 
 from .Main_Wing import Main_Wing
+from RCAIDE.Library.Components.Component  import Container
 from RCAIDE.Library.Components  import Component  
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_bwb_moment_of_inertia import  compute_bwb_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_bwb_center_of_gravity import  compute_bwb_center_of_gravity
@@ -161,4 +162,4 @@ class Blended_Wing_Body(Main_Wing):
         # Store data
         self.cabins.append(cabin)
 
-        return      
+        return       

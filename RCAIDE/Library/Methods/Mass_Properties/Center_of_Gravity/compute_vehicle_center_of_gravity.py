@@ -54,7 +54,8 @@ def compute_vehicle_center_of_gravity(vehicle,overwrite_center_of_gravity=True,s
         print('\n ***** Aircraft center of gravity ***** ')
         print(CG) 
         mass_percentage = (total_mass[0] / vehicle.mass_properties.takeoff) * 100
-        print('Mass percentage used in C.G and MOI calculations: ', round(mass_percentage,2), '%')
+        print('Mass used in CG and MOI calculations: ', round(total_mass[0],2))
+        print('Mass percentage of TOW used in CG and MOI calculations: ', round(mass_percentage,2), '%')
         
  
     if segment != None:         
