@@ -14,7 +14,7 @@ from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.append_fuel_tank_condi
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Integral_Tank.compute_integral_tank_volume import *
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_wing_integral_tank_moment_of_inertia     import  compute_wing_integral_tank_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_fuselage_integral_tank_moment_of_inertia import  compute_fuselage_integral_tank_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_wing_center_of_gravity                   import  compute_wing_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_wing_integral_tank_center_of_gravity     import  compute_wing_integral_tank_center_of_gravity
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ class Integral_Tank(Fuel_Tank):
         """
 
         if self.wing_tag != None:
-            _ = compute_wing_center_of_gravity(self,vehicle)             
+            _ = compute_wing_integral_tank_center_of_gravity(self,vehicle)             
             
         return
         

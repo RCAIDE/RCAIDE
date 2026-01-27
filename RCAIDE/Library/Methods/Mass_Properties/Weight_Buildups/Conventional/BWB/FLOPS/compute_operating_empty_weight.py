@@ -254,11 +254,10 @@ def compute_operating_empty_weight(vehicle,settings=None):
     ##-------------------------------------------------------------------------------                 
     # Fuselage 
     ##------------------------------------------------------------------------------- 
-    TOW                = vehicle.mass_properties.max_takeoff
-    W_cabin            = compute_cabin_weight(vehicle,settings) 
+    TOW                 = vehicle.mass_properties.max_takeoff
+    W_cabin             = compute_cabin_weight(vehicle,settings) 
     W_aft_center_body   = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW)
-    vehicle.wings.main_wing.aft_center_body.mass_properties.mass = W_aft_center_body
-    vehicle.wings.main_wing.center_body.mass_properties.mass = W_cabin
+    
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 
@@ -299,7 +298,16 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.operational_items    = W_oper 
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
-    output.max_takeoff          = vehicle.mass_properties.max_takeoff
+    output.max_takeoff          = vehicle.mass_properties.max_takeoff  
+ 
+    for wing in vehicle.wings:
+        if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):    
+            wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous
+            wing.center_body.mass_properties.mass     = output.empty.structural.center_body  + output.empty.structural.paint +\
+                                                        output.empty.systems.furnishings +  output.empty.systems.air_conditioner +\
+                                                        output.operational_items.misc +  output.operational_items.passenger_service +\
+                                                        output.operational_items.flight_attendants 
+        
     
     nose_landing_gear = False
     main_landing_gear = False

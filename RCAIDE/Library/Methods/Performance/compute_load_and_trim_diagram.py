@@ -192,8 +192,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         #------------------------------------------------------------------------                
         # Reset all weights to 0
         #------------------------------------------------------------------------    
-        weights_analysis_mission = deepcopy(mission) 
-        vehicle                         = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle
+        weights_analysis_mission              = deepcopy(mission) 
+        vehicle                               = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle
         vehicle.mass_properties.max_zero_fuel = MZFW  
         vehicle.mass_properties.takeoff       = None  
         vehicle.mass_properties.payload       = 0
@@ -437,6 +437,7 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
 
     # update analysis settings 
     for segment in aero_analysis_mission.segments:
+        segment.analyses.weights.print_weight_analysis_report         = False
         segment.analyses.geometry.settings.compute_fuel_volume        = False  
         segment.analyses.vehicle.mass_properties.takeoff              = None 
         segment.analyses.weights.settings.overwrite_moments_of_inertia= False

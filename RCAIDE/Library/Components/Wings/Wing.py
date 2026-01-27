@@ -279,8 +279,7 @@ class Wing(Component):
         -------
         ndarray
             3x3 moment of inertia tensor
-        """
-        
+        """ 
         _, _ = compute_wing_moment_of_inertia(self, center_of_gravity) 
         return
     

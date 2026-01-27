@@ -228,7 +228,6 @@ def compute_operating_empty_weight(vehicle,settings=None):
             num_main_wings += 1
             bwb_aft_center_body_area  = wing.aft_center_body.area
             bwb_aft_center_body_taper = wing.aft_center_body.taper 
-            
     
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):
@@ -259,7 +258,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     ##------------------------------------------------------------------------------- 
     TOW                = vehicle.mass_properties.max_takeoff
     W_cabin            = compute_cabin_weight(vehicle,settings) 
-    W_aft_center_body   = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW)
+    W_aft_center_body  = compute_aft_center_body_weight(number_of_engines,bwb_aft_center_body_area, bwb_aft_center_body_taper, TOW) 
     
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
@@ -271,7 +270,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     ##-------------------------------------------------------------------------------   
     output.empty.structural                       = Data()
     output.empty.structural.wings                 = W_main_wing 
-    output.empty.structural.empennage            =  W_tail_horizontal +  W_tail_vertical 
+    output.empty.structural.empennage             =  W_tail_horizontal +  W_tail_vertical 
     output.empty.structural.center_body           = W_cabin
     output.empty.structural.aft_center_body       = W_aft_center_body
     output.empty.structural.landing_gear          = landing_gear.main +  landing_gear.nose  
@@ -302,6 +301,14 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff
+
+    for wing in vehicle.wings:
+        if isinstance(wing, Wings.Main_Wing) or isinstance(wing, Wings.Blended_Wing_Body):    
+            wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous
+            wing.center_body.mass_properties.mass     = output.empty.structural.center_body  + output.empty.structural.paint +\
+                                                        output.empty.systems.furnishings +  output.empty.systems.air_conditioner +\
+                                                        output.operational_items.misc +  output.operational_items.passenger_service +\
+                                                        output.operational_items.flight_attendants     
     
     nose_landing_gear = False
     main_landing_gear = False

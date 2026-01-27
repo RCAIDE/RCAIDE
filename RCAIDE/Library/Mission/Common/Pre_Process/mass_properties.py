@@ -9,8 +9,7 @@
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_vehicle_moment_of_inertia
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity
-from RCAIDE.Library.Mission.Common.Pre_Process.use_previous_segment_pre_processed_data import use_previous_segment_pre_processed_data
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
