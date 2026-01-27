@@ -117,7 +117,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
                 origin_y = inner_segment.percent_y_location *fuselage.lengths.total    
                 origin_z = inner_segment.percent_z_location *fuselage.lengths.total                    
             
-        fuel_tank.fuel.mass_properties.center_of_gravity  = list(segment_tank_moment / total_fuel_mass)  
+        fuel_tank.fuel.mass_properties.center_of_gravity  = [list(segment_tank_moment / total_fuel_mass) ]
         fuel_tank.volume_properties.net_volume       = tank_volume_i
         fuel_tank.volume_properties.gross_volume     = tank_volume_o
     
@@ -244,7 +244,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing):
                 (p3x + p4x)*(p3x*p4y - p4x*p3y) +  (p4x + p1x)*(p4x*p1y - p1x*p4y))
         
         
-        fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, 0, 0])
+        fuel_tank.fuel.mass_properties.center_of_gravity  = [[x_cg, 0, 0]]
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          
