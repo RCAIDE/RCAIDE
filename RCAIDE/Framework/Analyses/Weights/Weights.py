@@ -59,7 +59,7 @@ class Weights(Analysis):
         # self.settings.overwrite_center_of_gravity                   = True
         # self.settings.overwrite_moments_of_inertia                  = True
         self.settings.overwrite_operating_empty_weight              = True
-        self.settings.run_weights_analysis                          = False
+        self.settings.run_weights_analysis                          = True
         self.settings.run_center_of_gravity                         = False
         self.settings.run_moments_of_inertia                        = False
     

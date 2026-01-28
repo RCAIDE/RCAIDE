@@ -283,10 +283,14 @@ def mass_properties_preprocess_routine(segment, i = 0):
         overwrite_CG = False
         if analyses.vehicle.mass_properties.center_of_gravity == None:
             overwrite_CG = True
-        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle, i,
+        if i != 0:
+            verbose_flag = False
+        else:
+            verbose_flag = weights_analysis.print_weight_analysis_report
+        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,
                                                 overwrite_center_of_gravity = overwrite_CG,
                                                 segment=segment,
-                                                verbose=weights_analysis.print_weight_analysis_report)  
+                                                verbose=verbose_flag)  
 
     # ---------------------------------------------------------------------------------------------------------------------------         
     # STEP 6: Compute Moment of Inertia 
@@ -296,10 +300,14 @@ def mass_properties_preprocess_routine(segment, i = 0):
         tensor = analyses.vehicle.mass_properties.moments_of_inertia.tensor
         if np.all(tensor == 0):
             overwrite_MOI = True
-        _  = compute_vehicle_moment_of_inertia(analyses.vehicle, i,
+        if i != 0:
+            verbose_flag = False
+        else:
+            verbose_flag = weights_analysis.print_weight_analysis_report
+        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,
                                             overwrite_moment_of_intertia = overwrite_MOI,
                                             segment=segment,
-                                            verbose=weights_analysis.print_weight_analysis_report) 
+                                            verbose=verbose_flag) 
     
     
 def apply_correction_factors(analyses): 

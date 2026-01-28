@@ -114,10 +114,10 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
     combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
     combined_mesh_full.density = mass / combined_mesh_full.volume
 
-    axes = trimesh.creation.axis(axis_length=1.0)
-    # Add your mesh and the axes to a scene
-    scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
-    scene.show()
+    # axes = trimesh.creation.axis(axis_length=1.0)
+    # # Add your mesh and the axes to a scene
+    # scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
+    # scene.show()
     centroid = combined_mesh_full.centroid
     cg_x     = centroid[0]
     cg_y     = 0

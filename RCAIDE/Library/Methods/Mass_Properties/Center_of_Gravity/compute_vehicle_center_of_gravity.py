@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Computer Aircraft Center of Gravity
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_vehicle_center_of_gravity(vehicle, i, overwrite_center_of_gravity=True,segment=None,verbose=True): 
+def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,segment=None,verbose=True): 
     ''' Computes the moment of inertia of aircraft 
     
     Source:
@@ -34,9 +34,7 @@ def compute_vehicle_center_of_gravity(vehicle, i, overwrite_center_of_gravity=Tr
     Outputs:
     I                 - mass moment of inertia matrix    [kg-m^2]
     
-    '''  
-    if i != 0:
-        verbose = False
+    '''
     if verbose:
         print("\n\n=== COMPONENT CENTER OF GRAVITY BREAKDOWN REPORT ===" )    
         print("Component \t \t \t Mass \t \t C.G. Location [[x,y,z]]" )    
