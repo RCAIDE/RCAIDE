@@ -19,53 +19,45 @@ import trimesh
 # ----------------------------------------------------------------------------------------------------------------------  
 def compute_bwb_center_of_gravity(bwb_wing, vehicle): 
     ''' computes the moment of inertia tensor for a blended wing body about a given center of gravity.
-    Includes the ability to model a  wing fuel tank as a condensed wing
-
-    Assumptions:
-    - Wing is solid
-    - Wing has a constant density
-
-    Source:
-    [1] Moulton, B. C., and Hunsaker, D. F., “Simplified Mass and Inertial Estimates for Aircraft with Components
-    of Constant Density,” AIAA SCITECH 2023 Forum, January 2023, AIAA-2023-2432 DOI: 10.2514/
-    6.2023-2432
-    
-    [2] Fuel tank references: These were used to estimate the length percentages. 
-    - https://assets.publishing.service.gov.uk/media/5422fa1aed915d13710007a1/2-2007_G-YMME.pdf
-    - https://oat.aero/2023/03/17/airbus-a380-general-familiarisation-fuel-storage/
-    - http://www.b737.org.uk/fuel.htm
-    - https://slideplayer.com/slide/3854059/
+    Includes the ability to model a  wing fuel tank as a condensed wing 
     
     Inputs:
-    - Wing
-    - Wing mass
-    - Center of gravity
-    - Fuel flag (whether the wing is considered a fuel tank or not)
+    - Wing 
+    - Vehicle 
 
     Outputs:
-    - wing moment of inertia tensor
+    - wing center of gravity 
 
     Properties Used:
     N/A
-    ''' 
+    '''
+
+    center_body_segs = []
+    wing_segs        = []
+    for segment in bwb_wing.segments: 
+        if isinstance(segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment): 
+            center_body_segs.append(segment.tag)
+        else:
+            wing_segs.append(segment.tag)
+            
     # compute cabin moment of inertia 
-    compute_center_body_center_of_gravity(bwb_wing)
+    compute_center_body_center_of_gravity(bwb_wing,center_body_segs)
     
     # compute aft cabin moment of inertia 
-    compute_aft_center_body_center_of_gravity(bwb_wing)
+    compute_aft_center_body_center_of_gravity(bwb_wing,center_body_segs)
 
     # compute wing moment of intertia 
-    compute_bwb_wing_center_of_gravity(bwb_wing) 
+    compute_bwb_wing_center_of_gravity(bwb_wing,wing_segs) 
 
     return bwb_wing.mass_properties.center_of_gravity 
 
-def compute_bwb_wing_center_of_gravity(bwb_wing):
+def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
 
-    mass = bwb_wing.mass_properties.mass  
+    mass = bwb_wing.mass_properties.mass
+    seg_keys = ['wing_section_1','wing_section_2','wing_section_3']
 
     #populate the wing segment properties and other things 
-    segment_meshes = []
-    seg_keys = ['wing_section_1','wing_section_2','wing_section_3']
+    segment_meshes = [] 
     for i in range(len(seg_keys)-1):
         # compute volume and assume unit density to get mass
         inner_segment = bwb_wing.segments[seg_keys[i]]
@@ -127,20 +119,21 @@ def compute_bwb_wing_center_of_gravity(bwb_wing):
     combined_mesh_full = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
     combined_mesh_full.density = mass / combined_mesh_full.volume
     I        = combined_mesh_full.moment_inertia
-    centroid = combined_mesh_full.centroid 
+    centroid = np.array(combined_mesh_full.centroid)
+    centroid[1] = 0
       
     # store values 
     bwb_wing.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.mass_properties.moments_of_inertia.tensor =  I
     return   
 
-def compute_aft_center_body_center_of_gravity(bwb_wing):
+def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
     mass          = bwb_wing.aft_center_body.mass_properties.mass
     origin_x      = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
     cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - bwb_wing.layout_of_passenger_accommodations.cabin_x_offset 
- 
-    segment_meshes = []
+    
     seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall','fuel_wall']
+    segment_meshes = [] 
     for i in range(len(seg_keys)-1):
         # compute volume and assume unit density to get mass
         inner_segment = bwb_wing.segments[seg_keys[i]]
@@ -204,7 +197,8 @@ def compute_aft_center_body_center_of_gravity(bwb_wing):
     combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
     combined_mesh_full.density = mass / combined_mesh_full.volume
     I                          = combined_mesh_full.moment_inertia
-    centroid                   = combined_mesh_full.centroid 
+    centroid                   = np.array(combined_mesh_full.centroid)
+    centroid[1] = 0
         
     # store values 
     bwb_wing.aft_center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
@@ -213,13 +207,12 @@ def compute_aft_center_body_center_of_gravity(bwb_wing):
     
     return  
 
-def compute_center_body_center_of_gravity(bwb_wing): 
+def compute_center_body_center_of_gravity(bwb_wing,seg_keys): 
     mass          = bwb_wing.center_body.mass_properties.mass
     origin_x      = bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
     cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - origin_x
- 
-    segment_meshes = []
     seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall']
+    segment_meshes = [] 
     for i in range(len(seg_keys)-1):
         # compute volume and assume unit density to get mass
         inner_segment = bwb_wing.segments[seg_keys[i]]
@@ -286,7 +279,8 @@ def compute_center_body_center_of_gravity(bwb_wing):
     combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
     combined_mesh_full.density = mass / combined_mesh_full.volume
     I                          = combined_mesh_full.moment_inertia
-    centroid                   = combined_mesh_full.centroid
+    centroid                   = np.array(combined_mesh_full.centroid)
+    centroid[1] = 0
     
     # store values 
     bwb_wing.center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]

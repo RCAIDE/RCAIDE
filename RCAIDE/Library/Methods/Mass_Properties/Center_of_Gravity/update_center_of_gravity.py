@@ -84,9 +84,7 @@ def update_center_of_gravity(state):
     for item in conditions.weights.components.mass.keys():
         mass = conditions.weights.components.mass[item]
         CG   = conditions.weights.components.global_center_of_gravity[item]
-        sym  = conditions.weights.components.symmetry_flag[item]
-        
-        #print('item name:, ', item, 'center of gravity : ' , CG[0]*sym[0])
+        sym  = conditions.weights.components.symmetry_flag[item] 
         Mass_tot += conditions.weights.components.mass[item]
         Mom_tot  += CG*sym * mass
     
