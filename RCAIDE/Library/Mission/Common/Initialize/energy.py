@@ -68,7 +68,7 @@ def energy(segment):
     --------
     RCAIDE.Framework.Mission.Segments
     """ 
-
+    ones_row = segment.state.ones_row
     conditions = segment.state.conditions
     vehicle    = segment.analyses.vehicle
 
@@ -99,11 +99,11 @@ def energy(segment):
                             reservoir.append_segment_conditions(segment, coolant_line)
                     
         # if network has fuel lines             
-        for fuel_line in  network.fuel_lines:
-            fuel_line.append_segment_conditions(segment)
-            for fuel_tank in fuel_line.fuel_tanks:
-                fuel = fuel_tank.fuel 
-                if segment.state.initials: 
-                    conditions.weights.components.mass[fuel.tag][:,0] = segment.state.initials.conditions.weights.components.mass[fuel.tag][-1,0] 
-                elif vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel != None:
-                    conditions.weights.components.mass[fuel.tag][:,0] = vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+        # for fuel_line in  network.fuel_lines:
+        #     fuel_line.append_segment_conditions(segment)
+        #     for fuel_tank in fuel_line.fuel_tanks:
+        #         fuel = fuel_tank.fuel 
+        #         if segment.state.initials: 
+        #             conditions.weights.components.mass[fuel.tag][:,0] = segment.state.initials.conditions.weights.components.mass[fuel.tag][-1,0] 
+        #         elif vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel != None:
+        #             conditions.weights.components.mass[fuel.tag] = vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass * ones_row(1) 

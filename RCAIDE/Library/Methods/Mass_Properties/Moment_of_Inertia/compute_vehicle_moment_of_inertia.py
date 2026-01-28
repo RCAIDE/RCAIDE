@@ -12,7 +12,7 @@ import numpy as  np
 # ------------------------------------------------------------------        
 #  Component moments of inertia (MOI) tensors
 # ------------------------------------------------------------------  
-def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True, segment = None,verbose=True): 
+def compute_vehicle_moment_of_inertia(vehicle, i, overwrite_moment_of_intertia=True, segment = None,verbose=True): 
     ''' sums the moments of inertia of each component in the aircraft. Components summed: fuselages,
     wings (main, horizontal, tail + others), turbofan engines, batteries, motors, batteries, fuel tanks
 
@@ -31,6 +31,8 @@ def compute_vehicle_moment_of_inertia(vehicle,overwrite_moment_of_intertia=True,
     Properties Used:
     N/A
     '''    
+    if i != 0:
+        verbose = False
     if verbose:
         print("\n\n=== COMPONENT MOMENT OF INTERTIA BREAKDOWN REPORT ===" )    
         print("Component \t \t \t Ixx \t \t Iyy  \t \t Izz" )        

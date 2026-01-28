@@ -49,10 +49,12 @@ def weights(segment):
     vehicle        = segment.analyses.vehicle
 
     # update center of gravity  
-    update_center_of_gravity(segment.state)
+    if segment.analyses.weights.settings.run_center_of_gravity:
+        update_center_of_gravity(segment.state)
       
     # update moment of inertia 
-    update_moments_of_inertia(segment.state, vehicle)
+    if segment.analyses.weights.settings.run_moments_of_inertia:
+        update_moments_of_inertia(segment.state, vehicle)
         
     # --------------------------------------------------------------------------       
     # update mass 

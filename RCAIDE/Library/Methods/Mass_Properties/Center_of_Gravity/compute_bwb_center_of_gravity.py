@@ -38,7 +38,9 @@ def compute_bwb_center_of_gravity(bwb_wing, vehicle):
         if isinstance(segment, RCAIDE.Library.Components.Wings.Segments.Blended_Wing_Body_Fuselage_Segment): 
             center_body_segs.append(segment.tag)
         else:
-            wing_segs.append(segment.tag)
+            if segment.percent_span_location != 1.0:
+                wing_segs.append(segment.tag)
+    wing_segs.insert(0, center_body_segs[-1])
             
     # compute cabin moment of inertia 
     compute_center_body_center_of_gravity(bwb_wing,center_body_segs)
@@ -54,7 +56,6 @@ def compute_bwb_center_of_gravity(bwb_wing, vehicle):
 def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
 
     mass = bwb_wing.mass_properties.mass
-    seg_keys = ['wing_section_1','wing_section_2','wing_section_3']
 
     #populate the wing segment properties and other things 
     segment_meshes = [] 
@@ -102,7 +103,7 @@ def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
 
         segment_meshes.append(solid_segment)
     
-    combinde_mesh = trimesh.util.concatenate([segment_meshes[0],segment_meshes[1]])
+    combinde_mesh = trimesh.util.concatenate(segment_meshes)
     # Reflect across the YZ plane (mirror X)
     Ry = np.diag([1, -1, 1])   # reflection matrix
 
@@ -120,7 +121,7 @@ def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
     combined_mesh_full.density = mass / combined_mesh_full.volume
     I        = combined_mesh_full.moment_inertia
     centroid = np.array(combined_mesh_full.centroid)
-    centroid[1] = 0
+    centroid[1] = 0 
       
     # store values 
     bwb_wing.mass_properties.center_of_gravity         =  [centroid.tolist()]
@@ -129,10 +130,9 @@ def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
 
 def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
     mass          = bwb_wing.aft_center_body.mass_properties.mass
-    origin_x      = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
-    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - bwb_wing.layout_of_passenger_accommodations.cabin_x_offset 
-    
-    seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall','fuel_wall']
+    # origin_x      = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
+    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset 
+
     segment_meshes = [] 
     for i in range(len(seg_keys)-1):
         # compute volume and assume unit density to get mass
@@ -180,7 +180,7 @@ def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
 
         segment_meshes.append(solid_segment)
     
-    combinde_mesh = trimesh.util.concatenate([segment_meshes[0],segment_meshes[1],segment_meshes[2]])
+    combinde_mesh = trimesh.util.concatenate(segment_meshes)
     # Reflect across the YZ plane (mirror X)
     Ry = np.diag([1, -1, 1])   # reflection matrix
 
@@ -199,19 +199,18 @@ def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
     I                          = combined_mesh_full.moment_inertia
     centroid                   = np.array(combined_mesh_full.centroid)
     centroid[1] = 0
-        
+
     # store values 
     bwb_wing.aft_center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.aft_center_body.mass_properties.moments_of_inertia.tensor =  I
-    bwb_wing.aft_center_body.origin                                    = [[origin_x,0, 0]]
     
     return  
 
 def compute_center_body_center_of_gravity(bwb_wing,seg_keys): 
     mass          = bwb_wing.center_body.mass_properties.mass
     origin_x      = bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
-    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - origin_x
-    seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall']
+    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + origin_x
+
     segment_meshes = [] 
     for i in range(len(seg_keys)-1):
         # compute volume and assume unit density to get mass
@@ -262,7 +261,7 @@ def compute_center_body_center_of_gravity(bwb_wing,seg_keys):
 
         segment_meshes.append(solid_segment)
     
-    combinde_mesh = trimesh.util.concatenate([segment_meshes[0],segment_meshes[1],segment_meshes[2]])
+    combinde_mesh = trimesh.util.concatenate(segment_meshes)
     # Reflect across the YZ plane (mirror X)
     Ry = np.diag([1, -1, 1])   # reflection matrix
 
@@ -281,10 +280,8 @@ def compute_center_body_center_of_gravity(bwb_wing,seg_keys):
     I                          = combined_mesh_full.moment_inertia
     centroid                   = np.array(combined_mesh_full.centroid)
     centroid[1] = 0
-    
     # store values 
     bwb_wing.center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.center_body.mass_properties.moments_of_inertia.tensor =  I
-    bwb_wing.center_body.origin                                    = [[origin_x,0, 0]]
     
     return   

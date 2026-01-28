@@ -97,7 +97,7 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
         segment_meshes.append(solid_segment)
             
         
-    combinde_mesh = trimesh.util.concatenate([segment_meshes[0]])
+    combinde_mesh = trimesh.util.concatenate(segment_meshes)
     # Reflect across the YZ plane (mirror X)
     Ry = np.diag([1, -1, 1])   # reflection matrix
 
@@ -113,7 +113,11 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
     # 4. concatenate original + mirrored
     combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
     combined_mesh_full.density = mass / combined_mesh_full.volume
-    
+
+    axes = trimesh.creation.axis(axis_length=1.0)
+    # Add your mesh and the axes to a scene
+    scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
+    scene.show()
     centroid = combined_mesh_full.centroid
     cg_x     = centroid[0]
     cg_y     = 0
@@ -121,11 +125,11 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
     center_of_gravity = [[cg_x, cg_y, cg_z]]
     
     # Shift inertia tensor from origin to the requested (actual) centroid
-    I_origin = combined_mesh_full.moment_inertia 
+    I = combined_mesh_full.moment_inertia 
     volume   = combined_mesh_full.volume 
     
     fuel_tank.fuel.mass_properties.center_of_gravity          = center_of_gravity
-    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I_origin
+    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
         
     return fuel_tank.mass_properties.center_of_gravity
 
