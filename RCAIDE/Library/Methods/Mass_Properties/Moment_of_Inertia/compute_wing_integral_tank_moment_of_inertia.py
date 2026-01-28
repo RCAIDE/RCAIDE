@@ -43,27 +43,18 @@ def compute_wing_integral_tank_moment_of_inertia(fuel_tank,wing, center_of_gravi
     N/A
     '''   
     mass         = fuel_tank.fuel.mass_properties.mass 
-    I_local_fuel = fuel_tank.fuel.mass_properties.moments_of_inertia.tensor 
-    
+    I_local_fuel = fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  
     I_local_fuel_non_dim = I_local_fuel / mass
 
-    # intialize matrices 
-    I_global_fuel        = np.zeros((3, 3))   
-    I_global_tank        = np.zeros((3, 3))
-    I_local_tank_non_dim =np.zeros((3, 3))
-
-    # ----------------------------------------------------------------------------------------------------------------------    
-    # transform moment of inertia to the global system
-    # ----------------------------------------------------------------------------------------------------------------------
-    origin        = fuel_tank.fuel.mass_properties.center_of_gravity
-    s             = np.array(center_of_gravity) - np.array(origin) # Vector between component and the CG    
-    I_global_fuel = I_local_fuel + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))    
+    # intialize matrices  
+    I_local_tank        = np.zeros((3, 3))
+    I_local_tank_non_dim =np.zeros((3, 3)) 
         
     # Store moment of inertia tensors of tank and fuel 
-    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor                 = I_global_fuel
+    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor                 = I_local_fuel
     fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor = I_local_fuel_non_dim
-    fuel_tank.mass_properties.moments_of_inertia.tensor                      = I_global_tank
+    fuel_tank.mass_properties.moments_of_inertia.tensor                      = I_local_tank
     fuel_tank.mass_properties.moments_of_inertia.non_dimensional_tensor      = I_local_tank_non_dim 
     
-    return I_global_fuel,  mass
+    return I_local_fuel,  mass
     

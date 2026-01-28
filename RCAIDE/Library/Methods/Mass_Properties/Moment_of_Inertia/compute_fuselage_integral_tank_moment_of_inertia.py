@@ -18,17 +18,12 @@ def compute_fuselage_integral_tank_moment_of_inertia(fuel_tank,fuselage, center_
 
 
     # intialize matrices
-    fuel      = fuel_tank.fuel
-    tank_mass = fuel_tank.mass_properties.mass
-    fuel_mass = fuel.mass_properties.mass
-    I_local_fuel         = np.zeros((3, 3))
-    I_parallel_axis_fuel = np.zeros((3, 3))
-    I_global_fuel        = np.zeros((3, 3))
-    I_local_fuel_non_dim = np.zeros((3, 3))
-    I_global_tank        = np.zeros((3, 3))
-    I_local_tank_non_dim = np.zeros((3, 3))    
-    
-    solid_coordinates = np.empty((0, 3,))
+    fuel           = fuel_tank.fuel
+    tank_mass      = fuel_tank.mass_properties.mass
+    fuel_mass      = fuel.mass_properties.mass
+    I_local_fuel   = np.zeros((3, 3)) 
+    I_global_fuel  = np.zeros((3, 3)) 
+    I_local_tank   = np.zeros((3, 3))    
     
     # Collect all segment tags between start and end (inclusive)
     if len(fuselage.segments) > 1:
@@ -78,19 +73,12 @@ def compute_fuselage_integral_tank_moment_of_inertia(fuel_tank,fuselage, center_
         # Calculate MOI of the fuel within the fuel tank 
         solid_segment.density = fuel.density  
         I_local_fuel          = solid_segment.moment_inertia
-        centroid              = solid_segment.centroid
         
-        # additional MOI due to parallel axis theorm with respect to the centroid of the calcualted shape
-        s                    = np.array(center_of_gravity) - np.array(centroid) 
-        I_parallel_axis_fuel = fuel.mass_properties.mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s, s))             
-         
-    I_global_fuel = I_local_fuel + I_parallel_axis_fuel
-    
     # Store moment of inertia tensors of tank and fuel 
-    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor                 = I_global_fuel
-    fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor = I_local_fuel_non_dim / tank_mass
-    fuel_tank.mass_properties.moments_of_inertia.tensor                      = I_global_tank 
-    fuel_tank.mass_properties.moments_of_inertia.non_dimensional_tensor      = I_local_tank_non_dim / fuel_mass
+    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor                 = I_local_fuel
+    fuel_tank.fuel.mass_properties.moments_of_inertia.non_dimensional_tensor = I_local_fuel / tank_mass
+    fuel_tank.mass_properties.moments_of_inertia.tensor                      = I_local_tank 
+    fuel_tank.mass_properties.moments_of_inertia.non_dimensional_tensor      = I_local_tank  / fuel_mass
     
     return I_global_fuel,  tank_mass 
 

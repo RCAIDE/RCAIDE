@@ -172,7 +172,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     fuel_tank.inner_structure.inner_length   = L_inner
     fuel_tank.inner_structure.outer_length   =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer 
     fuel_tank.insulation_thickness           = t_ins
-    fuel_tank.wall_thickness                 = t_ins + ro_ri
+    fuel_tank.wall_thickness                 = t_ins # SAI COULD YOU CHECK?
     
     # Insulation geometry and mass
     a_ins    = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2

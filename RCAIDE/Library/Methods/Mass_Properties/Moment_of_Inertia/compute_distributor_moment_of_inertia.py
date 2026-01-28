@@ -42,10 +42,7 @@ def compute_distributor_moment_of_inertia(component,vehicle, center_of_gravity =
     '''
     # ----------------------------------------------------------------------------------------------------------------------
     # unpack 
-    # ----------------------------------------------------------------------------------------------------------------------
-    origin = component.origin  
-    if component.xz_plane_symmetric:
-        origin[0][1] = 0    
+    # ----------------------------------------------------------------------------------------------------------------------  
     mass   = component.mass_properties.mass
     
     # ----------------------------------------------------------------------------------------------------------------------    
@@ -97,17 +94,10 @@ def compute_distributor_moment_of_inertia(component,vehicle, center_of_gravity =
                 pass
             else: 
                 # distributor distances 
-                line_1_length             = abs(c_locs[i][1]) 
-                line_1_centroid           = c_locs[i][0]
-                line_2_length             = abs(c_locs[j][1])
-                line_2_centroid           = c_locs[j][0]
-                line_3_length             = abs(c_locs[i][0] - c_locs[j][0] )
-                line_3_centroid           = (c_locs[j][0] + c_locs[i][0] )/2 
-                
-                line_1_s = np.array(component.mass_properties.center_of_gravity) - np.array([[line_1_centroid,0,0]])
-                line_2_s = np.array(component.mass_properties.center_of_gravity) - np.array([[line_2_centroid,0,0]])
-                line_3_s = np.array(component.mass_properties.center_of_gravity) - np.array([[line_3_centroid,0,0]])
-                
+                line_1_length             = abs(c_locs[i][1])  
+                line_2_length             = abs(c_locs[j][1]) 
+                line_3_length             = abs(c_locs[i][0] - c_locs[j][0] ) 
+                 
                 if insulation_cross_sectional_area == 0:
                     pass
                 else:
@@ -135,12 +125,8 @@ def compute_distributor_moment_of_inertia(component,vehicle, center_of_gravity =
                     I_local[0,0] += 0
                     I_local[1,1] += (1 / 12) * line_3_insulation_mass * (line_3_length ** 2)
                     I_local[2,2] += (1 / 12) * line_3_insulation_mass * (line_3_length ** 2)                   
-                    
-                    # parallel axis theorem for all lines 
-                    I_par   =  line_1_insulation_mass * (np.array(np.dot(line_1_s[0], line_1_s[0])) * np.array(np.identity(3)) - np.outer(line_1_s,line_1_s))  
-                    I_par   =  line_2_insulation_mass * (np.array(np.dot(line_2_s[0], line_2_s[0])) * np.array(np.identity(3)) - np.outer(line_2_s,line_2_s))  
-                    I_par   =  line_3_insulation_mass * (np.array(np.dot(line_3_s[0], line_3_s[0])) * np.array(np.identity(3)) - np.outer(line_3_s,line_3_s))  
-                    I       += I_local + I_par
+                     
+                    I       += I_local 
                 
                 if pipe_cross_sectional_area == 0:
                     pass
@@ -168,23 +154,12 @@ def compute_distributor_moment_of_inertia(component,vehicle, center_of_gravity =
                     # line 3
                     I_local[0,0] += 0
                     I_local[1,1] += (1 / 12) * line_3_pipe_mass * (line_3_length ** 2)
-                    I_local[2,2] += (1 / 12) * line_3_pipe_mass * (line_3_length ** 2)  
-                    
-                    I_par   =  line_1_pipe_mass * (np.array(np.dot(line_1_s[0], line_1_s[0])) * np.array(np.identity(3)) - np.outer(line_1_s,line_1_s))  
-                    I_par   =  line_2_pipe_mass * (np.array(np.dot(line_2_s[0], line_2_s[0])) * np.array(np.identity(3)) - np.outer(line_2_s,line_2_s))  
-                    I_par   =  line_3_pipe_mass * (np.array(np.dot(line_3_s[0], line_3_s[0])) * np.array(np.identity(3)) - np.outer(line_3_s,line_3_s))
-                    
-                    I  += I_local + I_par
-                     
-          
-    # ----------------------------------------------------------------------------------------------------------------------    
-    # transform moment of inertia to the global system
-    # ----------------------------------------------------------------------------------------------------------------------
-    s        = np.array(center_of_gravity) - np.array(origin) # Vector between component and the CG
-    I_global = np.array(I) + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))    
+                    I_local[2,2] += (1 / 12) * line_3_pipe_mass * (line_3_length ** 2)   
+                    I  += I_local  
+                      
 
     # Store moment of inertia tensor on component 
-    component.mass_properties.moments_of_inertia.tensor                 = I_global    
+    component.mass_properties.moments_of_inertia.tensor                 = I    
     component.mass_properties.moments_of_inertia.non_dimensional_tensor = I / mass        
        
-    return I_global,  mass
+    return I ,  mass

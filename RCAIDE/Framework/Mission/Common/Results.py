@@ -454,6 +454,7 @@ class Results(Conditions):
         self.weights.components                               = Conditions() 
         self.weights.components.mass                          = Conditions() 
         self.weights.components.global_center_of_gravity      = Conditions() 
+        self.weights.components.symmetry_flag                 = Conditions()
         self.weights.components.mass_rate                     = Conditions() 
         self.weights.components.moments_of_inertia_Ixx        = Conditions() 
         self.weights.components.moments_of_inertia_Ixy        = Conditions() 

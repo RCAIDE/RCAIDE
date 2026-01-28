@@ -52,53 +52,13 @@ def compute_bwb_moment_of_inertia(bwb_wing, center_of_gravity = [[0, 0, 0]]):
     
     """Compute total MOI about a specified CG.""" 
 
-    # compute cabin moment of inertia 
-    compute_center_body_moment_of_inertia(bwb_wing.center_body,center_of_gravity)
+    ## compute cabin moment of inertia 
+    #compute_center_body_moment_of_inertia(bwb_wing.center_body,center_of_gravity)
     
-    # compute aft cabin moment of inertia 
-    compute_aft_center_body_moment_of_inertia(bwb_wing.aft_center_body,center_of_gravity)
+    ## compute aft cabin moment of inertia 
+    #compute_aft_center_body_moment_of_inertia(bwb_wing.aft_center_body,center_of_gravity)
      
-    # compute wing moment of intertia 
-    compute_bwb_wing_moment_of_inertia(bwb_wing,center_of_gravity) 
+    ## compute wing moment of intertia 
+    #compute_bwb_wing_moment_of_inertia(bwb_wing,center_of_gravity) 
 
-    return  bwb_wing.mass_properties.moments_of_inertia.tensor, bwb_wing.mass_properties.mass  
-
-def compute_bwb_wing_moment_of_inertia(bwb_wing,center_of_gravity):
-
-    mass         = bwb_wing.mass_properties.mass  
-    I_component  = bwb_wing.mass_properties.moments_of_inertia.tensor
-    centroid     = bwb_wing.mass_properties.center_of_gravity
-     
-    s        = np.array(centroid) - np.array(center_of_gravity)
-    I_global = I_component + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))    
-     
-    # update moome
-    bwb_wing.mass_properties.moments_of_inertia.tensor = I_global   
-    return 
- 
-
-def compute_aft_center_body_moment_of_inertia(aft_center_body,center_of_gravity): 
-
-    mass         = aft_center_body.mass_properties.mass  
-    I_component  = aft_center_body.mass_properties.moments_of_inertia.tensor
-    centroid     = aft_center_body.mass_properties.center_of_gravity
-     
-    s        = np.array(centroid) - np.array(center_of_gravity)
-    I_global = I_component + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s))    
-     
-    # update MOI
-    aft_center_body.mass_properties.moments_of_inertia.tensor = I_global       
-    return  
-
-def compute_center_body_moment_of_inertia(center_body,center_of_gravity):  
-    mass         = center_body.mass_properties.mass  
-    I_component  = center_body.mass_properties.moments_of_inertia.tensor 
-    centroid     = center_body.mass_properties.center_of_gravity
-     
-    s            = np.array(centroid) - np.array(center_of_gravity)
-    I_global     = I_component + mass * (np.array(np.dot(s[0], s[0])) * np.array(np.identity(3)) - np.outer(s,s)) 
-     
-    # update MOI
-    center_body.mass_properties.moments_of_inertia.tensor = I_global   
-    return   
- 
+    return  bwb_wing.mass_properties.moments_of_inertia.tensor, bwb_wing.mass_properties.mass   

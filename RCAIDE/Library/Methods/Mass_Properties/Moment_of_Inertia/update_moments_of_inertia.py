@@ -104,7 +104,8 @@ def update_moments_of_inertia(state,vehicle):
     return 
      
 def update_fuel_tank_moment_of_inertia(fuel_tank,state): 
-    conditions        = state.conditions  
+    conditions        = state.conditions
+    N                 = state.numerics.number_of_control_points
     center_of_gravity = conditions.weights.vehicle.global_center_of_gravity   
     fuel_tag          = fuel_tank.fuel.tag
     
@@ -118,11 +119,13 @@ def update_fuel_tank_moment_of_inertia(fuel_tank,state):
     I_fuel_local      = M_fuel[:,:, None]  * np.array(MOI_fuel_non_dim)[None,:,:]
     
     # moment arm 
-    origin            = fuel_tank.fuel.mass_properties.center_of_gravity
-    s                 = np.array(center_of_gravity) - np.array(origin)
+    s       = np.array(center_of_gravity) - conditions.weights.components.global_center_of_gravity[fuel_tag]
+    term_1  = np.repeat(np.repeat(np.vecdot(s, s)[:,None, None],3, axis=2), 3, axis=1)
+    term_2 = np.repeat(np.array(np.identity(3))[None,:,:],N, axis=0)
+    term_3  = np.multiply.outer(s, s)[:, :, 0, :]
     
     # parallel axis moment 
-    I_fuel_par        = M_fuel[:,:, None] * s
+    I_fuel_par        = M_fuel[:,:, None] *  (term_1* term_2 - term_3 )     
     
     # total moment of inertia 
     I_fuel            = I_fuel_local  + I_fuel_par     

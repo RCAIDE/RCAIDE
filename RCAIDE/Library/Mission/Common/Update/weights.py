@@ -6,7 +6,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
 # ---------------------------------------------------------------------------------------------------------------------- 
-import RCAIDE
+import RCAIDE 
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.update_center_of_gravity import update_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moments_of_inertia import update_moments_of_inertia
 
 # package imports 
 import numpy as np  
@@ -43,8 +45,15 @@ def weights(segment):
     I              = segment.state.numerics.time.integrate 
     m_0_vehicle    = conditions.weights.vehicle.mass[0,0]
     m_dot_vehicle  = conditions.weights.vehicle.mass_rate
-    g              = conditions.freestream.gravity 
- 
+    g              = conditions.freestream.gravity
+    vehicle        = segment.state.analyses.vehicle
+
+    # update center of gravity  
+    update_center_of_gravity(segment.state)
+      
+    # update moment of inertia 
+    update_moments_of_inertia(segment.state, vehicle)
+        
     # --------------------------------------------------------------------------       
     # update mass 
     # --------------------------------------------------------------------------       

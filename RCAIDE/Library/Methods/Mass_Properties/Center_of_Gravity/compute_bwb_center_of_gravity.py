@@ -136,7 +136,8 @@ def compute_bwb_wing_center_of_gravity(bwb_wing):
 
 def compute_aft_center_body_center_of_gravity(bwb_wing):
     mass          = bwb_wing.aft_center_body.mass_properties.mass
-    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
+    origin_x      = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
+    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - bwb_wing.layout_of_passenger_accommodations.cabin_x_offset 
  
     segment_meshes = []
     seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall','fuel_wall']
@@ -208,12 +209,14 @@ def compute_aft_center_body_center_of_gravity(bwb_wing):
     # store values 
     bwb_wing.aft_center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.aft_center_body.mass_properties.moments_of_inertia.tensor =  I
+    bwb_wing.aft_center_body.origin                                    = [[origin_x,0, 0]]
     
     return  
 
 def compute_center_body_center_of_gravity(bwb_wing): 
     mass          = bwb_wing.center_body.mass_properties.mass
-    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] + bwb_wing.layout_of_passenger_accommodations.cabin_x_offset 
+    origin_x      = bwb_wing.layout_of_passenger_accommodations.cabin_x_offset
+    cabin_length  = bwb_wing.layout_of_passenger_accommodations.object_coordinates[-1][2] - origin_x
  
     segment_meshes = []
     seg_keys = ['fuselage_section_1','fuselage_section_2','fuselage_section_3','cabin_wall']
@@ -288,5 +291,6 @@ def compute_center_body_center_of_gravity(bwb_wing):
     # store values 
     bwb_wing.center_body.mass_properties.center_of_gravity         =  [centroid.tolist()]
     bwb_wing.center_body.mass_properties.moments_of_inertia.tensor =  I
+    bwb_wing.center_body.origin                                    = [[origin_x,0, 0]]
     
     return   
