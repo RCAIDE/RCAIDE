@@ -46,7 +46,7 @@ def weights(segment):
     m_0_vehicle    = conditions.weights.vehicle.mass[0,0]
     m_dot_vehicle  = conditions.weights.vehicle.mass_rate
     g              = conditions.freestream.gravity
-    vehicle        = segment.state.analyses.vehicle
+    vehicle        = segment.analyses.vehicle
 
     # update center of gravity  
     update_center_of_gravity(segment.state)
