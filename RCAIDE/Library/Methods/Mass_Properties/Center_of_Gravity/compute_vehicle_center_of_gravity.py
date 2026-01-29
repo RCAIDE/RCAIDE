@@ -38,32 +38,48 @@ def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,
     if verbose:
         print("\n\n=== COMPONENT CENTER OF GRAVITY BREAKDOWN REPORT ===" )    
         print("Component \t \t \t Mass \t \t C.G. Location [[x,y,z]]" )    
-    
-    #==========================================================================================
-    # Compute the center of gravity of all components  
-    #==========================================================================================   
-    total_moment = np.array([[0.0,0.0,0.0]])
-    total_mass   = np.array([0.0])                
+     
+    # --------------------------------------------------------------------------------------
+    # Center of Gravity at Operating Empty Weight 
+    # --------------------------------------------------------------------------------------
+    OEW_moment      = np.array([[0.0,0.0,0.0]])
+    OEW_mass        = np.array([0.0])
+    include_payload = False
+    include_fuel    = False
     for key in vehicle.keys():
         item = vehicle[key]  
-        total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,total_mass,total_moment ,segment, verbose)    
+        OEW_total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,OEW_mass,OEW_moment,None,False,include_payload,include_fuel)    
+    
+    # center of gravity 
+    OEW_CG = OEW_moment /OEW_mass 
+    
+    if verbose:
+        print('\n ***** Aircraft OEW center of gravity ***** ')
+        print(OEW_CG) 
+        OEW_mass_percentage = (OEW_mass[0] / vehicle.mass_properties.operating_empty) * 100 
+        print('Mass percentage of TOW used in OEW CG and MOI calculations: ', round(OEW_mass_percentage,2), '%') 
+    
+    # --------------------------------------------------------------------------------------    
+    # Mission Center of Gravity 
+    # --------------------------------------------------------------------------------------
+    mission_moment = np.array([[0.0,0.0,0.0]])
+    mission_mass   = np.array([0.0])                
+    for key in vehicle.keys():
+        item = vehicle[key]  
+        mission_mass,mission_moment = compute_component_center_of_gravity(item,vehicle,mission_mass,mission_moment,segment,verbose)    
     
     # print center of gravity 
-    CG =  total_moment / total_mass
+    CG = mission_moment /mission_mass 
+    
     if verbose:
         print('\n ***** Aircraft center of gravity ***** ')
-        print(CG) 
-        mass_percentage = (total_mass[0] / vehicle.mass_properties.takeoff) * 100
-        print('Mass used in CG and MOI calculations: ', round(total_mass[0],2))
-        print('Mass percentage of TOW used in CG and MOI calculations: ', round(mass_percentage,2), '%')
-        
+        print(CG)   
  
     if segment != None:         
         ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.vehicle.global_center_of_gravity = CG * ones_row(1)
-     
-    # Update CG if flag is true         
-    if overwrite_center_of_gravity and (total_mass != 0.0): 
+            
+    if overwrite_center_of_gravity and (mission_mass != 0.0): 
         vehicle.mass_properties.center_of_gravity = CG.tolist()
         
-    return vehicle.mass_properties.center_of_gravity, total_moment, total_mass 
+    return vehicle.mass_properties.center_of_gravity, total_moment, mission_moment 

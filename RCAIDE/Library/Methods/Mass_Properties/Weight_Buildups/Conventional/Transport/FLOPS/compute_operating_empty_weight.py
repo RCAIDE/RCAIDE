@@ -125,6 +125,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = FLOPS.compute_systems_weight(vehicle) 
+    vehicle.systems.avionics.mass_properties.mass               = W_systems.W_avionics 
+    vehicle.systems.flight_controls.mass_properties.mass        = W_systems.W_flight_control 
+    vehicle.systems.auxillary_power_unit.mass_properties.mass   = W_systems.W_apu 
+    vehicle.systems.electrical.mass_properties.mass             = W_systems.W_electrical 
+    vehicle.systems.hydraulics.mass_properties.mass             = W_systems.W_hyd_pnu 
+    vehicle.systems.environmental_controls.mass_properties.mass = W_systems.W_ac + W_systems.W_anti_ice   
+    vehicle.systems.instruments.mass_properties.mass            = W_systems.W_instruments  
         
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 

@@ -104,7 +104,7 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
     geometry(mission)
     for segment in  mission.segments:
         # perform inital weights analysis
-        segment.analyses.vehicle.mass_properties.takeoff = None
+        segment.analyses.vehicle.mass_properties.takeoff      = None
         segment.analyses.weights.print_weight_analysis_report = True
     mass_properties(mission)
     vehicle = mission.segments[initial_segment].analyses.vehicle 
@@ -219,7 +219,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     # allocating Range array
     R       = [0,0,0]
     for segment in  mission.segments:
-        segment.analyses.weights.settings.run_weights_analysis          = False
+        segment.analyses.weights.settings.run_weights_analysis = False
         segment.analyses.geometry.settings.compute_fuel_volume = False
         segment.analyses.geometry.settings.update_max_fuel     = False
 

@@ -11,5 +11,11 @@ for avionics and other aircraft systems.
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Avionics import Avionics
-from .Systems  import Systems
+from .Avionics                import Avionics
+from .Flight_Controls         import Flight_Controls 
+from .Auxillary_Power_Unit    import Auxillary_Power_Unit 
+from .Electrical              import Electrical 
+from .Hydraulics              import Hydraulics 
+from .Environmental_Controls  import Environmental_Controls 
+from .Instruments             import Instruments 
+from .Systems                 import Systems

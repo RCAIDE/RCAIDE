@@ -72,9 +72,9 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
     W_pax      = W_passenger * num_pax
     W_bag      = W_baggage * num_pax
 
-    ##-------------------------------------------------------------------------------   
+    #-------------------------------------------------------------------------------   
     # Cargo
-    ##-------------------------------------------------------------------------------         
+    #-------------------------------------------------------------------------------         
     # if cargo is not defined 
     if vehicle.mass_properties.cargo == 0 and vehicle.mass_properties.payload != 0:
         vehicle.mass_properties.cargo = vehicle.mass_properties.payload - W_pax - W_bag 
@@ -92,12 +92,11 @@ def compute_payload_weight(vehicle, W_passenger=195 * Units.lbs, W_baggage=30 * 
     if vehicle.mass_properties.cargo == 0:
         no_cargo_mass_flag = True
     for cargo_bay in vehicle.cargo_bays:
-        cargo_bay_volume                       = (cargo_bay.length * cargo_bay.width * cargo_bay.height) 
-        cargo_bay.baggage.mass_properties.mass = W_bag * (cargo_bay_volume / total_volume) 
-        if cargo_bay.cargo.mass_properties.mass == 0: 
-            cargo_bay.cargo.mass_properties.mass   = vehicle.mass_properties.cargo * (cargo_bay_volume / total_volume)
+        cargo_bay_volume   = (cargo_bay.length * cargo_bay.width * cargo_bay.height)  
+        if cargo_bay.mass_properties.mass == 0: 
+            cargo_bay.mass_properties.mass   = vehicle.mass_properties.cargo * (cargo_bay_volume / total_volume)
         elif no_cargo_mass_flag:
-            vehicle.mass_properties.cargo += cargo_bay.cargo.mass_properties.mass
+            vehicle.mass_properties.cargo += cargo_bay.mass_properties.mass
             
     if vehicle.mass_properties.payload == 0: 
         vehicle.mass_properties.payload  = W_pax + W_bag + vehicle.mass_properties.cargo

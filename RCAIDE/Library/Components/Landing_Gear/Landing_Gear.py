@@ -93,8 +93,8 @@ class Landing_Gear(Component):
         self.width                           = 0 
         self.height                          = 0
         self.wheel_clearance_factor          = 1.1
-        self.number_of_gear_types_in_tandem  = None
-        self.number_of_wheels_in_gear_type   = None  
+        self.number_of_gear_types_in_tandem  = 1
+        self.number_of_wheels_in_gear_type   = 1  
         self.gear_extended                   = False
         self.fairing                         = False
          

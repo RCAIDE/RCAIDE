@@ -35,11 +35,18 @@ def vehicle_setup():
     vehicle.mass_properties.max_zero_fuel             = 40900. # kg
     vehicle.mass_properties.max_fuel                  = 13100. # kg
     vehicle.mass_properties.max_payload               = 12900. # kg
-    vehicle.mass_properties.operating_empty           = 27900  #    
-
-
+    vehicle.mass_properties.operating_empty           = 27900  #     
     vehicle.mass_properties.center_of_gravity         = [[16.8, 0, 1.6]]
-    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]] 
+    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]
+    
+
+    vehicle.systems.avionics.origin               = [[2,0,0]] 
+    vehicle.systems.flight_controls.origin        = [[2,0,0]] 
+    vehicle.systems.auxillary_power_unit.origin   = [[34,0,0]] 
+    vehicle.systems.electrical.origin             = [[34,0,0]] 
+    vehicle.systems.hydraulics.origin             = [[20,0,0]] 
+    vehicle.systems.environmental_controls.origin = [[20,0,0]]   
+    vehicle.systems.instruments.origin            = [[20,0,0]] 
 
     # envelope properties
     vehicle.flight_envelope.ultimate_load             = 3.5 
@@ -59,7 +66,7 @@ def vehicle_setup():
     # Carbo Bays 
     # ------------------------------------------------------------------ 
     forward_cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-    forward_cargo_bay.cargo.mass_properties.mass  = 1850
+    forward_cargo_bay.mass_properties.mass        = 1850
     forward_cargo_bay.origin                      = [[6.82, 0, -0.5]]
     forward_cargo_bay.length                      = 7.82
     forward_cargo_bay.width                       = 1.57  
@@ -67,7 +74,7 @@ def vehicle_setup():
     vehicle.cargo_bays.append(forward_cargo_bay) 
  
     aft_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-    aft_cargo_bay.cargo.mass_properties.mass  = 1440
+    aft_cargo_bay.mass_properties.mass        = 1440
     aft_cargo_bay.origin                      = [[23.43, 0, -0.5]]
     aft_cargo_bay.length                      =  5.5
     aft_cargo_bay.width                       =  1.57 
@@ -284,7 +291,7 @@ def vehicle_setup():
     economy_class.galley_lavatory_percent_x_locations = [0, 1]      
     economy_class.emergency_exit_percent_x_locations  = [0.5, 0.5]      
     economy_class.type_A_exit_percent_x_locations     = [0, 1]
-    cabin.origin                                      = [[4.65, 0, 0]]
+    cabin.origin                                      = [[5.56, 0, 0]]
     cabin.append_cabin_class(economy_class)
     fuselage.append_cabin(cabin) 
 

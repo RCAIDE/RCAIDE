@@ -47,34 +47,42 @@ def weights(segment):
     m_dot_vehicle  = conditions.weights.vehicle.mass_rate
     g              = conditions.freestream.gravity
     vehicle        = segment.analyses.vehicle
-
-    # update center of gravity  
-    if segment.analyses.weights.settings.run_center_of_gravity:
-        update_center_of_gravity(segment.state)
-      
-    # update moment of inertia 
-    if segment.analyses.weights.settings.run_moments_of_inertia:
-        update_moments_of_inertia(segment.state, vehicle)
-        
-    # --------------------------------------------------------------------------       
-    # update mass 
-    # --------------------------------------------------------------------------       
+     
     if (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude) or\
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_AVL_Trimmed) or \
                     (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Altitude_No_Propulsion) or \
-                    (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle): 
-        
+                    (type(segment) == RCAIDE.Framework.Mission.Segments.Single_Point.Set_Speed_Set_Throttle):
+ 
         W = m_0_vehicle*g 
-        conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
-        
+        conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0] 
     else:
-        
-        m = m_0_vehicle + np.dot(I, -m_dot_vehicle)
     
-        # weight
-        W = m*g
+        # --------------------------------------------------------------------------  
+        # update center of gravity  
+        # --------------------------------------------------------------------------  
+        if segment.analyses.weights.settings.run_center_of_gravity_analysis:
+            # loop through battery modules in networks 
+            for network in vehicle.networks:
+                for fuel_line in  network.fuel_lines: 
+                    for fuel_tank in fuel_line.fuel_tanks:
+                        fuel =  fuel_tank.fuel
+                        mass_flow_rate = conditions.energy.fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].mass_flow_rate              
+                        m_0_fuel       = conditions.weights.components.mass[fuel.tag][0,0]     
+                        conditions.weights.components.mass[fuel.tag][:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten() 
+                
+            update_center_of_gravity(segment.state)
         
-        # pack
+        # --------------------------------------------------------------------------        
+        # update moment of inertia 
+        # --------------------------------------------------------------------------  
+        if segment.analyses.weights.settings.run_moments_of_inertia_analysis:
+            update_moments_of_inertia(segment.state, vehicle) 
+    
+        # --------------------------------------------------------------------------                  
+        # update mass 
+        # --------------------------------------------------------------------------  
+        m = m_0_vehicle + np.dot(I, -m_dot_vehicle) 
+        W = m*g 
         conditions.weights.vehicle.mass[1:,0]                = m[1:,0]  
         conditions.frames.inertial.gravity_force_vector[:,2] = W[:,0]
                 

@@ -69,8 +69,12 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
     total_fuel_mass   = 0
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
-            fuel_tanks= fuel_line.fuel_tanks
+            fuel_tanks = fuel_line.fuel_tanks
             for fuel_tank in fuel_tanks:
+            
+                # update fuel tag to ensure no overwriting of mass 
+                fuel_tank.fuel.tag = fuel_tank.tag + '_' + fuel_tank.fuel.tag
+                                
                 try:
                     compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:
@@ -87,6 +91,10 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
         for bus in network.busses:
             fuel_tanks= bus.fuel_tanks
             for fuel_tank in fuel_tanks:
+
+                # update fuel tag to ensure no overwriting of mass 
+                fuel_tank.fuel.tag = fuel_tank.tag + '_' + fuel_tank.fuel.tag
+                
                 try:
                     compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:
@@ -103,7 +111,7 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
     # Assign Total Fuel Volume and Mass to Vehicle 
     vehicle.volume_properties.fuel   = total_fuel_volume
     vehicle.mass_properties.fuel     = total_fuel_mass
-
+    
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
 

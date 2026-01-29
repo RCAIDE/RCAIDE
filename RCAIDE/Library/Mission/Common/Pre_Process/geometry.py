@@ -97,12 +97,10 @@ def geometry_preprocess_routine(analyses):
                 cabin.number_of_passengers = min(total_seats,int((cabin.number_of_seats / total_seats) *  vehicle.number_of_passengers))
             
     # update landing gear properties 
-    for landing_gear in  vehicle.landing_gears:
-        if (landing_gear.number_of_gear_types_in_tandem != None) and  (landing_gear.number_of_wheels_in_gear_type != None):
-            landing_gear.wheels = landing_gear.number_of_gear_types_in_tandem * landing_gear.number_of_wheels_in_gear_type
-            if landing_gear.xz_plane_symmetric:
-                landing_gear.wheels *= 2
-                
+    for landing_gear in  vehicle.landing_gears: 
+        symm               = landing_gear.xz_plane_symmetric
+        landing_gear.wheels = landing_gear.number_of_gear_types_in_tandem * landing_gear.number_of_wheels_in_gear_type * (symm + 1)
+        
     vehicle.maximum_cross_sectional_area  =  A_fuselage
     
     # ================================================================================================================================================

@@ -42,13 +42,7 @@ class Cargo_Bay(Component):
         self.length        = 1.0
         self.width         = 1.0
         self.height        = 1.0 
-        self.density       = 0.0
-        self.cargo         = Component() 
-        self.cargo.tag     = 'cargo'
-        self.baggage       = Component() 
-        self.baggage.tag   = 'baggage'
-        self.container     = Component() 
-        self.container.tag = 'container'
+        self.density       = 0.0 
         self.power_draw    = 0.0
         
     def compute_center_of_gravity(self,vehicle): 

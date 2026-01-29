@@ -74,7 +74,7 @@ def update_center_of_gravity(state):
     
     # unpack
     conditions     = state.conditions
-    N              = state.numerics.number_of_control_points   
+    N              = state.numerics.number_of_control_points
     
     # --------------------------------------------------------------------------       
     # update center of gravity

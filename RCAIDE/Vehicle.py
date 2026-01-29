@@ -56,8 +56,14 @@ class Vehicle(Data):
         self.fuselages                                                     = Components.Fuselages.Fuselage.Container()
         self.wings                                                         = Components.Wings.Wing.Container()
         self.nacelles                                                      = Components.Nacelles.Nacelle.Container()
-        self.systems                                                       = Components.Powertrain.Systems.Systems()
-        self.avionics                                                      = Components.Powertrain.Systems.Avionics()
+        self.systems                                                       = Components.Powertrain.Systems.Systems() 
+        self.systems.avionics                                              = Components.Powertrain.Systems.Avionics() 
+        self.systems.flight_controls                                       = Components.Powertrain.Systems.Flight_Controls()
+        self.systems.auxillary_power_unit                                  = Components.Powertrain.Systems.Auxillary_Power_Unit()
+        self.systems.electrical                                            = Components.Powertrain.Systems.Electrical() 
+        self.systems.hydraulics                                            = Components.Powertrain.Systems.Hydraulics() 
+        self.systems.environmental_controls                                = Components.Powertrain.Systems.Environmental_Controls()
+        self.systems.instruments                                           = Components.Powertrain.Systems.Instruments()  
         self.booms                                                         = Components.Booms.Boom.Container()
         self.landing_gears                                                 = Components.Landing_Gear.Landing_Gear.Container()  
         self.cargo_bays                                                    = Components.Cargo_Bays.Cargo_Bay.Container() 
@@ -74,7 +80,8 @@ class Vehicle(Data):
         self.number_of_business_class_seats                                = 0 
         self.number_of_economy_class_seats                                 = 0 
         self.maximum_cross_sectional_area                                  = 0.0
-        self.length                                                        = 0.0 
+        self.length                                                        = 0.0
+         
         
         self.flight_envelope                                               = Data()
         self.flight_envelope.design_dynamic_pressure                       = None 

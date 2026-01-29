@@ -108,7 +108,7 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------ 
     
     # 1. Generate sample scattered data
-    points =  np.hstack((   np.atleast_2d(results.loading_LEMAC_location.flatten()).T,  np.atleast_2d(results.loading_mass.flatten()).T )) 
+    points =  np.hstack((  100*np.atleast_2d(results.loading_percent_LEMAC_location.flatten()).T,  np.atleast_2d(results.loading_mass.flatten()).T )) 
     
     # 2. Compute the convex hull
     hull = ConvexHull(points)
@@ -160,9 +160,11 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------
     # Stability Contours 
     # ------------------------------------------------------------------------
-    SM_levels = np.linspace(static_margin_lower_limit*100, static_margin_upper_limit*100, 22)
-    CS   =  axis.contourf(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, cmap='viridis') 
-    CS2  =  axis.contour(results.aerodynamic_LEMAC_location, results.aerodynamic_mass, results.aerodynamic_static_margin*100, levels=SM_levels, colors='black') 
+    CG_LEMAC       = results.aerodynamic_percent_LEMAC_location*100
+    SM             = results.aerodynamic_static_margin*100
+    SM_levels      = np.linspace(-10, 150, 33)
+    CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='viridis', extend='both') 
+    CS2  =  axis.contour(CG_LEMAC, results.aerodynamic_mass,SM, levels = SM_levels,  colors='black', extend='both') 
     cbar = fig.colorbar(CS, ax=axis)
     axis.clabel(CS2, fontsize=10)
     cbar.ax.set_ylabel('Static Margin', rotation =  90)    
@@ -173,7 +175,7 @@ def plot_load_diagram(results,
     axis.set_xlim(x_axis_lower_limit, x_axis_upper_limit) 
     axis.set_ylim(y_axis_lower_limit, y_axis_upper_limit)
     axis.legend(loc='upper right')
-    axis.set_xlabel(r'$X_{CG}$ (%MAC)')
+    axis.set_xlabel(r'$X_{CG}$/LEMAC (%)')
     axis.set_ylabel('Mass (kg)')
     axis.grid(True)
     fig.tight_layout()

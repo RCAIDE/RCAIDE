@@ -259,27 +259,12 @@ def mass_properties_preprocess_routine(segment, i = 0):
                 print(f"{'Takeoff Weight':<25}{analyses.vehicle.mass_properties.takeoff:>15.2f}")
                 print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
                 print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
-                print("\n===============================\n")
-        
-    # ---------------------------------------------------------------------------------------------------------------------------
-    #  STEP 4: Handle Takeoff weight overwriting 
-    # --------------------------------------------------------------------------------------------------------------------------- 
-        
-    # if analyses.weights.settings.overwrite_takeoff_weight  == False and orig_takeoff_weight != None:
-    #     analyses.vehicle.mass_properties.takeoff = orig_takeoff_weight
-    # if analyses.vehicle.mass_properties.takeoff > analyses.vehicle.mass_properties.max_takeoff:
-            # Lets the user know that the takeoff weight is greater than the maximum takeoff weight defined. Will still continue with simulation            
-            # print('\n Warning: Takeoff Weight is greater than Maximum Takeoff Weight')
-            
-    # elif orig_takeoff_weight == None:
-    #     print('\n Warning: takeoff weight is None. Using weight buildup takeoff weight')
-    # else:
-    #     print('\n Note: user defined Takeoff Weight is used for other analyses')
+                print("\n===============================\n") 
     
     # ---------------------------------------------------------------------------------------------------------------------------     
     #  STEP 5: Compute Center of Gravity   
     # --------------------------------------------------------------------------------------------------------------------------- 
-    if weights_analysis.settings.run_center_of_gravity:
+    if weights_analysis.settings.run_center_of_gravity_analysis:
         overwrite_CG = False
         if analyses.vehicle.mass_properties.center_of_gravity == None:
             overwrite_CG = True
@@ -295,7 +280,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
     # ---------------------------------------------------------------------------------------------------------------------------         
     # STEP 6: Compute Moment of Inertia 
     # --------------------------------------------------------------------------------------------------------------------------- 
-    if weights_analysis.settings.run_moments_of_inertia:
+    if weights_analysis.settings.run_moments_of_inertia_analysis:
         overwrite_MOI = False
         tensor = analyses.vehicle.mass_properties.moments_of_inertia.tensor
         if np.all(tensor == 0):
