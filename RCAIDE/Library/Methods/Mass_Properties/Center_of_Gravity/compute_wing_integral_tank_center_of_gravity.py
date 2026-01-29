@@ -151,8 +151,8 @@ def compute_wing_integral_tank_center_of_gravity(fuel_tank,vehicle):
     
     # fuel_tank.fuel.mass_properties.center_of_gravity          = center_of_gravity
     # fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
-        
-    return fuel_tank.mass_properties.center_of_gravity
+    fuel_tank.mass_properties.center_of_gravity = fuel_tank.fuel.mass_properties.center_of_gravity  
+    return  fuel_tank.mass_properties.center_of_gravity
 
 
 # def compute_segment_meshes(x_in,y_in, x_out, y_out, L, spanwise_shift):
