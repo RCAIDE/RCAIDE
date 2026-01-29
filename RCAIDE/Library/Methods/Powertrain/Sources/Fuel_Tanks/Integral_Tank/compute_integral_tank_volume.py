@@ -305,6 +305,8 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101):
         fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
 
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
+        fuel_tank.volume_properties.net_volume            = total_fuel_volume
+
          
         if fuel_tank.fuel.mass_properties.mass != 0:
             actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
