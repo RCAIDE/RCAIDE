@@ -11,7 +11,7 @@ from RCAIDE.Library.Components import Component
 # ----------------------------------------------------------------------------------------------------------------------
 #  Environmental_Controls
 # ----------------------------------------------------------------------------------------------------------------------            
-class Environmental_Control(Component):
+class Environmental_Controls(Component):
     """
     A class representing environmental control systems and their power requirements. 
     """        

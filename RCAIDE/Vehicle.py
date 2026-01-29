@@ -155,7 +155,6 @@ class Vehicle(Data):
             Components.Fuselages.Fuselage              : self['fuselages']        ,
             Components.Wings.Wing                      : self['wings']            ,
             Components.Powertrain.Systems.Systems      : self['systems']          ,
-            Components.Powertrain.Systems.Avionics     : self['avionics']         , 
             Components.Nacelles.Nacelle                : self['nacelles']         , 
             Components.Booms.Boom                      : self['booms']            ,
             Components.Landing_Gear.Landing_Gear       : self['landing_gears']    ,

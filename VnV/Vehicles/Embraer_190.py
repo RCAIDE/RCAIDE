@@ -41,11 +41,11 @@ def vehicle_setup():
     
 
     vehicle.systems.avionics.origin               = [[2,0,0]] 
-    vehicle.systems.flight_controls.origin        = [[2,0,0]] 
+    vehicle.systems.flight_controls.origin        = [[20,0,0]] 
     vehicle.systems.auxillary_power_unit.origin   = [[34,0,0]] 
-    vehicle.systems.electrical.origin             = [[34,0,0]] 
-    vehicle.systems.hydraulics.origin             = [[20,0,0]] 
-    vehicle.systems.environmental_controls.origin = [[20,0,0]]   
+    vehicle.systems.electrical.origin             = [[35,0,0]] 
+    vehicle.systems.hydraulics.origin             = [[25,0,0]] 
+    vehicle.systems.environmental_controls.origin = [[34,0,0]]   
     vehicle.systems.instruments.origin            = [[20,0,0]] 
 
     # envelope properties
@@ -106,7 +106,7 @@ def vehicle_setup():
     nose_gear.wheels                         = 2   
     nose_gear.number_of_gear_types_in_tandem = 1
     nose_gear.number_of_wheels_in_gear_type  = 2   
-    nose_gear.origin                         = [[2.49, 0, 0]] 
+    nose_gear.origin                         = [[4.13, 0, 0]] 
     vehicle.append_component(nose_gear)
     
 
@@ -480,13 +480,13 @@ def vehicle_setup():
     fuel_line.fuel_tanks.append(outboard_tank)    
 
     fuel_tank                                   = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank()  
-    fuel_tank.lengths.external                      = 2 
-    fuel_tank.widths.external                       = 2
+    fuel_tank.lengths.external                  = 2 
+    fuel_tank.widths.external                   = 2
     fuel_tank.geometry_type                     = 'prismatic'   
-    fuel_tank.heights.external                      = 0.5
-    fuel_tank.origin                            = [[15.0,0.0, 0.0]]
+    fuel_tank.heights.external                  = 0.5
+    fuel_tank.origin                            = [[18.0,0.0, 0.0]]
     fuel_tank.fuel                              = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    fuel_tank.fuel.origin                       = [[15.0,0.0, 0.0]]
+    fuel_tank.fuel.origin                       = [[18.0,0.0, 0.0]]
     fuel_line.fuel_tanks.append(fuel_tank)     
     
 

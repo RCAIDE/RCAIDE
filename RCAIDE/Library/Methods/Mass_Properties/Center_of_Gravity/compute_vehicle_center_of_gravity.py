@@ -48,7 +48,7 @@ def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,
     include_fuel    = False
     for key in vehicle.keys():
         item = vehicle[key]  
-        OEW_total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,OEW_mass,OEW_moment,None,False,include_payload,include_fuel)    
+        OEW_total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,OEW_mass,OEW_moment,None,True,include_payload,include_fuel)    
     
     # center of gravity 
     OEW_CG = OEW_moment /OEW_mass 
@@ -57,7 +57,7 @@ def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,
         print('\n ***** Aircraft OEW center of gravity ***** ')
         print(OEW_CG) 
         OEW_mass_percentage = (OEW_mass[0] / vehicle.mass_properties.operating_empty) * 100 
-        print('Mass percentage of TOW used in OEW CG and MOI calculations: ', round(OEW_mass_percentage,2), '%') 
+        print('Mass percentage of OEW used in OEW CG and MOI calculations: ', round(OEW_mass_percentage,2), '%') 
     
     # --------------------------------------------------------------------------------------    
     # Mission Center of Gravity 
