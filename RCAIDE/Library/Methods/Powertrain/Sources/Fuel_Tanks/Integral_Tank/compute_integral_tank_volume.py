@@ -286,10 +286,10 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101):
         combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
         combined_mesh_full.density = fuel_tank.fuel.density 
 
-        axes = trimesh.creation.axis(axis_length=1.0)
-        # Add your mesh and the axes to a scene
-        scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
-        scene.show()
+        # axes = trimesh.creation.axis(axis_length=1.0)
+        # # Add your mesh and the axes to a scene
+        # scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
+        # scene.show()
 
         centroid = combined_mesh_full.centroid
         cg_x     = centroid[0]
