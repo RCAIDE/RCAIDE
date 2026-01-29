@@ -138,7 +138,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     fuel_tank.fuel.origin = [[origin_x, origin_y, origin_z]]  
     return 
 
-def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101):
+def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor = 0.9):
     """
     Computes the fuel volume for an integral fuel tank within a wing structure.
 
@@ -272,6 +272,16 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101):
        
        # Reflect across the YZ plane (mirror X)
         Ry = np.diag([1, -1, 1])   # reflection matrix
+
+        # Compute centroid
+        centroid = combinde_mesh.centroid
+
+        # Create scaling transform about centroid
+        T = trimesh.transformations.scale_matrix(
+            scale_factor,
+            origin=centroid
+        )
+        combinde_mesh.apply_transform(T)
 
         # 1. copy the mesh
         combined_mesh_sym = deepcopy(combinde_mesh)
