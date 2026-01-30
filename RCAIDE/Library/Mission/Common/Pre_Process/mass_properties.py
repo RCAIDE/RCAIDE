@@ -266,7 +266,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
     # --------------------------------------------------------------------------------------------------------------------------- 
     if weights_analysis.settings.run_center_of_gravity_analysis:
         overwrite_CG = False
-        if analyses.vehicle.mass_properties.center_of_gravity == None:
+        if analyses.vehicle.mass_properties.center_of_gravity == [[0,0,0]]:
             overwrite_CG = True
         if i != 0:
             verbose_flag = False
