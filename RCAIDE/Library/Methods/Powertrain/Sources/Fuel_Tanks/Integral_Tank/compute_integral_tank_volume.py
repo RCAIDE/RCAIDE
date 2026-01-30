@@ -9,16 +9,15 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
-from copy import deepcopy
 import  RCAIDE 
 from RCAIDE.Library.Methods.Geometry.Airfoil import import_airfoil_geometry,  compute_naca_4series 
+from RCAIDE.Library.Methods.Geometry.Planform import compute_segment_meshes
 
 # Python Imports 
 import numpy as np
-from scipy.interpolate import interp1d
-import shapely.geometry as geom
-from shapely import Polygon, box 
+from scipy.interpolate import interp1d 
 import trimesh
+from copy import deepcopy
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  METHOD
@@ -294,24 +293,18 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor
 
         # 4. concatenate original + mirrored
         combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
-        combined_mesh_full.density = fuel_tank.fuel.density 
-
-        axes = trimesh.creation.axis(axis_length=1.0)
-        # Add your mesh and the axes to a scene
-        scene = trimesh.Scene([combinde_mesh, combined_mesh_sym,axes])
-        scene.show()
-
+        combined_mesh_full.density = fuel_tank.fuel.density
+        
         centroid = combined_mesh_full.centroid
         cg_x     = centroid[0]
         cg_y     = 0
-        cg_z     = centroid[2]
-        center_of_gravity = [[cg_x, cg_y, cg_z]]
+        cg_z     = centroid[2] 
         
         # Shift inertia tensor from origin to the requested (actual) centroid
         I = combined_mesh_full.moment_inertia 
         total_fuel_volume   = combined_mesh_full.volume 
         
-        fuel_tank.fuel.mass_properties.center_of_gravity          = center_of_gravity
+        fuel_tank.fuel.mass_properties.center_of_gravity          = [[cg_x, cg_y, cg_z]]
         fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
 
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
@@ -560,34 +553,3 @@ def compute_non_dimensional_rib_coordinates(compoment,fuel_tank,front_rib_nondim
 
     return front_rib_nondim_y_upper,rear_rib_nondim_y_upper, front_rib_nondim_y_lower, rear_rib_nondim_y_lower 
 
-def compute_segment_meshes(x_in,y_in, x_out, y_out, L, spanwise_shift):
-
-    points_out = list(zip(x_out, y_out))
-    poly_out = Polygon(points_out)
-
-    points_in = list(zip(x_in, y_in))
-    poly_in = Polygon(points_in) 
-    
-    # STEP 1: Build 3D point clouds for both sections
-    x1, y1 = poly_in.exterior.xy
-    x2, y2 = poly_out.exterior.xy
-
-    pts1 = np.column_stack((x1[:-1], y1[:-1], np.zeros(len(x1)-1)))   # z = 0
-    pts2 = np.column_stack((x2[:-1], y2[:-1], np.full(len(x2)-1, L))) # z = L
-
-    # STEP 2: Combine all points
-    all_pts = np.vstack([pts1, pts2])
-
-    # STEP 3: Convex hull → watertight volume mesh
-    solid_segment = trimesh.convex.convex_hull(all_pts)
-
-    # Apply spanwise translation AFTER orientation fix
-    T = np.eye(4)
-    T[0, 3] = 0.0
-    T[1, 3] = 0.0
-    T[2, 3] = spanwise_shift
-    solid_segment.apply_transform(T)
-    R = trimesh.transformations.rotation_matrix(np.deg2rad(90), [1, 0, 0], [0, 0, 0])
-    solid_segment.apply_transform(R)
-    
-    return solid_segment

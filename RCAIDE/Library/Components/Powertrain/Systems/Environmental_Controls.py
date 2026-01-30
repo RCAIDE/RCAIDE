@@ -19,4 +19,4 @@ class Environmental_Controls(Component):
         """
         Sets default values for the environmental control system attributes.
         """                  
-        self.tag        = 'environmental_control' 
+        self.tag        = 'environmental_controls' 

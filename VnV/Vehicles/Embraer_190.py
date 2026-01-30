@@ -40,10 +40,10 @@ def vehicle_setup():
     vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]
     
 
-    vehicle.systems.avionics.origin               = [[2,0,0]] 
-    vehicle.systems.flight_controls.origin        = [[20,0,0]] 
-    vehicle.systems.auxillary_power_unit.origin   = [[34,0,0]] 
-    vehicle.systems.electrical.origin             = [[35,0,0]] 
+    vehicle.systems.avionics.origin               = [[4,0,0]] 
+    vehicle.systems.flight_controls.origin        = [[25,0,0]] 
+    vehicle.systems.auxillary_power_unit.origin   = [[35,0,0]] 
+    vehicle.systems.electrical.origin             = [[34,0,0]] 
     vehicle.systems.hydraulics.origin             = [[25,0,0]] 
     vehicle.systems.environmental_controls.origin = [[34,0,0]]   
     vehicle.systems.instruments.origin            = [[20,0,0]] 
@@ -146,7 +146,8 @@ def vehicle_setup():
     segment.root_chord_percent            = 1.
     segment.thickness_to_chord            = .11
     segment.dihedral_outboard             = 5. * Units.degrees
-    segment.sweeps.quarter_chord          = 20.6 * Units.degrees  
+    segment.sweeps.quarter_chord          = 20.6 * Units.degrees 
+    segment.twist                        =  2. * Units.degrees 
     root_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     root_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'transonic_wing_root_section_airfoil.txt'
     segment.append_airfoil(root_airfoil)
@@ -179,6 +180,7 @@ def vehicle_setup():
     segment.percent_span_location        = 1.
     segment.root_chord_percent           = 0.070 
     segment.dihedral_outboard            = 0.
+    segment.twist                        = -2. * Units.degrees
     segment.sweeps.quarter_chord         = 0.  
     tip_airfoil                          =  RCAIDE.Library.Components.Airfoils.Airfoil()
     tip_airfoil.coordinate_file          = rel_path + 'Airfoils' + separator + 'transonic_wing_tip_section_airfoil.txt'

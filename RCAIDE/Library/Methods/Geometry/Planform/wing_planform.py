@@ -159,16 +159,17 @@ def wing_planform(wing):
         # Calculate the segment leading edge sweeps
         r_offsets = chords_dim[:-1]/4
         t_offsets = chords_dim[1:]/4
-        le_sweeps = np.arctan((r_offsets+np.tan(sweeps[:-1])*(lengths_dim)-t_offsets)/(lengths_dim))    
+        le_sweeps = np.arctan((r_offsets+np.tan(sweeps[:-1])*(lengths_dim)-t_offsets)/(lengths_dim)) 
+        le_sweeps = np.append(le_sweeps, 0)
         
         # Calculate the effective sweeps
         c_4_sweep     = np.arctan(np.sum(lengths_ndim*np.tan(sweeps[:-1])))
-        le_sweep_total= np.arctan(np.sum(lengths_ndim*np.tan(le_sweeps)))
+        le_sweep_total= np.arctan(np.sum(lengths_ndim*np.tan(le_sweeps[:-1])))
     
         # Calculate the aerodynamic center, but first the centroid
-        dxs = np.cumsum(np.concatenate([np.array([0]),np.tan(le_sweeps[:-1])*lengths_dim[:-1]]))
-        dys = np.cumsum(np.concatenate([np.array([0]),lengths_dim[:-1]]))
-        dzs = np.cumsum(np.concatenate([np.array([0]),np.tan(dihedrals[:-2])*lengths_dim[:-1]]))
+        dxs = np.cumsum(np.concatenate([np.array([0]),np.tan(le_sweeps[:-1])*lengths_dim]))
+        dys = np.cumsum(np.concatenate([np.array([0]),lengths_dim]))
+        dzs = np.cumsum(np.concatenate([np.array([0]),np.tan(dihedrals[:-1])*lengths_dim]))
         
         Cxys = []
         for i in range(len(lengths_dim)):
@@ -189,20 +190,13 @@ def wing_planform(wing):
         total_length = np.tan(le_sweep_total)*semispan + chords[-1]*RC
         
         if vertical: 
-            for i in range(len(wing.segments) - 1):
+            for i in range(len(wing.segments)):
                 wing.segments[seg_keys[i]].sweeps.leading_edge = le_sweeps[i]
                 wing.segments[seg_keys[i]].origin = [[dxs[i],dzs[i],dys[i]]]
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][0] = Cxys[i][0]
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][2] = Cxys[i][2]
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][1] = 0 if sym ==True else Cxys[i][1]
         else:
-            for i in range(len(wing.segments) - 1):
+            for i in range(len(wing.segments)):
                 wing.segments[seg_keys[i]].sweeps.leading_edge = le_sweeps[i]
                 wing.segments[seg_keys[i]].origin = [[dxs[i],dys[i],dzs[i]]]
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][0] = Cxys[i][0] 
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][1] = 0 if sym ==True else Cxys[i][1]
-                wing.segments[seg_keys[i]].mass_properties.center_of_gravity[0][2] = Cxys[i][2]
-            
         wing.spans.total                     = total_len
         wing.chords.mean_geometric           = mgc
         wing.chords.mean_aerodynamic         = MAC

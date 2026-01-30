@@ -11,6 +11,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import  Data,  Units 
 from RCAIDE.Library.Methods.Mass_Properties.estimate_maximum_landing_weight import estimate_maximum_landing_weight
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity 
 from RCAIDE.Library.Mission.Common.Pre_Process import  geometry, mass_properties
 
 # Pacakge imports 
@@ -69,15 +70,14 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
 
     #------------------------------------------------------------------------  
     # Run Baseline mission
-    #------------------------------------------------------------------------
-    base_mission = deepcopy(mission)
-    results      = base_mission.evaluate() 
+    #------------------------------------------------------------------------ 
+    results      = mission.evaluate() 
     
     # compute mass properties of aircraft to get weight distribution
-    vehicle_0         = base_mission.segments[cruise_segment_tag].analyses.vehicle
-    x_cg_0            = base_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.center_of_gravity
-    weight_breakdown  = base_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.weight_breakdown 
-    neutral_point_0   = base_mission.segments[cruise_segment_tag].analyses.vehicle.neutral_point 
+    vehicle_0         = mission.segments[cruise_segment_tag].analyses.vehicle
+    x_cg_0            = mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.center_of_gravity
+    weight_breakdown  = mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.weight_breakdown 
+    neutral_point_0   = mission.segments[cruise_segment_tag].analyses.vehicle.neutral_point 
       
     W_PAX         =  weight_breakdown.payload.passengers  
     PAX           =  vehicle_0.number_of_passengers
@@ -181,23 +181,26 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     for fuselage in  vehicle.fuselages: 
                         for cabin in fuselage.cabins: 
                             cabin.filled_seats_arrangement  = filling_order[f_o]  
-                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].number_of_passengers)  
+                            pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].number_of_passengers)
+                            cabin_mass = 1E-6 if p_i == 0 else  pax * W_PAX_per_pax
                             cabin.number_of_passengers = pax
+                            cabin.mass_properties.mass = cabin_mass
                     
         
                     for wing in vehicle.wings: 
                         if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                             for cabin in wing.cabins: 
                                 cabin.filled_seats_arrangement  =  filling_order[f_o]     
-                                pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.wings[wing.tag].cabins[cabin.tag].number_of_passengers)  
+                                pax =  1 if p_i == 0 else int(percent_pax[p_i] *  vehicle_0.wings[wing.tag].cabins[cabin.tag].number_of_passengers)
+                                cabin_mass = 1E-6 if p_i == 0 else  pax * W_PAX_per_pax
                                 cabin.number_of_passengers = pax 
+                                cabin.mass_properties.mass = cabin_mass
                 
                     #------------------------------------------------------------------------  
                     # Update Cargo
                     #------------------------------------------------------------------------
                     for cargo_bay in vehicle.cargo_bays: 
-                        cargo_bay.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  
-                        
+                        cargo_bay.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass   
 
                     vehicle.mass_properties.cargo    =  percent_cargo[c_i] * W_CARGO
                     vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo         
@@ -311,14 +314,17 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
         segment.analyses.weights.settings.run_center_of_gravity_analysis   = True
         segment.analyses.weights.settings.run_moments_of_inertia_analysis  = True  
         segment.analyses.stability.settings.compute_neutral_point          = False  
-         
-    # run geometry and mass properties analyes
-    geometry(weights_analysis_mission)
-    mass_properties(weights_analysis_mission) 
+        segment.analyses.weights.settings.run_weights_analysis             = False
+        
+    # run geometry and mass properties analyes 
+    center_of_gravity, mass, moment  = compute_vehicle_center_of_gravity(weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle,
+                                            overwrite_center_of_gravity = True,
+                                            segment=None,
+                                            verbose=False) 
     
     # store results 
-    LT_results.loading_CG_location[f_o,p_i,c_i,f_i]              = weights_analysis_mission.segments[cruise_segment_tag].conditions.weights.vehicle.global_center_of_gravity[:, 0]
-    LT_results.loading_mass[f_o,p_i,c_i,f_i]                     = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.takeoff 
+    LT_results.loading_CG_location[f_o,p_i,c_i,f_i]              = center_of_gravity[0][0]  
+    LT_results.loading_mass[f_o,p_i,c_i,f_i]                     = mass[0]  
     LT_results.loading_LEMAC_location[f_o,p_i,c_i,f_i]           = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC  
     LT_results.loading_percent_LEMAC_location[f_o,p_i,c_i,f_i]   =  (LT_results.loading_CG_location[f_o,p_i,c_i,f_i]  - weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC) / weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
      
