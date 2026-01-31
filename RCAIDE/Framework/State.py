@@ -69,23 +69,32 @@ class State(Conditions):
 
         return valid_controls
 
-
-
     def unpack_unknowns(self):
         """
         Finds the active control variables and assigns the unknowns to their locations in state.
         """
-
         n_points    = self.numerics.number_of_control_points
         control_idx = 0
-
         for name, control_var in vars(self.controls).items():
             if hasattr(control_var, 'path'):
                 if hasattr(control_var, 'active') and control_var.active:
-                    values = self.unknowns[control_idx : control_idx + n_points]   # Extract control values from unknowns
-                    values = rp.reshape(values, (-1, 1))                  # Reshape to column vector
-                    destination = reduce(getattr, control_var.path, self)          # Find destination within state
-                    destination = destination.at[control_var.path_indices].set( values.flatten() )      # Assign to destination in state
+                    # 1. Extract values
+                    values = self.unknowns[control_idx : control_idx + n_points]
+                    values = rp.reshape(values, (-1, 1))
+                    
+                    # 2. Split path into parent-path and attribute-name
+                    # Note: This assumes control_var.path is a list or tuple of strings
+                    parent_path = control_var.path[:-1]
+                    attr_name   = control_var.path[-1]
+                    # 3. Locate the parent object
+                    parent = reduce(getattr, parent_path, self)
+                    # 4. Perform the update via .at[].set() 
+                    # returns modified view in NP, new array in JAX
+                    current_val = getattr(parent, attr_name)
+                    updated_val = current_val.at[control_var.path_indices].set(values.flatten())
+                    # 5. Re-assign back to the state object
+                    # This is critical for JAX compatibility
+                    setattr(parent, attr_name, updated_val)
                     control_idx += n_points
         return
 
