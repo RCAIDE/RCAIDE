@@ -186,7 +186,7 @@ def compute_systems_weight(vehicle):
 
     WAC     = (3.2 * (FPAREA * DF) ** 0.6 + 9 * NPASS ** 0.83) * VMAX + 0.075 * WAVONC  # ac weight
     WAI     = ref_wing.spans.projected / Units.ft * 1. / np.cos(ref_wing.sweeps.quarter_chord) + 3.8 * FNAC * NENG + 1.5 * WF  # anti-ice weight
-    output                      = Data()
+    output                     = Data()
     output.W_flight_control    = WSC * Units.lbs
     output.W_apu               = WAPU * Units.lbs
     output.W_hyd_pnu           = WHYD * Units.lbs

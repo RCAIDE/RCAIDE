@@ -24,8 +24,9 @@ def plot_load_diagram(results,
                       show_legend               = True,
                       save_filename             = "Aircraft_Loading_Trim_Dragram",
                       file_type                 = ".png",
-                      static_margin_lower_limit = -0.05, 
-                      static_margin_upper_limit = 0.5,
+                      static_margin_lower_limit = -0.1,
+                      static_margin_upper_limit = 1.0,
+                      static_margin_resolution  = 23,
                       x_axis_lower_limit        = None,
                       x_axis_upper_limit        = None,
                       y_axis_lower_limit        = None,
@@ -162,7 +163,7 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------
     CG_LEMAC       = results.aerodynamic_percent_LEMAC_location*100
     SM             = results.aerodynamic_static_margin*100
-    SM_levels      = np.linspace(-10, 100, 23)
+    SM_levels      = np.linspace(static_margin_lower_limit*100, static_margin_upper_limit*100, static_margin_resolution)
     CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='viridis', extend='both') 
     CS2  =  axis.contour(CG_LEMAC, results.aerodynamic_mass,SM, levels = SM_levels,  colors='black', extend='both') 
     cbar = fig.colorbar(CS, ax=axis)

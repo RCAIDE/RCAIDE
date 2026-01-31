@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
+from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Electrical
 # ----------------------------------------------------------------------------------------------------------------------            
-class Electrical(Component):
+class Electrical(Systems):
     """
     A class representing electrical control systems and their power requirements. 
     """        

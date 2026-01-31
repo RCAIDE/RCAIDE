@@ -12,7 +12,7 @@ import numpy   as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  update_center_of_gravity
 # ---------------------------------------------------------------------------------------------------------------------- 
-def update_center_of_gravity(state):
+def update_center_of_gravity(state, vehicle):
     """
     Updates the vehicle center of gravity accounting for fuel consumption during flight.
 
@@ -89,4 +89,5 @@ def update_center_of_gravity(state):
         Mom_tot  += CG*sym * mass
     
     state.conditions.weights.vehicle.global_center_of_gravity =  Mom_tot / Mass_tot
+    
     return 

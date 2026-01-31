@@ -265,15 +265,12 @@ def mass_properties_preprocess_routine(segment, i = 0):
     #  STEP 5: Compute Center of Gravity   
     # --------------------------------------------------------------------------------------------------------------------------- 
     if weights_analysis.settings.run_center_of_gravity_analysis:
-        overwrite_CG = False
-        if analyses.vehicle.mass_properties.center_of_gravity == None:
-            overwrite_CG = True
         if i != 0:
             verbose_flag = False
         else:
             verbose_flag = weights_analysis.print_weight_analysis_report
         _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,
-                                                overwrite_center_of_gravity = overwrite_CG,
+                                                overwrite_center_of_gravity =  weights_analysis.settings.run_center_of_gravity_analysis ,
                                                 segment=segment,
                                                 verbose=verbose_flag)  
 

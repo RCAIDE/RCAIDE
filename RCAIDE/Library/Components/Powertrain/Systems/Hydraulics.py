@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
+from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Hydraulics
 # ----------------------------------------------------------------------------------------------------------------------            
-class Hydraulics(Component):
+class Hydraulics(Systems):
     """
     A class representing hydraulic systems and their power requirements. 
     """        

@@ -46,7 +46,7 @@ def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,
     OEW_mass        = np.array([0.0])
     for key in vehicle.keys():
         item = vehicle[key]  
-        OEW_total_mass,total_moment = compute_component_center_of_gravity(item,vehicle,OEW_mass,OEW_moment,None,False,False,False)    
+        OEW_mass,OEW_moment = compute_component_center_of_gravity(item,vehicle,OEW_mass,OEW_moment,None,False,False,False)    
     
     # center of gravity 
     OEW_CG = OEW_moment /OEW_mass 
@@ -65,10 +65,10 @@ def compute_vehicle_center_of_gravity(vehicle, overwrite_center_of_gravity=True,
     CG = mission_moment /mission_mass 
     
     if verbose:
-        print('\n \t ***** Center of Gravity ***** ')
-        print('\t OEW Center of Gravity            : ', OEW_CG) 
-        print('\t % Mass used in OEW CG calculation: ', round(OEW_mass_percentage,2), '%')  
-        print('\t Mission Center of Gravity        : ', CG)   
+        print('\n*************** Center of Gravity *************** ')
+        print('OEW Center of Gravity            : ', OEW_CG) 
+        print('% Mass used in OEW CG calculation: ', round(OEW_mass_percentage,2), '%')  
+        print('Mission Center of Gravity        : ', CG)   
  
     if segment != None:         
         ones_row  = segment.state.ones_row  

@@ -70,8 +70,8 @@ def weights(segment):
                         m_0_fuel       = conditions.weights.components.mass[fuel.tag][0,0]     
                         conditions.weights.components.mass[fuel.tag][:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten() 
                 
-            update_center_of_gravity(segment.state)
-        
+            update_center_of_gravity(segment.state, vehicle)
+            
         # --------------------------------------------------------------------------        
         # update moment of inertia 
         # --------------------------------------------------------------------------  

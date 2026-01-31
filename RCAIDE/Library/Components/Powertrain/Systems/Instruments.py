@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
+from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Instruments
 # ----------------------------------------------------------------------------------------------------------------------            
-class Instruments(Component):
+class Instruments(Systems):
     """
     A class representing instruments systems and their power requirements. 
     """        

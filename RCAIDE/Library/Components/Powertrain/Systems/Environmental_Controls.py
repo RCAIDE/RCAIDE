@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
+from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Environmental_Controls
 # ----------------------------------------------------------------------------------------------------------------------            
-class Environmental_Controls(Component):
+class Environmental_Controls(Systems):
     """
     A class representing environmental control systems and their power requirements. 
     """        

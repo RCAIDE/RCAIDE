@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components import Component
+from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Flight_Controls
 # ----------------------------------------------------------------------------------------------------------------------            
-class Flight_Controls(Component):
+class Flight_Controls(Systems):
     """
     A class representing flight control systems and their power requirements. 
     """        

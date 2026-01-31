@@ -50,6 +50,28 @@ def compute_operating_empty_weight(vehicle, settings=None):
     # System Weight
     ##------------------------------------------------------------------------------- 
     W_systems = FLOPS.compute_systems_weight(vehicle)
+    for system in vehicle.systems:
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_avionics 
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_flight_control 
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_apu 
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_electrical 
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_hyd_pnu 
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls: 
+            if system.mass_properties.mass != 0:
+                system.mass_properties.mass = W_systems.W_ac + W_systems.W_anti_ice   
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Instruments:
+            if system.mass_properties.mass != 0:     
+                system.mass_properties.mass = W_systems.W_instruments 
       
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -162,7 +184,13 @@ def compute_operating_empty_weight(vehicle, settings=None):
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 
-    landing_gear = FLOPS.compute_landing_gear_weight(vehicle)
+    landing_gear = FLOPS.compute_landing_gear_weight(vehicle) 
+    for LG in vehicle.landing_gears:
+        if isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear): 
+            LG.mass_properties.mass = landing_gear.main 
+        elif isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear):  
+            LG.mass_properties.mass = landing_gear.nose   
+
     
     ##-------------------------------------------------------------------------------                 
     # Accumulate Structural Weight
@@ -200,29 +228,4 @@ def compute_operating_empty_weight(vehicle, settings=None):
     output.empty.total          = output.empty.structural.total + output.empty.propulsion.total + output.empty.systems.total 
     output.zero_fuel_weight     = output.empty.total + output.operational_items.total + output.payload.total
     output.max_takeoff          = vehicle.mass_properties.max_takeoff 
-
-    ##-------------------------------------------------------------------------------                 
-    # Create and assign miscellaneous components and weights to aircraft
-    ##-------------------------------------------------------------------------------
-    # Assign landing gear weights to landing gear components
-    nose_landing_gear = False
-    main_landing_gear = False
-    for LG in vehicle.landing_gears:
-        if isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear): # Main landing gear
-            LG.mass_properties.mass = landing_gear.main
-            main_landing_gear = True
-        elif isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear): # Nose landing gear
-            LG.mass_properties.mass = landing_gear.nose
-            nose_landing_gear = True
-            
-    # Append landing gear components to the vehicle if there are none. 
-    if nose_landing_gear == False:
-        nose_gear = RCAIDE.Library.Components.Landing_Gear.Nose_Landing_Gear()  
-        nose_gear.mass_properties.mass = landing_gear.nose    
-        vehicle.landing_gears.append(nose_gear)  
-    if main_landing_gear == False:
-        main_gear = RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear()  
-        main_gear.mass_properties.mass = landing_gear.main  
-        vehicle.landing_gears.append(main_gear)    
-
     return output

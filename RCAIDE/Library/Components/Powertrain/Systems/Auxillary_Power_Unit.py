@@ -6,12 +6,12 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Components.Powertrain.Converters import Turboelectric_Generator
+from .Systems import Systems
  
 # ----------------------------------------------------------------------
 # Auxillary_Power_Unit
 # ----------------------------------------------------------------------
-class Auxillary_Power_Unit(Turboelectric_Generator): 
+class Auxillary_Power_Unit(Systems): 
     """
     A class representing auxillary power unit and their power requirements. 
     """        
@@ -19,4 +19,4 @@ class Auxillary_Power_Unit(Turboelectric_Generator):
         """
         Sets default values for the auxillary power unit attributes.
         """                  
-        self.tag        = 'apu'
+        self.tag        = 'auxillary_power_unit'

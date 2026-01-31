@@ -37,16 +37,7 @@ def vehicle_setup():
     vehicle.mass_properties.max_payload               = 12900. # kg
     vehicle.mass_properties.operating_empty           = 27900  #     
     vehicle.mass_properties.center_of_gravity         = [[16.8, 0, 1.6]]
-    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]
-    
-
-    vehicle.systems.avionics.origin               = [[4,0,0]] 
-    vehicle.systems.flight_controls.origin        = [[25,0,0]] 
-    vehicle.systems.auxillary_power_unit.origin   = [[35,0,0]] 
-    vehicle.systems.electrical.origin             = [[34,0,0]] 
-    vehicle.systems.hydraulics.origin             = [[25,0,0]] 
-    vehicle.systems.environmental_controls.origin = [[34,0,0]]   
-    vehicle.systems.instruments.origin            = [[20,0,0]] 
+    vehicle.mass_properties.moments_of_inertia.tensor = [[10 ** 5, 0, 0],[0, 10 ** 6, 0,],[0,0, 10 ** 7]]   
 
     # envelope properties
     vehicle.flight_envelope.ultimate_load             = 3.5 
@@ -451,7 +442,39 @@ def vehicle_setup():
     fuselage.segments.append(segment)       
 
     # add to vehicle
-    vehicle.append_component(fuselage)  
+    vehicle.append_component(fuselage)
+
+    ##------------------------------------------------------------------------------------------------------------------------- 
+    ##  Systems
+    ##-------------------------------------------------------------------------------------------------------------------------   
+    avionics =  RCAIDE.Library.Components.Powertrain.Systems.Avionics()
+    avionics.origin                   = [[4,0,0]]   
+    vehicle.append_component(avionics)
+
+    flight_controls =  RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls()    
+    flight_controls.origin            = [[25,0,0]]  
+    vehicle.append_component(flight_controls)
+    
+    auxillary_power_unit =  RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit()  
+    auxillary_power_unit.origin       = [[35,0,0]] 
+    vehicle.append_component(auxillary_power_unit)
+
+    electrical =  RCAIDE.Library.Components.Powertrain.Systems.Electrical()      
+    electrical.origin                 = [[34,0,0]]  
+    vehicle.append_component(electrical)
+    
+    hydraulics =  RCAIDE.Library.Components.Powertrain.Systems.Hydraulics()  
+    hydraulics.origin                 = [[25,0,0]]  
+    vehicle.append_component(hydraulics)
+    
+    environmental_controls =  RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls()  
+    environmental_controls.origin     = [[34,0,0]]   
+    vehicle.append_component(environmental_controls)
+    
+    instruments =  RCAIDE.Library.Components.Powertrain.Systems.Instruments()  
+    instruments.origin                = [[20,0,0]]  
+    vehicle.append_component(instruments)
+        
   
     #------------------------------------------------------------------------------------------------------------------------------------  
     #  Fuel Network
