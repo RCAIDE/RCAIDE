@@ -292,9 +292,8 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor
         combined_mesh_sym.faces = combined_mesh_sym.faces[:, ::-1]
 
         # 4. concatenate original + mirrored
-        combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym])
-        combined_mesh_full.density = fuel_tank.fuel.density
-        
+        combined_mesh_full         = trimesh.util.concatenate([combinde_mesh, combined_mesh_sym]) 
+        combined_mesh_full.density = fuel_tank.fuel.density 
         centroid = combined_mesh_full.centroid
         cg_x     = centroid[0]
         cg_y     = 0
