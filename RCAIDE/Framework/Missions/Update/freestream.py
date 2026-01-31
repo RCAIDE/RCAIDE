@@ -30,8 +30,8 @@ def update_freestream(state: "rcf.State",
     P = state.freestream.pressure
     T = state.freestream.temperature
 
-    gamma   = rp.polyval(state.freestream.atmosphere.fluid.gamma_coefficients, T)
-    Cp      = rp.polyval(state.freestream.atmosphere.fluid.cp_coefficients, T)
+    gamma   = rp.polyval(rp.array(state.freestream.atmosphere.fluid.gamma_coefficients), T)
+    Cp      = rp.polyval(rp.array(state.freestream.atmosphere.fluid.cp_coefficients), T)
 
     # Speed
     v_mag_sq = rp.sum(v ** 2, axis=1)[:, None]

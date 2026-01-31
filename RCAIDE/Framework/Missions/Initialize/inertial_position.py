@@ -21,7 +21,7 @@ def initialize_inertial_position(state: "rcf.State",
 
     p_initial               = state.initials.frames.inertial.position_vector
     p_current               = state.frames.inertial.position_vector
-    p_initial[-1, None, -1] = -state.initials.freestream.altitude[-1, 0]
+    p_initial               = p_initial.at[-1, None, -1].set(-state.initials.freestream.altitude[-1, 0])
     delta_p                 = p_initial[-1, None, :] - p_current[0, None, :]
 
     R_initial               = state.initials.frames.inertial.system_range

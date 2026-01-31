@@ -23,7 +23,7 @@ def initialize_time(state: "rcf.State",
                     ):
 
     t_initial = state.initials.frames.inertial.time
-    if (t_initial==None).all():
+    if rp.all(t_initial == None):
         t_initial = rp.atleast_2d(state.frames.planet.start_time)
 
     t_current = state.frames.inertial.time

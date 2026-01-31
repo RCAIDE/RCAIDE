@@ -247,7 +247,7 @@ class Wing(rcl.Component):
         AR = (span**2)/ref_area
 
         # Calculate the total span
-        lens = lengths_dim/rp.cos(dihedrals[:-1])
+        lens = lengths_dim/rp.cos(rp.array(dihedrals[:-1]))
         total_len = rp.sum(rp.array(lens))*(1+sym)
 
         # Calculate the mean geometric chord
@@ -259,7 +259,8 @@ class Wing(rcl.Component):
         C = span_locs[:-1]
         integral = ((A+B*(span_locs[1:]-C))**3-(A+B*(span_locs[:-1]-C))**3)/(3*B)
         # For the cases when the wing doesn't taper in a spot
-        integral[rp.isnan(integral)] = (A[rp.isnan(integral)]**2)*(lengths_ndim[rp.isnan(integral)])
+        mask = rp.isnan(integral)
+        integral = rp.where(mask, A**2 * lengths_ndim, integral)
         MAC = (semispan*(1+sym)/ref_area)*rp.sum(integral)
 
         # Calculate the taper ratio
@@ -283,7 +284,7 @@ class Wing(rcl.Component):
         # Calculate the aerodynamic center, but first the centroid
         dxs = rp.cumsum(rp.concatenate([rp.array([0]),rp.tan(le_sweeps[:-1])*lengths_dim[:-1]]))
         dys = rp.cumsum(rp.concatenate([rp.array([0]),lengths_dim[:-1]]))
-        dzs = rp.cumsum(rp.concatenate([rp.array([0]),rp.tan(dihedrals[:-2])*lengths_dim[:-1]]))
+        dzs = rp.cumsum(rp.concatenate([rp.array([0]),rp.tan(rp.array(dihedrals[:-2]))*lengths_dim[:-1]]))
 
         Cxys = []
         for i in range(len(lengths_dim)):
@@ -295,14 +296,15 @@ class Wing(rcl.Component):
                                           chords_dim[i],
                                           chords_dim[i+1]))
 
-        aerodynamic_center = (rp.dot(rp.transpose(Cxys),As)/(ref_area/(1+sym)))
+        aerodynamic_center = (rp.dot(rp.transpose(rp.array(Cxys)),As)/(ref_area/(1+sym)))
 
-        single_side_aerodynamic_center = (rp.array(aerodynamic_center)*1.)
-        single_side_aerodynamic_center[0] = single_side_aerodynamic_center[0] - MAC*.25
+        single_side_aerodynamic_center = 1*rp.array(aerodynamic_center)
+        single_side_aerodynamic_center = single_side_aerodynamic_center.at[0].set(single_side_aerodynamic_center[0] - MAC*.25)
+
         if sym== True:
-            aerodynamic_center[1] = 0
+            aerodynamic_center = aerodynamic_center.at[1].set(0)
 
-        aerodynamic_center[0] = single_side_aerodynamic_center[0]
+        aerodynamic_center = aerodynamic_center.at[0].set(single_side_aerodynamic_center[0])
 
         # Total length for supersonics
         total_length = rp.tan(le_sweep_total)*semispan + chords[-1]*RC

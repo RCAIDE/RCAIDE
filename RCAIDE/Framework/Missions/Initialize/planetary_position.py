@@ -19,7 +19,7 @@ def initialize_planetary_position(state: "rcf.State",
                                   settings: "rcf.Settings",
                                   ):
 
-    state.frames.planet.longitude[:, 0] = state.initials.frames.planet.longitude[-1, 0]
-    state.frames.planet.latitude[:, 0]  = state.initials.frames.planet.latitude[-1, 0]
+    state.frames.planet.longitude = state.frames.planet.longitude.at[:,0].set(state.initials.frames.planet.longitude[-1, 0])
+    state.frames.planet.latitude = state.frames.planet.latitude.at[:, 0].set(state.initials.frames.planet.latitude[-1, 0])
 
     return state, system, settings

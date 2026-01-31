@@ -98,8 +98,8 @@ def direct_aero(
     F_Z = qS * C_L
     F_X = qS * (C_D + 0.06)
 
-    state.frames.wind.total_force_vector[:, 2] = F_Z.flatten()
-    state.frames.wind.total_force_vector[:, 0] = F_X.flatten()
+    state.frames.wind.total_force_vector = state.frames.wind.total_force_vector.at[:, 2].set(F_Z.flatten())
+    state.frames.wind.total_force_vector = state.frames.wind.total_force_vector.at[:, 0].set(F_X.flatten())
 
     return state, system, settings,
 

@@ -69,10 +69,10 @@ class TestCSACruise(Cruise):
         t_nondim = state.numerics.dimensionless.control_points
         time = t_nondim * (t_f - t_0) + t_0
 
-        state.freestream.altitude[:, 0] = alt
-        state.frames.inertial.position_vector[:, 2] = -alt
-        state.frames.inertial.velocity_vector[:, 0] = v_x
-        state.frames.inertial.velocity_vector[:, 1] = v_y
+        state.freestream.altitude =state.freestream.altitude.at[:, 0].set(alt)
+        state.frames.inertial.position_vector = state.frames.inertial.position_vector.at[:, 2].set(-alt)
+        state.frames.inertial.velocity_vector = state.frames.inertial.velocity_vector.at[:, 0].set(v_x)
+        state.frames.inertial.velocity_vector = state.frames.inertial.velocity_vector.at[:, 1].set(v_y)
         state.frames.inertial.time = time
 
         # Set active controls and dynamics

@@ -5,7 +5,11 @@ from RCAIDE.Framework.System import VehicleEnvelope
 
 from copy import deepcopy
 
-import numpy as np
+import RNUMPY as rp
+rp.use_jax = True
+
+import jax
+jax.config.update('jax_platform_name', 'cpu')
 
 
 def vehicle_setup():
@@ -26,9 +30,9 @@ def vehicle_setup():
     vehicle.mass_properties.takeoff             = 79015.8   # kg
     vehicle.mass_properties.max_zero_fuel       = 62732.0   # kg
     vehicle.mass_properties.cargo               = 10000.0   # kg
-    vehicle.mass_properties.center_of_gravity   = np.array(
+    vehicle.mass_properties.center_of_gravity   = rp.array(
                                                    [[15.30987849,   0.,             -0.48023939]])  # Estimated
-    vehicle.mass_properties.moments_of_inertia  = np.array(
+    vehicle.mass_properties.moments_of_inertia  = rp.array(
                                                    [[3173074.17,    0.,             28752.77565],
                                                    [0.,             3019041.443,    0],
                                                    [0.,             0.,             5730017.433]])
@@ -48,7 +52,7 @@ def vehicle_setup():
     main_wing = rcl.Components.Wings.Wing(tag='Main Wing')
 
     main_wing.aspect_ratio            = 10.18
-    main_wing.sweeps.quarter_chord    = np.deg2rad(25.)
+    main_wing.sweeps.quarter_chord    = rp.deg2rad(25.)
     main_wing.thickness_to_chord      = 0.1
     main_wing.taper                   = 0.1
 
@@ -61,11 +65,11 @@ def vehicle_setup():
     main_wing.areas.reference         = 124.862
     main_wing.areas.wetted            = 225.08
 
-    main_wing.twists.root             = np.deg2rad(4.0)
-    main_wing.twists.tip              = np.deg2rad(0.0)
+    main_wing.twists.root             = rp.deg2rad(4.0)
+    main_wing.twists.tip              = rp.deg2rad(0.0)
 
-    main_wing.origin                  = np.array([[13.61, 0., -0.93]])
-    main_wing.aerodynamic_center      = np.array([0, 0, 0])
+    main_wing.origin                  = rp.array([[13.61, 0., -0.93]])
+    main_wing.aerodynamic_center      = rp.array([0, 0, 0])
 
     main_wing.vertical                = False
     main_wing.symmetric               = True
@@ -78,14 +82,14 @@ def vehicle_setup():
     root_segment = rcl.Components.Wings.WingSegment(tag='Main Wing Root Segment')
 
     root_segment.percent_span_location      = 0.0
-    root_segment.twist                      = np.deg2rad(4.)
+    root_segment.twist                      = rp.deg2rad(4.)
     root_segment.root_chord_percent         = 1.
     root_segment.thickness_to_chord         = 0.1
-    root_segment.dihedral_outboard          = np.deg2rad(2.5)
-    root_segment.sweeps.quarter_chord       = np.deg2rad(28.225)
+    root_segment.dihedral_outboard          = rp.deg2rad(2.5)
+    root_segment.sweeps.quarter_chord       = rp.deg2rad(28.225)
     root_segment.thickness_to_chord         = .1
 
-    # root_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737a.txt')
+    root_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737a.txt')
 
     main_wing.add_segment(root_segment)
 
@@ -94,14 +98,14 @@ def vehicle_setup():
     yehudi_segment = rcl.Components.Wings.WingSegment(tag='Main Wing Yehudi Segment')
 
     yehudi_segment.percent_span_location    = 0.324
-    yehudi_segment.twist                    = np.deg2rad(0.047193)
+    yehudi_segment.twist                    = rp.deg2rad(0.047193)
     yehudi_segment.root_chord_percent       = 0.5
     yehudi_segment.thickness_to_chord       = 0.1
-    yehudi_segment.dihedral_outboard        = np.deg2rad(5.5)
-    yehudi_segment.sweeps.quarter_chord     = np.deg2rad(25.)
+    yehudi_segment.dihedral_outboard        = rp.deg2rad(5.5)
+    yehudi_segment.sweeps.quarter_chord     = rp.deg2rad(25.)
     yehudi_segment.thickness_to_chord       = .1
 
-    # yehudi_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737b.txt')
+    yehudi_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737b.txt')
 
     main_wing.add_segment(yehudi_segment)
 
@@ -110,14 +114,14 @@ def vehicle_setup():
     mid_segment = rcl.Components.Wings.WingSegment(tag='Main Wing Mid Segment')
 
     mid_segment.percent_span_location       = 0.963
-    mid_segment.twist                       = np.deg2rad(0.00258)
+    mid_segment.twist                       = rp.deg2rad(0.00258)
     mid_segment.root_chord_percent          = 0.220
     mid_segment.thickness_to_chord          = 0.1
-    mid_segment.dihedral_outboard           = np.deg2rad(5.5)
-    mid_segment.sweeps.quarter_chord        = np.deg2rad(56.75)
+    mid_segment.dihedral_outboard           = rp.deg2rad(5.5)
+    mid_segment.sweeps.quarter_chord        = rp.deg2rad(56.75)
     mid_segment.thickness_to_chord          = .1
 
-    # mid_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737c.txt')
+    mid_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737c.txt')
 
     main_wing.add_segment(mid_segment)
 
@@ -126,14 +130,14 @@ def vehicle_setup():
     tip_segment = rcl.Components.Wings.WingSegment(tag='Main Wing Tip Segment')
 
     tip_segment.percent_span_location         = 1.
-    tip_segment.twist                         = np.deg2rad(0.)
+    tip_segment.twist                         = rp.deg2rad(0.)
     tip_segment.root_chord_percent            = 0.10077
     tip_segment.thickness_to_chord            = 0.1
     tip_segment.dihedral_outboard             = 0.
     tip_segment.sweeps.quarter_chord          = 0.
     tip_segment.thickness_to_chord            = .1
 
-    # tip_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737d.txt')
+    tip_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737d.txt')
 
     main_wing.add_segment(tip_segment)
 
@@ -178,7 +182,7 @@ def vehicle_setup():
     h_stab = rcl.Components.Wings.Wing(tag='Horizontal Stabilizer')
 
     h_stab.aspect_ratio            = 4.99
-    h_stab.sweeps.quarter_chord    = np.deg2rad(28.2250)
+    h_stab.sweeps.quarter_chord    = rp.deg2rad(28.2250)
     h_stab.thickness_to_chord      = 0.08
     h_stab.taper                   = 0.3333
 
@@ -191,11 +195,11 @@ def vehicle_setup():
     h_stab.areas.reference         = 41.49
     h_stab.areas.exposed           = 59.354    # Exposed area of the horizontal tail
     h_stab.areas.wetted            = 71.81     # Wetted area of the horizontal tail
-    h_stab.twists.root             = np.deg2rad(3.0)
-    h_stab.twists.tip              = np.deg2rad(3.0)
+    h_stab.twists.root             = rp.deg2rad(3.0)
+    h_stab.twists.tip              = rp.deg2rad(3.0)
 
-    h_stab.origin                  = np.array([[33.02, 0, 1.466]])
-    h_stab.aerodynamic_center      = np.array([0, 0, 0])
+    h_stab.origin                  = rp.array([[33.02, 0, 1.466]])
+    h_stab.aerodynamic_center      = rp.array([0, 0, 0])
 
     h_stab.vertical                = False
     h_stab.symmetric               = True
@@ -209,8 +213,8 @@ def vehicle_setup():
     root_segment.percent_span_location  = 0.0
     root_segment.twist                  = 0.
     root_segment.root_chord_percent     = 1.0
-    root_segment.dihedral_outboard      = np.deg2rad(8.63)
-    root_segment.sweeps.quarter_chord   = np.deg2rad(28.2250 )
+    root_segment.dihedral_outboard      = rp.deg2rad(8.63)
+    root_segment.sweeps.quarter_chord   = rp.deg2rad(28.2250 )
     root_segment.thickness_to_chord     = .1
     h_stab.add_segment(root_segment)
 
@@ -262,8 +266,8 @@ def vehicle_setup():
     v_stab.twists.root             = 0.0
     v_stab.twists.tip              = 0.0
 
-    v_stab.origin                  = np.array([[26.944, 0, 1.54]])
-    v_stab.aerodynamic_center      = np.array([0, 0, 0])
+    v_stab.origin                  = rp.array([[26.944, 0, 1.54]])
+    v_stab.aerodynamic_center      = rp.array([0, 0, 0])
 
     v_stab.vertical                = True
     v_stab.symmetric               = False
@@ -288,7 +292,7 @@ def vehicle_setup():
     mid_segment.twist                   = 0.
     mid_segment.root_chord_percent      = 0.45
     mid_segment.dihedral_outboard       = 0.
-    mid_segment.sweeps.quarter_chord    = np.deg2rad(31.2)
+    mid_segment.sweeps.quarter_chord    = rp.deg2rad(31.2)
     mid_segment.thickness_to_chord      = .1
     v_stab.add_segment(mid_segment)
 
@@ -398,18 +402,18 @@ def vehicle_setup():
     nacelle.flow_through = True
     # nacelle.airfoil = rcl.Components.Airfoils.Airfoil.NACA_4_Series('2410')
 
-    nacelle.origin = np.array([[13.72, -4.86, -1.9]])
+    nacelle.origin = rp.array([[13.72, -4.86, -1.9]])
 
     nacelle.lengths.total = 2.71
 
     nacelle.diameters.maximum   = 2.05
     nacelle.diameters.inlet     = 1.90
 
-    nacelle.areas.wetted = 1.1 * np.pi * nacelle.diameters.maximum * nacelle.lengths.total
+    nacelle.areas.wetted = 1.1 * rp.pi * nacelle.diameters.maximum * nacelle.lengths.total
 
     nacelle_2 = deepcopy(nacelle)
     nacelle_2.name = 'Engine Nacelle 2'
-    nacelle_2.origin = np.array([[13.72, 4.86, -1.9]])
+    nacelle_2.origin = rp.array([[13.72, 4.86, -1.9]])
 
     vehicle.add_subcomponent(nacelle)
     vehicle.add_subcomponent(nacelle_2)
@@ -500,8 +504,8 @@ def vehicle_setup():
 
     takeoff_config = deepcopy(vehicle)
     takeoff_config.tag = "Takeoff"
-    takeoff_config.wings.main_wing.control_surfaces.flap.deflection    = np.deg2rad(20)
-    takeoff_config.wings.main_wing.control_surfaces.slat.deflection    = np.deg2rad(25)
+    takeoff_config.wings.main_wing.control_surfaces.flap.deflection    = rp.deg2rad(20)
+    takeoff_config.wings.main_wing.control_surfaces.slat.deflection    = rp.deg2rad(25)
 
     for tf in takeoff_config.energy.lines[0].converters:
 
@@ -516,8 +520,8 @@ def vehicle_setup():
 
     cutback_config = deepcopy(vehicle)
     cutback_config.tag = "Cutback"
-    cutback_config.wings.main_wing.control_surfaces.flap.deflection    = np.deg2rad(20)
-    cutback_config.wings.main_wing.control_surfaces.slat.deflection    = np.deg2rad(20)
+    cutback_config.wings.main_wing.control_surfaces.flap.deflection    = rp.deg2rad(20)
+    cutback_config.wings.main_wing.control_surfaces.slat.deflection    = rp.deg2rad(20)
 
     for tf in cutback_config.energy.lines[0].converters:
 
@@ -532,8 +536,8 @@ def vehicle_setup():
 
     landing_config = deepcopy(vehicle)
     landing_config.tag = "Landing"
-    landing_config.wings.main_wing.control_surfaces.flap.deflection    = np.deg2rad(30)
-    landing_config.wings.main_wing.control_surfaces.slat.deflection    = np.deg2rad(25)
+    landing_config.wings.main_wing.control_surfaces.flap.deflection    = rp.deg2rad(30)
+    landing_config.wings.main_wing.control_surfaces.slat.deflection    = rp.deg2rad(25)
 
     landing_config.landing_gear.main_landing_gear.deployed = True
     landing_config.landing_gear.main_landing_gear.deployed = True

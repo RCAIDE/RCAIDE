@@ -85,7 +85,7 @@ class State(Conditions):
                     values = self.unknowns[control_idx : control_idx + n_points]   # Extract control values from unknowns
                     values = rp.reshape(values, (-1, 1))                  # Reshape to column vector
                     destination = reduce(getattr, control_var.path, self)          # Find destination within state
-                    destination[control_var.path_indices] = values.flatten()       # Assign to destination in state
+                    destination = destination.at[control_var.path_indices].set( values.flatten() )      # Assign to destination in state
                     control_idx += n_points
         return
 

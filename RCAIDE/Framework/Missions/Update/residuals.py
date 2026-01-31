@@ -44,5 +44,5 @@ def flight_dynamics_residuals(
             raise ValueError(f"Moment of Inertia Matrix must be defined for residual: {moment_res.tag} at "
                              f"I[{moment_res.index}, {moment_res.index}]")
         moment_res.value = MT[:, moment_res.index] / I[moment_res.index, moment_res.index] - wdot[:, moment_res.index]
-
+        
     return state, system, settings

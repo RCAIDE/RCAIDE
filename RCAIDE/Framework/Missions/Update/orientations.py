@@ -48,7 +48,7 @@ def update_orientations(state: "rcf.State",
 
     # X-Z Projection of velocity
     v_xz = deepcopy(v_body)
-    v_xz[:, 1] = 0
+    v_xz = v_xz.at[:, 1].set(0)
     v_xz_mag = rp.sqrt(rp.sum(v_xz))
 
     # Angle of Attack
@@ -60,17 +60,17 @@ def update_orientations(state: "rcf.State",
     # ---Wind Frame Rotations---
 
     wind_body_rotations = rp.zeros_like(body_inertial_rotations)
-    wind_body_rotations[:, 0] = 0.        # No x-axis roll in wind frame
-    wind_body_rotations[:, 1] = alpha     # Theta is Angle of Attack
-    wind_body_rotations[:, 2] = beta      # Psi is Side Slip Angle
+    wind_body_rotations = wind_body_rotations.at[:, 0].set(0.)        # No x-axis roll in wind frame
+    wind_body_rotations = wind_body_rotations.at[:, 1].set(alpha)     # Theta is Angle of Attack
+    wind_body_rotations = wind_body_rotations.at[:, 2].set(beta)      # Psi is Side Slip Angle
 
     TW2B = T.from_euler('zyx', wind_body_rotations)
     TW2I = TW2B * TB2I
 
     # ---Pack Results---
 
-    state.aerodynamics.angles.alpha[:, 0] = alpha
-    state.aerodynamics.angles.beta[:, 0] = beta
+    state.aerodynamics.angles.alpha = state.aerodynamics.angles.alpha.at[:, 0].set(alpha)
+    state.aerodynamics.angles.beta = state.aerodynamics.angles.beta.at[:, 0].set(beta)
     state.aerodynamics.angles.phi = phi
 
     state.frames.body.transform_to_inertial = TB2I
