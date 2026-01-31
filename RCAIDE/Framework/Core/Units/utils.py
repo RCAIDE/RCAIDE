@@ -133,7 +133,7 @@ Units.__doc__ = \
 # ------------------------------------------------------------
 
 if __name__ == '__main__':
-    import numpy as np
+    import RNUMPY as rp
 
     x = Units['miles/hour']
     y = Units.miles / Units.hour
@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
     a = 4. * Units.kilogram
     b = 5. * Units.gram
-    v = np.array([3., 4., 6.]) * Units['miles/hour']
+    v = rp.array([3., 4., 6.]) * Units['miles/hour']
     t = 100 * Units.degF
 
     print(a)

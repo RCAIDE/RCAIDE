@@ -11,7 +11,7 @@ import chex
 from dataclasses import field
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Library as rcl
@@ -32,8 +32,8 @@ class Nacelle(rcl.Component):
     has_pylon:                  bool    = True
     fuselage_integrated:        bool    = False
 
-    aerodynamic_center:         np.ndarray              = field(default_factory=lambda: np.zeros(3))
-    orientation_euler_angles:   np.ndarray              = field(default_factory=lambda: np.zeros(3))
+    aerodynamic_center:         rp.ndarray              = field(default_factory=lambda: rp.zeros(3))
+    orientation_euler_angles:   rp.ndarray              = field(default_factory=lambda: rp.zeros(3))
 
     airfoil:                    rcl.Component           = None
     cowling_airfoil_angle:      float                   = 0.0

@@ -12,7 +12,7 @@ from dataclasses import field
 from typing import Callable
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -65,23 +65,23 @@ class ParasiteDragFormFactors:
 @chex.dataclass(kw_only=True)
 class Training:
 
-    angle_of_attack:        np.ndarray  = None
-    Mach:                   np.ndarray  = None
+    angle_of_attack:        rp.ndarray  = None
+    Mach:                   rp.ndarray  = None
 
-    sideslip_angle:         np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
-    aileron_deflection:     np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
-    elevator_deflection:    np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
-    rudder_deflection:      np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
-    flap_deflection:        np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
-    slat_deflection:        np.ndarray  = field(default_factory=lambda: np.array([30, 10.0, 1E-12]) * Units.deg)
+    sideslip_angle:         rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
+    aileron_deflection:     rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
+    elevator_deflection:    rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
+    rudder_deflection:      rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
+    flap_deflection:        rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
+    slat_deflection:        rp.ndarray  = field(default_factory=lambda: rp.array([30, 10.0, 1E-12]) * Units.deg)
 
-    u:                      np.ndarray  = field(default_factory=lambda: np.array([0.2, 0.1, 1E-12]))
-    v:                      np.ndarray  = field(default_factory=lambda: np.array([0.2, 0.1, 1E-12]))
-    w:                      np.ndarray  = field(default_factory=lambda: np.array([0.2, 0.1, 1E-12]))
+    u:                      rp.ndarray  = field(default_factory=lambda: rp.array([0.2, 0.1, 1E-12]))
+    v:                      rp.ndarray  = field(default_factory=lambda: rp.array([0.2, 0.1, 1E-12]))
+    w:                      rp.ndarray  = field(default_factory=lambda: rp.array([0.2, 0.1, 1E-12]))
 
-    pitch_rate:             np.ndarray  = field(default_factory=lambda:np.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
-    roll_rate:              np.ndarray  = field(default_factory=lambda:np.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
-    yaw_rate:               np.ndarray  = field(default_factory=lambda:np.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
+    pitch_rate:             rp.ndarray  = field(default_factory=lambda:rp.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
+    roll_rate:              rp.ndarray  = field(default_factory=lambda:rp.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
+    yaw_rate:               rp.ndarray  = field(default_factory=lambda:rp.array([0.3, 0.15, 0.0])  * Units.rad / Units.sec)
 
 
 @chex.dataclass(kw_only=True)
@@ -102,7 +102,7 @@ class VLMSettings:
     recalculate_total_wetted_area:  bool    = False
     model_propeller_wake:           bool    = False
 
-    CL_max:                         float   = np.inf
+    CL_max:                         float   = rp.inf
     CD_increment:                   float   = 0.0
     spoiler_drag_increment:         float   = 0.0
 
@@ -177,7 +177,7 @@ class VLMSurrogate(VLM):
         # --------------------------------------------------------------------------------------------------------------
 
         self.state.initials = rcf.State()
-        self.state.initials.freestream.mach_number  = np.atleast_2d(np.repeat(Mach, len(alpha))).T
-        self.state.aerodynamics.angles.alpha        = np.atleast_2d(np.tile(alpha, len(Mach)).T.flatten()).T
+        self.state.initials.freestream.mach_number  = rp.atleast_2d(rp.repeat(Mach, len(alpha))).T
+        self.state.aerodynamics.angles.alpha        = rp.atleast_2d(rp.tile(alpha, len(Mach)).T.flatten()).T
 
 

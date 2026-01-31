@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -30,10 +30,10 @@ def func_isentropic_nozzle_performance(
 
     # Isentropic Outputs
 
-    P_t_out = np.maximum(P_t * PR * n_r, P0)              # Output stagnation pressure, minimum is freestream pressure
+    P_t_out = rp.maximum(P_t * PR * n_r, P0)              # Output stagnation pressure, minimum is freestream pressure
     T_t_out = T_t * (PR * n_r) ** ((g - 1.) / (g * n_p))  # Output stagnation temperature
 
-    M_out   = np.sqrt((((P_t_out / P0) ** ((g - 1.) / g)) - 1.) * 2. / (g - 1.))  # Output Mach number
+    M_out   = rp.sqrt((((P_t_out / P0) ** ((g - 1.) / g)) - 1.) * 2. / (g - 1.))  # Output Mach number
     T_out   = T_t_out / (1. + (g - 1.) / 2. * M_out ** 2)                         # Output static temperature
 
     return P_t_out, T_t_out, T_out, M_out
@@ -55,7 +55,7 @@ def func_compression_nozzle_performance(
 
     # Normal Shock Outputs
 
-    ns_M    = np.sqrt((1. + (g - 1.) / 2. * M0 ** 2.) / (g * M0 ** 2 - (g - 1.) / 2.))
+    ns_M    = rp.sqrt((1. + (g - 1.) / 2. * M0 ** 2.) / (g * M0 ** 2 - (g - 1.) / 2.))
     ns_T    = T_t_out / (1. + (g - 1.) / 2 * ns_M ** 2)
     ns_P_t  = (PR *
                P_t *
@@ -71,7 +71,7 @@ def func_compression_nozzle_performance(
 
     h_out   = Cp * T_out                        # Output static enthalpy
     h_t_out = Cp * T_t_out                      # Output stagnation enthalpy
-    u_out   = np.sqrt(2. * (h_t_out - h_out))   # Output velocity
+    u_out   = rp.sqrt(2. * (h_t_out - h_out))   # Output velocity
 
     return M_out, u_out, P_t_out, T_t_out, T_out, h_t_out, h_out
 
@@ -94,7 +94,7 @@ def func_expansion_nozzle_performance(
 
     # Supersonic Expansion
     sup = M_isn > 1
-    M = np.maximum(np.minimum(M_isn, 1.0), 0.001)  # Bound Mach number to [0.001, 1]
+    M = rp.maximum(rp.minimum(M_isn, 1.0), 0.001)  # Bound Mach number to [0.001, 1]
     P   = P_t_out / (1. + (g - 1.) / 2. * M ** 2) ** (g / (g - 1.))
     P_out = P0.at(sup).set(P)
 
@@ -102,7 +102,7 @@ def func_expansion_nozzle_performance(
 
     h_t_out = Cp * T_t_out
     h_out   = Cp * T_out
-    u_out   = np.sqrt(2. * (h_t_out - h_out))
+    u_out   = rp.sqrt(2. * (h_t_out - h_out))
     r_out   = P_out/(R * T_out)
 
     def fm(M, g):
@@ -113,7 +113,7 @@ def func_expansion_nozzle_performance(
 
         return m1 * M / m2
 
-    AR      = (fm(M0, g) / fm(M, g) * (1 / (P_t_out / P_t0)) * (np.sqrt(T_t_out / T_t0)))
+    AR      = (fm(M0, g) / fm(M, g) * (1 / (P_t_out / P_t0)) * (rp.sqrt(T_t_out / T_t0)))
 
     return AR, M, r_out, u_out, P_out, P_t_out, T_out, T_t_out, h_out, h_t_out
 

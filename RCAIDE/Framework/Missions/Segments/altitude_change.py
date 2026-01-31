@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 import chex
-import numpy as np
+import RNUMPY as rp
 
 import RCAIDE.Framework as rcf
 
@@ -71,14 +71,14 @@ class CSRAltitudeChange(AltitudeChange):
         # If air speed and altitude are not provided, inherit from previous segment
 
         if not self.air_speed:
-            av = np.linalg.norm(state.frames.inertial.velocity_vector[-1])
+            av = rp.linalg.norm(state.frames.inertial.velocity_vector[-1])
         if not self.altitude_start:
             alt0 = -1.0 * state.frames.inertial.position_vector[-1, 2]
 
         # Calculate velocity vector in inertial frame
-        v_xy    = np.sqrt(av ** 2 - rate ** 2)
-        v_x     = np.cos(beta) * v_xy
-        v_y     = np.sin(beta) * v_xy
+        v_xy    = rp.sqrt(av ** 2 - rate ** 2)
+        v_x     = rp.cos(beta) * v_xy
+        v_y     = rp.sin(beta) * v_xy
 
         state.frames.inertial.velocity_vector[:, 0] = v_x
         state.frames.inertial.velocity_vector[:, 1] = v_y

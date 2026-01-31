@@ -12,6 +12,7 @@ import chex
 from dataclasses import field
 
 # package imports
+import RNUMPY as rp
 import numpy as np
 
 # RCAIDE imports
@@ -35,42 +36,42 @@ class FreestreamConditions(Conditions):
     name : str, optional
         Name of the freestream condition. Default is 'Freestream'.
 
-    velocity : np.ndarray, optional
-        Velocity (speed) of the freestream. Default is zeros((1, 1)).
-    u : np.ndarray, optional
+    speed : rp.ndarray, optional
+        speed of the freestream. Default is zeros((1, 1)).
+    u : rp.ndarray, optional
         X-component of velocity. Default is zeros((1, 1)).
-    v : np.ndarray, optional
+    v : rp.ndarray, optional
         Y-component of velocity. Default is zeros((1, 1)).
-    w : np.ndarray, optional
+    w : rp.ndarray, optional
         Z-component of velocity. Default is zeros((1, 1)).
 
-    altitude : np.ndarray, optional
+    altitude : rp.ndarray, optional
         Altitude of the freestream condition. Default is zeros((1, 1)).
 
-    gravity : np.ndarray, optional
+    gravity : rp.ndarray, optional
         Gravitational acceleration. Default is zeros((1, 1)).
 
-    pressure : np.ndarray, optional
+    pressure : rp.ndarray, optional
         Atmospheric pressure. Default is zeros((1, 1)).
-    temperature : np.ndarray, optional
+    temperature : rp.ndarray, optional
         Atmospheric temperature. Default is zeros((1, 1)).
-    density : np.ndarray, optional
+    density : rp.ndarray, optional
         Air density. Default is zeros((1, 1)).
 
-    speed_of_sound : np.ndarray, optional
+    speed_of_sound : rp.ndarray, optional
         Speed of sound in the atmosphere. Default is zeros((1, 1)).
 
-    dynamic_viscosity : np.ndarray, optional
+    dynamic_viscosity : rp.ndarray, optional
         Dynamic viscosity of the air. Default is zeros((1, 1)).
-    dynamic_pressure : np.ndarray, optional
+    dynamic_pressure : rp.ndarray, optional
         Dynamic pressure of the freestream. Default is zeros((1, 1)).
 
-    mach_number : np.ndarray, optional
+    mach_number : rp.ndarray, optional
         Mach number of the freestream. Default is zeros((1, 1)).
-    reynolds_number : np.ndarray, optional
+    reynolds_number : rp.ndarray, optional
         Reynolds number of the flow. Default is zeros((1, 1)).
 
-    delta_ISA : np.ndarray, optional
+    delta_ISA : rp.ndarray, optional
         Deviation from International Standard Atmosphere. Default is zeros((1, 1)).
 
     Notes
@@ -81,34 +82,34 @@ class FreestreamConditions(Conditions):
     tag:                    str             = 'Freestream'
     atmosphere:             chex.dataclass  = None
 
-    speed:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    speed:                  rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    u:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    v:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    w:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    u:                      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    v:                      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    w:                      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    altitude:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    altitude:               rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    gravity:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    speed_of_sound:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    gravity:                rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    speed_of_sound:         rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    pressure:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    temperature:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    density:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    pressure:               rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    temperature:            rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    density:                rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    dynamic_viscosity:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    dynamic_pressure:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    dynamic_viscosity:      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    dynamic_pressure:       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    stagnation_pressure:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    stagnation_temperature: np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    stagnation_pressure:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    stagnation_temperature: rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    mach_number:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    reynolds_number:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    mach_number:            rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    reynolds_number:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    delta_ISA:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    gamma:                  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    Cp:                     np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    R:                      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    delta_ISA:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    gamma:                  rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    Cp:                     rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    R:                      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 # ----------------------------------------------------------------------------------------------------------------------
 # Unit Tests
@@ -121,21 +122,21 @@ class TestFreestreamConditions(unittest.TestCase):
 
     def test_default_values(self):
         self.assertEqual(self.freestream.tag, 'Freestream')
-        np.testing.assert_array_equal(self.freestream.velocity, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.u, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.v, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.w, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.altitude, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.gravity, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.pressure, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.temperature, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.density, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.speed_of_sound, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.dynamic_viscosity, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.dynamic_pressure, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.mach_number, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.reynolds_number, np.zeros((1, 1)))
-        np.testing.assert_array_equal(self.freestream.delta_ISA, np.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.speed, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.u, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.v, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.w, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.altitude, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.gravity, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.pressure, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.temperature, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.density, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.speed_of_sound, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.dynamic_viscosity, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.dynamic_pressure, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.mach_number, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.reynolds_number, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(self.freestream.delta_ISA, rp.zeros((1, 1)))
 
     def test_custom_name(self):
         custom_freestream = FreestreamConditions(tag="Custom Freestream")
@@ -143,18 +144,18 @@ class TestFreestreamConditions(unittest.TestCase):
 
     def test_custom_values(self):
         custom_freestream = FreestreamConditions(
-            velocity=np.array([[100.0]]),
-            altitude=np.array([[1000.0]]),
-            temperature=np.array([[288.15]]),
-            pressure=np.array([[101325.0]])
+            speed=rp.array([[100.0]]),
+            altitude=rp.array([[1000.0]]),
+            temperature=rp.array([[288.15]]),
+            pressure=rp.array([[101325.0]])
         )
-        np.testing.assert_array_equal(custom_freestream.velocity, np.array([[100.0]]))
-        np.testing.assert_array_equal(custom_freestream.altitude, np.array([[1000.0]]))
-        np.testing.assert_array_equal(custom_freestream.temperature, np.array([[288.15]]))
-        np.testing.assert_array_equal(custom_freestream.pressure, np.array([[101325.0]]))
+        np.testing.assert_array_equal(custom_freestream.speed, rp.array([[100.0]]))
+        np.testing.assert_array_equal(custom_freestream.altitude, rp.array([[1000.0]]))
+        np.testing.assert_array_equal(custom_freestream.temperature, rp.array([[288.15]]))
+        np.testing.assert_array_equal(custom_freestream.pressure, rp.array([[101325.0]]))
 
     def test_array_shape(self):
-        for attr_name in ['velocity', 'u', 'v', 'w', 'altitude', 'gravity', 'pressure',
+        for attr_name in ['speed', 'u', 'v', 'w', 'altitude', 'gravity', 'pressure',
                           'temperature', 'density', 'speed_of_sound', 'dynamic_viscosity',
                           'dynamic_pressure', 'mach_number', 'reynolds_number', 'delta_ISA']:
             with self.subTest(attribute=attr_name):

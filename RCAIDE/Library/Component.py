@@ -15,6 +15,7 @@ from warnings import warn
 from typing import TypeVar, List
 
 # package imports 
+import RNUMPY as rp
 import numpy as np
 
 # RCAIDE imports
@@ -97,12 +98,12 @@ class MassProperties:
     volume:                             float       = 1.0
     density:                            float       = 0.0
 
-    center_of_gravity:                  np.ndarray  = field(default_factory=lambda: np.zeros(3))
-    moments_of_inertia:                 np.ndarray  = field(default_factory=lambda: np.zeros((3, 3)))
-    subcomponent_moments_of_inertia:    np.ndarray  = field(default_factory=lambda: np.zeros((3, 3)))
+    center_of_gravity:                  rp.ndarray  = field(default_factory=lambda: rp.zeros(3))
+    moments_of_inertia:                 rp.ndarray  = field(default_factory=lambda: rp.zeros((3, 3)))
+    subcomponent_moments_of_inertia:    rp.ndarray  = field(default_factory=lambda: rp.zeros((3, 3)))
 
     def __post_init__(self):
-        if not np.any(self.density):
+        if not rp.any(self.density):
             try:
                 self.density = self.total / self.volume
             except (ValueError, ZeroDivisionError) as e:
@@ -117,7 +118,7 @@ class Component:
     tag:                    str                   = 'Component'
     segments:               List[ComponentType]   = field(default_factory=list)
     subcomponents:          List[ComponentType]   = field(default_factory=list)
-    origin:                 np.ndarray            = field(default_factory=lambda: np.zeros(3))
+    origin:                 rp.ndarray            = field(default_factory=lambda: rp.zeros(3))
 
     # ---------------------------------------------------AREAS----------------------------------------------------------
     areas:                  ComponentAreas        = field(default_factory=ComponentAreas)
@@ -149,7 +150,7 @@ class Component:
 
     def sum_mass(self):
 
-        self.mass_properties.subcomponent_total = np.sum([c.mass_properties.total for c in self.subcomponents])
+        self.mass_properties.subcomponent_total = rp.sum([c.mass_properties.total for c in self.subcomponents])
 
     def sum_moments_of_inertia(self):
 
@@ -157,7 +158,7 @@ class Component:
 
     def sum_center_of_gravity(self):
 
-        self.mass_properties.center_of_gravity = np.zeros(3)
+        self.mass_properties.center_of_gravity = rp.zeros(3)
 
         for sc in self.subcomponents:
             rel_origin = sc.origin - self.origin
@@ -230,7 +231,7 @@ class TestComponent(unittest.TestCase):
     def test_default_values(self):
         self.assertEqual(self.component.tag, "TestComponent")
         self.assertEqual(self.component.segments, [])
-        np.testing.assert_array_equal(self.component.origin, np.zeros(3))
+        np.testing.assert_array_equal(self.component.origin, rp.zeros(3))
 
     def test_add_segment(self):
         segment = Component(tag="Segment")

@@ -12,6 +12,7 @@ import chex
 from dataclasses import field
 
 # package imports
+import RNUMPY as rp
 import numpy as np
 
 # RCAIDE imports
@@ -34,23 +35,23 @@ class StaticCoefficients(Conditions):
     ----------
     name : str
         The name of the coefficient set.
-    lift : np.ndarray
+    lift : rp.ndarray
         The lift coefficient. Shape: (1, 1)
-    drag : np.ndarray
+    drag : rp.ndarray
         The drag coefficient. Shape: (1, 1)
-    X : np.ndarray
+    X : rp.ndarray
         The X-axis force coefficient. Shape: (1, 1)
-    Y : np.ndarray
+    Y : rp.ndarray
         The Y-axis force coefficient. Shape: (1, 1)
-    Z : np.ndarray
+    Z : rp.ndarray
         The Z-axis force coefficient. Shape: (1, 1)
-    L : np.ndarray
+    L : rp.ndarray
         The rolling moment coefficient. Shape: (1, 1)
-    M : np.ndarray
+    M : rp.ndarray
         The pitching moment coefficient. Shape: (1, 1)
-    N : np.ndarray
+    N : rp.ndarray
         The yawing moment coefficient. Shape: (1, 1)
-    e : np.ndarray
+    e : rp.ndarray
         The Oswald efficiency factor. Shape: (1, 1)
 
     Notes
@@ -62,18 +63,18 @@ class StaticCoefficients(Conditions):
     # Attribute     Type        Default Value
     tag:            str         = 'Static Stability Coefficients'
 
-    lift:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    drag:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    lift:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    drag:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    X:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    Y:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    Z:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    X:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    Y:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    Z:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    L:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    M:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    N:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    L:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    M:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    N:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    e:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    e:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -88,15 +89,15 @@ class StaticForces(Conditions):
     ----------
     name : str
         The name of the static forces set. Default is 'Static Stability Forces'.
-    lift : np.ndarray
+    lift : rp.ndarray
         The lift force. Shape: (1, 1)
-    drag : np.ndarray
+    drag : rp.ndarray
         The drag force. Shape: (1, 1)
-    X : np.ndarray
+    X : rp.ndarray
         The force in the X-direction. Shape: (1, 1)
-    Y : np.ndarray
+    Y : rp.ndarray
         The force in the Y-direction. Shape: (1, 1)
-    Z : np.ndarray
+    Z : rp.ndarray
         The force in the Z-direction. Shape: (1, 1)
 
     Notes
@@ -108,12 +109,12 @@ class StaticForces(Conditions):
     # Attribute     Type        Default Value
     tag:           str         = 'Static Stability Forces'
 
-    lift:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    drag:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    lift:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    drag:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    X:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    Y:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    Z:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    X:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    Y:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    Z:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -128,11 +129,11 @@ class StaticMoments(Conditions):
     ----------
     name : str
         The name of the static moments set. Default is 'Static Stability Moments'.
-    L : np.ndarray
+    L : rp.ndarray
         The rolling moment. Shape: (1, 1)
-    M : np.ndarray
+    M : rp.ndarray
         The pitching moment. Shape: (1, 1)
-    N : np.ndarray
+    N : rp.ndarray
         The yawing moment. Shape: (1, 1)
 
     Notes
@@ -144,9 +145,9 @@ class StaticMoments(Conditions):
     # Attribute     Type        Default Value
     tag:           str         = 'Static Stability Moments'
 
-    L:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    M:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    N:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    L:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    M:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    N:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -163,34 +164,34 @@ class CoefficientDerivatives(Conditions):
     name : str
         The name of the coefficient derivatives set. Default is 'Coefficient Static Stability Derivatives'.
     
-    alpha : np.ndarray
+    alpha : rp.ndarray
         Derivative with respect to angle of attack. Shape: (1, 1)
-    beta : np.ndarray
+    beta : rp.ndarray
         Derivative with respect to sideslip angle. Shape: (1, 1)
     
-    delta_a : np.ndarray
+    delta_a : rp.ndarray
         Derivative with respect to aileron deflection. Shape: (1, 1)
-    delta_e : np.ndarray
+    delta_e : rp.ndarray
         Derivative with respect to elevator deflection. Shape: (1, 1)
-    delta_r : np.ndarray
+    delta_r : rp.ndarray
         Derivative with respect to rudder deflection. Shape: (1, 1)
-    delta_f : np.ndarray
+    delta_f : rp.ndarray
         Derivative with respect to flap deflection. Shape: (1, 1)
-    delta_s : np.ndarray
+    delta_s : rp.ndarray
         Derivative with respect to spoiler deflection. Shape: (1, 1)
     
-    u : np.ndarray
+    u : rp.ndarray
         Derivative with respect to forward velocity. Shape: (1, 1)
-    v : np.ndarray
+    v : rp.ndarray
         Derivative with respect to lateral velocity. Shape: (1, 1)
-    w : np.ndarray
+    w : rp.ndarray
         Derivative with respect to vertical velocity. Shape: (1, 1)
     
-    p : np.ndarray
+    p : rp.ndarray
         Derivative with respect to roll rate. Shape: (1, 1)
-    q : np.ndarray
+    q : rp.ndarray
         Derivative with respect to pitch rate. Shape: (1, 1)
-    r : np.ndarray
+    r : rp.ndarray
         Derivative with respect to yaw rate. Shape: (1, 1)
 
     Notes:
@@ -203,27 +204,27 @@ class CoefficientDerivatives(Conditions):
     tag:            str         = 'Coefficient Static Stability Derivatives'
 
     # Throttle Derivative
-    throttle:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    throttle:       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     # Stability Axis Derivatives
-    alpha:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    beta:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    alpha:          rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    beta:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    delta_a:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    delta_e:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    delta_r:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    delta_f:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    delta_s:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    delta_a:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    delta_e:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    delta_r:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    delta_f:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    delta_s:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     # Body Axis Derivatives
 
-    u:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    v:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    w:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    u:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    v:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    w:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    p:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    q:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    r:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    p:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    q:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    r:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -304,17 +305,17 @@ class StaticStability(Conditions):
         An object containing the static stability coefficients.
     derivatives : StaticDerivatives
         An object containing the static stability derivatives.
-    static_margin : np.ndarray
+    static_margin : rp.ndarray
         The static margin of the aircraft. Shape: (1, 1)
-    neutral_point : np.ndarray
+    neutral_point : rp.ndarray
         The neutral point of the aircraft. Shape: (1, 1)
-    spiral_criteria : np.ndarray
+    spiral_criteria : rp.ndarray
         The spiral stability criteria. Shape: (1, 1)
-    pitch_rate : np.ndarray
+    pitch_rate : rp.ndarray
         The pitch rate of the aircraft. Shape: (1, 1)
-    roll_rate : np.ndarray
+    roll_rate : rp.ndarray
         The roll rate of the aircraft. Shape: (1, 1)
-    yaw_rate : np.ndarray
+    yaw_rate : rp.ndarray
         The yaw rate of the aircraft. Shape: (1, 1)
 
     Notes:
@@ -331,13 +332,13 @@ class StaticStability(Conditions):
     coefficients:       StaticCoefficients  = field(default_factory=lambda: StaticCoefficients())
     derivatives:        StaticDerivatives   = field(default_factory=lambda: StaticDerivatives())
     
-    static_margin:      np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
-    neutral_point:      np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
-    spiral_criteria:    np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
+    static_margin:      rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
+    neutral_point:      rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
+    spiral_criteria:    rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
     
-    pitch_rate:         np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
-    roll_rate:          np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
-    yaw_rate:           np.ndarray          = field(default_factory=lambda: np.zeros((1, 1)))
+    pitch_rate:         rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
+    roll_rate:          rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
+    yaw_rate:           rp.ndarray          = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -407,54 +408,54 @@ class TestStaticCoefficients(unittest.TestCase):
     def test_default_values(self):
         sc = StaticCoefficients()
         self.assertEqual(sc.tag, 'Static Stability Coefficients')
-        np.testing.assert_array_equal(sc.lift, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.drag, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.X, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.Y, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.Z, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.L, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.M, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.N, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sc.e, np.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.lift, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.drag, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.X, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.Y, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.Z, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.L, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.M, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.N, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sc.e, rp.zeros((1, 1)))
 
 
 class TestStaticForces(unittest.TestCase):
     def test_default_values(self):
         sf = StaticForces()
         self.assertEqual(sf.tag, 'Static Stability Forces')
-        np.testing.assert_array_equal(sf.lift, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sf.drag, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sf.X, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sf.Y, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sf.Z, np.zeros((1, 1)))
+        np.testing.assert_array_equal(sf.lift, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sf.drag, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sf.X, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sf.Y, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sf.Z, rp.zeros((1, 1)))
 
 
 class TestStaticMoments(unittest.TestCase):
     def test_default_values(self):
         sm = StaticMoments()
         self.assertEqual(sm.tag, 'Static Stability Moments')
-        np.testing.assert_array_equal(sm.L, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sm.M, np.zeros((1, 1)))
-        np.testing.assert_array_equal(sm.N, np.zeros((1, 1)))
+        np.testing.assert_array_equal(sm.L, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sm.M, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(sm.N, rp.zeros((1, 1)))
 
 
 class TestCoefficientDerivatives(unittest.TestCase):
     def test_default_values(self):
         cd = CoefficientDerivatives()
         self.assertEqual(cd.tag, 'Coefficient Static Stability Derivatives')
-        np.testing.assert_array_equal(cd.alpha, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.beta, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.delta_a, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.delta_e, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.delta_r, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.delta_f, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.delta_s, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.u, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.v, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.w, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.p, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.q, np.zeros((1, 1)))
-        np.testing.assert_array_equal(cd.r, np.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.alpha, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.beta, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.delta_a, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.delta_e, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.delta_r, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.delta_f, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.delta_s, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.u, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.v, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.w, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.p, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.q, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(cd.r, rp.zeros((1, 1)))
 
 
 class TestStaticDerivatives(unittest.TestCase):
@@ -479,12 +480,12 @@ class TestStaticStability(unittest.TestCase):
         self.assertIsInstance(ss.moments, StaticMoments)
         self.assertIsInstance(ss.coefficients, StaticCoefficients)
         self.assertIsInstance(ss.derivatives, StaticDerivatives)
-        np.testing.assert_array_equal(ss.static_margin, np.zeros((1, 1)))
-        np.testing.assert_array_equal(ss.neutral_point, np.zeros((1, 1)))
-        np.testing.assert_array_equal(ss.spiral_criteria, np.zeros((1, 1)))
-        np.testing.assert_array_equal(ss.pitch_rate, np.zeros((1, 1)))
-        np.testing.assert_array_equal(ss.roll_rate, np.zeros((1, 1)))
-        np.testing.assert_array_equal(ss.yaw_rate, np.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.static_margin, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.neutral_point, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.spiral_criteria, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.pitch_rate, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.roll_rate, rp.zeros((1, 1)))
+        np.testing.assert_array_equal(ss.yaw_rate, rp.zeros((1, 1)))
 
 
 class TestDynamicStability(unittest.TestCase):

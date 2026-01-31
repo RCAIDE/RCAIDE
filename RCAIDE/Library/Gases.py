@@ -11,7 +11,7 @@ import chex
 from dataclasses import field
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 
@@ -53,17 +53,17 @@ class Gas:
         return p / (self.R_specific * T)
 
     def compute_gamma(self, T=298.15):
-        return np.polyval(self.gamma_coefficients, T)
+        return rp.polyval(self.gamma_coefficients, T)
 
     def compute_cp(self, T=298.):
-        return np.polyval(self.cp_coefficients, T)
+        return rp.polyval(self.cp_coefficients, T)
 
     def compute_thermal_conductivity(self, T=298.):
-        return np.polyval(self.thermal_coefficients, T)
+        return rp.polyval(self.thermal_coefficients, T)
 
     def compute_speed_of_sound(self, T=298.):
         g = self.compute_gamma(T)
-        return np.sqrt(g * self.R_specific * T)
+        return rp.sqrt(g * self.R_specific * T)
 
     def compute_absolute_viscosity(self, T=298.):
         raise NotImplementedError('Compute absolute viscosity not implemented for this gas')

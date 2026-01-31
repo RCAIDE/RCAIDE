@@ -22,7 +22,7 @@ jax.config.update("jax_enable_x64", True)
 
 from jax import jit, grad
 
-import numpy as np
+import RNUMPY as rp
 from scipy.optimize import minimize, NonlinearConstraint, fsolve
 
 # RCAIDE imports
@@ -48,7 +48,7 @@ class InitializeSegment(Process):
     active_controls:   Tuple[str|ControlVariable, ...] = field(default_factory=tuple)
     active_residuals:  Tuple[str|ControlVariable, ...] = field(default_factory=tuple)
 
-    controls_initial_guess: np.ndarray = None
+    controls_initial_guess: rp.ndarray = None
 
     def _activate_control(self, control: str | ControlVariable) -> None:
         if isinstance(control, str):
@@ -81,16 +81,16 @@ class InitializeSegment(Process):
     def __call__(self):
         for ctrl_name in self.active_controls:
             self._activate_control(ctrl_name)
-        if isinstance(self.controls_initial_guess, np.ndarray):
+        if isinstance(self.controls_initial_guess, rp.ndarray):
             self.state.unknowns = self.controls_initial_guess
         elif isinstance(self.controls_initial_guess, tuple):
-            self.state.unknowns = np.concatenate([np.ones(self.state.numerics.number_of_control_points) * v for v in self.controls_initial_guess])
+            self.state.unknowns = rp.concatenate([rp.ones(self.state.numerics.number_of_control_points) * v for v in self.controls_initial_guess])
         else:
-            self.state.unknowns = np.zeros((self.state.numerics.number_of_control_points * len(self.active_controls)))
+            self.state.unknowns = rp.zeros((self.state.numerics.number_of_control_points * len(self.active_controls)))
 
         for res_name in self.active_residuals:
             self._activate_residual(res_name)
-        self.state.residuals = np.zeros((self.state.numerics.number_of_control_points, len(self.active_residuals)))
+        self.state.residuals = rp.zeros((self.state.numerics.number_of_control_points, len(self.active_residuals)))
 
         assert self.state.check_controls(verbose=False), (
             f"During initialization of {self.tag} the number of active controls"
@@ -241,7 +241,7 @@ class Segment(Process):
     active_controls:    Tuple[str, ...]   = None
     active_residuals:   Tuple[str, ...]   = None
 
-    controls_initial_guess: tuple | np.ndarray = None
+    controls_initial_guess: tuple | rp.ndarray = None
 
     initialize:         InitializeSegment   = field(default_factory=InitializeSegment)
     iterate:            IterateSegment      = field(default_factory=IterateSegment)
@@ -389,7 +389,7 @@ class EnergyOptimalCruise(OptimalSegment):
 
     def __post_init__(self):
         distance_check = lambda x: self.state.frames.inertial.position_vector[-1, 0]
-        self.bounds = [(-np.pi/12, np.pi/12), (0., 1.)]
+        self.bounds = [(-rp.pi/12, rp.pi/12), (0., 1.)]
         self.constraints = [NonlinearConstraint(distance_check, lb=self.distance, ub=self.distance)]
 
 
@@ -406,6 +406,6 @@ class EnergyOptimalAltitudeChange(OptimalSegment):
     def __post_init__(self):
         start_check = lambda x: self.state.frames.inertial.position_vector[0, 2]
         end_check = lambda x: self.state.frames.inertial.position_vector[-1, 2]
-        self.bounds = [(-np.pi/4, np.pi/4), (0., 1.)]
+        self.bounds = [(-rp.pi/4, rp.pi/4), (0., 1.)]
         self.constraints = [NonlinearConstraint(start_check, lb=self.altitude_start, ub=self.altitude_start),
                             NonlinearConstraint(end_check, lb=self.altitude_end, ub=self.altitude_end)]

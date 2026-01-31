@@ -8,7 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 
-import numpy as np
+import RNUMPY as rp
 
 from RCAIDE.Framework.Core import Units
 
@@ -70,7 +70,7 @@ def func_vertical_tail(wingspan : float,
     v_tail_mass = (2.62 * S * 1.5E-5 *
                    vehicle_ultimate_load * b**3 *
                    (8. + 0.44 * MTOW / Sref) /
-                   (tc * np.cos(qc)**2)) * Units.lbs
+                   (tc * rp.cos(qc)**2)) * Units.lbs
 
     v_tail_mass += rudder_fraction * 1.6
 

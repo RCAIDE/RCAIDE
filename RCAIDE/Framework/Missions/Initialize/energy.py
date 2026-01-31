@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE Imports
 import RCAIDE.Framework as rcf
@@ -48,7 +48,7 @@ def initialize_energy(state: "rcf.State",
 
         for k, v in vars(conditions).items():
 
-            if isinstance(v, np.ndarray):
+            if isinstance(v, rp.ndarray):
                 v[:, 0] = vars(initial_conditions)[k][-1, 0]
             elif isinstance(v, int) or isinstance(v, float):
                 v = vars(initial_conditions)[k]

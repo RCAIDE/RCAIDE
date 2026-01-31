@@ -85,7 +85,7 @@ def vehicle_setup():
     root_segment.sweeps.quarter_chord       = np.deg2rad(28.225)
     root_segment.thickness_to_chord         = .1
 
-    root_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737a.txt')
+    # root_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737a.txt')
 
     main_wing.add_segment(root_segment)
 
@@ -101,7 +101,7 @@ def vehicle_setup():
     yehudi_segment.sweeps.quarter_chord     = np.deg2rad(25.)
     yehudi_segment.thickness_to_chord       = .1
 
-    yehudi_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737b.txt')
+    # yehudi_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737b.txt')
 
     main_wing.add_segment(yehudi_segment)
 
@@ -117,7 +117,7 @@ def vehicle_setup():
     mid_segment.sweeps.quarter_chord        = np.deg2rad(56.75)
     mid_segment.thickness_to_chord          = .1
 
-    mid_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737c.txt')
+    # mid_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737c.txt')
 
     main_wing.add_segment(mid_segment)
 
@@ -133,7 +133,7 @@ def vehicle_setup():
     tip_segment.sweeps.quarter_chord          = 0.
     tip_segment.thickness_to_chord            = .1
 
-    tip_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737d.txt')
+    # tip_segment.airfoil = rcl.Components.Airfoil.from_file(rcl.Components.Airfoil_Data/'B737d.txt')
 
     main_wing.add_segment(tip_segment)
 
@@ -396,7 +396,7 @@ def vehicle_setup():
 
     nacelle = rcl.Components.Nacelle(tag='Engine Nacelle 1')
     nacelle.flow_through = True
-    nacelle.airfoil = rcl.Components.Airfoils.Airfoil.NACA_4_Series('2410')
+    # nacelle.airfoil = rcl.Components.Airfoils.Airfoil.NACA_4_Series('2410')
 
     nacelle.origin = np.array([[13.72, -4.86, -1.9]])
 

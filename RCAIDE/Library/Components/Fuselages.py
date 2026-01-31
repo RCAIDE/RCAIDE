@@ -7,7 +7,7 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
   
-import numpy as np
+import RNUMPY as rp
 import chex
 from dataclasses import field
 
@@ -48,7 +48,7 @@ class FuselageSegment(rcl.Component):
 @chex.dataclass(kw_only=True)
 class Fuselage(rcl.Component):
 
-    aerodynamic_center: np.ndarray = field(default_factory=lambda: np.zeros(3))
+    aerodynamic_center: rp.ndarray = field(default_factory=lambda: rp.zeros(3))
 
     number_of_seats:        int   = 1
     seats_abreast:          int   = 0.0

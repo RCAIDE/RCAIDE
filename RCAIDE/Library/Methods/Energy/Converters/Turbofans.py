@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -53,10 +53,10 @@ def func_thrust_and_power(
     F_sp    = 1 / (gamma * M0) * F_total                                        # Specific Thrust
     I_sp    = F_sp * a0 * (1 + alpha) / (f * gamma)                             # Specific Impulse
     TSFC    = f * gamma / (F_sp * a0 * (1 + alpha)) * (1 - delta_SFC) * 3600    # Thrust-Specific Fuel Consumption (TSFC)
-    mdot_c  = mdhc * np.sqrt(T_ref / T_t_ref) * (P_t_ref / P_ref)               # Core flow rate
+    mdot_c  = mdhc * rp.sqrt(T_ref / T_t_ref) * (P_t_ref / P_ref)               # Core flow rate
     F       = F_sp * a0 * (1 + alpha) * mdot_c * throttle                       # Dimensional Thrust
     p       = F * u0                                                            # Power
-    ff      = np.maximum(F * TSFC / G0, 0.) * 1 / 3600                          # Fuel Flow Rate
+    ff      = rp.maximum(F * TSFC / G0, 0.) * 1 / 3600                          # Fuel Flow Rate
 
     return F, F_sp, I_sp, TSFC, mdot_c, p, ff
 

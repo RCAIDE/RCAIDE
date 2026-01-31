@@ -11,7 +11,7 @@
 import RCAIDE.Framework as rcf
 from RCAIDE.Framework.Core import Units
 
-import numpy as np
+import RNUMPY as rp
 
 # -----------------------------------------------------------------------
 # Functional/Library Version
@@ -65,13 +65,13 @@ def func_horizontal_tail(wingspan : float,
     L = moment_arm_length / Units.ft
 
     # Shorthand Aliases
-    exr = np.sqrt(exposed_area * S/ wetted_area)
+    exr = rp.sqrt(exposed_area * S/ wetted_area)
     tc = thickness_to_chord
     qc = quarter_chord_sweep
 
     mass = (5.25 * S +
             8E-7 * vehicle_ultimate_load * b ** 3 * MTOW * MAC * exr /
-            (tc * np.cos(qc)**2 * L * S**1.5)) * Units.lbs
+            (tc * rp.cos(qc)**2 * L * S**1.5)) * Units.lbs
 
 
     return mass

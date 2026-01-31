@@ -10,7 +10,7 @@
 from typing import Tuple
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 
 # RCAIDE imports
@@ -28,7 +28,7 @@ def fsolve_results_parser(
         settings: "rcf.Settings",
 ) -> ("rcf.State", "rcf.System", "rcf.Settings"):
 
-        unknowns:       np.ndarray      = fsolve_result[0]
+        unknowns:       rp.ndarray      = fsolve_result[0]
         infodict:       dict            = fsolve_result[1]
         ier:            int             = fsolve_result[2]
         mesg:           str             = fsolve_result[3]

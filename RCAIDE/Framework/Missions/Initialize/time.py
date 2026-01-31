@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE Imports
 import RCAIDE.Framework as rcf
@@ -24,7 +24,7 @@ def initialize_time(state: "rcf.State",
 
     t_initial = state.initials.frames.inertial.time
     if (t_initial==None).all():
-        t_initial = np.atleast_2d(state.frames.planet.start_time)
+        t_initial = rp.atleast_2d(state.frames.planet.start_time)
 
     t_current = state.frames.inertial.time
 

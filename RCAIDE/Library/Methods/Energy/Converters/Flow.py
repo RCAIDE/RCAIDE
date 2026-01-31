@@ -7,7 +7,7 @@
 # -------------------------------------------------------------------------------
 
 # Package Imports
-import numpy as np
+import RNUMPY as rp
 from scipy.optimize import fsolve
 
 
@@ -21,7 +21,7 @@ def sonic_split(
     M0,
 ):
     # Initializing the array
-    M1_guess = np.ones_like(M0)
+    M1_guess = rp.ones_like(M0)
 
     # Separating supersonic and subsonic solutions
     i_low = M0 < 1.0

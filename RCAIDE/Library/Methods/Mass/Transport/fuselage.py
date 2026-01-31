@@ -10,62 +10,62 @@ import RCAIDE.Framework as rcf
 import RCAIDE.Library as rcl
 from RCAIDE.Framework.Core import Units
 
-import numpy as np
+import RNUMPY as rp
 
 #-------------------------------------------------------------------------------
 #  Functional/Library Version
 #-------------------------------------------------------------------------------
 
 def func_fuselage(
-        fuselage_wetted_area: np.ndarray,
-        fuselage_width: np.ndarray,
-        fuselage_maximum_height: np.ndarray,
-        fuselage_total_length: np.ndarray,
-        fuselage_differential_pressure: np.ndarray,
-        vehicle_limit_load: np.ndarray,
-        vehicle_max_zero_fuel_mass: np.ndarray,
-        vehicle_main_wing_mass: np.ndarray,
-        vehicle_main_wing_root_chord: np.ndarray,
-        vehicle_propulsion_mass: np.ndarray
+        fuselage_wetted_area: rp.ndarray,
+        fuselage_width: rp.ndarray,
+        fuselage_maximum_height: rp.ndarray,
+        fuselage_total_length: rp.ndarray,
+        fuselage_differential_pressure: rp.ndarray,
+        vehicle_limit_load: rp.ndarray,
+        vehicle_max_zero_fuel_mass: rp.ndarray,
+        vehicle_main_wing_mass: rp.ndarray,
+        vehicle_main_wing_root_chord: rp.ndarray,
+        vehicle_propulsion_mass: rp.ndarray
                  ):
     """
     Library version of fuselage.
     
     Parameters
     ----------
-    fuselage_wetted_area : np.ndarray
+    fuselage_wetted_area : rp.ndarray
         Fuselage wetted area in square meters
 
-    fuselage_width : np.ndarray
+    fuselage_width : rp.ndarray
         Fuselage width in meters
 
-    fuselage_maximum_height : np.ndarray
+    fuselage_maximum_height : rp.ndarray
         Fuselage maximum height in meters
 
-    fuselage_total_length : np.ndarray
+    fuselage_total_length : rp.ndarray
         Fuselage total length in meters
 
-    fuselage_differential_pressure : np.ndarray
+    fuselage_differential_pressure : rp.ndarray
         Fuselage differential pressure in Pascals
 
-    vehicle_limit_load : np.ndarray
+    vehicle_limit_load : rp.ndarray
         Zero fuel weight limit load factor
 
-    vehicle_max_zero_fuel_mass : np.ndarray
+    vehicle_max_zero_fuel_mass : rp.ndarray
         Maximum vehicle zero fuel mass in kilograms
 
-    vehicle_main_wing_mass : np.ndarray
+    vehicle_main_wing_mass : rp.ndarray
         Vehicle main wing mass in kilograms
 
-    vehicle_main_wing_root_chord : np.ndarray
+    vehicle_main_wing_root_chord : rp.ndarray
         Vehicle main wing root chord in meters
 
-    vehicle_propulsion_mass : np.ndarray
+    vehicle_propulsion_mass : rp.ndarray
         Vehicle propulsion system mass in kilograms
 
     Returns
     -------
-    fuselage_mass : np.ndarray
+    fuselage_mass : rp.ndarray
         Fuselage mass in kilograms
        
     See Also
@@ -127,16 +127,16 @@ def fuselage(state: "rcf.State",
 
     fuses = [f for f in system.subcomponents if isinstance(f, rcl.Components.Fuselage)]
 
-    fuselage_wetted_area            = np.atleast_1d([f.areas.wetted     for f in fuses])
-    fuselage_width                  = np.atleast_1d([f.widths.maximum   for f in fuses])
-    fuselage_maximum_height         = np.atleast_1d([f.heights.maximum  for f in fuses])
-    fuselage_total_length           = np.atleast_1d([f.lengths.total    for f in fuses])
-    fuselage_differential_pressure  = np.atleast_1d([f.differential_pressure for f in fuses])
-    vehicle_limit_load              = np.atleast_1d(system.envelope.limit_load)
-    vehicle_max_zero_fuel_mass      = np.atleast_1d(system.mass_properties.max_zero_fuel_mass)
-    vehicle_main_wing_mass          = np.atleast_1d(system['Main Wing'].mass_properties.total)
-    vehicle_main_wing_root_chord    = np.atleast_1d(system['Main Wing'].chords.root)
-    vehicle_propulsion_mass         = np.atleast_1d(system.energy.propulsors.propulsors.mass_properties.total)
+    fuselage_wetted_area            = rp.atleast_1d([f.areas.wetted     for f in fuses])
+    fuselage_width                  = rp.atleast_1d([f.widths.maximum   for f in fuses])
+    fuselage_maximum_height         = rp.atleast_1d([f.heights.maximum  for f in fuses])
+    fuselage_total_length           = rp.atleast_1d([f.lengths.total    for f in fuses])
+    fuselage_differential_pressure  = rp.atleast_1d([f.differential_pressure for f in fuses])
+    vehicle_limit_load              = rp.atleast_1d(system.envelope.limit_load)
+    vehicle_max_zero_fuel_mass      = rp.atleast_1d(system.mass_properties.max_zero_fuel_mass)
+    vehicle_main_wing_mass          = rp.atleast_1d(system['Main Wing'].mass_properties.total)
+    vehicle_main_wing_root_chord    = rp.atleast_1d(system['Main Wing'].chords.root)
+    vehicle_propulsion_mass         = rp.atleast_1d(system.energy.propulsors.propulsors.mass_properties.total)
 
     results = func_fuselage(fuselage_wetted_area,
                             fuselage_width,

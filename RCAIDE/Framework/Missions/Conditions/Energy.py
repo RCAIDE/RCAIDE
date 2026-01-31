@@ -11,7 +11,7 @@ import chex
 from dataclasses import field
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -34,7 +34,7 @@ class EnergyStoreConditions(Conditions):
     name : str
         The name of the energy store. Default is 'Energy Store'.
 
-    total_energy : np.ndarray
+    total_energy : rp.ndarray
         The total energy contained in the store.
         Shape: (1, 1). Default is a zero array.
 
@@ -47,7 +47,7 @@ class EnergyStoreConditions(Conditions):
     # Attribute         Type        Default Value
     tag:                str         = 'Energy Store'
 
-    total_energy:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total_energy:       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -63,19 +63,19 @@ class EnergyConverterConditions(Conditions):
     name : str
         The name of the energy converter. Default is 'Energy Converter'.
     
-    efficiency : np.ndarray
+    efficiency : rp.ndarray
         The efficiency of the energy converter.
-    power : np.ndarray
+    power : rp.ndarray
         The power output of the energy converter.
     
-    thrust_vector : np.ndarray
+    thrust_vector : rp.ndarray
         The thrust vector produced by the energy converter.
     
-    x_axis_rotation : np.ndarray
+    x_axis_rotation : rp.ndarray
         The rotation around the x-axis.
-    y_axis_rotation : np.ndarray
+    y_axis_rotation : rp.ndarray
         The rotation around the y-axis.
-    z_axis_rotation : np.ndarray
+    z_axis_rotation : rp.ndarray
         The rotation around the z-axis.
 
     Notes
@@ -88,14 +88,14 @@ class EnergyConverterConditions(Conditions):
     # Attribute         Type        Default Value
     tag:                str         = 'Energy Converter'
 
-    efficiency:         np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    power:              np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    efficiency:         rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    power:              rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    thrust_vector:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    thrust_vector:      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
-    x_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    y_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    z_axis_rotation:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    x_axis_rotation:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    y_axis_rotation:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    z_axis_rotation:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     inputs:             Conditions  = field(default_factory=lambda: Conditions(tag='Energy Converter Inputs'))
     outputs:            Conditions  = field(default_factory=lambda: Conditions(tag='Energy Converter Outputs'))
@@ -126,13 +126,13 @@ class BatteryCellConditions(EnergyStoreConditions):
     capacity_fade_factor : float
         Factor representing the decrease in battery capacity over time. Default is 0.0.
     
-    mass : np.ndarray
+    mass : rp.ndarray
         The mass of the battery cell. Default is a zero array.
-    temperature : np.ndarray
+    temperature : rp.ndarray
         The temperature of the battery cell. Default is a zero array.
-    charge_throughput : np.ndarray
+    charge_throughput : rp.ndarray
         The cumulative charge that has passed through the battery. Default is a zero array.
-    state_of_charge : np.ndarray
+    state_of_charge : rp.ndarray
         The current state of charge of the battery cell. Default is a zero array.
 
     Notes
@@ -149,10 +149,10 @@ class BatteryCellConditions(EnergyStoreConditions):
     resistance_growth_factor:   float       = 0.0
     capacity_fade_factor:       float       = 0.0
 
-    mass:                       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    temperature:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    charge_throughput:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    state_of_charge:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    mass:                       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    temperature:                rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    charge_throughput:          rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    state_of_charge:            rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -176,10 +176,10 @@ class BatteryPackConditions(EnergyStoreConditions):
         An instance of BatteryCellConditions representing the conditions of a 
         single cell in the battery pack. Default is a new BatteryCellConditions instance.
     
-    mass : np.ndarray
+    mass : rp.ndarray
         The mass of the battery pack in kilograms (kg).
         Default is a zero array.
-    temperature : np.ndarray
+    temperature : rp.ndarray
         The temperature of the battery pack in degrees Celsius (°C).
         Default is a zero array.
 
@@ -197,8 +197,8 @@ class BatteryPackConditions(EnergyStoreConditions):
 
     cell:                   BatteryCellConditions   = field(default_factory=lambda: BatteryCellConditions())
 
-    mass:                   np.ndarray              = field(default_factory=lambda: np.zeros((1, 1)))
-    temperature:            np.ndarray              = field(default_factory=lambda: np.zeros((1, 1)))
+    mass:                   rp.ndarray              = field(default_factory=lambda: rp.zeros((1, 1)))
+    temperature:            rp.ndarray              = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -220,7 +220,7 @@ class FuelConditions(EnergyStoreConditions):
     name : str
         The name of the fuel store. Default is 'Fuel'.
 
-    mass : np.ndarray
+    mass : rp.ndarray
         The mass of the fuel in kilograms (kg).
         Default is a zero array.
 
@@ -233,7 +233,7 @@ class FuelConditions(EnergyStoreConditions):
     # Attribute         Type        Default Value
     tag:                str         = 'Fuel'
 
-    mass:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    mass:               rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -258,19 +258,19 @@ class EnergyNetworkConditions(Conditions):
     name : str
         The name of the energy network. Default is 'Energy Network'.
 
-    total_energy : np.ndarray
+    total_energy : rp.ndarray
         The total energy in the network.
-    total_efficiency : np.ndarray
+    total_efficiency : rp.ndarray
         The overall efficiency of the network.
 
-    throttle : np.ndarray
+    throttle : rp.ndarray
         The throttle setting of the network.
 
-    total_power : np.ndarray
+    total_power : rp.ndarray
         The total power output of the network.
-    total_force_vector : np.ndarray
+    total_force_vector : rp.ndarray
         The total force vector acting on the network.
-    total_moment_vector : np.ndarray
+    total_moment_vector : rp.ndarray
         The total moment vector acting on the network.
 
     Notes
@@ -281,13 +281,13 @@ class EnergyNetworkConditions(Conditions):
     # Attribute             Type        Default Value
     tag:                    str         = 'Energy Network'
 
-    total_energy:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    total_efficiency:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    total_energy:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    total_efficiency:       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    throttle:               np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    total_power:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    throttle:               rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    total_power:            rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
-    total_force_vector:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    total_moment_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force_vector:     rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
+    total_moment_vector:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
     lines:                  Conditions  = field(default_factory=lambda: Conditions(tag='Energy Network Lines'))

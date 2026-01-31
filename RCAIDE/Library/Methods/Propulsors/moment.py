@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -19,13 +19,13 @@ import RCAIDE.Framework as rcf
 
 
 def func_propulsor_moment(
-        propulsor_thrust: np.ndarray,
-        propulsor_origin: np.ndarray,
-        vehicle_center_of_gravity: np.ndarray
+        propulsor_thrust: rp.ndarray,
+        propulsor_origin: rp.ndarray,
+        vehicle_center_of_gravity: rp.ndarray
 ):
 
     moment_arm = propulsor_origin - vehicle_center_of_gravity
-    moment = np.cross(moment_arm, propulsor_thrust)
+    moment = rp.cross(moment_arm, propulsor_thrust)
 
     return moment
 

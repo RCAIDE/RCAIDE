@@ -12,7 +12,7 @@ from dataclasses import field
 from typing import Callable, Iterable, Self, List
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 import pandas as pd
 import chex
 

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -100,18 +100,18 @@ def func_rayleigh_line_flow(
 ):
 
     # Isentropic deceleration through divergent nozzle
-    M1 = np.atleast_2d(fM(AR, M0[:, 0], g[:, 0])).T
+    M1 = rp.atleast_2d(fM(AR, M0[:, 0], g[:, 0])).T
 
     # Max stagnation temperature to thermally choke flow
     Tt_out_Rayleigh = Tt_in * (1. + g * M1 ** 2) ** 2. / ((2. * (1. + g) * M1 ** 2) * (1. + (g - 1.) / 2. * M1 ** 2))
 
     # Limit Tt_out
-    Tt_out = np.ones_like(Tt_out_Rayleigh) * Tt_4
-    Tt_out = np.minimum(Tt_out, Tt_out_Rayleigh)
+    Tt_out = rp.ones_like(Tt_out_Rayleigh) * Tt_4
+    Tt_out = rp.minimum(Tt_out, Tt_out_Rayleigh)
 
     # Rayleigh calculations
-    M_out   = np.zeros_like(Pt_in)
-    Pt_R    = np.zeros_like(Pt_in)
+    M_out   = rp.zeros_like(Pt_in)
+    Pt_R    = rp.zeros_like(Pt_in)
     M_out[:, 0], Pt_R[:, 0] = Rayleigh(g[:, 0], M1[:, 0], Tt_out[:, 0] / Tt_in[:, 0])
     Pt_out  = Pt_R * Pt_in
 

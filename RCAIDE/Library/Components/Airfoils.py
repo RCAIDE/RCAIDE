@@ -13,7 +13,7 @@ from decimal import Decimal
 from pathlib import Path
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 from scipy import interpolate
 
 # RCAIDE imports
@@ -31,16 +31,16 @@ class Airfoil(rcl.Component):
     max_thickness: float = 0.0
     camber: float = 0.0
 
-    coordinates:    np.ndarray  = field(default_factory=np.empty(shape=(0, 2)))
+    coordinates:    rp.ndarray  = field(default_factory=rp.empty(shape=(0, 2)))
 
-    x_coordinates:  np.ndarray  = field(default_factory=np.empty(shape=(0, 1)))
-    y_coordinates:  np.ndarray  = field(default_factory=np.empty(shape=(0, 1)))
+    x_coordinates:  rp.ndarray  = field(default_factory=rp.empty(shape=(0, 1)))
+    y_coordinates:  rp.ndarray  = field(default_factory=rp.empty(shape=(0, 1)))
 
-    x_upper_surface: np.ndarray = field(default_factory=np.empty(shape=(0, 1)))
-    x_lower_surface: np.ndarray = field(default_factory=np.empty(shape=(0, 1)))
+    x_upper_surface: rp.ndarray = field(default_factory=rp.empty(shape=(0, 1)))
+    x_lower_surface: rp.ndarray = field(default_factory=rp.empty(shape=(0, 1)))
 
-    y_upper_surface: np.ndarray = field(default_factory=np.empty(shape=(0, 1)))
-    y_lower_surface: np.ndarray = field(default_factory=np.empty(shape=(0, 1)))
+    y_upper_surface: rp.ndarray = field(default_factory=rp.empty(shape=(0, 1)))
+    y_lower_surface: rp.ndarray = field(default_factory=rp.empty(shape=(0, 1)))
 
     @classmethod
     def NACA_4_Series(cls, series_number: str | int, n_pts: int = 201, edge_factor: float = 1.5):
@@ -69,8 +69,8 @@ class Airfoil(rcl.Component):
 
         # Prepare upper and lower surfaces coordinates
 
-        x_upper = np.linspace(0, 1, int(np.ceil(n_pts / 2)))
-        x_lower = np.linspace(0, 1, int(np.ceil(n_pts / 2)))
+        x_upper = rp.linspace(0, 1, int(rp.ceil(n_pts / 2)))
+        x_lower = rp.linspace(0, 1, int(rp.ceil(n_pts / 2)))
 
         # Concentrate coordinates near edges
 
@@ -81,7 +81,7 @@ class Airfoil(rcl.Component):
 
         # Compute chordwise thickness distribution
         def _x2t(x):
-            return (0.2969 * np.sqrt(x)
+            return (0.2969 * rp.sqrt(x)
                     - 0.126 * x
                     - 0.3516 * (x ** 2)
                     + 0.2843 * (x ** 3)
@@ -101,7 +101,7 @@ class Airfoil(rcl.Component):
 
             def x2c_corrected(x, c):
 
-                idx = np.where(x < camber_location)[0]
+                idx = rp.where(x < camber_location)[0]
                 c[idx] = camber / camber_location ** 2 * (2 * camber_location * x[idx] - x[idx] ** 2)
 
                 return c
@@ -111,20 +111,20 @@ class Airfoil(rcl.Component):
 
         # Compute surface coordinates
 
-        x_lo    = np.flip(x_lower)
+        x_lo    = rp.flip(x_lower)
         x_up    = x_upper[1:]
-        x       = np.hstack((x_lo, x_up))
+        x       = rp.hstack((x_lo, x_up))
 
-        y_lo    = np.flip(c_lower - t_lower)
+        y_lo    = rp.flip(c_lower - t_lower)
         y_up    = (c_upper + t_upper)[1:]
-        y       = np.hstack((y_lo, y_up))
+        y       = rp.hstack((y_lo, y_up))
 
         return cls(
             tag='NACA ' + str(series_number),
             camber=camber,
             max_thickness=thickness,
             thickness_to_chord=thickness / (max(x) - min(x)),
-            coordinates=np.vstack((x, y)).T,
+            coordinates=rp.vstack((x, y)).T,
             x_coordinates=x,
             y_coordinates=y,
             x_upper_surface=x_up,
@@ -240,29 +240,31 @@ class Airfoil(rcl.Component):
             x_up_surf = x_up_surf_rev
             y_up_surf = y_up_surf_rev
 
-        x_up_surf = np.array(x_up_surf)
-        x_lo_surf = np.array(x_lo_surf)
-        y_up_surf = np.array(y_up_surf)
-        y_lo_surf = np.array(y_lo_surf)
+        x_up_surf = rp.array(x_up_surf)
+        x_lo_surf = rp.array(x_lo_surf)
+        y_up_surf = rp.array(y_up_surf)
+        y_lo_surf = rp.array(y_lo_surf)
 
         # Check for extra zeros (OpenVSP exports extra zeros)
-        if len(np.unique(x_up_surf))!=len(x_up_surf):
-            x_up_surf = x_up_surf[1:]
-            x_lo_surf = x_lo_surf[1:]
-            y_up_surf = y_up_surf[1:]
-            y_lo_surf = y_lo_surf[1:]
+
+        # NOTE JAX DOESN'T SUPPORT UNIQUE
+        # if len(rp.unique(x_up_surf))!=len(x_up_surf):
+        #     x_up_surf = x_up_surf[1:]
+        #     x_lo_surf = x_lo_surf[1:]
+        #     y_up_surf = y_up_surf[1:]
+        #     y_lo_surf = y_lo_surf[1:]
 
         # create custom spacing for more points and leading and trailing edge
-        t            = np.linspace(0, 4, n_pts - 1)
+        t            = rp.linspace(0, 4, n_pts - 1)
         delta        = 0.25
         A            = 5
         f            = 0.25
-        smoothsq     = 5 + (2*A/np.pi) *np.arctan(np.sin(2*np.pi*t*f + np.pi/2)/delta)
-        dim_spacing  = np.append(0,np.cumsum(smoothsq)/sum(smoothsq))
+        smoothsq     = 5 + (2*A/rp.pi) *rp.arctan(rp.sin(2*rp.pi*t*f + rp.pi/2)/delta)
+        dim_spacing  = rp.append(0,rp.cumsum(smoothsq)/sum(smoothsq))
 
         # compute thickness, camber and concatenate coodinates
-        x_data        = np.hstack((x_lo_surf[::-1], x_up_surf[1:]))
-        y_data        = np.hstack((y_lo_surf[::-1], y_up_surf[1:]))
+        x_data        = rp.hstack((x_lo_surf[::-1], x_up_surf[1:]))
+        y_data        = rp.hstack((y_lo_surf[::-1], y_up_surf[1:]))
         tck, u        = interpolate.splprep([x_data,y_data], k=3, s=0)
         out           = interpolate.splev(dim_spacing, tck)
         x_data        = out[0]
@@ -272,7 +274,7 @@ class Airfoil(rcl.Component):
         x_delta  = min(x_data)
         x_data   = x_data - x_delta
 
-        arg_min  = np.argmin(x_data)
+        arg_min  = rp.argmin(x_data)
         y_delta  = y_data[arg_min]
         y_data   = y_data - y_delta
 
@@ -292,27 +294,27 @@ class Airfoil(rcl.Component):
         half_npoints = n_pts//2
 
         # thickness and camber distributions require equal points
-        x_up_surf_old  = np.array(x_up_surf)
-        arrx_up_interp = interpolate.interp1d(np.arange(x_up_surf_old.size), x_up_surf_old, kind=interpolation)
-        x_up_surf_new  = arrx_up_interp(np.linspace(0, x_up_surf_old.size-1, half_npoints))
+        x_up_surf_old  = rp.array(x_up_surf)
+        arrx_up_interp = interpolate.interp1d(rp.arange(x_up_surf_old.size), x_up_surf_old, kind=interpolation)
+        x_up_surf_new  = arrx_up_interp(rp.linspace(0, x_up_surf_old.size-1, half_npoints))
 
-        x_lo_surf_old  = np.array(x_lo_surf)
-        arrx_lo_interp = interpolate.interp1d(np.arange(x_lo_surf_old.size), x_lo_surf_old, kind=interpolation)
-        x_lo_surf_new  = arrx_lo_interp(np.linspace(0, x_lo_surf_old.size-1, half_npoints))
+        x_lo_surf_old  = rp.array(x_lo_surf)
+        arrx_lo_interp = interpolate.interp1d(rp.arange(x_lo_surf_old.size), x_lo_surf_old, kind=interpolation)
+        x_lo_surf_new  = arrx_lo_interp(rp.linspace(0, x_lo_surf_old.size-1, half_npoints))
 
         # y coordinate s
-        y_up_surf_old  = np.array(y_up_surf)
-        arry_up_interp = interpolate.interp1d(np.arange(y_up_surf_old.size), y_up_surf_old, kind=interpolation)
-        y_up_surf_new  = arry_up_interp(np.linspace(0, y_up_surf_old.size-1, half_npoints))
+        y_up_surf_old  = rp.array(y_up_surf)
+        arry_up_interp = interpolate.interp1d(rp.arange(y_up_surf_old.size), y_up_surf_old, kind=interpolation)
+        y_up_surf_new  = arry_up_interp(rp.linspace(0, y_up_surf_old.size-1, half_npoints))
 
-        y_lo_surf_old  = np.array(y_lo_surf)
-        arry_lo_interp = interpolate.interp1d(np.arange(y_lo_surf_old.size), y_lo_surf_old, kind=interpolation)
-        y_lo_surf_new  = arry_lo_interp(np.linspace(0, y_lo_surf_old.size-1, half_npoints))
+        y_lo_surf_old  = rp.array(y_lo_surf)
+        arry_lo_interp = interpolate.interp1d(rp.arange(y_lo_surf_old.size), y_lo_surf_old, kind=interpolation)
+        y_lo_surf_new  = arry_lo_interp(rp.linspace(0, y_lo_surf_old.size-1, half_npoints))
 
         # compute thickness, camber and concatenate coodinates
         thickness      = y_up_surf_new - y_lo_surf_new
         camber         = y_lo_surf_new + thickness/2
-        max_t          = np.max(thickness)
+        max_t          = rp.max(thickness)
         max_c          = max(x_data) - min(x_data)
         t_c            = max_t/max_c
 
@@ -321,7 +323,7 @@ class Airfoil(rcl.Component):
             camber=camber,
             max_thickness=max_t,
             thickness_to_chord=t_c,
-            coordinates=np.vstack((x_data, y_data)).T,
+            coordinates=rp.vstack((x_data, y_data)).T,
             x_coordinates=x_data,
             y_coordinates=y_data,
             x_upper_surface=x_up_surf_new,

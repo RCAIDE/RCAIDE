@@ -11,7 +11,7 @@ import chex
 from dataclasses import field
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 from scipy.spatial.transform import Rotation as SP_Rotation
 
 # RCAIDE imports
@@ -36,9 +36,9 @@ class Frame(Conditions):
             The name of the frame.
         transform_to_inertial : scipy.spatial.transform.Rotation
             The rotation that transforms from this frame to the inertial frame.
-        total_force_vector : np.ndarray
+        total_force_vector : rp.ndarray
             The total force vector acting on the system in this frame.
-        total_moment_vector : np.ndarray
+        total_moment_vector : rp.ndarray
             The total moment vector acting on the frame.
         """
 
@@ -47,8 +47,8 @@ class Frame(Conditions):
 
     transform_to_inertial:  SP_Rotation     = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 
-    total_force_vector:     np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
-    total_moment_vector:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
+    total_force_vector:     rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
+    total_moment_vector:    rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
 
 
 @chex.dataclass(kw_only=True)
@@ -64,43 +64,43 @@ class InertialFrame(Frame):
     name : str
         The name of the frame. Default is 'Inertial Frame'.
 
-    position_vector : np.ndarray
+    position_vector : rp.ndarray
         The position vector in the inertial frame. Shape (1, 3).
 
-    velocity_vector : np.ndarray
+    velocity_vector : rp.ndarray
         The velocity vector in the inertial frame. Shape (1, 3).
-    acceleration_vector : np.ndarray
+    acceleration_vector : rp.ndarray
         The acceleration vector in the inertial frame. Shape (1, 3).
 
-    angular_velocity_vector : np.ndarray
+    angular_velocity_vector : rp.ndarray
         The angular velocity vector in the inertial frame. Shape (1, 3).
-    angular_acceleration_vector : np.ndarray
+    angular_acceleration_vector : rp.ndarray
         The angular acceleration vector in the inertial frame. Shape (1, 3).
 
-    gravity_force_vector : np.ndarray
+    gravity_force_vector : rp.ndarray
         The gravity force vector in the inertial frame. Shape (1, 3).
-    time : np.ndarray
+    time : rp.ndarray
         The time array. Shape (1, 1).
 
-    system_range : np.ndarray
+    system_range : rp.ndarray
         The range of the system in the inertial frame. Shape (1, 1).
     """
 
     # Attribute                     Type        Default Value
     tag:                            str         = 'Inertial Frame'
 
-    position_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    position_vector:                rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
-    velocity_vector:                np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    acceleration_vector:            np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity_vector:                rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
+    acceleration_vector:            rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
-    angular_velocity_vector:        np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    angular_acceleration_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    angular_velocity_vector:        rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
+    angular_acceleration_vector:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
-    gravity_force_vector:           np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    gravity_force_vector:           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
-    time:                           np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    system_range:                   np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    time:                           rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    system_range:                   rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -116,22 +116,22 @@ class BodyFrame(Frame):
     name : str
         The name of the frame. Default is 'Body Frame'.
 
-    inertial_rotations : np.ndarray
+    inertial_rotations : rp.ndarray
         The rotations of the body frame relative to the inertial frame. Shape (1, 3).
 
-    thrust_force_vector : np.ndarray
+    thrust_force_vector : rp.ndarray
         The thrust force vector in the body frame. Shape (1, 3).
 
-    moment_vector : np.ndarray
+    moment_vector : rp.ndarray
         The moment vector in the body frame. Shape (1, 3).
     """
 
     # Attribute             Type        Default Value
     tag:                    str         = 'Body Frame'
 
-    inertial_rotations:     np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    thrust_force_vector:    np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
-    moment_vector:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 3)))
+    inertial_rotations:     rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
+    thrust_force_vector:    rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
+    moment_vector:          rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 3)))
 
 
 @chex.dataclass(kw_only=True)
@@ -148,29 +148,29 @@ class WindFrame(Frame):
     name : str
         The name of the frame. Default is 'Wind Frame'.
 
-    body_rotations : np.ndarray
+    body_rotations : rp.ndarray
         The rotations of the wind frame relative to the body frame. Shape (1, 3).
 
     transform_to_body : scipy.spatial.transform.Rotation
         The rotation that transforms from the wind frame to the body frame.
 
-    velocity_vector : np.ndarray
+    velocity_vector : rp.ndarray
         The velocity vector in the wind frame. Shape (1, 3).
-    force_vector : np.ndarray
+    force_vector : rp.ndarray
         The force vector in the wind frame. Shape (1, 3).
-    moment_vector : np.ndarray
+    moment_vector : rp.ndarray
         The moment vector in the wind frame. Shape (1, 3).
     """
 
     # Attribute         Type            Default Value
     tag:               str             = 'Wind Frame'
 
-    body_rotations:     np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
+    body_rotations:     rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
     transform_to_body:  SP_Rotation     = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 
-    velocity_vector:    np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
-    force_vector:       np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
-    moment_vector:      np.ndarray      = field(default_factory=lambda: np.zeros((1, 3)))
+    velocity_vector:    rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
+    force_vector:       rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
+    moment_vector:      rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 3)))
 
 
 @chex.dataclass(kw_only=True)
@@ -189,9 +189,9 @@ class PlanetFrame(Frame):
     start_time : float
         The start time of the simulation in the planet frame.
 
-    latitude : np.ndarray
+    latitude : rp.ndarray
         The latitude of the system.
-    longitude : np.ndarray
+    longitude : rp.ndarray
         The longitude of the system.
 
     true_course : scipy.spatial.transform.Rotation
@@ -202,8 +202,8 @@ class PlanetFrame(Frame):
     tag:            str         = 'Planet Frame'
     start_time:     float       = None
 
-    latitude:       np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    longitude:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    latitude:       rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    longitude:      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     true_course:    SP_Rotation = SP_Rotation.from_euler('zyx', [0., 0., 0.])
 

@@ -12,6 +12,7 @@ import chex
 from dataclasses import field
 
 # package imports
+import RNUMPY as rp
 import numpy as np
 
 # RCAIDE imports
@@ -49,7 +50,7 @@ class DynamicResidual(Conditions):
     active: bool    = False
     index:  int     = None
 
-    value:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    value:          rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -111,7 +112,7 @@ class ControlVariable(Conditions):
         Indicates whether the control variable is active or not. Defaults to False.
     initial_guess : float
         An initial guess for the control variable's value. Defaults to None.
-    value : np.ndarray
+    value : rp.ndarray
         The current value of the control variable. Initialized as a 1x1 zero array.
 
     """
@@ -120,9 +121,9 @@ class ControlVariable(Conditions):
     tag:            str                 = 'Control Variable'
 
     active:         bool                = False
-    initial_guess:  float | np.ndarray  = None
+    initial_guess:  float | rp.ndarray  = None
 
-    value:          np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    value:          rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     def get_field_name(self):
         return self.tag.replace(' ', '_').lower()
@@ -153,7 +154,7 @@ class SurfaceControlVariable(ControlVariable):
         The name of the aerodunamic control variable. Defaults to 'Surface Control Variable'.
     surfaces : list[Component]
         A list of surfaces associated with the control variable. Defaults to None.
-    deflection : np.ndarray
+    deflection : rp.ndarray
         An array representing the deflection of the surface. Initialized as a 1x1 zero array.
     static_stability : StaticCoefficients
         An object representing the static stability characteristics of the surface.
@@ -188,7 +189,7 @@ class EnergyControlVariable(ControlVariable):
     #Attribute  Type            Default Value
     tag:       str             = 'Energy Control Variable'
 
-    value:      np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    value:      rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -302,7 +303,7 @@ class TestControlVariable(unittest.TestCase):
         self.assertEqual(cv.tag, 'Control Variable')
         self.assertFalse(cv.active)
         self.assertIsNone(cv.initial_guess)
-        np.testing.assert_array_equal(cv.value, np.zeros((1, 1)))
+        np.testing.assert_array_equal(cv.value, rp.zeros((1, 1)))
 
     def test_custom_values(self):
         cv = ControlVariable(tag='Test', active=True, initial_guess=5.0)
@@ -315,7 +316,7 @@ class TestSurfaceControlVariable(unittest.TestCase):
     def test_default_values(self):
         scv = SurfaceControlVariable()
         self.assertEqual(scv.tag, 'Surface Control Variable')
-        np.testing.assert_array_equal(scv.deflection, np.zeros((1, 1)))
+        np.testing.assert_array_equal(scv.deflection, rp.zeros((1, 1)))
         self.assertIsInstance(scv.static_stability, StaticCoefficients)
 
 
@@ -323,7 +324,7 @@ class TestPropulsionControlVariable(unittest.TestCase):
     def test_default_values(self):
         pcv = EnergyControlVariable()
         self.assertEqual(pcv.tag, 'Propulsion Control Variable')
-        np.testing.assert_array_equal(pcv.value, np.zeros((1, 1)))
+        np.testing.assert_array_equal(pcv.value, rp.zeros((1, 1)))
 
 
 class TestControlsConditions(unittest.TestCase):

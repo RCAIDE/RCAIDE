@@ -12,7 +12,7 @@ from dataclasses import field
 import unittest
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -33,20 +33,20 @@ class AerodynamicAngles(Conditions):
     ----------
     name : str
         The name of the aerodynamic angles set. Default is 'Aerodynamic Angles'.
-    alpha : np.ndarray
+    alpha : rp.ndarray
         The angle of attack. Default is a 1x1 array of zeros.
-    beta : np.ndarray
+    beta : rp.ndarray
         The sideslip angle. Default is a 1x1 array of zeros.
-    phi : np.ndarray
+    phi : rp.ndarray
         The bank angle. Default is a 1x1 array of zeros.
     """
 
     # Attribute         Type        Default Value
     tag:                str         = 'Aerodynamic Angles'
 
-    alpha:              np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
-    beta:               np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
-    phi:                np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    alpha:              rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
+    beta:               rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
+    phi:                rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -60,7 +60,7 @@ class LiftCoefficients(Conditions):
     ----------
     name : str
         The name of the lift coefficients set. Default is 'Lift Coefficients'.
-    total : np.ndarray
+    total : rp.ndarray
         The total lift coefficient. Default is a 1x1 array of zeros.
     inviscid_wings : Conditions
         Lift coefficients for inviscid wing calculations. Initialized as a Conditions object with name 'Inviscid Wings'.
@@ -71,7 +71,7 @@ class LiftCoefficients(Conditions):
     # Attribute     Type            Default Value
     tag:            str             = 'Lift Coefficients'
 
-    total:          np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    total:          rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
 
     inviscid:       Conditions      = field(default_factory=lambda: Conditions(tag='Inviscid Bodies'))
     compressible:   Conditions      = field(default_factory=lambda: Conditions(tag='Compressible Bodies'))
@@ -88,7 +88,7 @@ class InducedDrag(Conditions):
     ----------
     name : str
         The name of the induced drag set. Default is 'Induced Drag'.
-    total : np.ndarray
+    total : rp.ndarray
         The total induced drag coefficient. Default is a 1x1 array of zeros.
     inviscid_wings : Conditions
         Induced drag coefficients for inviscid wing calculations. Initialized as a Conditions object with name 'Inviscid Wings'.
@@ -97,7 +97,7 @@ class InducedDrag(Conditions):
     # Attribute         Type            Default Value
     tag:                str             = 'Induced Drag'
 
-    total:              np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    total:              rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
 
     inviscid_wings:     Conditions      = field(default_factory=lambda: Conditions(tag='Inviscid Wings'))
 
@@ -114,7 +114,7 @@ class DragCoefficients(Conditions):
     ----------
     name : str
         The name of the drag coefficients set. Default is 'Drag Coefficients'.
-    total : np.ndarray
+    total : rp.ndarray
         The total drag coefficient. Default is a 1x1 array of zeros.
     parasite : Conditions
         Parasite drag coefficients. Initialized as a Conditions object with name 'Parasite Drag'.
@@ -131,7 +131,7 @@ class DragCoefficients(Conditions):
     # Attribute         Type            Default Value
     tag:                str             = 'Drag Coefficients'
 
-    total:              np.ndarray      = field(default_factory=lambda: np.zeros((1, 1)))
+    total:              rp.ndarray      = field(default_factory=lambda: rp.zeros((1, 1)))
 
     parasite:           Conditions      = field(default_factory=lambda: Conditions(tag='Parasite Drag'))
     compressible:       Conditions      = field(default_factory=lambda: Conditions(tag='Compressible Drag'))
@@ -202,27 +202,27 @@ class TestAerodynamics(unittest.TestCase):
     def test_aerodynamic_angles(self):
         angles = AerodynamicAngles()
         self.assertEqual(angles.tag, 'Aerodynamic Angles')
-        self.assertTrue(np.array_equal(angles.alpha, np.zeros((1, 1))))
-        self.assertTrue(np.array_equal(angles.beta, np.zeros((1, 1))))
-        self.assertTrue(np.array_equal(angles.phi, np.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(angles.alpha, rp.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(angles.beta, rp.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(angles.phi, rp.zeros((1, 1))))
 
     def test_lift_coefficients(self):
         lift = LiftCoefficients()
         self.assertEqual(lift.tag, 'Lift Coefficients')
-        self.assertTrue(np.array_equal(lift.total, np.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(lift.total, rp.zeros((1, 1))))
         self.assertEqual(lift.inviscid_wings.tag, 'Inviscid Wings')
         self.assertEqual(lift.compressible_wings.tag, 'Compressible Wings')
 
     def test_induced_drag(self):
         induced = InducedDrag()
         self.assertEqual(induced.tag, 'Induced Drag')
-        self.assertTrue(np.array_equal(induced.total, np.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(induced.total, rp.zeros((1, 1))))
         self.assertEqual(induced.inviscid_wings.tag, 'Inviscid Wings')
 
     def test_drag_coefficients(self):
         drag = DragCoefficients()
         self.assertEqual(drag.tag, 'Drag Coefficients')
-        self.assertTrue(np.array_equal(drag.total, np.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(drag.total, rp.zeros((1, 1))))
         self.assertEqual(drag.parasite.tag, 'Parasite Drag')
         self.assertEqual(drag.compressible.tag, 'Compressible Drag')
         self.assertEqual(drag.miscellaneous.tag, 'Miscellaneous Drag')

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 import chex
-import numpy as np
+import RNUMPY as rp
 
 import RCAIDE.Framework as rcf
 
@@ -57,12 +57,12 @@ class TestCSACruise(Cruise):
         beta = self.sideslip_angle
 
         if not self.air_speed:
-            av = np.linalg.norm(state.frames.inertial.velocity_vector[-1])
+            av = rp.linalg.norm(state.frames.inertial.velocity_vector[-1])
         if not self.altitude:
             alt = -1.0 * state.frames.inertial.position_vector[-1, 2]
 
-        v_x = np.cos(beta) * av
-        v_y = np.sin(beta) * av
+        v_x = rp.cos(beta) * av
+        v_y = rp.sin(beta) * av
         t_0 = state.frames.inertial.time[0, 0]
         t_f = t_0 + xf / av
 

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -27,9 +27,9 @@ def func_shaft_offtake(
         mdhc
 ):
 
-        core_massflow = mdhc * np.sqrt(T_ref / T_t_ref) * (P_t_ref / P_ref)
-        work = np.divide(power, core_massflow,
-                         out=np.zeros_like(power), where=core_massflow != 0)  # Handle div-by-zero with ufunc
+        core_massflow = mdhc * rp.sqrt(T_ref / T_t_ref) * (P_t_ref / P_ref)
+        work = rp.divide(power, core_massflow,
+                         out=rp.zeros_like(power), where=core_massflow != 0)  # Handle div-by-zero with ufunc
 
         return work
 

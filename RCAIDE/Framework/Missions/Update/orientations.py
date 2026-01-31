@@ -10,8 +10,8 @@
 from copy import deepcopy
 
 # package imports
-import numpy as np
-from scipy.spatial.transform import Rotation as T
+import RNUMPY as rp
+from RNUMPY.scipy.spatial.transform import Rotation as T
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -49,17 +49,17 @@ def update_orientations(state: "rcf.State",
     # X-Z Projection of velocity
     v_xz = deepcopy(v_body)
     v_xz[:, 1] = 0
-    v_xz_mag = np.sqrt(np.sum(v_xz))
+    v_xz_mag = rp.sqrt(rp.sum(v_xz))
 
     # Angle of Attack
-    alpha = np.arctan2(v_xz[:, 2], v_xz[:, 0])
+    alpha = rp.arctan2(v_xz[:, 2], v_xz[:, 0])
 
     # Side Slip Angle
-    beta = np.arctan2(v_body[:, 1], v_xz_mag)
+    beta = rp.arctan2(v_body[:, 1], v_xz_mag)
 
     # ---Wind Frame Rotations---
 
-    wind_body_rotations = np.zeros_like(body_inertial_rotations)
+    wind_body_rotations = rp.zeros_like(body_inertial_rotations)
     wind_body_rotations[:, 0] = 0.        # No x-axis roll in wind frame
     wind_body_rotations[:, 1] = alpha     # Theta is Angle of Attack
     wind_body_rotations[:, 2] = beta      # Psi is Side Slip Angle

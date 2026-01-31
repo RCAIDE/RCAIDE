@@ -8,7 +8,7 @@
 #  Imports
 # ---------------------------------------------------------------------- 
 
-import numpy as np
+import RNUMPY as rp
 from RCAIDE.Framework.Core import Units
 
 import RCAIDE.Framework as rcf
@@ -18,8 +18,8 @@ import RCAIDE.Library as rcl
 # Functional/Library Version
 # -----------------------------------------------------------------------
 
-def func_operating_systems(fixed_masses : np.ndarray,
-                           per_seat_masses : np.ndarray,
+def func_operating_systems(fixed_masses : rp.ndarray,
+                           per_seat_masses : rp.ndarray,
                            number_of_seats : int,
                            reference_area : float,
                            tail_area : float,
@@ -28,8 +28,8 @@ def func_operating_systems(fixed_masses : np.ndarray,
                            *args, **kwargs):
 
     # Total Operating System Mass
-    total_opsys_mass = (np.sum(fixed_masses)
-                        + np.sum(per_seat_masses) * number_of_seats)
+    total_opsys_mass = (rp.sum(fixed_masses)
+                        + rp.sum(per_seat_masses) * number_of_seats)
 
     # Flight Control System Mass
 
@@ -82,8 +82,8 @@ def operating_systems(state: "rcf.State",
             if isinstance(wing, Main_Wing):
                 s_tail += wing.areas.reference * 0.01
 
-    results = func_operating_systems(np.asarray(fixed_masses),
-                                     np.asarray(per_seat_masses),
+    results = func_operating_systems(rp.asarray(fixed_masses),
+                                     rp.asarray(per_seat_masses),
                                      system.number_of_passengers,
                                      system.reference_area,
                                      s_tail)

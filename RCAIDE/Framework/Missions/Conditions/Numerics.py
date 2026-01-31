@@ -13,7 +13,7 @@ import chex
 from dataclasses import field
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -25,7 +25,7 @@ from RCAIDE.Framework.Missions.Conditions import Conditions
 
 def chebyshev_matrices(n: int = 16,
                        calculate_integration: bool = True,
-                       spacing_function: Callable = lambda n: 0.5 * (1 - np.cos(np.pi * np.arange(n) / (n - 1)))
+                       spacing_function: Callable = lambda n: 0.5 * (1 - rp.cos(rp.pi * rp.arange(n) / (n - 1)))
                        ):
     """
     Calculate Chebyshev spectral matrices for numerical differentiation and integration.
@@ -68,29 +68,29 @@ def chebyshev_matrices(n: int = 16,
 
     x = spacing_function(n)
 
-    c = np.array([2.] + [1.] * (n - 2) + [2.])
-    c *= (-1.) ** np.arange(n)
+    c = rp.array([2.] + [1.] * (n - 2) + [2.])
+    c *= (-1.) ** rp.arange(n)
     c_inv = 1./c
 
-    A = np.tile(x, (n, 1)).T
-    dA = A - A.T + np.eye(n)
+    A = rp.tile(x, (n, 1)).T
+    dA = A - A.T + rp.eye(n)
 
-    cs = np.multiply(np.atleast_2d(c), np.atleast_2d(c_inv).T)
-    D = np.divide(cs.T, dA)
+    cs = rp.multiply(rp.atleast_2d(c), rp.atleast_2d(c_inv).T)
+    D = rp.divide(cs.T, dA)
 
-    D -= np.diag(np.sum(D.T, axis=0))
+    D -= rp.diag(rp.sum(D.T, axis=0))
 
     if calculate_integration:
         # Invert D, trimming first row and column
-        I = np.linalg.inv(D[1:, 1:])
+        I = rp.linalg.inv(D[1:, 1:])
 
         # Repack missing columns with zeros
-        I = np.append(np.zeros((1, n - 1)), I, axis=0)
-        I = np.append(np.zeros((n, 1)), I, axis=1)
+        I = rp.append(rp.zeros((1, n - 1)), I, axis=0)
+        I = rp.append(rp.zeros((n, 1)), I, axis=1)
     else:
         I = None
 
-    return np.atleast_2d(x).T, D, I
+    return rp.atleast_2d(x).T, D, I
 
 
 @chex.dataclass(kw_only=True)
@@ -103,13 +103,13 @@ class NumericalTime(Conditions):
 
     Attributes
     ----------
-    control_points : np.ndarray
+    control_points : rp.ndarray
         Array of control points for numerical time calculations.
         Default is a 1x1 array of zeros.
-    differentiate : np.ndarray
+    differentiate : rp.ndarray
         Array for differentiation operations in numerical time calculations.
         Default is a 1x1 array of zeros.
-    integrate : np.ndarray
+    integrate : rp.ndarray
         Array for integration operations in numerical time calculations.
         Default is a 1x1 array of zeros.
 
@@ -121,9 +121,9 @@ class NumericalTime(Conditions):
     """
 
     # Attribute     Type        Default Value
-    control_points: np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    differentiate:  np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
-    integrate:      np.ndarray  = field(default_factory=lambda: np.zeros((1, 1)))
+    control_points: rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    differentiate:  rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
+    integrate:      rp.ndarray  = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 @chex.dataclass(kw_only=True)
@@ -223,9 +223,9 @@ class TestNumericalTime(unittest.TestCase):
         self.numerical_time = NumericalTime()
 
     def test_default_values(self):
-        self.assertTrue(np.array_equal(self.numerical_time.control_points, np.zeros((1, 1))))
-        self.assertTrue(np.array_equal(self.numerical_time.differentiate, np.zeros((1, 1))))
-        self.assertTrue(np.array_equal(self.numerical_time.integrate, np.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(self.numerical_time.control_points, rp.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(self.numerical_time.differentiate, rp.zeros((1, 1))))
+        self.assertTrue(rp.array_equal(self.numerical_time.integrate, rp.zeros((1, 1))))
 
 
 class TestNumerics(unittest.TestCase):

@@ -8,7 +8,7 @@
 
 # Package Imports
 
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE Imports
 
@@ -34,7 +34,7 @@ def func_aero_from_mass(
     q = 0.5 * air_density * flight_speed**2
     C_L = min(total_mass * 9.81 / (q * projected_wing_area), CL_max)
 
-    induced_drag_factor = 1.0 / (np.pi * Oswald_efficiency_factor * wing_aspect_ratio)
+    induced_drag_factor = 1.0 / (rp.pi * Oswald_efficiency_factor * wing_aspect_ratio)
     induced_drag = induced_drag_factor * C_L**2
 
     C_D = parasitic_drag + induced_drag

@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -26,7 +26,7 @@ def update_angular_acceleration(state: "rcf.State",
     w = state.frames.inertial.angular_velocity_vector
     D = state.numerics.time.differentiate
 
-    aa = np.dot(D, w)
+    aa = rp.dot(D, w)
 
     state.frames.inertial.angular_acceleration_vector = aa
                    

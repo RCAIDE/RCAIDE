@@ -12,6 +12,7 @@ from dataclasses import field
 import unittest
 
 # package imports
+import RNUMPY as rp
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -111,12 +112,12 @@ class Conditions:
         for k, v in vars(self).items():
             if isinstance(v, Conditions) and k != 'initials':
                 v.expand_rows(rows)
-            elif isinstance(v, np.ndarray) and len(v.shape) <= 2 and k not in ["unknowns", "residuals"]:  # Scalar-valued arrays
-                vars(self)[k] = np.resize(v, (self._number_of_rows, v.shape[1]))
-            elif isinstance(v, np.ndarray) and k not in ["unknowns", "residuals"]:  # Vector-valued arrays
+            elif isinstance(v, rp.ndarray) and len(v.shape) <= 2 and k not in ["unknowns", "residuals"]:  # Scalar-valued arrays
+                vars(self)[k] = rp.resize(v, (self._number_of_rows, v.shape[1]))
+            elif isinstance(v, rp.ndarray) and k not in ["unknowns", "residuals"]:  # Vector-valued arrays
                 new_shape = list(v.shape)
                 new_shape[0] = self._number_of_rows
-                vars(self)[k] = np.resize(v, tuple(new_shape))
+                vars(self)[k] = rp.resize(v, tuple(new_shape))
 
     def pack_array(self):
         """
@@ -135,7 +136,7 @@ class Conditions:
         - Only considers attributes that are numpy arrays.
         - The order of concatenation is determined by the order of attributes in vars(self).
         """
-        return np.concatenate([v.flatten() for v in vars(self).values() if isinstance(v, np.ndarray)], axis=0)
+        return rp.concatenate([v.flatten() for v in vars(self).values() if isinstance(v, rp.ndarray)], axis=0)
 
     def unpack_array(self, array):
         """
@@ -157,7 +158,7 @@ class Conditions:
         """
         i = 0
         for k, v in vars(self).items():
-            if isinstance(v, np.ndarray):
+            if isinstance(v, rp.ndarray):
                 vars(self)[k] = array[i:i+v.size].reshape(v.shape)
                 i += v.size
 
@@ -192,7 +193,7 @@ Conditions.__iter__ = _conditions_iter
 
 @chex.dataclass(kw_only=True)
 class _ArrayConditions(Conditions):
-    test_array: np.ndarray = field(default_factory=lambda: np.zeros((1, 1)))
+    test_array: rp.ndarray = field(default_factory=lambda: rp.zeros((1, 1)))
 
 
 class TestConditions(unittest.TestCase):
@@ -221,15 +222,15 @@ class TestConditions(unittest.TestCase):
         self.assertEqual(self.conditions._number_of_rows, 8)  # 10 - 2 = 8
 
         # Test with numpy arrays
-        self.conditions.array1 = np.zeros((1, 3))
-        self.conditions.array2 = np.ones((2, 2))
+        self.conditions.array1 = rp.zeros((1, 3))
+        self.conditions.array2 = rp.ones((2, 2))
         self.conditions.expand_rows(12)
         self.assertEqual(self.conditions._number_of_rows, 10)  # 12 - 2 = 10
         self.assertEqual(self.conditions.array1.shape, (10, 3))
         self.assertEqual(self.conditions.array2.shape, (10, 2))
 
         # Test preserving data in numpy arrays
-        original_data = np.array([[1, 2, 3], [4, 5, 6]])
+        original_data = rp.array([[1, 2, 3], [4, 5, 6]])
         self.conditions.data_array = original_data
         self.conditions.expand_rows(15)
         np.testing.assert_array_equal(self.conditions.data_array[:2, :], original_data)
@@ -237,7 +238,7 @@ class TestConditions(unittest.TestCase):
 
         # Test with nested Conditions
         self.conditions.nested = _ArrayConditions()
-        self.conditions.nested.test_array = np.zeros((1, 4))
+        self.conditions.nested.test_array = rp.zeros((1, 4))
         self.conditions.expand_rows(20)
         self.assertEqual(self.conditions._number_of_rows, 18)  # 20 - 2 = 18
         self.assertEqual(self.conditions.nested.test_array.shape, (18, 4))
@@ -251,7 +252,7 @@ class TestConditions(unittest.TestCase):
     def test_expand_columns(self):
         # Initialize Conditions with a numpy array
         self.conditions = _ArrayConditions()
-        self.conditions.test_array = np.zeros((1, 2))
+        self.conditions.test_array = rp.zeros((1, 2))
 
         # Test expanding columns
         self.conditions.expand_columns(4)
@@ -260,15 +261,15 @@ class TestConditions(unittest.TestCase):
         # Test that existing data is preserved
         self.conditions.test_array[:, :2] = 1
         self.conditions.expand_columns(6)
-        np.testing.assert_array_equal(self.conditions.test_array[:, :2], np.ones((1, 2)))
+        np.testing.assert_array_equal(self.conditions.test_array[:, :2], rp.ones((1, 2)))
         self.assertEqual(self.conditions.test_array.shape, (1, 6))
 
     def test_expand_columns_with_nested_conditions(self):
         # Initialize nested Conditions
         self.conditions = _ArrayConditions()
         self.conditions.nested = _ArrayConditions()
-        self.conditions.test_array = np.zeros((1, 2))
-        self.conditions.nested.test_array = np.zeros((1, 2))
+        self.conditions.test_array = rp.zeros((1, 2))
+        self.conditions.nested.test_array = rp.zeros((1, 2))
 
         # Test expanding columns in nested structure
         self.conditions.expand_columns(4)
@@ -278,18 +279,18 @@ class TestConditions(unittest.TestCase):
     def test_expand_columns_reduce(self):
         # Initialize Conditions with a larger array
         self.conditions = _ArrayConditions()
-        self.conditions.test_array = np.ones((1, 5))
+        self.conditions.test_array = rp.ones((1, 5))
 
         # Test reducing columns
         self.conditions.expand_columns(3)
         self.assertEqual(self.conditions.test_array.shape, (1, 3))
-        np.testing.assert_array_equal(self.conditions.test_array, np.ones((1, 3)))
+        np.testing.assert_array_equal(self.conditions.test_array, rp.ones((1, 3)))
 
     def test_pack_array(self):
-        self.conditions.array1 = np.array([1, 2, 3])
-        self.conditions.array2 = np.array([4, 5, 6])
+        self.conditions.array1 = rp.array([1, 2, 3])
+        self.conditions.array2 = rp.array([4, 5, 6])
         packed = self.conditions.pack_array()
-        np.testing.assert_array_equal(packed, np.array([1, 2, 3, 4, 5, 6]))
+        np.testing.assert_array_equal(packed, rp.array([1, 2, 3, 4, 5, 6]))
 
 
 if __name__ == '__main__':

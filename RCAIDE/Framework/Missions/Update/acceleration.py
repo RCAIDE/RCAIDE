@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 # RCAIDE imports
 import RCAIDE.Framework as rcf
@@ -25,7 +25,7 @@ def update_acceleration(state: "rcf.State",
     v = state.frames.inertial.velocity_vector
     D = state.numerics.time.differentiate
 
-    a = np.dot(D, v)
+    a = rp.dot(D, v)
 
     state.frames.inertial.acceleration_vector = a
                    

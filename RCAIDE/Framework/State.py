@@ -12,7 +12,7 @@ from dataclasses import field
 from functools import reduce
 
 # package imports
-import numpy as np
+import RNUMPY as rp
 
 import RCAIDE.Library.Components
 # RCAIDE imports
@@ -43,8 +43,8 @@ class State(Conditions):
     controls:           ControlsConditions          = field(default_factory=ControlsConditions)
     dynamics:           DynamicsConditions          = field(default_factory=DynamicsConditions)
 
-    unknowns:           np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
-    residuals:          np.ndarray                  = field(default_factory=lambda: np.zeros((1, 1)))
+    unknowns:           rp.ndarray                  = field(default_factory=lambda: rp.zeros((1, 1)))
+    residuals:          rp.ndarray                  = field(default_factory=lambda: rp.zeros((1, 1)))
 
     def check_controls(self, verbose=True) -> bool:
         """
@@ -83,7 +83,7 @@ class State(Conditions):
             if hasattr(control_var, 'path'):
                 if hasattr(control_var, 'active') and control_var.active:
                     values = self.unknowns[control_idx : control_idx + n_points]   # Extract control values from unknowns
-                    values = np.reshape(values, (-1, 1))                  # Reshape to column vector
+                    values = rp.reshape(values, (-1, 1))                  # Reshape to column vector
                     destination = reduce(getattr, control_var.path, self)          # Find destination within state
                     destination[control_var.path_indices] = values.flatten()       # Assign to destination in state
                     control_idx += n_points
@@ -102,8 +102,8 @@ class State(Conditions):
                 residual_list.append(residual.value)
 
         if residual_list:
-            self.residuals = np.column_stack(residual_list)
-        else: self.residuals = np.empty(n_points, 0)
+            self.residuals = rp.column_stack(residual_list)
+        else: self.residuals = rp.empty(n_points, 0)
 
         return
 
