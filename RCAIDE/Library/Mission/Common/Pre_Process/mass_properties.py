@@ -362,4 +362,33 @@ def apply_component_weights(analyses):
         elif key == 'booms':
             for boom in analyses.vehicle.booms:
                 if hasattr(weight_correction_factors.empty.structural, 'boom'):
-                    boom.mass_properties.mass *= weight_correction_factors.empty.structural.boom                            
+                    boom.mass_properties.mass *= weight_correction_factors.empty.structural.boom    
+        elif key == 'systems':
+            for system in analyses.vehicle.systems:
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
+                    if hasattr(weight_correction_factors.empty.systems, 'avionics'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.avionics
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
+                    if hasattr(weight_correction_factors.empty.systems, 'control_systems'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.control_systems 
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
+                    if hasattr(weight_correction_factors.empty.systems, 'apu'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.apu  
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
+                    if hasattr(weight_correction_factors.empty.systems, 'electrical'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.electrical  
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
+                    if hasattr(weight_correction_factors.empty.systems, 'hydraulics'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.hydraulics 
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls: 
+                    if hasattr(weight_correction_factors.empty.systems, 'air_conditioner'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.air_conditioner    
+                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Instruments:
+                    if hasattr(weight_correction_factors.empty.systems, 'instruments'):
+                        system.mass_properties.mass *= weight_correction_factors.empty.systems.instruments  
+                      
+                    
+                   
+                 
+                
+                                    

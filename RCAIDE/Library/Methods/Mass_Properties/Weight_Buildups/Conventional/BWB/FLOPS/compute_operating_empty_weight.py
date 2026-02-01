@@ -131,25 +131,25 @@ def compute_operating_empty_weight(vehicle,settings=None):
     W_systems = compute_systems_weight(vehicle)
     for system in vehicle.systems:
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
-            if system.mass_properties.mass != 0:
+            if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_avionics 
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
-            if system.mass_properties.mass != 0:
+            # if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_flight_control 
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-            if system.mass_properties.mass != 0:
+            # if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_apu 
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
-            if system.mass_properties.mass != 0:
+            # if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_electrical 
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
-            if system.mass_properties.mass != 0:
+            # if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_hyd_pnu 
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls: 
-            if system.mass_properties.mass != 0:
+            # if system.mass_properties.mass == 0:
                 system.mass_properties.mass = W_systems.W_ac + W_systems.W_anti_ice   
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Instruments:
-            if system.mass_properties.mass != 0:     
+            # if system.mass_properties.mass == 0:     
                 system.mass_properties.mass = W_systems.W_instruments 
 
     ##-------------------------------------------------------------------------------                 
@@ -304,7 +304,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.systems                        = Data()
     output.empty.systems.control_systems        = W_systems.W_flight_control
     output.empty.systems.apu                    = W_systems.W_apu
-    output.empty.systems.electrical             = W_systems.W_electrical
+    output.empty.systems.electrical             = W_systems.W_electrical 
     output.empty.systems.avionics               = W_systems.W_avionics
     output.empty.systems.hydraulics             = W_systems.W_hyd_pnu
     output.empty.systems.furnishings            = W_systems.W_furnish
@@ -324,7 +324,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
  
     for wing in vehicle.wings:
         if isinstance(wing, Wings.Blended_Wing_Body):     
-            wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous  +  output.empty.structural.empennage  
+            wing.aft_center_body.mass_properties.mass = output.empty.structural.aft_center_body  +  output.empty.propulsion.miscellaneous #  +  output.empty.structural.empennage  
             wing.center_body.mass_properties.mass     = output.empty.structural.center_body  + output.operational_items.total +  output.empty.systems.furnishings 
     
     #-------------------------------------------------------------------------------                 
