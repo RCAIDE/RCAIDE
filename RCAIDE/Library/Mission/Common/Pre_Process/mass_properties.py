@@ -266,7 +266,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
             
         if i==0 and weights_analysis.settings.write_mass_properties:
             # -------------------------------------------------
-            # File name + location (same pattern you use)
+            # File name + location 
             # -------------------------------------------------
             excel_filename = os.path.join(
                 os.path.dirname(os.path.abspath(sys.argv[0])),

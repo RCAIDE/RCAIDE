@@ -7,11 +7,14 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
+from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Geometry.LOPA      import  compute_layout_of_passenger_accommodations
 from RCAIDE.Library.Methods.Geometry.Planform  import  fuselage_planform, wing_planform, bwb_wing_planform , compute_fuel_volume 
 
 # python imports 
-import  numpy as  np 
+import numpy as  np 
+import os, sys
+import pandas as pd
 from copy import deepcopy 
 # ----------------------------------------------------------------------------------------------------------------------
 #  geometry
@@ -176,6 +179,10 @@ def geometry_preprocess_routine(analyses):
     # Compute fuel volume  
     # -------------------------------------------------------------------------------------------------------------------- 
     compute_fuel_volume(vehicle,compute_fuel_volume = settings.compute_fuel_volume, update_max_fuel=settings.update_max_fuel)
+
+    if settings.write_geometry_properties:
+        write_geometry_to_excel(vehicle)
+        
                
     return
 
@@ -207,3 +214,87 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
                 propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
                 propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command
     return
+
+
+def write_geometry_to_excel(vehicle):
+
+    """
+    THIS IS CURRENTLY MEANT ONLY FOR BWB AND THE AACES PROJECT EXCLUSIVELY 
+    DO NOT LET THIS GO THROUGH A PR WITHOUT INCLUDING OTHER COMPONENTS LIKE THE FUSELAGE...... 
+    """
+    excel_filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), os.path.splitext(os.path.basename(sys.argv[0]))[0] + "_geometry_description.xlsx")
+    wing_rows     = []
+    segment_rows  = []
+    fuel_rows     = []
+    prop_rows     = []
+
+    # Collect wing-level properties
+    for wing in vehicle.wings:
+        wing_rows.append({
+            "Wing Tag"                      : wing.tag,
+            "Wing Origin"                   : wing.origin,
+            "Projected Span (m)"            : wing.spans.projected,
+            "Root Chord (m)"                : wing.chords.root,
+            "Mean Aerodynamic Chord (m)"    : wing.chords.mean_aerodynamic,
+            "LEMAC (m)"                     : wing.LEMAC,
+            "Reference Area (m^2)"          : wing.areas.reference,
+        })
+
+        # Collect segment-level properties for each wing
+        for segment in wing.segments:
+            segment_rows.append({
+                "Wing Tag"                      : wing.tag,
+                "Segment Tag"                   : segment.tag,
+                "Segment Origin"                : segment.origin,
+                "Spanwise Location (%)"         : segment.percent_span_location * 100.0,
+                "Root Chord Fraction"           : segment.root_chord_percent,
+                "Twist (deg)"                   : segment.twist / Units.degree,
+                "Outboard Dihedral (deg)"       : segment.dihedral_outboard / Units.degree,
+                "Quarter-Chord Sweep (deg)"     : segment.sweeps.quarter_chord / Units.degree,
+                "Leading-Edge Sweep (deg)"      : segment.sweeps.leading_edge / Units.degree
+            })
+
+    # Collect fuel tank properties from fuel lines and busses
+    for network in vehicle.networks:
+        network_tag = getattr(network, "tag", None)
+
+        # Propulsors
+        for propulsor in network.propulsors:
+            prop_rows.append({
+                "Network Tag"   : network_tag,
+                 "Propulsor Origin" : propulsor.origin,
+                "Propulsor Tag" : getattr(propulsor, "tag", None),
+                "Type"          : propulsor.__class__.__name__,
+                "Length (m)"    : getattr(propulsor, "length", None),
+                "Diameter (m)"  : getattr(propulsor, "diameter", None),
+                "Bypass Ratio"  : getattr(propulsor, "bypass_ratio", None),
+            })
+            
+        for fuel_line in network.fuel_lines:
+            container_tag = getattr(fuel_line, "tag", None)
+            for fuel_tank in fuel_line.fuel_tanks:
+                fuel_rows.append({
+                    "Network Tag"                  : network_tag,
+                    "Container Type"               : "fuel_line",
+                    "Container Tag"                : container_tag,
+                    "Fuel Tank Tag"                : fuel_tank.tag,
+                    "Wing Tag"                     : getattr(fuel_tank, "wing_tag", None),
+                    "Fuselage Tag"                 : getattr(fuel_tank, "fuselage_tag", None),
+                    "Percent Span Location"        : getattr(fuel_tank, "percent_span_location", None),
+                    "Segments Bounding Tank"       : getattr(fuel_tank, "segments_bounding_tank", None),
+                    "Segments % Chord Start"       : getattr(fuel_tank, "segments_percent_chord_start", None),
+                    "Segments % Chord End"         : getattr(fuel_tank, "segments_percent_chord_end", None),
+                    "BWB Aft Tank"                 : getattr(fuel_tank, "bwb_aft_tank", None),
+                    "XZ Plane Symmetric"           : getattr(fuel_tank, "xz_plane_symmetric", None),
+                    "Fuel Net Volume (m^3)"        : getattr(getattr(fuel_tank.fuel, "volume_properties", None), "net_volume", None) if fuel_tank.fuel else None,
+                    "Fuel Mass (kg)"               : getattr(getattr(fuel_tank.fuel, "mass_properties", None), "mass", None) if fuel_tank.fuel else None,
+                })
+
+    # Write to Excel with separate sheets for wings and segments
+    with pd.ExcelWriter(excel_filename) as writer:
+        pd.DataFrame(wing_rows).to_excel(writer, sheet_name='Wing_Properties', index=False)
+        pd.DataFrame(segment_rows).to_excel(writer, sheet_name='Segment_Properties', index=False)
+        pd.DataFrame(fuel_rows).to_excel(writer, sheet_name='Fuel_Tanks', index=False)
+        pd.DataFrame(prop_rows).to_excel(writer, sheet_name='Propulsors', index=False)
+    
+    print(f"Geometry Description written to Excel:\n  {excel_filename}")
