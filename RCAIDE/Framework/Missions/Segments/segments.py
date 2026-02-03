@@ -23,7 +23,9 @@ jax.config.update("jax_enable_x64", True)
 from jax import jit, grad
 
 import RNUMPY as rp
-from scipy.optimize import minimize, NonlinearConstraint, fsolve
+from scipy.optimize import minimize, NonlinearConstraint
+
+from RNUMPY.scipy import fsolve
 
 # RCAIDE imports
 
@@ -180,6 +182,8 @@ class IterateSegment(Process):
 
     def __call__(self):
 
+
+
         if self.root_finder is fsolve and self.root_finder_kwargs is None:
 
             self.root_finder_kwargs = {
@@ -192,6 +196,7 @@ class IterateSegment(Process):
                 'full_output': True
             }
 
+        # with jax.checking_leaks():
         results = self.root_finder(**self.root_finder_kwargs)
 
         self.state, self.system, self.settings = self.results_parser(results, self.state, self.system, self.settings)

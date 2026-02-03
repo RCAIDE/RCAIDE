@@ -5,12 +5,11 @@ from RCAIDE.Framework.System import VehicleEnvelope
 
 from copy import deepcopy
 
-import RNUMPY as rp
-rp.use_jax = True
-
 import jax
 jax.config.update('jax_platform_name', 'cpu')
 
+import RNUMPY as rp
+rp.use_jax = True
 
 def vehicle_setup():
 
@@ -605,6 +604,7 @@ def mission_b737():
     mission.state       = state
     mission.system      = system
     mission.settings    = settings
+
 
     final_state, final_system, final_settings = mission.run()
 

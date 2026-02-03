@@ -45,12 +45,12 @@ class Conditions:
     expand_rows(rows: int, override: bool = False)
         Expands or resizes the number of rows in the object and its attributes.
     pack_array()
-        Packs all numpy arrays in the object into a single flattened array.
+        Packs all rnumpy arrays in the object into a single flattened array.
 
     Notes
     -----
     - This class is implemented as a dataclass with keyword-only arguments.
-    - It's designed to work with nested Conditions objects and numpy arrays.
+    - It's designed to work with nested Conditions objects and rnumpy arrays.
     """
 
     tag: str = 'Conditions'

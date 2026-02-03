@@ -13,7 +13,7 @@ from dataclasses import field
 from typing import Callable
 
 # package imports
-from scipy.optimize import fsolve
+from RNUMPY.scipy import fsolve
 
 # RCAIDE imports
 

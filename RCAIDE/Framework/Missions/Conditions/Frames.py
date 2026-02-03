@@ -12,7 +12,7 @@ from dataclasses import field
 
 # package imports
 import RNUMPY as rp
-from scipy.spatial.transform import Rotation as SP_Rotation
+from RNUMPY.scipy.spatial.transform import Rotation as SP_Rotation
 
 # RCAIDE imports
 from RCAIDE.Framework.Missions.Conditions import Conditions
@@ -34,7 +34,7 @@ class Frame(Conditions):
         ----------
         name : str
             The name of the frame.
-        transform_to_inertial : scipy.spatial.transform.Rotation
+        transform_to_inertial : rp.spatial.transform.Rotation
             The rotation that transforms from this frame to the inertial frame.
         total_force_vector : rp.ndarray
             The total force vector acting on the system in this frame.
@@ -151,7 +151,7 @@ class WindFrame(Frame):
     body_rotations : rp.ndarray
         The rotations of the wind frame relative to the body frame. Shape (1, 3).
 
-    transform_to_body : scipy.spatial.transform.Rotation
+    transform_to_body : rp.spatial.transform.Rotation
         The rotation that transforms from the wind frame to the body frame.
 
     velocity_vector : rp.ndarray
@@ -194,7 +194,7 @@ class PlanetFrame(Frame):
     longitude : rp.ndarray
         The longitude of the system.
 
-    true_course : scipy.spatial.transform.Rotation
+    true_course : rp.spatial.transform.Rotation
         The rotation representing the true course in the planet frame.
     """
 
