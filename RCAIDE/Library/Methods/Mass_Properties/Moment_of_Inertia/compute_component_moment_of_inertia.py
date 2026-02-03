@@ -15,7 +15,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Recursive MOI
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_component_moment_of_inertia(component,vehicle,total_MOI,segment=None,verbose=True):
+def compute_component_moment_of_inertia(moment_of_inertia_df,component,vehicle,total_MOI,segment=None,verbose=True):
     """ Recursively computes the compute moment of inertia all components and subcomponents
 
     Assumptions:
@@ -34,21 +34,21 @@ def compute_component_moment_of_inertia(component,vehicle,total_MOI,segment=None
     if isinstance(component,Component.Container): 
         for key in component.keys():
             item = component[key]        
-            total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment,verbose)
+            total_MOI = compute_component_moment_of_inertia(moment_of_inertia_df,item,vehicle,total_MOI,segment,verbose)
     if isinstance(component,Component):
         component.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle_CG)
-        update_total_moment_of_inertia(total_MOI,vehicle_CG,component,segment, verbose)  
+        update_total_moment_of_inertia(total_MOI,vehicle_CG,component,segment, verbose, moment_of_inertia_df)  
         for key in component.keys():
             item = component[key]
             if isinstance(item,Component.Container):
-                total_MOI = compute_component_moment_of_inertia(item,vehicle,total_MOI,segment,verbose)
+                total_MOI = compute_component_moment_of_inertia(moment_of_inertia_df,item,vehicle,total_MOI,segment,verbose)
             if isinstance(item,Component):
                 item.compute_moments_of_inertia(vehicle, center_of_gravity=vehicle_CG)
-                update_total_moment_of_inertia(total_MOI,vehicle_CG,item,segment, verbose) 
+                update_total_moment_of_inertia(total_MOI,vehicle_CG,item,segment, verbose,moment_of_inertia_df) 
         
     return total_MOI
  
-def update_total_moment_of_inertia(total_MOI,vehicle_CG,C,segment,verbose):
+def update_total_moment_of_inertia(total_MOI,vehicle_CG,C,segment,verbose,moment_of_inertia_df):
     # compoment MOI
     I_component     = C.mass_properties.moments_of_inertia.tensor 
     component_mass  = C.mass_properties.mass
@@ -67,6 +67,16 @@ def update_total_moment_of_inertia(total_MOI,vehicle_CG,C,segment,verbose):
         name_column_width = 20
         num_column_width  = 6
         print(f"{C.tag.ljust(name_column_width)}",'\t \t', f"{str(round(I_global[0][0],2)).ljust(num_column_width)}", '\t', f"{str(round(I_global[1][1],2)).ljust(num_column_width)}", '\t'f"{str(round(I_global[2][2],2)).ljust(num_column_width)}", '\t'  )    
+    moment_of_inertia_df.loc[len(moment_of_inertia_df)] = [
+    C.tag,
+    round(C.mass_properties.mass, 2),
+    round(I_global[0][0], 2),
+    round(I_global[1][1], 2),
+    round(I_global[2][2], 2),
+    round(I_global[0][1], 2),
+    round(I_global[0][2], 2),
+    round(I_global[1][2], 2),
+    ]
     if segment != None:
         ones_row  = segment.state.ones_row  
         segment.state.conditions.weights.components.moments_of_inertia_Ixx[C.tag] = I_global[0][0]  * ones_row(1) 

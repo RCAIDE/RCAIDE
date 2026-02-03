@@ -12,6 +12,9 @@ from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_ve
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity 
 
 import numpy as np
+import pandas as pd
+import os
+import sys
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  mass_properties
@@ -260,24 +263,124 @@ def mass_properties_preprocess_routine(segment, i = 0):
                 print(f"{'Zero Fuel Weight':<25}{analyses.vehicle.mass_properties.weight_breakdown.get('zero_fuel_weight', 0):>15.2f}")
                 print(f"{'Max Takeoff Weight':<25}{analyses.vehicle.mass_properties.max_takeoff:>15.2f}")
                 print("\n===============================\n") 
+            
+        if i==0 and weights_analysis.settings.write_mass_properties:
+            # -------------------------------------------------
+            # File name + location (same pattern you use)
+            # -------------------------------------------------
+            excel_filename = os.path.join(
+                os.path.dirname(os.path.abspath(sys.argv[0])),
+                os.path.splitext(os.path.basename(sys.argv[0]))[0] +
+                "_weight_breakdown.xlsx"
+            )
+
+            # -------------------------------------------------
+            # Collect rows
+            # -------------------------------------------------
+            rows = []
+
+            # Structural
+            structural = analyses.vehicle.mass_properties.weight_breakdown.empty.get("structural", {})
+            for k, v in structural.items():
+                if k != "total":
+                    rows.append({"Section": "Structural", "Component": k.replace("_", " ").title(), "Weight (kg)": v})
+            if "total" in structural:
+                rows.append({"Section": "Structural", "Component": "Total", "Weight (kg)": structural["total"]})
+
+            # Propulsion
+            propulsion = analyses.vehicle.mass_properties.weight_breakdown.empty.get("propulsion", {})
+            for k, v in propulsion.items():
+                if k != "total":
+                    rows.append({"Section": "Propulsion", "Component": k.replace("_", " ").title(), "Weight (kg)": v})
+            if "total" in propulsion:
+                rows.append({"Section": "Propulsion", "Component": "Total", "Weight (kg)": propulsion["total"]})
+
+            # Systems
+            systems = analyses.vehicle.mass_properties.weight_breakdown.empty.get("systems", {})
+            for k, v in systems.items():
+                if k != "total":
+                    rows.append({"Section": "Systems", "Component": k.replace("_", " ").title(), "Weight (kg)": v})
+            if "total" in systems:
+                rows.append({"Section": "Systems", "Component": "Total", "Weight (kg)": systems["total"]})
+
+            # Payload
+            payload = analyses.vehicle.mass_properties.weight_breakdown.get("payload", {})
+            for k, v in payload.items():
+                if k != "total":
+                    rows.append({"Section": "Payload", "Component": k.replace("_", " ").title(), "Weight (kg)": v})
+            if "total" in payload:
+                rows.append({"Section": "Payload", "Component": "Total", "Weight (kg)": payload["total"]})
+
+            # Operational Items
+            ops = analyses.vehicle.mass_properties.weight_breakdown.get("operational_items", {})
+            for k, v in ops.items():
+                if k != "total":
+                    rows.append({"Section": "Operational Items", "Component": k.replace("_", " ").title(), "Weight (kg)": v})
+            if "total" in ops:
+                rows.append({"Section": "Operational Items", "Component": "Total", "Weight (kg)": ops["total"]})
+
+            # -------------------------------------------------
+            # Summary
+            # -------------------------------------------------
+            rows.extend([
+                {"Section": "Summary", "Component": "Operating Empty Weight", "Weight (kg)": analyses.vehicle.mass_properties.operating_empty},
+                {"Section": "Summary", "Component": "Payload Weight",         "Weight (kg)": analyses.vehicle.mass_properties.payload},
+                {"Section": "Summary", "Component": "Fuel Weight",            "Weight (kg)": analyses.vehicle.mass_properties.fuel},
+                {"Section": "Summary", "Component": "Zero Fuel Weight",       "Weight (kg)": analyses.vehicle.mass_properties.weight_breakdown.get("zero_fuel_weight", 0)},
+                {"Section": "Summary", "Component": "Takeoff Weight",         "Weight (kg)": analyses.vehicle.mass_properties.takeoff},
+                {"Section": "Summary", "Component": "Max Takeoff Weight",     "Weight (kg)": analyses.vehicle.mass_properties.max_takeoff},
+            ])
+
+            # -------------------------------------------------
+            # Write Excel
+            # -------------------------------------------------
+            df = pd.DataFrame(rows)
+
+            with pd.ExcelWriter(excel_filename, engine="openpyxl") as writer:
+                df.to_excel(writer, sheet_name="Weight Breakdown", index=False)
+
+            print(f"Weight breakdown written to Excel:\n  {excel_filename}")
     
     # ---------------------------------------------------------------------------------------------------------------------------     
     #  STEP 5: Compute Center of Gravity   
     # --------------------------------------------------------------------------------------------------------------------------- 
     if weights_analysis.settings.run_center_of_gravity_analysis:
+        centre_of_gravity_df = pd.DataFrame(columns=[
+        "Component",
+        "Mass (kg)",
+        "CG x (m)",
+        "CG y (m)",
+        "CG z (m)"
+        ])
         if i != 0:
             verbose_flag = False
         else:
             verbose_flag = weights_analysis.print_weight_analysis_report
-        _ ,_, _ = compute_vehicle_center_of_gravity(analyses.vehicle,
+        _ ,_, _, centre_of_gravity_df = compute_vehicle_center_of_gravity(analyses.vehicle,centre_of_gravity_df,
                                                 overwrite_center_of_gravity =  weights_analysis.settings.run_center_of_gravity_analysis ,
                                                 segment=segment,
                                                 verbose=verbose_flag)  
+
+        if i==0 and weights_analysis.settings.write_mass_properties:
+            # Centre of Gravity sheet
+            with pd.ExcelWriter(excel_filename, engine="openpyxl",mode="a",if_sheet_exists="replace") as writer:
+                centre_of_gravity_df.to_excel(writer,sheet_name="Centre of Gravity",index=False)
+            print(f"CG breakdown written to Excel:\n  {excel_filename}")
 
     # ---------------------------------------------------------------------------------------------------------------------------         
     # STEP 6: Compute Moment of Inertia 
     # --------------------------------------------------------------------------------------------------------------------------- 
     if weights_analysis.settings.run_moments_of_inertia_analysis:
+        moment_of_inertia_df = pd.DataFrame(columns=[
+        "Component",
+        "Mass (kg)",
+        "Ixx (kg·m²)",
+        "Iyy (kg·m²)",
+        "Izz (kg·m²)",
+        "Ixy (kg·m²)",
+        "Ixz (kg·m²)",
+        "Iyz (kg·m²)",
+        ])
         overwrite_MOI = False
         tensor = analyses.vehicle.mass_properties.moments_of_inertia.tensor
         if np.all(tensor == 0):
@@ -286,10 +389,15 @@ def mass_properties_preprocess_routine(segment, i = 0):
             verbose_flag = False
         else:
             verbose_flag = weights_analysis.print_weight_analysis_report
-        _  = compute_vehicle_moment_of_inertia(analyses.vehicle,
+        _ ,moment_of_inertia_df = compute_vehicle_moment_of_inertia(analyses.vehicle,moment_of_inertia_df,
                                             overwrite_moment_of_intertia = overwrite_MOI,
                                             segment=segment,
                                             verbose=verbose_flag) 
+        if i==0 and weights_analysis.settings.write_mass_properties:
+            # Centre of Gravity sheet
+            with pd.ExcelWriter(excel_filename, engine="openpyxl",mode="a",if_sheet_exists="replace") as writer:
+                moment_of_inertia_df.to_excel(writer,sheet_name="Moment of Inertia",index=False)
+            print(f"MOI breakdown written to Excel:\n  {excel_filename}")
     
     
 def apply_correction_factors(analyses): 

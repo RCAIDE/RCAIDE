@@ -60,6 +60,7 @@ class Weights(Analysis):
         self.settings.run_weights_analysis                          = True
         self.settings.run_center_of_gravity_analysis                = False
         self.settings.run_moments_of_inertia_analysis               = False
+        self.settings.write_mass_properties                         = True
     
         self.settings.weight_correction_factors                     = Data()
         self.settings.weight_correction_factors.empty               = Data()
