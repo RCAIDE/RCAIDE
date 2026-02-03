@@ -320,6 +320,7 @@ def bwb_wing_planform(wing):
 
             projected_root_chord = segment_root_chord + segnent_start_span/2 * (np.tan(leading_edge_sweep) - np.tan(trailing_edge_sweep))
             wing.areas.reference = (projected_root_chord + segment_tip_chord)/2 * reference_wing_span
+            wing.chords.mean_aerodynamic =  wing.chords.mean_aerodynamic/2
 
     return 
  

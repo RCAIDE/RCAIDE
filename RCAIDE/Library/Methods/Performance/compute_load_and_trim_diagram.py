@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import  Data,  Units
 from RCAIDE.Library.Methods.Mass_Properties.estimate_maximum_landing_weight import estimate_maximum_landing_weight
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity 
 from RCAIDE.Library.Mission.Common.Pre_Process import  geometry, mass_properties
-
+import pandas as pd
 # Pacakge imports 
 import numpy as np
 from copy import  deepcopy
@@ -318,7 +318,8 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
         segment.analyses.weights.settings.run_weights_analysis             = False
         
     # run geometry and mass properties analyes 
-    center_of_gravity, mass, moment  = compute_vehicle_center_of_gravity(weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle,
+    center_of_gravity, mass, moment, _  = compute_vehicle_center_of_gravity(weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle,
+                                            centre_of_gravity_df = pd.DataFrame(columns=[ "Component", "Mass (kg)", "CG x (m)", "CG y (m)","CG z (m)"]),
                                             overwrite_center_of_gravity = True,
                                             segment=None,
                                             verbose=False) 
