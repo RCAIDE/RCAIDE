@@ -320,7 +320,17 @@ def bwb_wing_planform(wing):
 
             projected_root_chord = segment_root_chord + segnent_start_span/2 * (np.tan(leading_edge_sweep) - np.tan(trailing_edge_sweep))
             wing.areas.reference = (projected_root_chord + segment_tip_chord)/2 * reference_wing_span
-            wing.chords.mean_aerodynamic =  wing.chords.mean_aerodynamic/2
+            wing.chords.mean_aerodynamic =   2./3.*( projected_root_chord+segment_tip_chord - projected_root_chord*segment_tip_chord/(projected_root_chord+segment_tip_chord) )
+            
+            # estimating aerodynamic center coordinates
+            outboard_segment_origin =  wing.segments[seg_keys[tag+1]].origin
+            span = wing.spans.projected
+            taper = segment_tip_chord/projected_root_chord
+            y_coord = span / 6. * (( 1. + 2. * taper ) / (1. + taper))
+            x_coord = wing.chords.mean_aerodynamic * 0.25 + y_coord * np.tan(leading_edge_sweep) 
+            LEMAC = outboard_segment_origin[0][0] + np.tan(leading_edge_sweep)*(y_coord - wing.segments[seg_keys[tag+1]].percent_span_location * wing.spans.projected/2)
+            # estimate LEMAC
+            wing.LEMAC =  LEMAC
 
     return 
  
