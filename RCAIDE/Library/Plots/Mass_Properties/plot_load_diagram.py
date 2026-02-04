@@ -164,7 +164,7 @@ def plot_load_diagram(results,
     CG_LEMAC       = results.aerodynamic_percent_LEMAC_location*100
     SM             = results.aerodynamic_static_margin*100
     SM_levels      = np.linspace(static_margin_lower_limit*100, static_margin_upper_limit*100, static_margin_resolution)
-    CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='viridis', extend='both') 
+    CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='coolwarm', extend='both', alpha = 0.5) 
     CS2  =  axis.contour(CG_LEMAC, results.aerodynamic_mass,SM, levels = SM_levels,  colors='black', extend='both') 
     cbar = fig.colorbar(CS, ax=axis)
     axis.clabel(CS2, fontsize=10)
