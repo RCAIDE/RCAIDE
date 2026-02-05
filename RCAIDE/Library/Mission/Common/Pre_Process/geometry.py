@@ -232,12 +232,17 @@ def write_geometry_to_excel(vehicle):
     for wing in vehicle.wings:
         wing_rows.append({
             "Wing Tag"                      : wing.tag,
-            "Wing Origin"                   : wing.origin,
+            "Wing Origin"                   : wing.origin[0],
             "Projected Span (m)"            : wing.spans.projected,
             "Root Chord (m)"                : wing.chords.root,
             "Mean Aerodynamic Chord (m)"    : wing.chords.mean_aerodynamic,
+            "Gross Aspect Ratio"            : wing.aspect_ratio,
+            "Trapezoid Aspect Ratio"        : wing.spans.projected**2/wing.areas.reference,
             "LEMAC (m)"                     : wing.LEMAC,
             "Reference Area (m^2)"          : wing.areas.reference,
+            "Wetted Area (m^2)"             : wing.areas.wetted,
+            "XZ Symmetric"                  : wing.xz_plane_symmetric,
+            "XY Symmetric"                  : wing.xy_plane_symmetric,
         })
 
         # Collect segment-level properties for each wing
@@ -245,7 +250,7 @@ def write_geometry_to_excel(vehicle):
             segment_rows.append({
                 "Wing Tag"                      : wing.tag,
                 "Segment Tag"                   : segment.tag,
-                "Segment Origin"                : segment.origin,
+                "Segment Origin"                : f'[{str(segment.origin[0][0])}, {str(segment.origin[0][1])}, {str(segment.origin[0][2])}]',
                 "Spanwise Location (%)"         : segment.percent_span_location * 100.0,
                 "Root Chord Fraction"           : segment.root_chord_percent,
                 "Twist (deg)"                   : segment.twist / Units.degree,
@@ -261,13 +266,15 @@ def write_geometry_to_excel(vehicle):
         # Propulsors
         for propulsor in network.propulsors:
             prop_rows.append({
-                "Network Tag"   : network_tag,
-                 "Propulsor Origin" : propulsor.origin,
-                "Propulsor Tag" : getattr(propulsor, "tag", None),
-                "Type"          : propulsor.__class__.__name__,
-                "Length (m)"    : getattr(propulsor, "length", None),
-                "Diameter (m)"  : getattr(propulsor, "diameter", None),
-                "Bypass Ratio"  : getattr(propulsor, "bypass_ratio", None),
+                "Network Tag"           : network_tag,
+                "Propulsor Origin"      : propulsor.origin[0],
+                "Propulsor Tag"         : getattr(propulsor, "tag", None),
+                "Type"                  : propulsor.__class__.__name__,
+                "Length (m)"            : getattr(propulsor, "length", None),
+                "Diameter (m)"          : getattr(propulsor, "diameter", None),
+                "Bypass Ratio"          : getattr(propulsor, "bypass_ratio", None),
+                "Sealevel Static Thrust [lbf]" : getattr(propulsor, "sealevel_static_thrust", None)/Units.lbf,
+                "TSFC [lb/lbf-hr]"      : getattr(propulsor, "TSFC", None)[0][0]
             })
             
         for fuel_line in network.fuel_lines:
@@ -275,6 +282,7 @@ def write_geometry_to_excel(vehicle):
             for fuel_tank in fuel_line.fuel_tanks:
                 fuel_rows.append({
                     "Network Tag"                  : network_tag,
+                    "Tank Type"                    : str(type(fuel_tank)[0]).split('.')[-1],
                     "Container Type"               : "fuel_line",
                     "Container Tag"                : container_tag,
                     "Fuel Tank Tag"                : fuel_tank.tag,
@@ -287,6 +295,7 @@ def write_geometry_to_excel(vehicle):
                     "BWB Aft Tank"                 : getattr(fuel_tank, "bwb_aft_tank", None),
                     "XZ Plane Symmetric"           : getattr(fuel_tank, "xz_plane_symmetric", None),
                     "Fuel Net Volume (m^3)"        : getattr(getattr(fuel_tank.fuel, "volume_properties", None), "net_volume", None) if fuel_tank.fuel else None,
+                    "Fuel Gross Volume (m^3)"      : getattr(getattr(fuel_tank, "volume_properties", None), "gross_volume", None) if fuel_tank.fuel else None,
                     "Fuel Mass (kg)"               : getattr(getattr(fuel_tank.fuel, "mass_properties", None), "mass", None) if fuel_tank.fuel else None,
                 })
 
