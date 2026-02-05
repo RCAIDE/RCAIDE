@@ -85,8 +85,10 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     W_PAX_per_pax =  W_PAX / PAX
     MTOW          =  vehicle_0.mass_properties.max_takeoff
     MZFW          =  vehicle_0.mass_properties.max_zero_fuel
-    FUEL          =  vehicle_0.mass_properties.fuel
-    PLD           =  vehicle_0.mass_properties.payload     
+    FUEL          =  vehicle_0.mass_properties.max_fuel
+    PLD           =  vehicle_0.mass_properties.max_payload
+    vehicle_0.mass_properties.payload = PLD  
+    PLD_per_pax   =  (weight_breakdown.payload.passengers  + weight_breakdown.payload.baggage) / PAX
     OEW           =  weight_breakdown.empty.total
     MLW           =  estimate_maximum_landing_weight(MTOW)  
     W_CARGO = 0 
@@ -238,10 +240,10 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         
             # Aircraft-Level Properties  
             vehicle.mass_properties.takeoff                 = None # this ensures that the takeoff weight is computed 
-            vehicle.mass_properties.payload                 = percent_weight[w_i] * PLD
+            vehicle.mass_properties.payload                 = PLD_per_pax   if w_i == 0 else percent_weight[w_i] * PLD
             vehicle.mass_properties.cargo                   = percent_weight[w_i] * W_CARGO
             vehicle.mass_properties.center_of_gravity[0][0] = x_cg_0[0][0] * percent_cg_shift[c_g_i]   
-            vehicle.number_of_passengers                    = pax =  1 if w_i == 0 else int(vehicle_0.number_of_passengers *  percent_weight[w_i]) 
+            vehicle.number_of_passengers                    = 1 if w_i == 0 else int(vehicle_0.number_of_passengers *  percent_weight[w_i]) 
             vehicle.mass_properties.fuel                    = percent_weight[w_i] * FUEL
              
             for network in vehicle.networks:
@@ -265,7 +267,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
             # Update Passengers 
             #------------------------------------------------------------------------  
             # run weights analysis and store results
-            vehicle.number_of_passengers  =  pax =  1 if w_i == 0 else int(percent_weight[w_i] * PAX ) 
+            vehicle.number_of_passengers  =  1 if w_i == 0 else int(percent_weight[w_i] * PAX ) 
             for fuselage in  vehicle.fuselages: 
                 for cabin in fuselage.cabins:  
                     pax =  1 if w_i == 0 else int(percent_weight[w_i] *  vehicle_0.fuselages[fuselage.tag].cabins[cabin.tag].number_of_passengers)  
@@ -333,6 +335,7 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
     print('***************************************')
     print('Loading Diagram Data Point: ' + str(counter+1) + ' of ' +  str(total_sims))
     print('Mass                      : ', LT_results.loading_mass[f_o,p_i,c_i,f_i])
+    print('OEW                       : ', weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.operating_empty)
     print('Percent Fuel              : ', percent_fuel*100 )
     print('Percent Cargo             : ', percent_cargo*100 )
     print('Percent Pax               : ', percent_pax*100 )
@@ -383,6 +386,7 @@ def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,LT
     print('***************************************')
     print('Trim Diagram Data Point  : ' + str(counter+1) + ' of ' +  str(total_sims))
     print('Center of Gravity        : ',vehicle.mass_properties.center_of_gravity[0][0])
+    print('OEW                       : ', vehicle.mass_properties.operating_empty)
     print('% LEMAC Location         : ', LT_results.aerodynamic_LEMAC_location[w_i,c_g_i] )
     print('Neutral Point            : ',LT_results.aerodynamic_neutral_point[w_i,c_g_i])
     print('Static Margin            : ',LT_results.aerodynamic_static_margin[w_i,c_g_i]) 

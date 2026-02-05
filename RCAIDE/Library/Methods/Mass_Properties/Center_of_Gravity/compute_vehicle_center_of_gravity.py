@@ -83,5 +83,6 @@ def compute_vehicle_center_of_gravity(vehicle,centre_of_gravity_df, overwrite_ce
             
     if overwrite_center_of_gravity and (mission_mass != 0.0): 
         vehicle.mass_properties.center_of_gravity = CG.tolist()
+        vehicle.mass_properties.operating_empty_center_of_gravity = OEW_CG.tolist()
         
     return vehicle.mass_properties.center_of_gravity, mission_mass, mission_moment, centre_of_gravity_df 

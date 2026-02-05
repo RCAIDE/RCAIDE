@@ -182,7 +182,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
                     analyses.vehicle.mass_properties.max_fuel = new_max_fuel                
                 
                 iteration += 1
-                if residual_max_fuel < 10 and residual_max_zero_fuel <10:
+                if residual_max_fuel < 1 and residual_max_zero_fuel <1:
                     break
                 else:
                     analyses.vehicle.mass_properties.max_zero_fuel += residual_max_zero_fuel * 0.1
