@@ -133,7 +133,7 @@ def compute_fuel_system_weight(vehicle, NENG,settings):
     for network in vehicle.networks:
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks: 
-                WTANK += 1.5*(fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass) # The factor 0.5 covers all the other tank adjustments
+                WTANK += fuel_tank.tank_accesories_weight_factor * (fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass) # The factor 0.5 covers all the other tank adjustments
                     
             # # Step 1.1 create a copy of the transfer lines and use a physics based approach to estimate line weight 
             # fuel_line_jet_A = deepcopy(fuel_line) 

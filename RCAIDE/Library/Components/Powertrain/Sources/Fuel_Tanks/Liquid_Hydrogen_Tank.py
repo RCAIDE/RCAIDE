@@ -101,6 +101,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.design_isa_deviation     = 0
         self.ullage_volume_fraction   = 0.07
         self.design_external_pressure = 0 
+        self.tank_accesories_weight_factor = 1.5
 
     def compute_volume(self, wings, fuselages,fuel_tanks):
         """
