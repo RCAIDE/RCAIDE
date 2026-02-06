@@ -14,6 +14,7 @@ from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLO
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_bwb_wing_weight        import compute_wing_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.BWB.FLOPS.compute_operating_items_weight import compute_operating_items_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Common                                   import compute_payload_weight
+from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Hydrogen.BWB.Semi_Empirical.compute_landing_gear_weight import compute_landing_gear_weight
 from RCAIDE.Library.Methods.Mass_Properties.Weight_Buildups.Conventional.Transport                                import FLOPS 
 from RCAIDE.Library.Methods.Geometry.Planform                                                                     import segment_properties  
 from .compute_propulsion_system_weight import compute_propulsion_system_weight
@@ -131,26 +132,46 @@ def compute_operating_empty_weight(vehicle,settings=None):
     W_systems = compute_systems_weight(vehicle)
     for system in vehicle.systems:
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_avionics 
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_avionics = system.mass_properties.mass
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_flight_control 
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_flight_control = system.mass_properties.mass
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_apu 
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_apu = system.mass_properties.mass
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_electrical 
+                system.mass_properties.calculated_flag = True
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_hyd_pnu 
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_hyd_pnu = system.mass_properties.mass
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls: 
-            if system.mass_properties.mass == 0:
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 system.mass_properties.mass = W_systems.W_ac + W_systems.W_anti_ice   
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_anti_ice = system.mass_properties.mass * 0.5
+                W_systems.W_ac       = system.mass_properties.mass * 0.5
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Instruments:
-            if system.mass_properties.mass == 0:     
+            if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:     
                 system.mass_properties.mass = W_systems.W_instruments  
+                system.mass_properties.calculated_flag = True
+            else:
+                W_systems.W_instruments = system.mass_properties.mass
 
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -284,7 +305,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
     ##-------------------------------------------------------------------------------                 
     # Landing Gear Weight
     ##------------------------------------------------------------------------------- 
-    landing_gear = FLOPS.compute_landing_gear_weight(vehicle) 
+    landing_gear = compute_landing_gear_weight(vehicle) # This is a specific Hydrogen Landing Gear class that considers Max Landing Weight to be MTOW
     for LG in vehicle.landing_gears:
         if isinstance(LG, RCAIDE.Library.Components.Landing_Gear.Main_Landing_Gear): 
             LG.mass_properties.mass = landing_gear.main 

@@ -67,6 +67,7 @@ class Systems(Component):
         self.power_draw  = 0.0
         self.control     = None
         self.accessories = None 
+        self.mass_properties.calculated_flag = False
 
     def append_operating_conditions(self, segment, bus): 
         """
