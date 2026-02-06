@@ -137,7 +137,7 @@ def compute_fuselage_integral_tank_fuel_volume(fuel_tank,fuselage):
     fuel_tank.fuel.origin = [[origin_x, origin_y, origin_z]]  
     return 
 
-def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor = 0.9):
+def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor = 0.85):
     """
     Computes the fuel volume for an integral fuel tank within a wing structure.
 
