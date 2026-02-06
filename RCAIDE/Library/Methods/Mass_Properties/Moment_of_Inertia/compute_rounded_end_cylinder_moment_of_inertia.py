@@ -104,14 +104,13 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
     # MOI about cylindrical axis
     d = outer_length / 2 + (3/8)*outer_radius # distance from centroid to base of hemisphere
     I_cylinder_cylin_axis      = mass_cyl *  ( (outer_radius**2 + inner_radius**2)/4 + (outer_length**2)/12 )
-    I_sperical_caps_cylin_axis = 2/5 * 2*mass_sph  *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
-    I_tot_cylin_axis           = I_cylinder_cylin_axis + I_sperical_caps_cylin_axis + 2*mass_sph*(d**2)
+    I_sperical_caps_cylin_axis = 2/5 * mass_sph  *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
+    I_tot_cylin_axis           = I_cylinder_cylin_axis + I_sperical_caps_cylin_axis + mass_sph*(d**2)
 
     # MOI about longitudinal axis (passing through the center of the circle)
     I_cylinder_long_axis       = 0.5 * mass_cyl * (outer_radius**2 + inner_radius**2)
-    I_sperical_caps_long_axis  = 2/5 * 2*mass_sph *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
+    I_sperical_caps_long_axis  = 2/5 * mass_sph *  (outer_radius**5 - inner_radius**5)/ (outer_radius**3 - inner_radius**3)
     I_tot_long_axis            = I_cylinder_long_axis + I_sperical_caps_long_axis    
-     
 
     # depending on orientation of cylindrical tank     
     if isinstance(component, RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
