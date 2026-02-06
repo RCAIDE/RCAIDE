@@ -90,7 +90,10 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     vehicle_0.mass_properties.payload = PLD  
     PLD_per_pax   =  (weight_breakdown.payload.passengers  + weight_breakdown.payload.baggage) / PAX
     OEW           =  weight_breakdown.empty.total
-    MLW           =  estimate_maximum_landing_weight(MTOW)  
+    if mission.segments[cruise_segment_tag].analyses.weights.propulsion_architecture == 'Hydrogen' or : 
+        MLW = MTOW
+    else:
+        MLW           =  estimate_maximum_landing_weight(MTOW)
     W_CARGO = 0 
     for cargo_bay in vehicle_0.cargo_bays:  
         W_CARGO += cargo_bay.mass_properties.mass   
