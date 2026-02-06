@@ -12,6 +12,7 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units , Data  
 from RCAIDE.Library.Plots.Common import set_axes, plot_style    
 from RCAIDE.Library.Mission.Common.Pre_Process import mass_properties,geometry
+from RCAIDE.Library.Plots import *
  
 # Pacakge imports 
 import numpy as np
@@ -285,7 +286,10 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
 
         # Allocating resulting range in ouput array.
         R[i] =  results.segments[-1].conditions.frames.inertial.position_vector[-1,0]
-
+        # if i==1 or i ==2:
+        #     plot_altitude_sfc_weight(results)
+        #     plot_aerodynamic_coefficients(results)
+        #     plt.show()
     # Inserting point (0,0) in output arrays
     R.insert(0,0)
     PLD.insert(0,MaxPLD) 
