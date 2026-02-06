@@ -183,7 +183,10 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.propulsion.engines             = 0
     output.empty.propulsion.thrust_reversers    = 0
     output.empty.propulsion.miscellaneous       = 0
-    output.empty.propulsion.fuel_system         = 0
+
+    output.empty.propulsion.tanks          = 0
+    output.empty.propulsion.pumps          = 0
+    output.empty.propulsion.fuel_lines     = 0
 
     W_energy_network                   = Data()
     W_energy_network.total             = 0
@@ -191,7 +194,9 @@ def compute_operating_empty_weight(vehicle,settings=None):
     W_energy_network.W_thrust_reverser = 0 
     W_energy_network.W_engine_controls = 0 
     W_energy_network.W_starter         = 0 
-    W_energy_network.W_fuel_system     = 0 
+    W_energy_network.W_tanks           = 0 
+    W_energy_network.W_fuel_lines      = 0 
+    W_energy_network.W_pumps           = 0 
     W_energy_network.W_motors          = 0 
     W_energy_network.W_nacelle         = 0 
     W_energy_network.W_battery         = 0
@@ -210,7 +215,9 @@ def compute_operating_empty_weight(vehicle,settings=None):
         W_energy_network.W_thrust_reverser  += W_propulsion.W_thrust_reverser
         W_energy_network.W_engine_controls  += W_propulsion.W_engine_controls
         W_energy_network.W_starter          += W_propulsion.W_starter
-        W_energy_network.W_fuel_system      += W_propulsion.W_fuel_system
+        W_energy_network.W_tanks            += W_propulsion.W_tanks     
+        W_energy_network.W_fuel_lines       += W_propulsion.W_fuel_lines
+        W_energy_network.W_pumps            += W_propulsion.W_pumps     
         W_energy_network.W_nacelle          += W_propulsion.W_nacelle
         number_of_engines                   += W_propulsion.number_of_engines
         number_of_tanks                     += W_propulsion.number_of_fuel_tanks  
@@ -246,7 +253,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
         NENG   = number_of_engines
         WTNFA  = W_energy_network.W_engine + W_energy_network.W_thrust_reverser + W_energy_network.W_starter \
                 + 0.25 * W_energy_network.W_engine_controls + 0.11 * W_systems.W_instruments + 0.13 * W_systems.W_electrical \
-                + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_system
+                + 0.13 * W_systems.W_hyd_pnu + 0.25 * W_energy_network.W_fuel_lines + W_energy_network.W_tanks + W_energy_network.W_pumps
         WPOD += WTNFA / np.max([1, NENG]) + W_energy_network.W_nacelle/ np.max(
             [1.0, NENG + 1. / 2 * (NENG - 2 * np.floor(NENG / 2.))])
  
@@ -256,7 +263,9 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.propulsion.engines             = W_energy_network.W_engine
     output.empty.propulsion.thrust_reversers    = W_energy_network.W_thrust_reverser
     output.empty.propulsion.miscellaneous       = W_energy_network.W_engine_controls + W_energy_network.W_starter
-    output.empty.propulsion.fuel_system         = W_energy_network.W_fuel_system
+    output.empty.propulsion.tanks              = W_energy_network.W_tanks     
+    output.empty.propulsion.fuel_lines         = W_energy_network.W_fuel_lines
+    output.empty.propulsion.pumps              = W_energy_network.W_pumps     
 
     ##-------------------------------------------------------------------------------                 
     # Wing Weight 

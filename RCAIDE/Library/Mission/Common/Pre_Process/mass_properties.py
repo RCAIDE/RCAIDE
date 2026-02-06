@@ -463,6 +463,10 @@ def apply_component_weights(analyses):
                     propulsor.mass_properties.mass *= 1 
                     if hasattr(weight_correction_factors.empty.structural, 'nacelle'):
                         propulsor.nacelle.mass_properties.mass *= weight_correction_factors.empty.structural.nacelle
+                # for fuel_line in network.fuel_lines:
+                #     for converter in fuel_line.converters:
+                #         if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Pump()):
+                #             analyses.vehicle.mass_properties.weight_breakdown.empty.propulsion.converters[converter.tag] = converter.mass_properties.mass
                     # Add to this nacelles, thrust reversers, etc
         elif key == 'landing_gears':
             for landing_gear in analyses.vehicle.landing_gears:
@@ -472,7 +476,7 @@ def apply_component_weights(analyses):
             for boom in analyses.vehicle.booms:
                 if hasattr(weight_correction_factors.empty.structural, 'boom'):
                     boom.mass_properties.mass *= weight_correction_factors.empty.structural.boom    
-        elif key == 'systems':
+        elif key == 'systems': # If you have factor and a defined system weight, multiply those two in a calculator. 
             for system in analyses.vehicle.systems:
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
                     if hasattr(weight_correction_factors.empty.systems, 'avionics') and system.mass_properties.calculated_flag:

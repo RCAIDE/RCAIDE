@@ -88,19 +88,21 @@ def compute_propulsion_system_weight(vehicle,ref_propulsor, settings):
                   
     if ref_nacelle is not None:
         WNAC        = compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG ) 
-    WFSYS           = compute_fuel_system_weight(vehicle, NENG,settings)
+    WTANK, WLINE, WPUMP = compute_fuel_system_weight(vehicle, NENG,settings)
     WENG            = compute_engine_weight(vehicle,ref_propulsor)
     if ref_nacelle is not None:
         WEC, WSTART     = compute_misc_propulsion_system_weight(vehicle,ref_propulsor,ref_nacelle,NENG)
     WTHR            = compute_thrust_reverser_weight(ref_propulsor,NENG)
-    WPRO            = NENG * WENG + WFSYS + WEC + WSTART + WTHR # Nacelle weight is not included in the propulsion system weight. it is included in the structural weight. 
+    WPRO            = NENG * WENG +  WTANK + WLINE + WPUMP + WEC + WSTART + WTHR # Nacelle weight is not included in the propulsion system weight. it is included in the structural weight. 
 
     output                      = Data()
     output.W_prop               = WPRO
     output.W_thrust_reverser    = WTHR
     output.W_starter            = WSTART
     output.W_engine_controls    = WEC
-    output.W_fuel_system        = WFSYS
+    output.W_tanks              = WTANK
+    output.W_fuel_lines         = WLINE
+    output.W_pumps              = WPUMP
     output.W_nacelle            = WNAC
     output.W_engine             = WENG * NENG
     output.number_of_engines    = NENG 
@@ -123,44 +125,48 @@ def compute_fuel_system_weight(vehicle, NENG,settings):
         Properties Used:
             N/A
     """
-    WFSYS = 0
+    WTANK = 0
+    WLINE = 0
+    WPUMP = 0
  
     #if settings.physics_based_distributor_estimation: 
     for network in vehicle.networks:
         for fuel_line in network.fuel_lines:
             for fuel_tank in fuel_line.fuel_tanks: 
-                WFSYS += fuel_tank.mass_properties.mass
+                WTANK += 1.5*(fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass) # The factor 0.5 covers all the other tank adjustments
                     
-            # Step 1.1 create a copy of the transfer lines and use a physics based approach to estimate line weight 
-            fuel_line_jet_A = deepcopy(fuel_line) 
-            fuel_line_jet_A.pipe.rigid_material                  = RCAIDE.Library.Attributes.Materials.Aluminum()
-            fuel_line_jet_A.pipe.flexible_material               = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
-            fuel_line_jet_A.pipe.flexible_material_ratio         = 0.25
-            fuel_line_jet_A.pipe.diameters                       = Data()
-            fuel_line_jet_A.pipe.diameters.external              = 0.625 *  Units.inches 
-            fuel_line_jet_A.pipe.diameters.internal              = 0.625 *  Units.inches -  (2 * 0.035)*  Units.inches
-            fuel_line_jet_A.insulation                           = Data()
-            fuel_line_jet_A.insulation.rigid_material            = RCAIDE.Library.Attributes.Materials.Aluminum() 
-            fuel_line_jet_A.insulation.flexible_material         = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304() 
-            fuel_line_jet_A.insulation.flexible_material_ratio   = 0.25
-            fuel_line_jet_A.insulation.diameters                 = Data()
-            fuel_line_jet_A.insulation.diameters.external        = 0.0
-            fuel_line_jet_A.insulation.diameters.internal        = 0.0 
+            # # Step 1.1 create a copy of the transfer lines and use a physics based approach to estimate line weight 
+            # fuel_line_jet_A = deepcopy(fuel_line) 
+            # fuel_line_jet_A.pipe.rigid_material                  = RCAIDE.Library.Attributes.Materials.Aluminum()
+            # fuel_line_jet_A.pipe.flexible_material               = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
+            # fuel_line_jet_A.pipe.flexible_material_ratio         = 0.25
+            # fuel_line_jet_A.pipe.diameters                       = Data()
+            # fuel_line_jet_A.pipe.diameters.external              = 0.625 *  Units.inches 
+            # fuel_line_jet_A.pipe.diameters.internal              = 0.625 *  Units.inches -  (2 * 0.035)*  Units.inches
+            # fuel_line_jet_A.insulation                           = Data()
+            # fuel_line_jet_A.insulation.rigid_material            = RCAIDE.Library.Attributes.Materials.Aluminum() 
+            # fuel_line_jet_A.insulation.flexible_material         = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304() 
+            # fuel_line_jet_A.insulation.flexible_material_ratio   = 0.25
+            # fuel_line_jet_A.insulation.diameters                 = Data()
+            # fuel_line_jet_A.insulation.diameters.external        = 0.0
+            # fuel_line_jet_A.insulation.diameters.internal        = 0.0 
             
-            # Step 1.2 compute transfer line weight 
-            _ =  compute_distributor_center_of_gravity(fuel_line_jet_A,vehicle, length=0)
-            W_SYS_Jet_A = fuel_line_jet_A.mass_properties.mass
+            # # Step 1.2 compute transfer line weight 
+            # _ =  compute_distributor_center_of_gravity(fuel_line_jet_A,vehicle, length=0)
+            # W_SYS_Jet_A = fuel_line_jet_A.mass_properties.mass
             
             # Step 2 estimate line weight of true transfer line
-            _ =  compute_distributor_center_of_gravity(fuel_line,vehicle, length=0)
-            W_SYS_truth = fuel_line.mass_properties.mass
+            compute_distributor_center_of_gravity(fuel_line,vehicle, length=0)
+            WLINE = fuel_line.mass_properties.mass
             
-            # compute adjustment of transfer line weight 
-            W_SYS_adjustment =  W_SYS_truth - W_SYS_Jet_A
-            
-            WFSYS += W_SYS_adjustment 
+            # # compute adjustment of transfer line weight 
+            # W_SYS_adjustment =  W_SYS_truth - W_SYS_Jet_A
 
-    return WFSYS
+        for converter in network.converters:
+            if issubclass(type(converter),RCAIDE.Library.Components.Powertrain.Converters.Pump):
+                WPUMP += converter.mass_properties.mass
+
+    return WTANK, WLINE, WPUMP
 
 
 def compute_nacelle_weight(ref_propulsor,ref_nacelle,NENG):

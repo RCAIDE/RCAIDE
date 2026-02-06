@@ -17,8 +17,7 @@ def design_pump(pump):
     if isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Coolants.Coolant) == False and\
        isinstance(pump.working_fluid,RCAIDE.Library.Attributes.Propellants.Propellant) == False:
         raise AssertionError('Working fluid must be either a coolant or propellant!')  
-         
-        
+    
     # compute delta P
     pressure_rise = pump.design_outlet_pressure - pump.design_inlet_pressure
 
