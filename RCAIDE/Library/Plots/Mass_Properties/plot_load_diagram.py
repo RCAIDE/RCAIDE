@@ -148,7 +148,7 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------
     x_pts_MTOW = np.linspace(x_axis_lower_limit, x_axis_upper_limit)
     y_pts_MTOW = np.ones_like(x_pts_MTOW)  * results.MTOW
-    axis.plot(x_pts_MTOW, y_pts_MTOW, 'r-', label = 'MTOW') 
+    axis.plot(x_pts_MTOW, y_pts_MTOW, 'g-', label = 'MTOW') 
     
 
     # ------------------------------------------------------------------------    
@@ -156,7 +156,7 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------
     x_pts_MLW = np.linspace(x_axis_lower_limit, x_axis_upper_limit)
     y_pts_MLW = np.ones_like(x_pts_MLW)  * results.MLW
-    axis.plot(x_pts_MLW, y_pts_MLW, 'r--', label = 'MLW')  
+    axis.plot(x_pts_MLW, y_pts_MLW, 'g--', label = 'MLW')  
 
     # ------------------------------------------------------------------------
     # Stability Contours 
@@ -164,7 +164,7 @@ def plot_load_diagram(results,
     CG_LEMAC       = results.aerodynamic_percent_LEMAC_location*100
     SM             = results.aerodynamic_static_margin*100
     SM_levels      = np.linspace(static_margin_lower_limit*100, static_margin_upper_limit*100, static_margin_resolution)
-    CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='coolwarm', extend='both', alpha = 0.5) 
+    CS   =  axis.contourf(CG_LEMAC, results.aerodynamic_mass, SM, levels = SM_levels, cmap='coolwarm_r', extend='both', alpha = 0.5) 
     CS2  =  axis.contour(CG_LEMAC, results.aerodynamic_mass,SM, levels = SM_levels,  colors='black', extend='both') 
     cbar = fig.colorbar(CS, ax=axis)
     axis.clabel(CS2, fontsize=10)
