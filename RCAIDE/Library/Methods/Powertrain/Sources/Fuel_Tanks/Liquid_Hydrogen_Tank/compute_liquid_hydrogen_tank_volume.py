@@ -13,15 +13,57 @@ from RCAIDE.Framework.Core import Units, Data
 # Python imports
 from copy import deepcopy
 import numpy as np
-from scipy.optimize import minimize
+from scipy.optimize import minimize, brentq
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Structural Solver
 # ----------------------------------------------------------------------------------------------------------------------    
 def compute_liquid_hydrogen_tank_volume(fuel_tank):
+    """
+    Size a liquid hydrogen tank to meet outer-diameter constraints while satisfying
+    structural and thermal limits via nested 1D root solves.
+
+    Parameters
+    ----------
+    fuel_tank : Fuel_Tank
+        Fuel tank object containing geometry, material, fuel, and environment data.
+
+    Returns
+    -------
+    None
+        Updates the fuel_tank object in place, including:
+            - inner_structure.thickness : float
+                Outer/inner radius ratio of the pressure shell.
+            - inner_structure.outer_diameter : float
+                Outer diameter of the inner vessel [m].
+            - inner_structure.inner_diameter : float
+                Inner diameter of the inner vessel [m].
+            - inner_structure.inner_length : float
+                Cylindrical inner length [m].
+            - inner_structure.outer_length : float
+                Cylindrical outer length [m].
+            - inner_structure.material_volume : float
+                Pressure shell material volume [m³].
+            - insulation_thickness : float
+                Required insulation thickness [m].
+            - fuel.volume_properties.{gross_volume, net_volume} : float
+                Sized fuel volumes [m³] (scaled if symmetric).
+            - fuel.mass_properties.mass : float
+                Fuel mass [kg].
+            - mass_properties.structural_mass : float
+                Tank structural mass [kg].
+
+    Notes
+    -----
+    * Uses von Mises stress on a thick-walled cylinder with hemispherical caps.
+    * Thermal sizing balances convection/radiation with conduction through insulation.
+    * Outer-diameter constraint is enforced by iterating on fuel volume until geometry closes.
+    * Symmetry doubles volume and material where specified.
+    """
     
     fuel_tank.wall_thickness = None
-   
+    fuel_tank.volume_properties.net_volume = None
+
     # Constants
     safety_factor   = 1.6          # structural factor of safety
     pressure_factor = 5.0          # internal pressure multiplier for sizing
@@ -38,7 +80,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,
                                            fuel_tank.design_isa_deviation)
-    Ta = atmo_data.temperature
+    Ta = float(np.atleast_1d(atmo_data.temperature)[0])
 
     # Initial fuel volume guess
     if fuel_tank.xz_plane_symmetric:
@@ -60,49 +102,107 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         L_inner = (2 * r_inner * fuel_tank.aspect_ratio)-2*r_inner
 
         # Optimize wall thickness ratio (ro/ri) using von Mises criterion
-        ro_ri = minimize(
-            tank_width,
-            x0=(1 + 1e-2),
-            bounds=[(1+1e-5,1.1)],
-            method='L-BFGS-B',
-            tol=1e-5,
-            args=(P_internal, P_external, safety_factor, fuel_tank)
-        ).x[0]
-
+        try:
+            ro_ri = brentq(
+                tank_width,
+                1 + 1e-5,
+                1.1,
+                xtol=1e-6,
+                args=(P_internal, P_external, safety_factor, fuel_tank)
+            )
+        except ValueError:
+            ro_ri = minimize(
+                tank_width,
+                x0=(1 + 1e-2),
+                bounds=[(1+1e-5,1.1)],
+                method='L-BFGS-B',
+                tol=1e-5,
+                args=(P_internal, P_external, safety_factor, fuel_tank)
+            ).x[0]
+    
         r_outer = ro_ri * r_inner # This is the outer diameter of the inner vessel
 
 
-        # Optimize insulation thickness
-        t_ins = minimize(
+        bracket = bracket_root(
             insulation_width,
-            x0=0.01,
-            bounds=[(1e-8, 1e8)],
-            method='L-BFGS-B',
-            tol=1e-10,
-            args=(Ta, PI_Q, fuel_tank, atmo_data,r_outer,r_inner,L_inner)
-        ).x
+            start=1e-6,
+            factor=5,
+            limit=1e2,
+            args=(Ta, PI_Q, fuel_tank, atmo_data, r_outer, r_inner, L_inner)
+        )
+        if bracket:
+            try:
+                t_ins = brentq(
+                    insulation_width,
+                    *bracket,
+                    xtol=1e-9,
+                    args=(Ta, PI_Q, fuel_tank, atmo_data, r_outer, r_inner, L_inner)
+                )
+            except ValueError:
+                t_ins = minimize(
+                    insulation_width,
+                    x0=0.01,
+                    bounds=[(1e-8, 1e8)],
+                    method='L-BFGS-B',
+                    tol=1e-10,
+                    args=(Ta, PI_Q, fuel_tank, atmo_data,r_outer,r_inner,L_inner)
+                ).x[0]
+        else:
+            t_ins = minimize(
+                insulation_width,
+                x0=0.01,
+                bounds=[(1e-8, 1e8)],
+                method='L-BFGS-B',
+                tol=1e-10,
+                args=(Ta, PI_Q, fuel_tank, atmo_data,r_outer,r_inner,L_inner)
+            ).x[0]
 
         # Convergence check
         error                                          = fuel_tank.outer_diameter / 2 - (r_outer+t_ins)
         rel_error                                      = error / (fuel_tank.outer_diameter / 2)
         fuel_tank.fuel.volume_properties.net_volume    = V_guess
+        fuel_tank.fuel.volume_properties.gross_volume  = V_total
+        fuel_tank.fuel.mass_properties.mass            = float(V_guess *  fuel_tank.fuel.density)  
         V_guess                                       += alpha * rel_error
         iteration                                     += 1
+
+    if abs(error) > tol:
+        print("[Warning] compute_liquid_hydrogen_tank_volume did not converge within the iteration limit.")
 
     # Store results
     fuel_tank.inner_structure = Data()
     fuel_tank.inner_structure.thickness = ro_ri
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
+    fuel_tank.inner_structure.inner_length = L_inner
+    fuel_tank.inner_structure.outer_length =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
 
-    fuel_tank.insulation_thickness
+    fuel_tank.insulation_thickness   = t_ins
+    # Insulation geometry and mass
+    a_ins = 2 * np.pi * fuel_tank.outer_diameter/2 * (fuel_tank.outer_length) + 4 * np.pi * (fuel_tank.outer_diameter/2)**2
+    v_ins = (np.pi * (fuel_tank.outer_diameter/2)**2 * (fuel_tank.outer_length) + (4/3) * np.pi * (fuel_tank.outer_diameter/2)**3)-\
+            (np.pi * (fuel_tank.inner_structure.outer_diameter/2)**2 * (fuel_tank.inner_structure.outer_length) + (4/3) * np.pi * (fuel_tank.inner_structure.outer_diameter/2)**3)
+         
+    mass_ins = (v_ins * fuel_tank.insulation_material.density
+               + a_ins * fuel_tank.insulation_material.specific_density)
+
+    # Material volume between inner and outer shells (cylinder + two hemispherical caps)
+    L_outer = fuel_tank.inner_structure.outer_length
+    V_outer = np.pi * r_outer**2 * L_outer + (4.0/3.0) * np.pi * r_outer**3
+    V_inner = np.pi * r_inner**2 * L_inner + (4.0/3.0) * np.pi * r_inner**3
+    V_material = V_outer - V_inner
+
+    if fuel_tank.xz_plane_symmetric:
+        fuel_tank.fuel.volume_properties.gross_volume*= 2
+        fuel_tank.fuel.volume_properties.net_volume *= 2
+        V_material *= 2
+        mass_ins *=2
+    
+    fuel_tank.fuel.mass_properties.mass =  fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
+    fuel_tank.mass_properties.insulation_mass =  mass_ins
+    fuel_tank.mass_properties.structural_mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
     
     return
-
-
-
-
-
 
 
 def tank_width(ro_ri, P_internal, P_external, safety_factor, fuel_tank):
@@ -125,7 +225,7 @@ def tank_width(ro_ri, P_internal, P_external, safety_factor, fuel_tank):
     Returns
     -------
     stress_diff : float
-        Absolute difference between actual von Mises stress and 
+        Signed difference between actual von Mises stress and 
         allowable yield stress (scaled by safety factor).  
 
     Notes
@@ -147,7 +247,7 @@ def tank_width(ro_ri, P_internal, P_external, safety_factor, fuel_tank):
                         (sigma_r - sigma_z)**2 + 
                         (sigma_z - sigma_theta)**2) / 2)
 
-    return np.abs(sigma_vm - fuel_tank.material.yield_tensile_strength / safety_factor)
+    return sigma_vm - fuel_tank.material.yield_tensile_strength / safety_factor
 
 
 def insulation_width(t_ins, Ta, PI_Q, fuel_tank, atmo_data,r_o,r_i,l_i):   
@@ -176,18 +276,18 @@ def insulation_width(t_ins, Ta, PI_Q, fuel_tank, atmo_data,r_o,r_i,l_i):
     Qo = fuel_tank.acceptable_heat_leak
 
     # Estimate equilibrium wall temperature
-    Te = minimize(
+
+    Te = brentq(
         heat_transfer_wrap,
-        x0=(Ta[0] + Ti) / 2,
-        method='L-BFGS-B',
-        bounds=[(Ti, Ta)],
-        tol=1e-10,
+        Ti,
+        Ta,
+        xtol=1e-9,
         args=(t_ins, fuel_tank,atmo_data,r_o,r_i,l_i)
-    ).x
+    )
 
     Qc_mat = fuel_tank.insulation_wall_conductive_heat_transfer
 
-    return np.abs(PI_Q * Qc_mat / (2*np.pi*r_i*(l_i) + 4*np.pi*r_i**2) - Qo)
+    return PI_Q * Qc_mat / (2*np.pi*r_i*(l_i) + 4*np.pi*r_i**2) - Qo
 
 
 def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
@@ -208,19 +308,14 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
     Returns
     -------
     error : float
-        Absolute difference between external heat input and internal conduction.
+        Net heat flow residual (external - internal conduction).
     """
-    # Geometry
-    ro 
-    ri 
-    li 
-
     # Atmospheric properties
     p        = atmo_data.pressure          
     rho_air  = atmo_data.density             
     mu_air   = atmo_data.dynamic_viscosity
     k_air    = atmo_data.thermal_conductivity   
-    Ta       = atmo_data.temperature
+    Ta       = float(np.atleast_1d(atmo_data.temperature)[0])
     g        = 9.81
     Ti       = fuel_tank.design_inlet_temperature
 
@@ -262,4 +357,21 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
 
     fuel_tank.insulation_wall_conductive_heat_transfer = Qc
 
-    return np.abs(Qv + Qr - Qc)
+    return Qv + Qr - Qc
+
+
+def bracket_root(func, start=1e-6, factor=10, limit=1e2, args=()):
+    """
+    Expand a bracket until a sign change is found or a limit is reached.
+    """
+    a = start
+    fa = func(a, *args)
+    b = a * factor
+    fb = func(b, *args)
+    while np.sign(fa) == np.sign(fb) and b < limit:
+        a, fa = b, fb
+        b *= factor
+        fb = func(b, *args)
+    if np.sign(fa) == np.sign(fb):
+        return None
+    return a, b
