@@ -213,7 +213,7 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
     # Define payload range points
     #Point  = [ RANGE WITH MAX. PLD   , RANGE WITH MAX. FUEL , FERRY RANGE   ]
     TOW     = [ MTOW                               , MTOW                   , OEW + MaxFuel ]
-    FUEL    = [ min(TOW[1] - OEW - MaxPLD,MaxFuel) , MaxFuel                , MaxFuel       ]
+    FUEL    = [ min(TOW[0] - OEW - MaxPLD,MaxFuel) , MaxFuel                , MaxFuel       ]
     PLD     = [ MaxPLD                             , MTOW - MaxFuel - OEW   , 0.   ]
     OEW_PLD = [  OEW + MaxPLD                      , MTOW - MaxFuel         , OEW  ]
     
@@ -283,13 +283,10 @@ def conventional_payload_range_diagram(vehicle,mission,cruise_segment_tag,fuel_r
             if iter == maxIter:
                 print(f"Did not converge.")
                 break
-
+        if (CruiseDist + DeltaDist) <=0: # This raise exception can be reworked but it is good to have this here
+            raise Exception('Negative Cruise distance not enough fuel for fixed portions of flight (To -> Climb)')
         # Allocating resulting range in ouput array.
         R[i] =  results.segments[-1].conditions.frames.inertial.position_vector[-1,0]
-        # if i==1 or i ==2:
-        #     plot_altitude_sfc_weight(results)
-        #     plot_aerodynamic_coefficients(results)
-        #     plt.show()
     # Inserting point (0,0) in output arrays
     R.insert(0,0)
     PLD.insert(0,MaxPLD) 
