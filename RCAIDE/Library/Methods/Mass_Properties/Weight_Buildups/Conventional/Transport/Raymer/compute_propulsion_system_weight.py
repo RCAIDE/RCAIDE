@@ -78,16 +78,16 @@ def compute_propulsion_system_weight(vehicle,network, settings):
         W_{nacelle} = 0.6724K_{ng}L_n^{0.1}W_n^{0.294}N_{ult}^{0.119}W_{ec}^{0.611}N_{eng}^{0.984}S_n^{0.224}
 
     .. math::
-        W_{fuel\_sys} = 1.07W_{fuel}^{0.58}N_{eng}^{0.43}M_{max}^{0.34}
+        W_{fuel_sys} = 1.07W_{fuel}^{0.58}N_{eng}^{0.43}M_{max}^{0.34}
 
     .. math::
         W_{engine} = 0.084BPR^{1.1}W_{eng}^{0.5}N_{eng}^{0.5}
 
     .. math::
-        W_{engine\_controls} = 5N_{eng} + 0.8L_{eng}
+        W_{engine_controls} = 5N_{eng} + 0.8L_{eng}
 
     .. math::
-        W_{starter} = 49.19\left(\frac{W_{eng}}{1000}\right)^{0.541}
+        W_{starter} = 49.19  (\frac{W_{eng}}{1000} )^{0.541}
     
     where:
         * :math:`K_{ng}` is a factor for the engine mount type
