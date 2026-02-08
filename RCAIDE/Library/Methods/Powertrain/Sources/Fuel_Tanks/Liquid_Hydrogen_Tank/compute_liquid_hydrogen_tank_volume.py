@@ -158,8 +158,8 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
             ).x[0]
 
         # Convergence check
-        error                                          = fuel_tank.outer_diameter / 2 - (r_outer+t_ins)
-        rel_error                                      = error / (fuel_tank.outer_diameter / 2)
+        error                                          = fuel_tank.diameters.external / 2 - (r_outer+t_ins)
+        rel_error                                      = error / (fuel_tank.diameters.external / 2)
         fuel_tank.fuel.volume_properties.net_volume    = V_guess
         fuel_tank.fuel.volume_properties.gross_volume  = V_total
         fuel_tank.fuel.mass_properties.mass            = float(V_guess *  fuel_tank.fuel.density)  
@@ -179,8 +179,8 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
 
     fuel_tank.insulation_thickness   = t_ins
     # Insulation geometry and mass
-    a_ins = 2 * np.pi * fuel_tank.outer_diameter/2 * (fuel_tank.outer_length) + 4 * np.pi * (fuel_tank.outer_diameter/2)**2
-    v_ins = (np.pi * (fuel_tank.outer_diameter/2)**2 * (fuel_tank.outer_length) + (4/3) * np.pi * (fuel_tank.outer_diameter/2)**3)-\
+    a_ins = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2
+    v_ins = (np.pi * (fuel_tank.diameters.external/2)**2 * (fuel_tank.lengths.external) + (4/3) * np.pi * (fuel_tank.diameters.external/2)**3)-\
             (np.pi * (fuel_tank.inner_structure.outer_diameter/2)**2 * (fuel_tank.inner_structure.outer_length) + (4/3) * np.pi * (fuel_tank.inner_structure.outer_diameter/2)**3)
          
     mass_ins = (v_ins * fuel_tank.insulation_material.density
