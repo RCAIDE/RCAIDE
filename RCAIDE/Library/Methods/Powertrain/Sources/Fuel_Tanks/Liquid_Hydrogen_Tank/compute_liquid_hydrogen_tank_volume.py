@@ -13,7 +13,7 @@ from RCAIDE.Framework.Core import Units, Data
 # Python imports
 from copy import deepcopy
 import numpy as np
-from scipy.optimize import minimize, brentq
+from scipy.optimize import minimize, minimize_scalar, brentq
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Structural Solver
@@ -80,8 +80,9 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,
                                            fuel_tank.design_isa_deviation)
-    Ta = float(np.atleast_1d(atmo_data.temperature)[0])
+    Ta = float(np.asarray(atmo_data.temperature).reshape(-1)[0])
 
+    
     # Initial fuel volume guess
     if fuel_tank.xz_plane_symmetric:
         V_guess = deepcopy(fuel_tank.volume_properties.gross_volume  * 0.45)
@@ -275,15 +276,27 @@ def insulation_width(t_ins, Ta, PI_Q, fuel_tank, atmo_data,r_o,r_i,l_i):
     Ti = fuel_tank.design_inlet_temperature
     Qo = fuel_tank.acceptable_heat_leak
 
-    # Estimate equilibrium wall temperature
+    # Estimate equilibrium wall temperature.
+    Ta = float(np.asarray(Ta).reshape(-1)[0])
+    Te_lo = min(Ti, Ta)
+    Te_hi = max(Ti, Ta)
+    args = (t_ins, fuel_tank, atmo_data, r_o, r_i, l_i)
 
-    Te = brentq(
-        heat_transfer_wrap,
-        Ti,
-        Ta,
-        xtol=1e-9,
-        args=(t_ins, fuel_tank,atmo_data,r_o,r_i,l_i)
-    )
+    if abs(Te_hi - Te_lo) < 1e-9:
+        Te = Te_lo
+        heat_transfer_wrap(Te, *args)
+    else:
+        try:
+            Te = brentq(heat_transfer_wrap, Te_lo, Te_hi, xtol=1e-9, args=args)
+        except ValueError:
+            # Fallback when brentq does not find a sign change in [Te_lo, Te_hi].
+            opt = minimize_scalar(
+                lambda t: abs(heat_transfer_wrap(t, *args)),
+                bounds=(Te_lo, Te_hi),
+                method="bounded"
+            )
+            Te = float(opt.x)
+            heat_transfer_wrap(Te, *args)
 
     Qc_mat = fuel_tank.insulation_wall_conductive_heat_transfer
 
@@ -311,17 +324,17 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
         Net heat flow residual (external - internal conduction).
     """
     # Atmospheric properties
-    p        = atmo_data.pressure          
-    rho_air  = atmo_data.density             
-    mu_air   = atmo_data.dynamic_viscosity
-    k_air    = atmo_data.thermal_conductivity   
-    Ta       = float(np.atleast_1d(atmo_data.temperature)[0])
+    p        = float(np.asarray(atmo_data.pressure).reshape(-1)[0])
+    rho_air  = float(np.asarray(atmo_data.density).reshape(-1)[0])
+    mu_air   = float(np.asarray(atmo_data.dynamic_viscosity).reshape(-1)[0])
+    k_air    = float(np.asarray(atmo_data.thermal_conductivity).reshape(-1)[0])
+    Ta       = float(np.asarray(atmo_data.temperature).reshape(-1)[0])
     g        = 9.81
     Ti       = fuel_tank.design_inlet_temperature
 
     # Air properties
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
-    Cp_air     = atmosphere.fluid_properties.compute_cp(Ta) 
+    Cp_air     = float(np.asarray(atmosphere.fluid_properties.compute_cp(Ta)).reshape(-1)[0])
 
     nu     = mu_air / rho_air             # kinematic viscosity
     alpha  = k_air / (rho_air * Cp_air)   # thermal diffusivity
@@ -357,7 +370,7 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
 
     fuel_tank.insulation_wall_conductive_heat_transfer = Qc
 
-    return Qv + Qr - Qc
+    return float(Qv + Qr - Qc)
 
 
 def bracket_root(func, start=1e-6, factor=10, limit=1e2, args=()):
