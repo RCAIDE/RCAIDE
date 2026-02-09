@@ -80,7 +80,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     atmosphere = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data  = atmosphere.compute_values(fuel_tank.design_altitude,
                                            fuel_tank.design_isa_deviation)
-    Ta = float(np.atleast_1d(atmo_data.temperature)[0])
+    Ta = atmo_data.temperature[0,0]
 
     # Initial fuel volume guess
     if fuel_tank.xz_plane_symmetric:
@@ -169,15 +169,16 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     if abs(error) > tol:
         print("[Warning] compute_liquid_hydrogen_tank_volume did not converge within the iteration limit.")
 
-    # Store results
+    # Store results 
     fuel_tank.inner_structure = Data()
-    fuel_tank.inner_structure.thickness = ro_ri
+    fuel_tank.inner_structure.thickness      = ( ro_ri - 1) *  r_inner 
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
-    fuel_tank.inner_structure.inner_length = L_inner
-    fuel_tank.inner_structure.outer_length =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
-
-    fuel_tank.insulation_thickness   = t_ins
+    fuel_tank.inner_structure.inner_length   = L_inner
+    fuel_tank.inner_structure.outer_length   =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer 
+    fuel_tank.insulation_thickness           = t_ins 
+    fuel_tank.wall_thickness                 = fuel_tank.insulation_thickness  + fuel_tank.inner_structure.thickness 
+    
     # Insulation geometry and mass
     a_ins = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2
     v_ins = (np.pi * (fuel_tank.diameters.external/2)**2 * (fuel_tank.lengths.external) + (4/3) * np.pi * (fuel_tank.diameters.external/2)**3)-\
@@ -311,11 +312,11 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
         Net heat flow residual (external - internal conduction).
     """
     # Atmospheric properties
-    p        = atmo_data.pressure          
-    rho_air  = atmo_data.density             
-    mu_air   = atmo_data.dynamic_viscosity
-    k_air    = atmo_data.thermal_conductivity   
-    Ta       = float(np.atleast_1d(atmo_data.temperature)[0])
+    p        = atmo_data.pressure[0,0]          
+    rho_air  = atmo_data.density[0,0]             
+    mu_air   = atmo_data.dynamic_viscosity[0,0]
+    k_air    = atmo_data.thermal_conductivity[0,0]   
+    Ta       = atmo_data.temperature[0,0]
     g        = 9.81
     Ti       = fuel_tank.design_inlet_temperature
 
