@@ -142,69 +142,147 @@ def mass_properties_preprocess_routine(segment, i = 0):
     # ---------------------------------------------------------------------------------------------------------------------------         
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
             print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
-        
-        if analyses.vehicle.mass_properties.max_zero_fuel == None:
-            # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
-            if i == 0:
-                print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
-            # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
-            compute_max_fuel = False
-            if analyses.vehicle.mass_properties.max_fuel == None:
-                analyses.vehicle.mass_properties.max_fuel =  0.477*analyses.vehicle.mass_properties.max_takeoff -13455
-                compute_max_fuel = True
-            analyses.vehicle.mass_properties.max_zero_fuel = 0.6269*analyses.vehicle.mass_properties.max_takeoff + 20505
-            
-            max_iterations = 100
-            iteration = 0
-
-            # Convergence loop
-            while iteration < max_iterations:                               
-                # Run weights analysis ! 
-                _ = weights_analysis.evaluate(analyses.vehicle)
+        if weights_analysis.settings.iterate_mtow and i ==0:
+            diff = 999
+            max_iterations = 1000
+            mtow_iterations = 0 
+            while abs(diff)>0.00005 and mtow_iterations<max_iterations:
+                if analyses.vehicle.mass_properties.max_zero_fuel == None:
+                    # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
+                    if i == 0:
+                        print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
+                    # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
+                    compute_max_fuel = False
+                    if analyses.vehicle.mass_properties.max_fuel == None:
+                        analyses.vehicle.mass_properties.max_fuel =  0.477*analyses.vehicle.mass_properties.max_takeoff -13455
+                        compute_max_fuel = True
+                    analyses.vehicle.mass_properties.max_zero_fuel = 0.6269*analyses.vehicle.mass_properties.max_takeoff + 20505
+                    
                 
-                # Compute OEW
-                if weights_analysis.settings.overwrite_operating_empty_weight: 
-                    analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
-                                
-                # Apply Correction Factors if any
-                apply_correction_factors(analyses)
-                apply_component_weights(analyses)
+                    iteration = 0
 
-                analyses.vehicle.mass_properties.takeoff         = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
-                mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
-                residual_max_zero_fuel                           = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
-                analyses.vehicle.mass_properties.max_zero_fuel   = mew_max_zero_fuel
-                
-                residual_max_fuel = 0
-                if compute_max_fuel:
-                    new_max_fuel  = analyses.vehicle.mass_properties.max_takeoff - analyses.vehicle.mass_properties.operating_empty - analyses.vehicle.mass_properties.min_payload
-                    residual_max_fuel =  abs(new_max_fuel - analyses.vehicle.mass_properties.max_fuel) 
-                    analyses.vehicle.mass_properties.max_fuel = new_max_fuel                
-                
-                iteration += 1
-                if residual_max_fuel < 1 and residual_max_zero_fuel <1:
-                    break
-                else:
-                    analyses.vehicle.mass_properties.max_zero_fuel += residual_max_zero_fuel * 0.1
-                    if compute_max_fuel: 
-                        analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
-
-        
-        
-        _ = weights_analysis.evaluate(analyses.vehicle) 
-
-        if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
-            print('Warning: Computed payload weight is greater than maxmimum payload weight')        
-        
-        # Compute OEW 
-        if weights_analysis.settings.overwrite_operating_empty_weight: 
-            analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total \
-                                                                    +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                    # Convergence loop
+                    while iteration < max_iterations:                               
+                        # Run weights analysis ! 
+                        _ = weights_analysis.evaluate(analyses.vehicle)
                         
-        # Apply correction factors  if any
-        apply_correction_factors(analyses)
-        if i == 0:
-            apply_component_weights(analyses)
+                        # Compute OEW
+                        if weights_analysis.settings.overwrite_operating_empty_weight: 
+                            analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                                        
+                        # Apply Correction Factors if any
+                        apply_correction_factors(analyses)
+                        apply_component_weights(analyses)
+
+                        analyses.vehicle.mass_properties.takeoff         = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
+                        mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
+                        residual_max_zero_fuel                           = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
+                        analyses.vehicle.mass_properties.max_zero_fuel   = mew_max_zero_fuel
+                        
+                        residual_max_fuel = 0
+                        if compute_max_fuel:
+                            new_max_fuel  = analyses.vehicle.mass_properties.max_takeoff - analyses.vehicle.mass_properties.operating_empty - analyses.vehicle.mass_properties.min_payload
+                            residual_max_fuel =  abs(new_max_fuel - analyses.vehicle.mass_properties.max_fuel) 
+                            analyses.vehicle.mass_properties.max_fuel = new_max_fuel                
+                        
+                        iteration += 1
+                        if residual_max_fuel < 1 and residual_max_zero_fuel <1:
+                            break
+                        else:
+                            analyses.vehicle.mass_properties.max_zero_fuel += residual_max_zero_fuel * 0.1
+                            if compute_max_fuel: 
+                                analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
+
+                
+                
+                _ = weights_analysis.evaluate(analyses.vehicle) 
+
+                if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
+                    print('Warning: Computed payload weight is greater than maxmimum payload weight')        
+                
+                # Compute OEW 
+              
+                analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total \
+                                                                            +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                                
+                # Apply correction factors  if any
+                apply_correction_factors(analyses)
+                if i == 0:
+                    apply_component_weights(analyses)
+
+                new_mtow,diff = iterate_for_mtow(analyses.vehicle.mass_properties.max_takeoff, 
+                                analyses.vehicle.mass_properties.operating_empty, 
+                                analyses.vehicle.mass_properties.max_payload,
+                                analyses.vehicle.mass_properties.max_fuel,
+                                analyses.vehicle)
+                analyses.vehicle.mass_properties.max_takeoff = new_mtow
+            if mtow_iterations>max_iterations:
+                print('MTOW DIDNT CONVERGE')
+
+    
+        else:
+            if analyses.vehicle.mass_properties.max_zero_fuel == None:
+            # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
+                if i == 0:
+                    print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
+                # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
+                compute_max_fuel = False
+                if analyses.vehicle.mass_properties.max_fuel == None:
+                    analyses.vehicle.mass_properties.max_fuel =  0.477*analyses.vehicle.mass_properties.max_takeoff -13455
+                    compute_max_fuel = True
+                analyses.vehicle.mass_properties.max_zero_fuel = 0.6269*analyses.vehicle.mass_properties.max_takeoff + 20505
+                
+                max_iterations = 100
+                iteration = 0
+
+                # Convergence loop
+                while iteration < max_iterations:                               
+                    # Run weights analysis ! 
+                    _ = weights_analysis.evaluate(analyses.vehicle)
+                    
+                    # Compute OEW
+                    if weights_analysis.settings.overwrite_operating_empty_weight: 
+                        analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                                    
+                    # Apply Correction Factors if any
+                    apply_correction_factors(analyses)
+                    apply_component_weights(analyses)
+
+                    analyses.vehicle.mass_properties.takeoff         = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload + analyses.vehicle.mass_properties.fuel                    
+                    mew_max_zero_fuel                                = analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.max_payload
+                    residual_max_zero_fuel                           = abs(mew_max_zero_fuel - analyses.vehicle.mass_properties.max_zero_fuel)
+                    analyses.vehicle.mass_properties.max_zero_fuel   = mew_max_zero_fuel
+                    
+                    residual_max_fuel = 0
+                    if compute_max_fuel:
+                        new_max_fuel  = analyses.vehicle.mass_properties.max_takeoff - analyses.vehicle.mass_properties.operating_empty - analyses.vehicle.mass_properties.min_payload
+                        residual_max_fuel =  abs(new_max_fuel - analyses.vehicle.mass_properties.max_fuel) 
+                        analyses.vehicle.mass_properties.max_fuel = new_max_fuel                
+                    
+                    iteration += 1
+                    if residual_max_fuel < 1 and residual_max_zero_fuel <1:
+                        break
+                    else:
+                        analyses.vehicle.mass_properties.max_zero_fuel += residual_max_zero_fuel * 0.1
+                        if compute_max_fuel: 
+                            analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
+
+            
+            
+            _ = weights_analysis.evaluate(analyses.vehicle) 
+
+            if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
+                print('Warning: Computed payload weight is greater than maxmimum payload weight')        
+            
+            # Compute OEW 
+            if weights_analysis.settings.overwrite_operating_empty_weight: 
+                analyses.vehicle.mass_properties.operating_empty = analyses.vehicle.mass_properties.weight_breakdown.empty.total \
+                                                                        +  analyses.vehicle.mass_properties.weight_breakdown.operational_items.total 
+                            
+            # Apply correction factors  if any
+            apply_correction_factors(analyses)
+            if i == 0:
+                apply_component_weights(analyses)
 
         # Compute takeoff weight and max zero fuel weight 
         if analyses.vehicle.mass_properties.takeoff == None:
@@ -214,8 +292,8 @@ def mass_properties_preprocess_routine(segment, i = 0):
         elif i == 0:
             print('\n Using user defined takeoff weight')                
         analyses.vehicle.mass_properties.max_zero_fuel = analyses.vehicle.mass_properties.operating_empty\
-                                                                + analyses.vehicle.mass_properties.max_payload 
-    
+                                                                    + analyses.vehicle.mass_properties.max_payload 
+        
         # ---------------------------------------------------------------------------------------------------------------------------
         # STEP 3: Print weight statements and apply weight factors  
         # --------------------------------------------------------------------------------------------------------------------------- 
@@ -514,8 +592,23 @@ def apply_component_weights(analyses):
                     elif hasattr(weight_correction_factors.empty.systems, 'instruments') and system.mass_properties.calculated_flag == False:
                         analyses.vehicle.mass_properties.weight_breakdown.empty.systems.instruments = system.mass_properties.mass  
                       
-                    
-                   
-                 
-                
+def iterate_for_mtow(old_mtow, oew, max_payload, max_fuel,vehicle):
+    '''
+    Staub factor after, Franco Staub, ex JetZero, is MTOW/(OEW + Max Fuel + Max Payload)
+
+    '''
+    overall_maximum_weight = max_payload + oew + max_fuel
+
+    target_staub_factor = getattr(vehicle, 'staub_factor', 0)
+
+    existing_staub_factor = old_mtow / overall_maximum_weight
+    diff = existing_staub_factor - target_staub_factor
+
+    # Proportional correction in weight-space (not absolute +0.1 kg), with damping.
+    gain = 0.05
+    correction_ratio = np.clip(gain * diff, -0.05, 0.05)
+    new_mtow = old_mtow * (1.0 - correction_ratio)
+
+    # Keep MTOW physically meaningful.
+    return max(new_mtow, 0.0),diff
                                     
