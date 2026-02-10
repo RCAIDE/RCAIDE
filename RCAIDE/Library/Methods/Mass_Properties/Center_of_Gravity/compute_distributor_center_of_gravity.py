@@ -76,7 +76,9 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
     # lateral lines running from center of aircraft to sources (fuel tanks. batteries etc) t
     for i in range(len(c_list)):   
         lat_line_length    = abs(c_locs[i][1]) 
-        lat_line_centroid  = c_locs[i][0] 
+        lat_line_centroid  = c_locs[i][0]
+        
+        lat_line_length *= (c_symm[i]+ 1)
         
         if insulation_cross_sectional_area == 0:
             lat_line_insulation_mass   = 0
@@ -102,14 +104,14 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
     
     
     # longininal
-    sorted_indices = c_locs[:, 1].argsort()
+    sorted_indices = c_locs[:, 0].argsort()
     sorted_c_locs = c_locs[sorted_indices]
     
     min_c_loc =  sorted_c_locs[0]
     max_c_loc =  sorted_c_locs[-1]
     
     # distributor distances  
-    long_line_length     = abs(max_c_loc[0] + min_c_loc[0] )
+    long_line_length     = abs(max_c_loc[0] - min_c_loc[0] )
     long_line_centroid   = (max_c_loc[0] + min_c_loc[0] )/2
     
     if insulation_cross_sectional_area == 0:
@@ -119,8 +121,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
         long_line_insulation_volume  = long_line_length *  insulation_cross_sectional_area
         long_line_insulation_mass    = insulation_fm_ratio * (insulation_rm_density * long_line_insulation_volume) +  (1 - insulation_fm_ratio) * (insulation_fm_density * long_line_insulation_volume) 
         long_line_insulation_moment  = long_line_insulation_mass *long_line_centroid
-        
-    
+         
     if pipe_cross_sectional_area == 0:
         long_line_pipe_mass = 0
         long_line_pipe_moment = 0
