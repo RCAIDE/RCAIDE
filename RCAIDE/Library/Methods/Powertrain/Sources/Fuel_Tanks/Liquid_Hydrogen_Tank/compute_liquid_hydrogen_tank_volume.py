@@ -171,14 +171,15 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         print("[Warning] compute_liquid_hydrogen_tank_volume did not converge within the iteration limit.")
 
     # Store results
-    fuel_tank.inner_structure = Data()
-    fuel_tank.inner_structure.thickness = ro_ri
+    fuel_tank.inner_structure                = Data()
+    fuel_tank.inner_structure.thickness      = (1-ro_ri) * r_inner
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
-    fuel_tank.inner_structure.inner_length = L_inner
-    fuel_tank.inner_structure.outer_length =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
+    fuel_tank.inner_structure.inner_length   = L_inner
+    fuel_tank.inner_structure.outer_length   =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
+    fuel_tank.insulation_thickness           = t_ins # SAI PLEASE CHANGE THIS TO insulation.thickness 
+    fuel_tank.wall_thickness                 = fuel_tank.insulation_thickness + fuel_tank.inner_structure.thickness 
 
-    fuel_tank.insulation_thickness   = t_ins
     # Insulation geometry and mass
     a_ins = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2
     v_ins = (np.pi * (fuel_tank.diameters.external/2)**2 * (fuel_tank.lengths.external) + (4/3) * np.pi * (fuel_tank.diameters.external/2)**3)-\

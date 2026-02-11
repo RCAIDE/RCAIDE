@@ -80,7 +80,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
         
         lat_line_length *= (c_symm[i]+ 1)
         
-        if insulation_cross_sectional_area == 0:
+        if insulation_cross_sectional_area == 0.0:
             lat_line_insulation_mass   = 0
             lat_line_insulation_moment = 0
         else:
@@ -88,9 +88,9 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
             lat_line_insulation_mass    = insulation_fm_ratio * (insulation_rm_density * lat_line_insulation_volume) +  (1 - insulation_fm_ratio) * (insulation_fm_density * lat_line_insulation_volume)  
             lat_line_insulation_moment  = lat_line_insulation_mass *lat_line_centroid     
              
-        if pipe_cross_sectional_area == 0:
-            long_line_pipe_mass   = 0
-            long_line_pipe_moment = 0
+        if pipe_cross_sectional_area == 0.0:
+            lat_line_pipe_mass   = 0
+            lat_line_pipe_moment = 0
         else:
             lat_line_pipe_volume = lat_line_length *  pipe_cross_sectional_area
             lat_line_pipe_mass   = pipe_fm_ratio * (pipe_rm_density * lat_line_pipe_volume) +  (1 - pipe_fm_ratio) * (pipe_fm_density * lat_line_pipe_volume)  
@@ -114,7 +114,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
     long_line_length     = abs(max_c_loc[0] - min_c_loc[0] )
     long_line_centroid   = (max_c_loc[0] + min_c_loc[0] )/2
     
-    if insulation_cross_sectional_area == 0:
+    if insulation_cross_sectional_area == 0.0:
         long_line_insulation_mass   = 0
         long_line_insulation_moment = 0
     else:  
