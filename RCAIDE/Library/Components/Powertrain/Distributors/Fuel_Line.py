@@ -73,7 +73,7 @@ class Fuel_Line(Component):
         self.valve_unit_mass                      = 3 * Units.lbs
         self.fuel_probe_unit_mass                 = 2.5 * Units.lbs
         self.boost_pump_unit_mass                 = 12.5 * Units.lbs
-        self.venting_system_mass                  = 0.0
+        self.venting_system_length                = 0.0
         self.pipe                                 = Data()
         self.pipe.rigid_material                  = RCAIDE.Library.Attributes.Materials.Aluminum()
         self.pipe.flexible_material               = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
