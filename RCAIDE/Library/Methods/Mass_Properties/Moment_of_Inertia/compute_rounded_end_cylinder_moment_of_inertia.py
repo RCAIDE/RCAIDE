@@ -136,6 +136,6 @@ def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_
         fuel      = component.fuel
         
         # compute MOI of fuel assume inner walls of tank is boundary of fuel
-        _,_ = compute_rounded_end_cylinder_moment_of_inertia(fuel,inner_length, inner_radius,center_of_gravity = center_of_gravity,fuel_tank=False)        
+        _,_ = compute_rounded_end_cylinder_moment_of_inertia(fuel,inner_length, inner_radius,inner_length=0,inner_radius=0,center_of_gravity = center_of_gravity,fuel_tank=False)        
         
     return I,  mass
