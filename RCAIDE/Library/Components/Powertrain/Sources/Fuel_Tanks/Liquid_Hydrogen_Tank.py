@@ -170,8 +170,8 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         
         outer_length = self.lengths.external
         outer_radius = self.diameters.external/2
-        inner_length = self.lengths.external - 2*self.wall_thickness
-        inner_radius = self.diameters.internal/2 - self.wall_thickness
+        inner_length = self.inner_structure.inner_length 
+        inner_radius = self.inner_structure.inner_diameter/2
          
         _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, outer_length,outer_radius,inner_length=inner_length, inner_radius=inner_radius, center_of_gravity=center_of_gravity, fuel_tank=True) 
                 

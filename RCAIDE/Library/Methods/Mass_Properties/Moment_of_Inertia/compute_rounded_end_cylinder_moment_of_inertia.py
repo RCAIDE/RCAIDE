@@ -14,7 +14,7 @@ import numpy as np
 # ----------------------------------------------------------------------------------------------------------------------
 #  Compute Rounded-End Cylinder Moment of Inertia
 # ----------------------------------------------------------------------------------------------------------------------   
-def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length = 0,inner_radius = 0,
+def compute_rounded_end_cylinder_moment_of_inertia(component,outer_length,outer_radius,inner_length,inner_radius,
                                                    center_of_gravity = np.array([[0,0,0]]), fuel_tank=False):  
     """
     Computes the moment of inertia tensor for a hollow rounded-end cylinder.
