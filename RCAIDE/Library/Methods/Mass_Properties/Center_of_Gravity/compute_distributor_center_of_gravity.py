@@ -36,7 +36,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
                                           
      """
      
-
+    redundancy_factor     = 2.0
     valve_unit_mass       = component.valve_unit_mass                      
     fuel_probe_unit_mass  = component.fuel_probe_unit_mass
     boost_pump_unit_mass  = component.boost_pump_unit_mass 
@@ -54,7 +54,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
     c_symm  =  []
     c_locs  = np.empty((0,3)) 
 
-    total_lat_line_length    = 0
+    total_lat_line_length= 0
     total_line_mass      = 0
     total_line_moment    = 0
     transfer_system_mass = 0 
@@ -97,7 +97,7 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
             lat_line_pipe_moment = lat_line_pipe_mass *lat_line_centroid   
                                  
         # assumulate all masses and  moments 
-        total_lat_line_length  += lat_line_length 
+        total_lat_line_length  += redundancy_factor * lat_line_length 
         total_line_mass        += lat_line_insulation_mass + lat_line_pipe_mass
         transfer_system_mass   += lat_line_insulation_mass + lat_line_pipe_mass +  valve_unit_mass +  fuel_probe_unit_mass  +  boost_pump_unit_mass
         total_line_moment      += lat_line_pipe_moment + lat_line_insulation_moment
@@ -131,13 +131,41 @@ def compute_distributor_center_of_gravity(component,vehicle, length=0):
         long_line_pipe_moment  =  long_line_pipe_mass *long_line_centroid  
                              
     # assumulate all masses and  moments 
-    total_lat_line_length  += long_line_length  
+    total_lat_line_length  += redundancy_factor * long_line_length  
     total_line_mass        += long_line_insulation_mass + long_line_pipe_mass
-    transfer_system_mass   += long_line_insulation_mass + long_line_pipe_mass +  valve_unit_mass +  fuel_probe_unit_mass  +  boost_pump_unit_mass
+    transfer_system_mass   += long_line_insulation_mass + long_line_pipe_mass
     total_line_moment      += long_line_pipe_moment + long_line_insulation_moment
      
      
-    transfer_system_mass += component.venting_system_mass 
+    # distributor distances  
+    for network in  vehicle.networks: 
+        for fuel_line in network.fuel_lines:
+            vent_line_length     = fuel_line.venting_system_length
+            vent_line_centroid   = (max_c_loc[0] + min_c_loc[0] )/2
+            
+            if insulation_cross_sectional_area == 0.0:
+                vent_line_insulation_mass   = 0
+                vent_line_insulation_moment = 0
+            else:  
+                vent_line_insulation_volume  = vent_line_length *  insulation_cross_sectional_area
+                vent_line_insulation_mass    = insulation_fm_ratio * (insulation_rm_density * vent_line_insulation_volume) +  (1 - insulation_fm_ratio) * (insulation_fm_density * vent_line_insulation_volume) 
+                vent_line_insulation_moment  = vent_line_insulation_mass * vent_line_centroid
+                
+            if pipe_cross_sectional_area == 0:
+                vent_line_pipe_mass = 0
+                vent_line_pipe_moment = 0
+            else:  
+                vent_line_pipe_volume  = vent_line_length *  pipe_cross_sectional_area
+                vent_line_pipe_mass    = pipe_fm_ratio * (pipe_rm_density * vent_line_pipe_volume) +  (1 - pipe_fm_ratio) * (pipe_fm_density * vent_line_pipe_volume)  
+                vent_line_pipe_moment  =  vent_line_pipe_mass *vent_line_centroid  
+            total_lat_line_length  += redundancy_factor * vent_line_length  
+            total_line_mass        += vent_line_insulation_mass + vent_line_pipe_mass
+            transfer_system_mass   += vent_line_insulation_mass + vent_line_pipe_mass
+            total_line_moment      += vent_line_pipe_moment + vent_line_insulation_moment
+                                    
+    # assumulate all masses and  moments 
+    transfer_system_mass   += valve_unit_mass +  fuel_probe_unit_mass  +  boost_pump_unit_mass
+    
     if total_line_mass != 0.0: 
         c_g_line =  [[total_line_moment / total_line_mass, 0, 0]]
         component.mass_properties.center_of_gravity = c_g_line 
