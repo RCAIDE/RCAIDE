@@ -51,7 +51,7 @@ def compute_landing_gear_weight(vehicle):
     """
     DFTE    = 0
     CARBAS  = 0
-    WLDG    = vehicle.mass_properties.max_takeoff / Units.lbs
+    WLDG    = (vehicle.mass_properties.max_takeoff - 0.65 * vehicle.mass_properties.max_fuel)/ Units.lbs
 
     l_f =  0
     w_f =  0
