@@ -178,8 +178,6 @@ def plot_3d_vehicle(vehicle,
     # Plot wings
     # -------------------------------------------------------------------------  
     for wing in geometry.wings:
-        if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
-            wing_opacity /= 1.25 # For clearer visualzation of lopa
         n_segments = len(wing.segments)
         dim        = n_segments if n_segments > 0 else 2
         GEOM       = generate_3d_wing_points(wing, number_of_airfoil_points, dim)
