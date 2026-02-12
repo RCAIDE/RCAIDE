@@ -97,7 +97,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     W_CARGO = 0 
     for cargo_bay in vehicle_0.cargo_bays:  
         W_CARGO += cargo_bay.mass_properties.mass   
-
+    
+    W_CARGO += PLD-W_PAX
 
     #------------------------------------------------------------------------  
     # Compute Loading Points 
