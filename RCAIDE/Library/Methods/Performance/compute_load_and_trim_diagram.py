@@ -48,7 +48,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         segment.analyses.weights.settings.run_center_of_gravity_analysis   = True
         segment.analyses.weights.settings.run_moments_of_inertia_analysis  = True  
         segment.analyses.stability.print_stability_analysis_report         = True
-        segment.analyses.stability.settings.compute_neutral_point          = True
+        segment.analyses.stability.settings.compute_neutral_point          = False
         segment.analyses.weights.settings.overwrite_center_of_gravity      = True
     
     #------------------------------------------------------------------------  
@@ -89,7 +89,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     PLD           =  vehicle_0.mass_properties.max_payload
     vehicle_0.mass_properties.payload = PLD  
     PLD_per_pax   =  (weight_breakdown.payload.passengers  + weight_breakdown.payload.baggage) / PAX
-    OEW           =  weight_breakdown.empty.total
+    OEW           =  vehicle_0.mass_properties.operating_empty
     if mission.segments[cruise_segment_tag].analyses.weights.propulsion_architecture == 'Hydrogen': 
         MLW = MTOW
     else:

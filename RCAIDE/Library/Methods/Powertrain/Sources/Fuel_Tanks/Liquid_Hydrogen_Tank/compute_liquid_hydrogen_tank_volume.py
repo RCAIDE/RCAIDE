@@ -172,13 +172,13 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
 
     # Store results
     fuel_tank.inner_structure                = Data()
-    fuel_tank.inner_structure.thickness      = (1-ro_ri) * r_inner
+    fuel_tank.inner_structure.thickness      = r_outer -r_inner
     fuel_tank.inner_structure.outer_diameter = 2*r_outer
     fuel_tank.inner_structure.inner_diameter = 2*r_inner
     fuel_tank.inner_structure.inner_length   = L_inner
     fuel_tank.inner_structure.outer_length   =  (2 * r_outer * fuel_tank.aspect_ratio)-2*r_outer
-    fuel_tank.insulation_thickness           = t_ins # SAI PLEASE CHANGE THIS TO insulation.thickness 
-    fuel_tank.wall_thickness                 = fuel_tank.insulation_thickness + fuel_tank.inner_structure.thickness 
+    fuel_tank.insulation_thickness           = t_ins # SAI PLEASE CHANGE THIS TO insulation.thickness  # Nomenclature changes are not priority right now, since it would mean changing stuff in the server scripts. will address in a PR
+    fuel_tank.total_thickness                 = fuel_tank.insulation_thickness + fuel_tank.inner_structure.thickness 
 
     # Insulation geometry and mass
     a_ins = 2 * np.pi * fuel_tank.diameters.external/2 * (fuel_tank.lengths.external) + 4 * np.pi * (fuel_tank.diameters.external/2)**2
@@ -203,6 +203,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
     fuel_tank.fuel.mass_properties.mass =  fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
     fuel_tank.mass_properties.insulation_mass =  mass_ins
     fuel_tank.mass_properties.structural_mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
+    fuel_tank.mass_properties.mass = 1.5*(fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass)
     
     return
 
