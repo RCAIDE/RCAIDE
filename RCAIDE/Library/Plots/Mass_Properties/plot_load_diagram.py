@@ -174,7 +174,7 @@ def plot_load_diagram(results,
     # ------------------------------------------------------------------------
     x_pts_MLW = np.linspace(x_axis_lower_limit, x_axis_upper_limit)
     y_pts_MLW = np.ones_like(x_pts_MLW)  * results.MLW
-    axis.plot(x_pts_MLW, y_pts_MLW, 'g--', label = 'MLW')  
+    axis.plot(x_pts_MLW, y_pts_MLW, 'g-x', label = 'MLW')  
     
     # ------------------------------------------------------------------------    
     # Loading -Trim Bounds  

@@ -93,12 +93,22 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     if mission.segments[cruise_segment_tag].analyses.weights.propulsion_architecture == 'Hydrogen': 
         MLW = MTOW
     else:
-        MLW           =  estimate_maximum_landing_weight(MTOW)
-    W_CARGO = 0 
+        MLW =  estimate_maximum_landing_weight(MTOW)
+    W_CARGO = 0
+    m_c  = []
     for cargo_bay in vehicle_0.cargo_bays:  
-        W_CARGO += cargo_bay.mass_properties.mass   
-    
+        W_CARGO += cargo_bay.mass_properties.mass
+        m_c.append(cargo_bay.mass_properties.mass) 
+    cargo_bay_ratio = np.array(m_c) / sum(np.array(m_c)) 
     W_CARGO += PLD-W_PAX
+     
+
+    m_f = []     
+    for network in vehicle_0.networks:
+        for fuel_line in  network.fuel_lines:
+            for fuel_tank in fuel_line.fuel_tanks: 
+                m_f.append(fuel_tank.fuel.mass_properties.mass)
+    fuel_tank_ratio = np.array(m_f) / sum(np.array(m_f)) 
 
     #------------------------------------------------------------------------  
     # Compute Loading Points 
@@ -150,9 +160,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                 for f_i in range(len(percent_fuel)):          
                     #------------------------------------------------------------------------                
                     # Reset all weights to 0
-                    #------------------------------------------------------------------------    
-                    weights_analysis_mission              = deepcopy(mission)
-                    vehicle                               = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle
+                    #------------------------------------------------------------------------     
+                    vehicle                               =  deepcopy(vehicle_0)
                     vehicle.mass_properties.max_zero_fuel = MZFW  
                     vehicle.mass_properties.takeoff       = None  
                     vehicle.mass_properties.payload       = 0
@@ -203,8 +212,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     #------------------------------------------------------------------------  
                     # Update Cargo
                     #------------------------------------------------------------------------
-                    for cargo_bay in vehicle.cargo_bays: 
-                        cargo_bay.mass_properties.mass   = percent_cargo[c_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass   
+                    for cargo_bay_i ,  cargo_bay in enumerate(vehicle.cargo_bays): 
+                        cargo_bay.mass_properties.mass   = percent_cargo[c_i] * W_CARGO *  cargo_bay_ratio[cargo_bay_i]
 
                     vehicle.mass_properties.cargo    =  percent_cargo[c_i] * W_CARGO
                     vehicle.mass_properties.payload  = (W_PAX_per_pax) *vehicle.number_of_passengers +  vehicle.mass_properties.cargo         
@@ -212,8 +221,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     # loop through fuel tanks 
                     for network in vehicle.networks:
                         for fuel_line in  network.fuel_lines:
-                            for fuel_tank in fuel_line.fuel_tanks: 
-                                fuel_tank.fuel.mass_properties.mass = percent_fuel[f_i] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                            for fuel_tank_i ,  fuel_tank in enumerate(fuel_line.fuel_tanks): 
+                                fuel_tank.fuel.mass_properties.mass = percent_fuel[f_i] * FUEL * fuel_tank_ratio[fuel_tank_i]
             
                     # run weights analysis and store results
                     vehicle.mass_properties.fuel = percent_fuel[f_i] * FUEL 
@@ -221,7 +230,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
                     #------------------------------------------------------------------------  
                     # run weights analysis and store results
                     #------------------------------------------------------------------------ 
-                    counter =  compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,RES,counter,
+                    counter =  compute_aircraft_load_data_point(vehicle,cruise_segment_tag,RES,counter,
                                                                 total_sims, neutral_point_0,percent_pax[p_i], percent_cargo[c_i], percent_fuel[f_i],
                                                                 f_o,p_i, c_i, f_i)
 
@@ -234,13 +243,10 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     total_sims = discretization ** 2
     counter    = 0        
     for w_i in range(discretization):    
-        for c_g_i in range(discretization):
-
-            aero_analysis_mission = deepcopy(mission)
-            vehicle = aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle
+        for c_g_i in range(discretization): 
+            vehicle = deepcopy(vehicle_0)
         
             # Aircraft-Level Properties  
-            vehicle.mass_properties.takeoff                 = None # this ensures that the takeoff weight is computed 
             vehicle.mass_properties.payload                 = PLD_per_pax   if w_i == 0 else percent_weight[w_i] * PLD
             vehicle.mass_properties.cargo                   = percent_weight[w_i] * W_CARGO
             vehicle.mass_properties.center_of_gravity[0][0] = x_cg_0[0][0] * percent_cg_shift[c_g_i]   
@@ -285,7 +291,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
             # Update Cargo
             #------------------------------------------------------------------------
             for cargo_bay in vehicle.cargo_bays: 
-                cargo_bay.mass_properties.mass   = percent_cargo[w_i] * vehicle_0.cargo_bays[cargo_bay.tag].mass_properties.mass  
+                cargo_bay.mass_properties.mass   = percent_cargo[w_i]  * W_CARGO *  cargo_bay_ratio[cargo_bay_i]
                 
 
             vehicle.mass_properties.cargo    =  percent_cargo[w_i] * W_CARGO
@@ -295,34 +301,29 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
             for network in vehicle.networks:
                 for fuel_line in  network.fuel_lines:
                     for fuel_tank in fuel_line.fuel_tanks: 
-                        fuel_tank.fuel.mass_properties.mass = percent_fuel[w_i] * vehicle_0.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag].fuel.mass_properties.mass
+                        fuel_tank.fuel.mass_properties.mass = percent_fuel[w_i]  * FUEL * fuel_tank_ratio[fuel_tank_i]
     
             # run weights analysis and store results
             vehicle.mass_properties.fuel = percent_fuel[w_i] * FUEL
             
+            cargo_weight =  percent_cargo[w_i]  * W_CARGO 
+            pax_weight   =  percent_fuel[w_i] * W_PAX
+            fuel_weight  =  percent_fuel[w_i] * FUEL
+            vehicle.mass_properties.takeoff   =    OEW  + pax_weight + cargo_weight +  fuel_weight
+            
             # Run aerodynamic analysis    
-            counter =  compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,RES,counter,total_sims,neutral_point_0,w_i,c_g_i)
+            counter =  compute_aircraft_trim_data_point(vehicle,cruise_segment_tag,RES,counter,total_sims,neutral_point_0,w_i,c_g_i)
    
     return RES
 
 
-def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag,RES,counter,
+def compute_aircraft_load_data_point(vehicle,cruise_segment_tag,RES,counter,
                                      total_sims,neutral_point,percent_pax, percent_cargo, percent_fuel,
                                      f_o,p_i,c_i,f_i):
-    
-    # update analysis settings 
-    for segment in weights_analysis_mission.segments:
-        segment.analyses.vehicle.mass_properties.takeoff                   = None 
-        segment.analyses.vehicle.neutral_point                             = neutral_point   
-        segment.analyses.geometry.settings.compute_fuel_volume             = False  
-        segment.analyses.weights.print_weight_analysis_report              = False   
-        segment.analyses.weights.settings.run_center_of_gravity_analysis   = True
-        segment.analyses.weights.settings.run_moments_of_inertia_analysis  = True  
-        segment.analyses.stability.settings.compute_neutral_point          = False  
-        segment.analyses.weights.settings.run_weights_analysis             = False
+     
         
     # run geometry and mass properties analyes 
-    center_of_gravity, mass, moment, _  = compute_vehicle_center_of_gravity(weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle,
+    center_of_gravity, mass, moment, _  = compute_vehicle_center_of_gravity(vehicle,
                                             centre_of_gravity_df = pd.DataFrame(columns=[ "Component", "Mass (kg)", "CG x (m)", "CG y (m)","CG z (m)"]),
                                             overwrite_center_of_gravity = True,
                                             segment=None,
@@ -331,18 +332,18 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
     # store results 
     RES.loading_results.CG_location[f_o,p_i,c_i,f_i]              = center_of_gravity[0][0]  
     RES.loading_results.mass[f_o,p_i,c_i,f_i]                     = mass[0]  
-    RES.loading_results.LEMAC_location[f_o,p_i,c_i,f_i]           = weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC  
-    RES.loading_results.CG_percent_of_LEMAC_location[f_o,p_i,c_i,f_i]   =  (RES.loading_results.CG_location[f_o,p_i,c_i,f_i]  - weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC) / weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
+    RES.loading_results.LEMAC_location[f_o,p_i,c_i,f_i]           = vehicle.LEMAC  
+    RES.loading_results.CG_percent_of_LEMAC_location[f_o,p_i,c_i,f_i]   =  (RES.loading_results.CG_location[f_o,p_i,c_i,f_i]  - vehicle.LEMAC) / vehicle.reference_chord
      
     print('***************************************')
     print('Loading Diagram Data Point: ' + str(counter+1) + ' of ' +  str(total_sims))
     print('Mass                      : ', RES.loading_results.mass[f_o,p_i,c_i,f_i])
-    print('OEW                       : ', weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.operating_empty)
+    print('OEW                       : ', vehicle.mass_properties.operating_empty)
     print('Percent Fuel              : ', percent_fuel*100 )
     print('Percent Cargo             : ', percent_cargo*100 )
     print('Percent Pax               : ', percent_pax*100 )
-    print('Ref. Chord                : ', weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord)
-    print('LEMAC                     : ', weights_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC )
+    print('Ref. Chord                : ', vehicle.reference_chord)
+    print('LEMAC                     : ', vehicle.LEMAC )
     print('Center of Gravity Location: ', RES.loading_results.CG_location[f_o,p_i,c_i,f_i] )   
     print('Neutral Point Location    : ', neutral_point ) 
     print('LEMAC                     : ', RES.loading_results.LEMAC_location[f_o,p_i,c_i,f_i] ) 
@@ -352,33 +353,16 @@ def compute_aircraft_load_data_point(weights_analysis_mission,cruise_segment_tag
      
     return counter 
 
-def compute_aircraft_trim_data_point(aero_analysis_mission,cruise_segment_tag,RES,
+def compute_aircraft_trim_data_point(vehicle,cruise_segment_tag,RES,
                                      counter,total_sims,neutral_point,w_i,c_g_i):
-
-    # update analysis settings 
-    for segment in aero_analysis_mission.segments:
-        segment.analyses.vehicle.mass_properties.takeoff                   = None 
-        segment.analyses.vehicle.neutral_point                             = neutral_point 
-        segment.analyses.geometry.settings.compute_fuel_volume             = False  
-        segment.analyses.weights.print_weight_analysis_report              = False 
-        segment.analyses.weights.settings.run_center_of_gravity_analysis   = False
-        segment.analyses.weights.settings.run_moments_of_inertia_analysis  = False     
-        segment.analyses.stability.print_stability_analysis_report         = True
-        segment.analyses.stability.settings.compute_neutral_point          = False 
-   
-    # preprocess and mass
-    geometry(aero_analysis_mission)
-    mass_properties(aero_analysis_mission) 
-
-    # store results 
-    vehicle = segment.analyses.vehicle
+ 
 
     # store results  
     RES.trim_results.neutral_point[w_i,c_g_i]            = neutral_point
-    RES.trim_results.static_margin[w_i,c_g_i]            = (RES.trim_results.neutral_point[w_i,c_g_i]  - vehicle.mass_properties.center_of_gravity[0][0]) /aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
-    RES.trim_results.mass[w_i,c_g_i]                     =  aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.mass_properties.takeoff 
-    RES.trim_results.LEMAC_location[w_i,c_g_i]           =  aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC 
-    RES.trim_results.CG_percent_of_LEMAC_location[w_i,c_g_i]   = (vehicle.mass_properties.center_of_gravity[0][0] - aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.LEMAC) / aero_analysis_mission.segments[cruise_segment_tag].analyses.vehicle.reference_chord
+    RES.trim_results.static_margin[w_i,c_g_i]            = (RES.trim_results.neutral_point[w_i,c_g_i]  - vehicle.mass_properties.center_of_gravity[0][0]) /vehicle.reference_chord
+    RES.trim_results.mass[w_i,c_g_i]                     =  vehicle.mass_properties.takeoff 
+    RES.trim_results.LEMAC_location[w_i,c_g_i]           =  vehicle.LEMAC 
+    RES.trim_results.CG_percent_of_LEMAC_location[w_i,c_g_i]   = (vehicle.mass_properties.center_of_gravity[0][0] - vehicle.LEMAC) / vehicle.reference_chord
 
     print('***************************************')
     print('Trim Diagram Data Point  : ' + str(counter+1) + ' of ' +  str(total_sims))
