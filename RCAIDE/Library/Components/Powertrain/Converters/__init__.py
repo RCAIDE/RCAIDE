@@ -41,3 +41,5 @@ from .Turboelectric_Generator                    import Turboelectric_Generator
 from .Turboshaft                                 import Turboshaft
 from .Reformer                                   import Reformer
 from .Turboshaft                                 import Turboshaft
+from .Liquid_Hydrogen_Fuel_Cell_Pump import Liquid_Hydrogen_Fuel_Cell_Pump
+

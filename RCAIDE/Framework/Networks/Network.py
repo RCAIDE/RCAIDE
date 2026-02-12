@@ -185,6 +185,7 @@ class Network(Component):
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Pump):  
                                 P_mech, P_elec, stored_results_flag,stored_conveter_tag          = converter.compute_performance(state,fuel_line)   
                                 conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate += conditions.energy.converters[converter.tag].fuel_mass_flow_rate  
+                                a=90
                                 
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Turboelectric_Generator): 
                                 if stored_conveter_tag is False:
