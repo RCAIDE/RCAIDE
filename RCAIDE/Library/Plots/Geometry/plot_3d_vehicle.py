@@ -53,9 +53,9 @@ def plot_3d_vehicle(vehicle,
                     cargo_bay_opacity           = 0.6, 
                     number_of_airfoil_points    = 101,
                     tessellation                = 96,
-                    camera_eye_x                = None,
-                    camera_eye_y                = None,
-                    camera_eye_z                = None,
+                    camera_eye_x                = -1,
+                    camera_eye_y                = -1,
+                    camera_eye_z                = 0.75 ,
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """
@@ -115,26 +115,11 @@ def plot_3d_vehicle(vehicle,
  
     # -------------------------------------------------------------------------  
     # Initalize Renderer
-    # -------------------------------------------------------------------------
-    pv.global_theme.full_screen = True
+    # ------------------------------------------------------------------------- 
     if save_figure: 
         plotter = pv.Plotter(off_screen=True)
     else:
-        plotter = pv.Plotter() 
-        
-    if front_view:
-        plotter.camera_position  = 'yz'  
-
-    elif side_view:
-        plotter.camera_position  = 'xz'  
-
-    elif top_view:
-        plotter.camera_position  = 'xy'     
-
-    else: 
-        camera_eye_x  = camera_eye_x if camera_eye_x is not None else - 1
-        camera_eye_y  = camera_eye_y if camera_eye_y is not None else - 1
-        camera_eye_z  = camera_eye_z if camera_eye_z is not None else 0.75  
+        plotter = pv.Plotter()     
     
     # -------------------------------------------------------------------------
     # Object RGB Colors  
@@ -345,9 +330,20 @@ def plot_3d_vehicle(vehicle,
                         vtk_data     = actor.GetMapper().GetInput() 
                         pyvista_mesh = pv.wrap(vtk_data)  
                         plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
-         
-    plotter.camera_position = [(L * camera_eye_x, L * camera_eye_y, L * camera_eye_z), (L /2, 0, 0), (0, 0, 1)]
+                    
+                            
+    if front_view:
+        plotter.camera_position  = 'yz'  
 
+    elif side_view:
+        plotter.camera_position  = 'xz'  
+
+    elif top_view:
+        plotter.camera_position  = 'xy'           
+    else:
+        plotter.camera_position = [(L * camera_eye_x, L * camera_eye_y, L * camera_eye_z), (L /2, 0, 0), (0, 0, 1)]
+   
+    plotter.window_size = [1500, 1500] # Set resolution
     plotter.set_background('white') # Set background color 
     if save_figure:  
         # 4. Save the plot as a PNG image
