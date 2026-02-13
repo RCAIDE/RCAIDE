@@ -22,7 +22,7 @@ import os
 # ----------------------------------------------------------------------------------------------------------------------
 #  Methods to compute volume of non integrak tanks
 # ----------------------------------------------------------------------------------------------------------------------  
-def compute_bwb_aft_tank_volume(fuel_tank, wing):
+def compute_bwb_aft_tank_volume(fuel_tank, wing,fuel_tanks):
     """
     Computes the volume of an aft fuel tank for a Blended Wing Body (BWB) aircraft configuration.
 
@@ -94,6 +94,13 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
         fuel_tank.aft_tank_segment_bound
         ]):
         raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
+    if hasattr( wing, 'aft_tank_end_percent'):
+        if  (fuel_tank.aft_tank_root_chord_bounds[1] - wing.aft_tank_end_percent - 0.005)*wing.chords.root > 0.25: # Successive Aft Tank diameter needs to be atleast 0.25m
+            fuel_tank.aft_tank_root_chord_bounds[0] = wing.aft_tank_end_percent + 0.005
+        else:
+            print(f"[WARNING] Tank '{fuel_tank.tag}' cannot not fit in the space. Removing from list.")
+            fuel_tanks.pop(fuel_tank.tag)
+            return
     # ------------------------------------------------------
     # compute tank bounds
     # ------------------------------------------------------
@@ -263,6 +270,7 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing):
     fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
     fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
     fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
+    wing.aft_tank_end_percent =  (fuel_tank.origin[0][0] + fuel_tank.diameters.external )/wing.chords.root
     
     return
 
@@ -359,7 +367,6 @@ def compute_rounded_end_cylindical_tank_volume(fuel_tank):
     fuel_tank.mass_properties.center_of_gravity       =  [[(L_o + D)/2, 0, 0]]
     fuel_tank.fuel.origin                             = fuel_tank.origin    
     return 
-    
     
 def compute_wing_non_integral_tank_volume(fuel_tank, wing,fuel_tanks):
     """

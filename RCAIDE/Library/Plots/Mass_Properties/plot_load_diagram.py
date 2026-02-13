@@ -31,7 +31,7 @@ def plot_load_diagram(results,
                       x_axis_upper_limit        = None,
                       y_axis_lower_limit        = None,
                       y_axis_upper_limit        = None,
-                      show_component_vectors    = True, 
+                      show_component_vectors    = False, 
                       width                     = 11,
                       height                    = 7):
     """

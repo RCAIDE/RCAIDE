@@ -148,8 +148,10 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 if self.bwb_aft_tank == True:
                     if self.wing_tag != None:
                         wing = wings[self.wing_tag]  
-                        compute_bwb_aft_tank_volume(self, wing)
-                        compute_liquid_hydrogen_tank_volume(self)
+                        compute_bwb_aft_tank_volume(self, wing,fuel_tanks)
+                        if hasattr(fuel_tanks,self.tag):
+                            compute_liquid_hydrogen_tank_volume(self)
+                        
         return
   
     def compute_moments_of_inertia(self,vehicle,center_of_gravity=[[0, 0, 0]]): 
