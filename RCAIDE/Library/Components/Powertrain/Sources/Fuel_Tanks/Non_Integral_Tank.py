@@ -175,7 +175,7 @@ class Non_Integral_Tank(Fuel_Tank):
         elif self.bwb_aft_tank is True:
             if self.bwb_aft_tank == True:
                 wing = wings[self.wing_tag]  
-                compute_bwb_aft_tank_volume(self,wing)
+                compute_bwb_aft_tank_volume(self,wing,fuel_tanks)
         else:
             if self.geometry_type == 'prismatic':
                 compute_prismatic_fuel_tank_volume(self)
