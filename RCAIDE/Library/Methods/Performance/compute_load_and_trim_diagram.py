@@ -48,7 +48,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
         segment.analyses.weights.settings.run_center_of_gravity_analysis   = True
         segment.analyses.weights.settings.run_moments_of_inertia_analysis  = True  
         segment.analyses.stability.print_stability_analysis_report         = True
-        segment.analyses.stability.settings.compute_neutral_point          = False
+        segment.analyses.stability.settings.compute_neutral_point          = True
         segment.analyses.weights.settings.overwrite_center_of_gravity      = True
     
     #------------------------------------------------------------------------  
