@@ -314,20 +314,27 @@ def plot_3d_vehicle(vehicle,
     renderWindow.SetSize(1500, 1500)
     renderWindow.SetWindowName(save_filename)
     
-    # 6. Create an interactor to handle user input (mouse, keyboard)
-    renderWindowInteractor = vtk.vtkRenderWindowInteractor()
-    renderWindowInteractor.SetRenderWindow(renderWindow)
+    renderWindowInteractor = None
+    if show_figure:
+        # 6. Create an interactor to handle user input (mouse, keyboard)
+        renderWindowInteractor = vtk.vtkRenderWindowInteractor()
+        renderWindowInteractor.SetRenderWindow(renderWindow)
 
-    # Use the custom interactor style
-    custom_style = vtk.vtkInteractorStyleTrackballCamera() 
-    renderWindowInteractor.SetInteractorStyle(custom_style)
+        # Use the custom interactor style
+        custom_style = vtk.vtkInteractorStyleTrackballCamera()
+        renderWindowInteractor.SetInteractorStyle(custom_style)
 
     if save_figure:
+        # Render at least once before capture; required for stable pixel reads.
+        renderWindow.SetOffScreenRendering(1)
+        renderWindow.Render()
+
         # Create a vtkWindowToImageFilter to capture the render window content
         window_to_image = vtk.vtkWindowToImageFilter()
         window_to_image.SetInput(renderWindow)
         window_to_image.SetInputBufferTypeToRGBA()  # or RGB
         window_to_image.ReadFrontBufferOff()  # Read from back buffer for off-screen rendering
+        window_to_image.Modified()
         window_to_image.Update()
         
         # Create a vtkPNGWriter to save the image
@@ -337,7 +344,7 @@ def plot_3d_vehicle(vehicle,
         writer.Write()
         
     # Start the VTK interactor 
-    if show_figure:      
+    if show_figure:
         renderWindowInteractor.Initialize()
         renderWindow.Render() # Render the scene initially
         renderWindowInteractor.Start()
