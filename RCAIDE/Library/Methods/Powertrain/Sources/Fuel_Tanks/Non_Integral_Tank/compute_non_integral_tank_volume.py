@@ -95,8 +95,8 @@ def compute_bwb_aft_tank_volume(fuel_tank, wing,fuel_tanks):
         ]):
         raise ValueError("One or more required aft tank parameters are not set in 'fuel_tank'.")
     if hasattr( wing, 'aft_tank_end_percent'):
-        if  (fuel_tank.aft_tank_root_chord_bounds[1] - wing.aft_tank_end_percent - 0.01)*wing.chords.root > 0.25: # Successive Aft Tank diameter needs to be atleast 0.25m
-            fuel_tank.aft_tank_root_chord_bounds[0] = wing.aft_tank_end_percent + 0.01
+        if  (fuel_tank.aft_tank_root_chord_bounds[1] - wing.aft_tank_end_percent - 0.005)*wing.chords.root > 0.25: # Successive Aft Tank diameter needs to be atleast 0.25m
+            fuel_tank.aft_tank_root_chord_bounds[0] = wing.aft_tank_end_percent + 0.005
         else:
             print(f"[WARNING] Tank '{fuel_tank.tag}' cannot not fit in the space. Removing from list.")
             fuel_tanks.pop(fuel_tank.tag)
