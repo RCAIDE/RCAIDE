@@ -142,7 +142,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
     # ---------------------------------------------------------------------------------------------------------------------------         
         if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
             print('Warning:Prescribed payload weight is greater than maxmimum payload weight')
-        if weights_analysis.settings.iterate_mtow and i ==0:
+        if weights_analysis.settings.iterate_mtow:
             diff = 999
             max_iterations = 1000
             mtow_iterations = 0 
@@ -219,7 +219,6 @@ def mass_properties_preprocess_routine(segment, i = 0):
             if mtow_iterations>max_iterations:
                 print('MTOW DIDNT CONVERGE')
 
-    
         else:
             if analyses.vehicle.mass_properties.max_zero_fuel == None:
             # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
