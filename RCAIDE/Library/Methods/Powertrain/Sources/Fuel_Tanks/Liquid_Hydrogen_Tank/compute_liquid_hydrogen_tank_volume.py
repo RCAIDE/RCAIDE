@@ -200,6 +200,9 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank):
         V_material *= 2
         mass_ins *=2
     
+    if np.isnan(mass_ins):
+        print(f"[WARNING] Tank '{fuel_tank.tag}' cannot not fit in the space. Removing from list.")
+        fuel_tanks.pop(fuel_tank.tag)
     fuel_tank.fuel.mass_properties.mass =  fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
     fuel_tank.mass_properties.insulation_mass =  mass_ins
     fuel_tank.mass_properties.structural_mass = V_material * fuel_tank.material.density  # Structural Mass of the tank
@@ -371,8 +374,7 @@ def heat_transfer_wrap(Te, t_ins, fuel_tank, atmo_data,ro,ri,li):
     Qc = Qc_cyl + Qc_sph
 
     fuel_tank.insulation_wall_conductive_heat_transfer = Qc
-
-    return float(Qv + Qr - Qc)
+    return float(np.asarray(Qv + Qr - Qc).reshape(-1)[0])
 
 
 def bracket_root(func, start=1e-6, factor=10, limit=1e2, args=()):
