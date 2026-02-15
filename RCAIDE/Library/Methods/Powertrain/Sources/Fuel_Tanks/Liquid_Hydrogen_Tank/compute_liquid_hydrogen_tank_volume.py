@@ -201,7 +201,7 @@ def compute_liquid_hydrogen_tank_volume(fuel_tank,fuel_tanks):
         mass_ins *=2
     
     if np.isnan(mass_ins):
-        print(f"[WARNING] Tank '{fuel_tank.tag}' cannot not fit in the space. Removing from list.")
+        print(f"[WARNING] Tank '{fuel_tank.tag}' is too small and has negative fuel volume. Removing from list.")
         fuel_tanks.pop(fuel_tank.tag)
     fuel_tank.fuel.mass_properties.mass =  fuel_tank.fuel.volume_properties.net_volume *  fuel_tank.fuel.density
     fuel_tank.mass_properties.insulation_mass =  mass_ins
