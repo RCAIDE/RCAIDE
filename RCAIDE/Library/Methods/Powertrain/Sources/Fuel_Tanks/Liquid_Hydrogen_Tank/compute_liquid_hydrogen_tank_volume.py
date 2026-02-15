@@ -18,7 +18,7 @@ from scipy.optimize import minimize, minimize_scalar, brentq
 # ----------------------------------------------------------------------------------------------------------------------
 #  Structural Solver
 # ----------------------------------------------------------------------------------------------------------------------    
-def compute_liquid_hydrogen_tank_volume(fuel_tank):
+def compute_liquid_hydrogen_tank_volume(fuel_tank,fuel_tanks):
     """
     Size a liquid hydrogen tank to meet outer-diameter constraints while satisfying
     structural and thermal limits via nested 1D root solves.

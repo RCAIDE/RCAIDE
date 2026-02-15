@@ -142,7 +142,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                 wing = wings[self.wing_tag]  
                 compute_wing_non_integral_tank_volume(self, wing,fuel_tanks)
                 if hasattr(fuel_tanks,self.tag):
-                    compute_liquid_hydrogen_tank_volume(self)
+                    compute_liquid_hydrogen_tank_volume(self,fuel_tanks)
                   
             else:
                 if self.bwb_aft_tank == True:
@@ -150,7 +150,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                         wing = wings[self.wing_tag]  
                         compute_bwb_aft_tank_volume(self, wing,fuel_tanks)
                         if hasattr(fuel_tanks,self.tag):
-                            compute_liquid_hydrogen_tank_volume(self)
+                            compute_liquid_hydrogen_tank_volume(self,fuel_tanks)
                         
         return
   
