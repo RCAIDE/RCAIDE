@@ -19,3 +19,4 @@ from .Hydraulics              import Hydraulics
 from .Environmental_Controls  import Environmental_Controls 
 from .Instruments             import Instruments 
 from .Systems                 import Systems
+from .Water_Tank              import Water_Tank

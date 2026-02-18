@@ -179,6 +179,8 @@ def compute_operating_empty_weight(vehicle,settings=None):
                 system.mass_properties.calculated_flag = True
             else:
                 W_systems.W_instruments = system.mass_properties.mass
+        if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Water_Tank:
+            W_systems.W_water_tank = system.mass_properties.mass
 
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 
@@ -353,10 +355,12 @@ def compute_operating_empty_weight(vehicle,settings=None):
     output.empty.systems.furnishings            = W_systems.W_furnish
     output.empty.systems.air_conditioner        = W_systems.W_ac + W_systems.W_anti_ice # Anti-ice is sometimes included in ECS
     output.empty.systems.instruments            = W_systems.W_instruments
+    output.empty.systems.water_tank             = W_systems.W_water_tank
     output.empty.systems.total                  = output.empty.systems.control_systems + output.empty.systems.apu \
                                                     + output.empty.systems.electrical + output.empty.systems.avionics \
                                                     + output.empty.systems.hydraulics + output.empty.systems.furnishings \
-                                                    + output.empty.systems.air_conditioner + output.empty.systems.instruments
+                                                    + output.empty.systems.air_conditioner + output.empty.systems.instruments \
+                                                    + output.empty.systems.water_tank 
  
     output.payload    = payload 
     output.operational_items    = Data()
