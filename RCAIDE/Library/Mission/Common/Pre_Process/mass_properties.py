@@ -7,6 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  RCAIDE
 # ---------------------------------------------------------------------------------------------------------------------- 
+from copy import deepcopy
 import RCAIDE 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_vehicle_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_vehicle_center_of_gravity 
@@ -109,7 +110,10 @@ def mass_properties(mission):
         if segment.analyses.weights == None:
             raise AssertionError('Define weights analysis method')
         else: 
-            mass_properties_preprocess_routine(segment, i) 
+            if i ==0 or segment.analyses.geometry.settings.unique_geometry:
+                mass_properties_preprocess_routine(segment, i) 
+            else:
+                use_previous_segment_pre_processed_data(mission,segment,i)   
     return 
 
 def mass_properties_preprocess_routine(segment, i = 0):
@@ -148,8 +152,9 @@ def mass_properties_preprocess_routine(segment, i = 0):
             mtow_iterations = 0 
             while abs(diff)>0.00005 and mtow_iterations<max_iterations:
                 if analyses.vehicle.mass_properties.max_zero_fuel == None:
+                    max_zero_fuel_flag = True
                     # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
-                    if i == 0:
+                    if i == 0 and mtow_iterations == 0:
                         print('\n Warning: Max Fuel or Max Zero Fuel not defined. Iterating to find these values.')
                     # Inital guess for max fuel and max zero fuel based on regressional analysis which use max takeoff weight of the aircraft
                     compute_max_fuel = False
@@ -193,8 +198,6 @@ def mass_properties_preprocess_routine(segment, i = 0):
                             if compute_max_fuel: 
                                 analyses.vehicle.mass_properties.max_fuel      += residual_max_fuel * 0.1 
 
-                
-                
                 _ = weights_analysis.evaluate(analyses.vehicle) 
 
                 if analyses.vehicle.mass_properties.payload > analyses.vehicle.mass_properties.max_payload:
@@ -216,9 +219,17 @@ def mass_properties_preprocess_routine(segment, i = 0):
                                 analyses.vehicle.mass_properties.max_fuel,
                                 analyses.vehicle)
                 analyses.vehicle.mass_properties.max_takeoff = new_mtow
-            if mtow_iterations>max_iterations:
-                print('MTOW DIDNT CONVERGE')
 
+                if abs(diff)> 0.00005:
+                    if max_zero_fuel_flag:
+                        analyses.vehicle.mass_properties.max_zero_fuel = None
+                    if compute_max_fuel:
+                        analyses.vehicle.mass_properties.max_fuel = None
+                mtow_iterations += 1
+            
+            if mtow_iterations>max_iterations:
+                raise Exception('MTOW DIDNT CONVERGE')
+            
         else:
             if analyses.vehicle.mass_properties.max_zero_fuel == None:
             # Before proceeding to the weight buildups, the buildups need either the max fuel capacity or the max zero fuel to compute OEW 
@@ -611,3 +622,17 @@ def iterate_for_mtow(old_mtow, oew, max_payload, max_fuel,vehicle):
     # Keep MTOW physically meaningful.
     return max(new_mtow, 0.0),diff
                                     
+
+def use_previous_segment_pre_processed_data(mission,segment,i):
+    '''
+    Reuses previous segment pre processed data to save computational time.
+    Ensures that changes in configuration are not overwritten.    
+    '''
+    analyses         = segment.analyses
+    weights_analysis = analyses.weights 
+    vehicle_1 = deepcopy(mission.segments[i-1].analyses.vehicle)
+    segment.analyses.vehicle.mass_properties = vehicle_1.mass_properties
+    weights_analysis.settings.iterate_mtow = False
+    mass_properties_preprocess_routine(segment, i) 
+    
+    return
