@@ -134,7 +134,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
             if system.mass_properties.mass != 0:
                 W_systems.W_apu = 0 # All these things need to be refactored. But we are sure this works 
-
+    W_systems.W_water_tank = 0
     for system in vehicle.systems:
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
             if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
