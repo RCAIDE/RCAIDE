@@ -30,32 +30,69 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
     results = mission.evaluate()
     drag = results.segments[cruise_segment_tag].conditions.aerodynamics.coefficients.drag
     eps = 1e-12
+    name_map = {
+        "main_wing": "Main Wing",
+        "vertical_stabilizer": "Vertical\n Stabilizer",
+        "nacelle_1": "Nacelle 1",
+        "propulsor_2_nacelle": "Nacelle 2",
+        "nacelle_1_pylon": "Pylon 1",
+        "propulsor_2_nacelle_pylon": "Pylon 2",
+        "viscous": "Viscous",
+        "inviscid": "Inviscid",
+    }
 
-    def _mean_cd(x):
-        arr = x.total if hasattr(x, "total") else x
-        arr = np.asarray(arr)
+    # --- unpack settings/geometry for parasite normalization (match parasite_total.py logic)
+    vehicle = mission.segments[cruise_segment_tag].analyses.vehicle
+    settings = mission.segments[cruise_segment_tag].analyses.aerodynamics.settings
+    vehicle_reference_area = vehicle.reference_area
+
+    component_reference_areas = {}
+    for wing in vehicle.wings:
+        component_reference_areas[wing.tag] = wing.areas.reference
+    for fuselage in vehicle.fuselages:
+        component_reference_areas[fuselage.tag] = fuselage.areas.front_projected
+    for boom in vehicle.booms:
+        component_reference_areas[boom.tag] = boom.areas.front_projected
+    for network in vehicle.networks:
+        for propulsor in network.propulsors:
+            if propulsor.nacelle != None:
+                nacelle = propulsor.nacelle
+                front_area = np.pi * (nacelle.diameter ** 2) / 4
+                component_reference_areas[nacelle.tag] = front_area
+                component_reference_areas[nacelle.tag + "_pylon"] = front_area
+
+    # --- parasite subcomponents from available keys (excluding "total")
+    parasite_sub = []
+    for key in drag.parasite.keys():
+        if key == "total":
+            continue
+        item = drag.parasite[key]
+        arr = np.asarray(item)
         if arr.ndim == 2:
-            arr = arr[:, 0]
-        return float(np.mean(arr))
+            val = float(np.mean(arr[:, 0]))
+        elif arr.ndim == 1:
+            val = float(np.mean(arr))
+        elif hasattr(item, "total"):
+            arr = np.asarray(item.total)
+            if arr.ndim == 2:
+                arr = arr[:, 0]
+            val = float(np.mean(arr))
+        else:
+            val = float(np.mean(arr))
 
-    def _pretty_name(name):
-        name_map = {
-            "main_wing": "Main Wing",
-            "vertical_stabilizer": "Vertical Stabilizer",
-            "nacelle_1": "Nacelle 1",
-            "propulsor_2_nacelle": "Nacelle 2",
-            "nacelle_1_pylon": "Pylon 1",
-            "propulsor_2_nacelle_pylon": "Pylon 2",
-            "viscous": "Viscous",
-            "inviscid": "Inviscid",
-        }
-        if name in name_map:
-            return name_map[name]
-        return name.replace("_", " ").title()
+        component_ref_area = component_reference_areas[key] if key in component_reference_areas else vehicle_reference_area
+        val = val * component_ref_area / vehicle_reference_area
+        val = val * (1 - settings.drag_reduction_factors.parasite_drag)
+
+        if abs(val) > eps:
+            parasite_sub.append((key, val))
+
+    cd_parasite_total = 0.0
+    for _, val in parasite_sub:
+        cd_parasite_total += val
 
     # --- totals (mean over cruise nodes)
     cd_total          = float(np.mean(drag.total[:, 0]))
-    cd_parasite_total = float(np.mean(drag.parasite.total[:, 0]))
     cd_induced_total  = float(np.mean(drag.induced.total[:, 0]))
     cd_comp_total     = float(np.mean(drag.compressible.total[:, 0]))
     cd_misc_total     = float(np.mean(drag.miscellaneous.total[:, 0]))
@@ -63,18 +100,37 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
     cd_form_total     = float(np.mean(drag.form.total[:, 0]))
     cd_cool_total     = float(np.mean(drag.cooling.total[:, 0]))
 
-    # --- parasite subcomponents from available keys (excluding "total")
-    parasite_sub = []
-    for key in drag.parasite.keys():
-        if key == "total":
-            continue
-        val = _mean_cd(drag.parasite[key])
-        if abs(val) > eps:
-            parasite_sub.append((key, val))
+    item_vis = drag.induced["viscous"]
+    arr_vis = np.asarray(item_vis)
+    if arr_vis.ndim == 2:
+        val_vis = float(np.mean(arr_vis[:, 0]))
+    elif arr_vis.ndim == 1:
+        val_vis = float(np.mean(arr_vis))
+    elif hasattr(item_vis, "total"):
+        arr_vis = np.asarray(item_vis.total)
+        if arr_vis.ndim == 2:
+            arr_vis = arr_vis[:, 0]
+        val_vis = float(np.mean(arr_vis))
+    else:
+        val_vis = float(np.mean(arr_vis))
+
+    item_inv = drag.induced["inviscid"]
+    arr_inv = np.asarray(item_inv)
+    if arr_inv.ndim == 2:
+        val_inv = float(np.mean(arr_inv[:, 0]))
+    elif arr_inv.ndim == 1:
+        val_inv = float(np.mean(arr_inv))
+    elif hasattr(item_inv, "total"):
+        arr_inv = np.asarray(item_inv.total)
+        if arr_inv.ndim == 2:
+            arr_inv = arr_inv[:, 0]
+        val_inv = float(np.mean(arr_inv))
+    else:
+        val_inv = float(np.mean(arr_inv))
 
     induced_sub = [
-        ("viscous",  _mean_cd(drag.induced["viscous"])),
-        ("inviscid", _mean_cd(drag.induced["inviscid"])),
+        ("viscous", val_vis),
+        ("inviscid", val_inv),
     ]
     induced_sub = [(name, val) for name, val in induced_sub if abs(val) > eps]
 
@@ -112,15 +168,23 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
     rows = []
     for cat, subs, tot in categories:
         for (name, val) in subs:
-            rows.append({"category": cat, "component": name, "CD": val})
-        rows.append({"category": cat, "component": "total", "CD": tot})
+            if name == "total":
+                continue
+            rows.append({"category": cat, "component": name, "CD": float(val)})
+        rows.append({"category": cat, "component": "total", "CD": float(tot)})
     df = pd.DataFrame(rows)
 
     # -------------------------
     # Plot (stacked bars, hatched subcomponents)
     # -------------------------
-    plot_style()
-    fig, ax = plt.subplots(figsize=(12, 5))
+    ps = plot_style()
+    plt.rcParams.update({
+        "axes.labelsize": ps.axis_font_size + 4,
+        "xtick.labelsize": ps.axis_font_size + 4,
+        "ytick.labelsize": ps.axis_font_size + 4,
+        "axes.titlesize": ps.title_font_size,
+    })
+    fig, ax = plt.subplots(figsize=(10, 8))
 
     hatch_list = ["///", "\\\\\\", "xx", "..", "++", "--", "oo", "**", "||", "//"]
     cat_colors = plt.cm.tab10(np.linspace(0, 1, max(len(categories), 1)))
@@ -133,21 +197,21 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
         # stack subcomponents (if any), each with a different hatch
         if len(subs) > 1 or (len(subs) == 1 and subs[0][0] != "total"):
             for j, (name, val) in enumerate(subs):
-                ax.bar(i, val, width=0.7, bottom=bottom,
-                       color=base_color, alpha=0.65,
-                       hatch=hatch_list[j % len(hatch_list)], edgecolor="k")
+                ax.barh(i, val, height=0.7, left=bottom,
+                        color=base_color, alpha=0.65,
+                        hatch=hatch_list[j % len(hatch_list)], edgecolor="k")
                 bottom += val
         else:
             bar_val = subs[0][1] if len(subs) > 0 else tot
-            ax.bar(i, bar_val, width=0.7, color=base_color, alpha=0.65,
-                   hatch=hatch_list[0], edgecolor="k")
+            ax.barh(i, bar_val, height=0.7, color=base_color, alpha=0.65,
+                    hatch=hatch_list[0], edgecolor="k")
 
         # outline to the category total
-        ax.bar(i, tot, width=0.7, fill=False, edgecolor=base_color, linewidth=2.0)
+        ax.barh(i, tot, height=0.7, fill=False, edgecolor=base_color, linewidth=2.0)
 
-    ax.set_xticks(np.arange(len(categories)))
-    ax.set_xticklabels([c[0].capitalize() for c in categories], rotation=25, ha="right")
-    ax.set_ylabel(r"c$_D$")
+    ax.set_yticks(np.arange(len(categories)))
+    ax.set_yticklabels([c[0].capitalize() for c in categories])
+    ax.set_xlabel(r"c$_D$")
     ax.set_title("Cruise Drag Buildup")
     parasite_color = cat_colors[cat_to_idx["parasite"]] if "parasite" in cat_to_idx else "0.85"
     induced_color = cat_colors[cat_to_idx["induced"]] if "induced" in cat_to_idx else "0.85"
@@ -157,7 +221,7 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
             edgecolor="k",
             alpha=0.65,
             hatch=hatch_list[i % len(hatch_list)],
-            label=_pretty_name(name),
+            label=name_map[name] if name in name_map else name.replace("_", " ").title(),
         )
         for i, (name, val) in enumerate(parasite_sub) if abs(val) > eps
     ]
@@ -167,7 +231,7 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
             edgecolor="k",
             alpha=0.65,
             hatch=hatch_list[i % len(hatch_list)],
-            label=_pretty_name(name),
+            label=name_map[name] if name in name_map else name.replace("_", " ").title(),
         )
         for i, (name, val) in enumerate(induced_sub) if abs(val) > eps
     ]
@@ -175,21 +239,22 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
         leg1 = ax.legend(
             handles=parasite_handles,
             title="Parasite subcomponents",
-            loc="upper left",
-            bbox_to_anchor=(0.01, 0.99),
-            fontsize=8,
+            loc="lower right",
+            bbox_to_anchor=(0.99, 0.02),
+            fontsize=14,
         )
         ax.add_artist(leg1)
     if induced_handles:
         ax.legend(
             handles=induced_handles,
             title="Induced subcomponents",
-            loc="upper left",
-            bbox_to_anchor=(0.2, 0.99),
-            fontsize=8,
+            loc="lower right",
+            bbox_to_anchor=(0.99, 0.42),
+            fontsize=14,
         )
     set_axes(ax)
     plt.tight_layout()
+    fig.tight_layout()
 
     # -------------------------
     # Pie chart (major component contribution to total drag)
@@ -219,7 +284,7 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
         pctdistance=0.78,
         labeldistance=1.06,
         wedgeprops={"edgecolor": "white", "linewidth": 1.0},
-        textprops={"fontsize": 10},
+        textprops={"fontsize": 12},
     )
     # ax_pie.set_title("Main Drag Component Contribution (%)")
     ax_pie.axis("equal")
@@ -230,26 +295,26 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
     # -------------------------
     fig_parasite_zoom = None
     if len(parasite_sub) > 0:
-        fig_parasite_zoom, ax_pz = plt.subplots(figsize=(9, 4.8))
+        fig_parasite_zoom, ax_pz = plt.subplots(figsize=(6, 4.8))
         parasite_zoom_data = [(n, v) for (n, v) in parasite_sub if n != "main_wing" and abs(v) > eps]
         if len(parasite_zoom_data) == 0:
             parasite_zoom_data = parasite_sub
 
         x_pz = np.arange(len(parasite_zoom_data))
         for i, (name, val) in enumerate(parasite_zoom_data):
-            ax_pz.bar(
+            ax_pz.barh(
                 i, val,
                 color=parasite_color,
                 alpha=0.75,
                 edgecolor="k",
                 hatch=hatch_list[i % len(hatch_list)],
             )
-        ax_pz.set_xticks(x_pz)
-        nice_labels = [_pretty_name(n) for n, _ in parasite_zoom_data]
-        ax_pz.set_xticklabels(nice_labels, fontsize=9, rotation=20, ha="right")
-        ax_pz.set_ylabel(r"c$_D$")
+        ax_pz.set_yticks(x_pz)
+        nice_labels = [name_map[n] if n in name_map else n.replace("_", " ").title() for n, _ in parasite_zoom_data]
+        ax_pz.set_yticklabels(nice_labels, fontsize=13)
+        ax_pz.set_xlabel(r"c$_D$")
         ax_pz.set_title("Parasite Drag Subcomponents")
-        ax_pz.grid(True, axis="y", linestyle="--", alpha=0.4)
+        ax_pz.grid(True, axis="x", linestyle="--", alpha=0.4)
         zoom_handles = [
             Patch(
                 facecolor=parasite_color,
@@ -260,7 +325,7 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
             )
             for i in range(len(parasite_zoom_data))
         ]
-        ax_pz.legend(handles=zoom_handles, title="Parasite subcomponents", loc="upper right", fontsize=8)
+        ax_pz.legend(handles=zoom_handles, title="Parasite subcomponents", loc="upper right", fontsize=14)
         set_axes(ax_pz)
         fig_parasite_zoom.tight_layout()
 
