@@ -108,10 +108,11 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
                     total_fuel_volume += fuel_tank.fuel.volume_properties.net_volume 
                     total_fuel_mass   += fuel_tank.fuel.mass_properties.mass 
                     
+    #THIS SHOULD EXIST BECAUSE FUEL IS A MISSION LEVEL PROPERTY WE ARE UPDATING THE FUEL MASS ON THE FUEL TANKS
     # Assign Total Fuel Volume and Mass to Vehicle 
-    if compute_fuel_volume:
-        vehicle.volume_properties.fuel   = total_fuel_volume
-        vehicle.mass_properties.fuel     = total_fuel_mass
+    # if compute_fuel_volume:
+    #     vehicle.volume_properties.fuel   = total_fuel_volume
+    #     vehicle.mass_properties.fuel     = total_fuel_mass
     
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
