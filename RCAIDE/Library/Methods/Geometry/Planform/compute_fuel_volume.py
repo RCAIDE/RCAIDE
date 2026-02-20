@@ -109,8 +109,9 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
                     total_fuel_mass   += fuel_tank.fuel.mass_properties.mass 
                     
     # Assign Total Fuel Volume and Mass to Vehicle 
-    vehicle.volume_properties.fuel   = total_fuel_volume
-    vehicle.mass_properties.fuel     = total_fuel_mass
+    if compute_fuel_volume:
+        vehicle.volume_properties.fuel   = total_fuel_volume
+        vehicle.mass_properties.fuel     = total_fuel_mass
     
     if update_max_fuel:
         vehicle.mass_properties.max_fuel = total_fuel_mass
