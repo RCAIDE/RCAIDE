@@ -350,7 +350,7 @@ def plot_3d_vehicle(vehicle,
     else:
         if show_figure: 
             plotter.show()  
-    return
+    return plotter
 
 def add_lopa_seats(plotter, lopa_geometry, opacity):
     seats = getattr(lopa_geometry, "_lopa_seats", [])

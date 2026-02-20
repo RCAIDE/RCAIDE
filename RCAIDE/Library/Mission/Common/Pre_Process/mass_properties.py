@@ -455,6 +455,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
             with pd.ExcelWriter(excel_filename, engine="openpyxl",mode="a",if_sheet_exists="replace") as writer:
                 centre_of_gravity_df.to_excel(writer,sheet_name="Centre of Gravity",index=False)
             print(f"CG breakdown written to Excel:\n  {excel_filename}")
+        analyses.vehicle.mass_properties.center_of_gravity_breakdown = centre_of_gravity_df
 
     # ---------------------------------------------------------------------------------------------------------------------------         
     # STEP 6: Compute Moment of Inertia 
