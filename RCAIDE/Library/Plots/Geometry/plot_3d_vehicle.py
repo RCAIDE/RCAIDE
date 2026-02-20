@@ -53,9 +53,10 @@ def plot_3d_vehicle(vehicle,
                     cargo_bay_opacity           = 0.6, 
                     number_of_airfoil_points    = 101,
                     tessellation                = 96,
-                    camera_eye_x                = -1,
-                    camera_eye_y                = -1,
-                    camera_eye_z                = 0.75 ,
+                    camera_eye_x                = -100,
+                    camera_eye_y                = -100,
+                    camera_eye_z                = 75,
+                    viewbox_size                = 100, 
                     overwrite_geometry          = True, 
                     show_figure                 = True):
     """
@@ -331,16 +332,15 @@ def plot_3d_vehicle(vehicle,
                         vtk_data     = actor.GetMapper().GetInput() 
                         pyvista_mesh = pv.wrap(vtk_data)  
                         plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
-                    
-                            
+                                           
     if front_view:
-        plotter.camera_position = [(-L , 0, 0), (0, 0,0), (0, 0, 1)] 
+        plotter.camera_position = [(-2 * L , 0, 0), (0, 0,0), (0, 0, 1)] 
     elif side_view:
-        plotter.camera_position = [(L /2 , L, 0), (L /2, 0, 0), (0, 0, 1)]  
+        plotter.camera_position = [(L /2 , 2 * L, 0), (L /4, 0, 0), (0, 0, 1)]  
     elif top_view:
-        plotter.camera_position = [(L/2, 0 , L ), (L /2, 0,0), (0, 1, 0)]       
+        plotter.camera_position = [(L, 0 , 2 * L ), (0, 0,0), (0, 0, 1)]       
     else:
-        plotter.camera_position = [(L * camera_eye_x, L * camera_eye_y, L * camera_eye_z), (L /2, 0, 0), (0, 0, 1)]
+        plotter.camera_position = [(camera_eye_x, camera_eye_y, camera_eye_z), (-camera_eye_x /2, -camera_eye_y /4, 0), (0, 0, 1)]
    
     plotter.window_size = [1500, 1500] # Set resolution
     plotter.set_background('white') # Set background color 

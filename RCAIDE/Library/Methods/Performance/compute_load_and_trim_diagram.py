@@ -136,7 +136,8 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     RES.loading_results.mass                        = np.zeros((2,discretization,discretization,discretization))
     RES.loading_results.CG_location                 = np.zeros((2,discretization,discretization,discretization))
     RES.loading_results.LEMAC_location              = np.zeros((2,discretization,discretization,discretization))
-    RES.loading_results.CG_percent_of_LEMAC_location      = np.zeros((2,discretization,discretization,discretization))
+    RES.loading_results.CG_percent_of_LEMAC_location= np.zeros((2,discretization,discretization,discretization))
+    RES.loading_results.static_margin               = np.zeros((2,discretization,discretization,discretization))
     RES.percent_cargo                               = np.zeros((2,discretization,discretization,discretization))
     RES.percent_pax                                 = np.zeros((2,discretization,discretization,discretization))
     RES.percent_cargo                               = np.zeros((2,discretization,discretization,discretization))
@@ -144,7 +145,7 @@ def compute_load_and_trim_diagram(mission = None, cruise_segment_tag = "cruise",
     RES.trim_results.static_margin                  = np.zeros((discretization,discretization)) 
     RES.trim_results.mass                           = np.zeros((discretization,discretization)) 
     RES.trim_results.LEMAC_location                 = np.zeros((discretization,discretization)) 
-    RES.trim_results.CG_percent_of_LEMAC_location         = np.zeros((discretization,discretization)) 
+    RES.trim_results.CG_percent_of_LEMAC_location   = np.zeros((discretization,discretization)) 
     RES.MTOW                                        = MTOW     
     RES.OEW                                         = OEW
     RES.MLW                                         = MLW    
@@ -333,6 +334,7 @@ def compute_aircraft_load_data_point(vehicle,cruise_segment_tag,RES,counter,
     RES.loading_results.CG_location[f_o,p_i,c_i,f_i]              = center_of_gravity[0][0]  
     RES.loading_results.mass[f_o,p_i,c_i,f_i]                     = mass[0]  
     RES.loading_results.LEMAC_location[f_o,p_i,c_i,f_i]           = vehicle.LEMAC  
+    RES.loading_results.static_margin[f_o,p_i,c_i,f_i]            = (neutral_point  - center_of_gravity[0][0]) /vehicle.reference_chord
     RES.loading_results.CG_percent_of_LEMAC_location[f_o,p_i,c_i,f_i]   =  (RES.loading_results.CG_location[f_o,p_i,c_i,f_i]  - vehicle.LEMAC) / vehicle.reference_chord
      
     print('***************************************')
