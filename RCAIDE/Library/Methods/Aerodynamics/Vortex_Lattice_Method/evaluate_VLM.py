@@ -241,7 +241,6 @@ def evaluate_surrogate(state,settings,vehicle):
     # -----------------------------------------------------------------------------------------------------------------------   
     conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
     conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
-    print(f"pre-flap: {conditions.aerodynamics.coefficients.lift.inviscid.total[0][0] }")
     # -----------------------------------------------------------------------------------------------------------------------
     # Flap 
     # -----------------------------------------------------------------------------------------------------------------------
@@ -260,9 +259,6 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
         conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
         conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
-        print(f"flap stuff Clift_delta_f: {conditions.static_stability.derivatives.Clift_delta_f[0][0]}")
-        print(f"flap stuff flap deflection: {conditions.control_surfaces.flap.deflection[0][0]}")
-        print(f"post-flap: {conditions.aerodynamics.coefficients.lift.inviscid.total[0][0] }")
     return
 
 def evaluate_no_surrogate(state,settings,vehicle):
