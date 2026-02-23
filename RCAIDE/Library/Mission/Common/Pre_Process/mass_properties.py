@@ -307,7 +307,8 @@ def mass_properties_preprocess_routine(segment, i = 0):
         # ---------------------------------------------------------------------------------------------------------------------------
         # STEP 3: Print weight statements and apply weight factors  
         # --------------------------------------------------------------------------------------------------------------------------- 
-            
+        if analyses.vehicle.mass_properties.fuel  == 0 or analyses.vehicle.mass_properties.fuel is None:
+            raise AttributeError('Fuel Weight for the mission is not defned.')            
         if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights: 
             if i == 0: 
                 print("\nPerforming Weights Analysis")
