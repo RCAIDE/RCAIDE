@@ -180,7 +180,7 @@ def compute_operating_empty_weight(vehicle,settings=None):
             else:
                 W_systems.W_instruments = system.mass_properties.mass
         if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Water_Tank:
-            W_systems.W_water_tank = system.mass_properties.mass
+            W_systems.W_water_tank += system.mass_properties.mass
 
     ##-------------------------------------------------------------------------------                 
     # Propulsion Weight 

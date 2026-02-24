@@ -17,7 +17,7 @@ import pyvista as pv
 # ----------------------------------------------------------------------------------------------------------------------
 #  PLOTS
 # ----------------------------------------------------------------------------------------------------------------------    
-def plot_aircraft_cg_weight_bubbles(results,
+def plot_aircraft_cg_weight_bubbles(results,vehicle0,
                              save_figure = False,
                              show_legend = False,
                              save_filename = "Bubble Plot" ,
@@ -40,15 +40,15 @@ def plot_aircraft_cg_weight_bubbles(results,
     max_radius = 0.030 * span
 
     plotter = plot_3d_vehicle(
-        vehicle,
+        vehicle0,
         wing_opacity=0.2,
         fuselage_opacity=0.2,
         boom_opacity=0.0,
         nacelle_opacity=0.2,
-        fuel_tank_opacity=0.01,
-        lopa_opacity=0.01,
+        fuel_tank_opacity=0.1,
+        lopa_opacity=0.1,
         rotor_opacity=0.0,
-        cargo_bay_opacity=0.005,
+        cargo_bay_opacity=0.05,
         show_figure=False,
     )
 
