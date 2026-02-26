@@ -293,6 +293,11 @@ def mass_properties_preprocess_routine(segment, i = 0):
             apply_correction_factors(analyses)
             if i == 0:
                 apply_component_weights(analyses)
+        if analyses.vehicle.mass_properties.fuel  == 0 or analyses.vehicle.mass_properties.fuel is None:
+            ('Fuel Weight for the mission is not defned. Filling up the airplace till max takeoff weight')     
+            analyses.vehicle.mass_properties.fuel     = analyses.vehicle.mass_properties.max_takeoff-\
+                                                        (analyses.vehicle.mass_properties.operating_empty + analyses.vehicle.mass_properties.payload)
+
 
         # Compute takeoff weight and max zero fuel weight 
         if analyses.vehicle.mass_properties.takeoff == None:
@@ -307,8 +312,7 @@ def mass_properties_preprocess_routine(segment, i = 0):
         # ---------------------------------------------------------------------------------------------------------------------------
         # STEP 3: Print weight statements and apply weight factors  
         # --------------------------------------------------------------------------------------------------------------------------- 
-        if analyses.vehicle.mass_properties.fuel  == 0 or analyses.vehicle.mass_properties.fuel is None:
-            raise AttributeError('Fuel Weight for the mission is not defned.')            
+       
         if weights_analysis.print_weight_analysis_report and type(weights_analysis) != RCAIDE.Framework.Analyses.Weights.Weights: 
             if i == 0: 
                 print("\nPerforming Weights Analysis")
