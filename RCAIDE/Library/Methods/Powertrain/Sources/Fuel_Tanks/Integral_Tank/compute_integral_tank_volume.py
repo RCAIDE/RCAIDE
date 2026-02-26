@@ -967,7 +967,7 @@ def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
 
     fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
 
-    fuel_tank.origin     =  [[cg_x-fuel_tank.average_outer_width/2, cg_y, cg_z]]
+    fuel_tank.origin     =  [[0, 0, 0]]
     fuel_tank.fuel.origin   = fuel_tank.origin
 
     # tank_scene = trimesh.Scene()
