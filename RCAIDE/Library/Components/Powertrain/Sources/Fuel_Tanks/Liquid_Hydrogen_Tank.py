@@ -100,6 +100,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.design_inlet_temperature = 20
         self.design_altitiude         = 0
         self.acceptable_heat_leak     = 20
+        self.acceptable_total_heat_leak= 2000
         self.design_altitude          = 30000 * Units.ft
         self.design_isa_deviation     = 0
         self.ullage_volume_fraction   = 0.07

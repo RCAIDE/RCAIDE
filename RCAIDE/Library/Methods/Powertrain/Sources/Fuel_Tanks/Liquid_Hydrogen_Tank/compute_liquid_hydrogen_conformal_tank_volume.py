@@ -136,7 +136,7 @@ def compute_liquid_hydrogen_tank_conformal_volume(fuel_tank,fuel_tanks):
     fuel_tank.insulation_thickness  = t_ins
     fuel_tank.total_thickness   = t_ins + th
 
-    fuel_tank.mass_properties.mass = 1.5*(fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass)
+    fuel_tank.mass_properties.mass = fuel_tank.tank_accesories_weight_factor*(fuel_tank.mass_properties.insulation_mass + fuel_tank.mass_properties.structural_mass)
     
     return
 
@@ -222,14 +222,22 @@ def tank_width(th, li,hi,wi,P_internal, P_external, safety_factor, fuel_tank ):
 def thermal_solver_basic_rectangular(Ta, fuel_tank,lo,wo,ho):
     #Reads properties, tank material (mt), insulation material (mi), tank geometry - 
     #inner length (li), inner radius (ri), outer radius (ro), H2 temperature (Ti), 
-    #ambient temperature (Ta), allowable heat flux (Qo), and multipliers
+    #ambient temperature (Ta), allowable total heat leak (Qo, W), and multipliers
 
     Ti = fuel_tank.design_inlet_temperature
-    Qo = fuel_tank.acceptable_heat_leak
-    
-    t_ins = fuel_tank.insulation_material.thermal_conductivity * (Ta-Ti)/Qo
-    a_ins = 2*(lo*wo + lo*ho + wo*ho)
-    v_ins = t_ins*a_ins
-    mass_ins = v_ins*fuel_tank.insulation_material.thermal_conductivity + a_ins* fuel_tank.insulation_material.specific_density
+    Qo = fuel_tank.acceptable_total_heat_leak
+
+    # Convert total allowable heat leak [W] to an equivalent heat flux [W/m^2]
+    # using the tank outer area before insulation.
+    area_ref = 2 * (lo * wo + lo * ho + wo * ho)
+    q_flux = Qo / max(area_ref, 1e-12)
+
+    t_ins = fuel_tank.insulation_material.thermal_conductivity * (Ta-Ti) / max(q_flux, 1e-12)
+    h_o_o =   ho + 2*t_ins
+    l_o_o =   lo + 2*t_ins
+    w_o_o =   wo + 2*t_ins
+    a_ins = 2*(l_o_o*w_o_o + l_o_o*h_o_o + w_o_o*h_o_o)
+    v_ins = (l_o_o*w_o_o*h_o_o)-(lo*wo*ho)
+    mass_ins = v_ins*fuel_tank.insulation_material.density + a_ins* fuel_tank.insulation_material.specific_density
     
     return t_ins, mass_ins
