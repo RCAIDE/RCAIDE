@@ -688,6 +688,7 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
         fuel_tank.aspect_ratio = fuel_tank.average_outer_length / fuel_tank.average_outer_height
         
         fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, y_cg, 0])
+        fuel_tank.mass_properties.center_of_gravity  = np.array([x_cg, y_cg, 0])
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          

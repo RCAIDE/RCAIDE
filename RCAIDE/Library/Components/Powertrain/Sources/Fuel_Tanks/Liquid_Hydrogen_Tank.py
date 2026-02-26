@@ -15,7 +15,7 @@ from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.comp
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_tank_volume import compute_liquid_hydrogen_tank_volume
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_conformal_tank_volume import compute_liquid_hydrogen_tank_conformal_volume
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_cylinder_center_of_gravity
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia, compute_cuboid_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen Tank
@@ -193,12 +193,15 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         outer_length = self.lengths.external
         outer_radius = self.diameters.external/2
         inner_length = self.inner_structure.inner_length 
-        inner_radius = self.inner_structure.inner_diameter/2
          
         if  self.geometry_type == 'cylindrical':
+            inner_radius = self.inner_structure.inner_diameter/2
             _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, outer_length,outer_radius,inner_length=inner_length, inner_radius=inner_radius, center_of_gravity=center_of_gravity, fuel_tank=True) 
-        elif self.geometry_type == 'conformal':
-            raise NotImplementedError
+        elif self.geometry_type == 'conformal' and self.bwb_aft_tank:
+            pass
+        elif self.geometry_type == 'conformal' and self.bwb_aft_tank == False:
+            thickness = self.inner_structure.thickness + self.insulation_thickness
+            _, _ = compute_cuboid_moment_of_inertia(self, outer_length = self.average_outer_length, outer_width = self.average_outer_width, outer_height = self.average_outer_height, inner_length = self.average_outer_length - 2 *thickness, inner_width = self.average_outer_width - 2*thickness, inner_height=self.average_outer_height - 2 * thickness, center_of_gravity=center_of_gravity, fuel_tank=True)
         
         return
     
@@ -221,7 +224,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             length = self.lengths.external +  self.diameters.external
             _      = compute_cylinder_center_of_gravity(self, length )
         elif self.geometry_type == 'conformal':
-            raise NotImplementedError
+            pass
 
         # This does not belong here
         # if self.fuel.mass_properties.mass != 0: 
