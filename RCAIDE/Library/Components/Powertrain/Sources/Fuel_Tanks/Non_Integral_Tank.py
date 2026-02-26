@@ -109,7 +109,7 @@ class Non_Integral_Tank(Fuel_Tank):
         self.geometry_type               = 'cylindrical'   # ['prismatic', 'cylindrical']
         self.aft_tank_segment_bound      = None # This only has one bound since it is more of a end bound and it will always start from the rootchord and grow symmetrically till bound
         self.radial_offset               = None
-        self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank.
+        self.aspect_ratio                = None # Defined as the ratio of total length of the tank to the diameter of the tank. or for a conformal tank it is defined as the ratio of length to height
 
 
     def __init__ (self, compoment=None):

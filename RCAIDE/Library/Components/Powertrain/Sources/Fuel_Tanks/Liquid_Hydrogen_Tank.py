@@ -8,10 +8,12 @@
 
 # RCAIDE imports
 from .Non_Integral_Tank  import Non_Integral_Tank 
+import RCAIDE
 from RCAIDE.Framework.Core import Units
-
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Integral_Tank.compute_integral_tank_volume               import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume       import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_tank_volume import compute_liquid_hydrogen_tank_volume
+from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_liquid_hydrogen_conformal_tank_volume import compute_liquid_hydrogen_tank_conformal_volume
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_cylinder_center_of_gravity
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia
 
@@ -94,6 +96,7 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()
         self.material                 = None
         self.insulation_material      = None
+        self.geometry_type            = 'cylindrical' # conformal
         self.design_inlet_temperature = 20
         self.design_altitiude         = 0
         self.acceptable_heat_leak     = 20
@@ -151,6 +154,22 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                         compute_bwb_aft_tank_volume(self, wing,fuel_tanks)
                         if hasattr(fuel_tanks,self.tag):
                             compute_liquid_hydrogen_tank_volume(self,fuel_tanks)
+        elif self.geometry_type == 'conformal':
+             if self.wing_tag != None and self.bwb_aft_tank is False:
+                wing = wings[self.wing_tag]  
+                compute_wing_integral_prismatic_tank_volume(self, wing,fuel_tanks)
+                if hasattr(fuel_tanks,self.tag):
+                    compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
+             else:
+                if self.bwb_aft_tank == True:
+                    if self.wing_tag != None:
+                        wing = wings[self.wing_tag]  
+                        compute_bwb_aft_integral_prismatic_tank_volume(self, wing,fuel_tanks)
+                        if hasattr(fuel_tanks,self.tag):
+                            compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
+        else:
+            raise NotImplementedError
+
                         
         return
   
@@ -175,8 +194,11 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         inner_length = self.inner_structure.inner_length 
         inner_radius = self.inner_structure.inner_diameter/2
          
-        _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, outer_length,outer_radius,inner_length=inner_length, inner_radius=inner_radius, center_of_gravity=center_of_gravity, fuel_tank=True) 
-                
+        if  self.geometry_type == 'cylindrical':
+            _, _ = compute_rounded_end_cylinder_moment_of_inertia(self, outer_length,outer_radius,inner_length=inner_length, inner_radius=inner_radius, center_of_gravity=center_of_gravity, fuel_tank=True) 
+        elif self.geometry_type == 'conformal':
+            raise NotImplementedError
+        
         return
     
 
@@ -194,10 +216,13 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         I : ndarray
             3x3 moment of inertia tensor in kg*m^2 
         """
-        
-        length = self.lengths.external +  self.diameters.external
-        _      = compute_cylinder_center_of_gravity(self, length )
+        if self.geometry_type == 'cylindrical':        
+            length = self.lengths.external +  self.diameters.external
+            _      = compute_cylinder_center_of_gravity(self, length )
+        elif self.geometry_type == 'conformal':
+            raise NotImplementedError
 
-        if self.fuel.mass_properties.mass != 0: 
-            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel                
+        # This does not belong here
+        # if self.fuel.mass_properties.mass != 0: 
+        #     self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel                
         return
