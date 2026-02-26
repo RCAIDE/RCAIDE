@@ -299,7 +299,7 @@ def compute_wing_integral_tank_volume(fuel_tank,wing,n_points = 101,scale_factor
         combined_mesh_full.density = fuel_tank.fuel.density 
         centroid = combined_mesh_full.centroid
         cg_x     = centroid[0]
-        cg_y     = 0
+        cg_y     = centroid[1]
         cg_z     = centroid[2] 
         
         # Shift inertia tensor from origin to the requested (actual) centroid
@@ -676,6 +676,12 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
         A     = 0.5 * A_num
         x_cg  = (1/(6*A)) * ((p1x + p2x)*(p1x*p2y - p2x*p1y) + (p2x + p3x)*(p2x*p3y - p3x*p2y) +
                 (p3x + p4x)*(p3x*p4y - p4x*p3y) +  (p4x + p1x)*(p4x*p1y - p1x*p4y))
+        y_cg = (1/(6*A)) * (
+        (p1y + p2y)*(p1x*p2y - p2x*p1y) +
+        (p2y + p3y)*(p2x*p3y - p3x*p2y) +
+        (p3y + p4y)*(p3x*p4y - p4x*p3y) +
+        (p4y + p1y)*(p4x*p1y - p1x*p4y)
+    )
         
         # Create an equivalent rectangle to proceed with liquid hydrogen tank buildup
         fuel_tank.average_outer_width   = ((p2x-p1x)+ (p3x-p4x))/2
@@ -684,7 +690,7 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
          
         fuel_tank.aspect_ratio = fuel_tank.average_outer_length / fuel_tank.average_outer_height
         
-        fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, 0, 0])
+        fuel_tank.fuel.mass_properties.center_of_gravity  = np.array([x_cg, y_cg, 0])
         fuel_tank.volume_properties.net_volume            = total_fuel_volume
         fuel_tank.volume_properties.gross_volume          = total_fuel_volume
          
