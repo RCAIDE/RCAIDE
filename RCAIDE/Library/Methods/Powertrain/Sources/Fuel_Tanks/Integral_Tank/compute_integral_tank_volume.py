@@ -611,13 +611,10 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
     total_fuel_mass    = 0
     total_fuel_volume  = 0
 
-    # get orgin of fuel tank     
-    fuel_tank.origin                  = wing.origin 
-    fuel_tank.fuel.origin             = wing.origin  
-     # wtf????
-    # fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
-    # fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
-    # fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
+    
+    fuel_tank.fuel.xz_plane_symmetric = wing.xz_plane_symmetric
+    fuel_tank.fuel.xy_plane_symmetric = wing.xy_plane_symmetric
+    fuel_tank.fuel.yz_plane_symmetric = wing.yz_plane_symmetric 
     
     if len(wing.segments) > 1: 
         segment_tank_moment = np.array([0.0, 0.0, 0.0])
@@ -713,7 +710,6 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
         fuel_tank.fuel.mass_properties.mass         = total_fuel_volume *  fuel_tank.fuel.density   
         fuel_tank.fuel.volume_properties.net_volume = total_fuel_volume    
     return 
-
 
 def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
 
