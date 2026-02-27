@@ -553,10 +553,11 @@ def apply_component_weights(analyses):
                         fuselage.mass_properties.mass *= weight_correction_factors.empty.structural.fuselage
         elif key == 'networks':
             for network in analyses.vehicle.networks:
-                for propulsor in network.propulsors:
-                    propulsor.mass_properties.mass *= 1 
+                for propulsor in network.propulsors: 
                     if hasattr(weight_correction_factors.empty.structural, 'nacelle'):
                         propulsor.nacelle.mass_properties.mass *= weight_correction_factors.empty.structural.nacelle
+                    if hasattr(weight_correction_factors.empty.propulsion, 'engines'):
+                        propulsor.mass_properties.mass *= weight_correction_factors.empty.propulsion.engines
                 # for fuel_line in network.fuel_lines:
                 #     for converter in fuel_line.converters:
                 #         if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Pump()):
