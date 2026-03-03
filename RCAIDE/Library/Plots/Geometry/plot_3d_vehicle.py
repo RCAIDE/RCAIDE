@@ -360,7 +360,7 @@ def plot_3d_vehicle(vehicle,
     elif side_view:
         plotter.camera_position = [(L /2 , 2 * L, 0), (L /4, 0, 0), (0, 0, 1)]  
     elif top_view:
-        plotter.camera_position = [(L, 0 , 2 * L ), (0, 0,0), (0, 0, 1)]       
+        plotter.camera_position = [(L, 0 , 2 * L ), (L/4, 0,0), (0, 0, 1)]       
     else:
         plotter.camera_position = [(camera_eye_x, camera_eye_y, camera_eye_z), (-camera_eye_x /2, -camera_eye_y /4, 0), (0, 0, 1)]
    
