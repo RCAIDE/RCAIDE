@@ -208,6 +208,7 @@ def wing_planform(wing):
         wing.chords.mean_aerodynamic         = MAC
         wing.chords.tip                      = ct
         wing.taper                           = lamda
+        wing.areas.projected                 = ref_area
         wing.sweeps.quarter_chord            = c_4_sweep
         wing.sweeps.leading_edge             = le_sweep_total
         wing.thickness_to_chord              = t_c
@@ -277,6 +278,7 @@ def wing_planform(wing):
         wing.chords.mean_geometric      = mgc
         wing.sweeps.leading_edge        = le_sweep
         wing.areas.wetted               = swet
+        wing.areas.projected            = sref
         wing.spans.projected            = span
         wing.spans.total                = span_total
         wing.aerodynamic_center         = [x_coord , y_coord, z_coord]

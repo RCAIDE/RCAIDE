@@ -471,8 +471,8 @@ def evaluate_no_surrogate(state,settings,vehicle):
     Clift_visc_prime  = perturbation_state.conditions.aerodynamics.coefficients.lift.total
     CX_visc_prime     = orientation_product(T_wind2inertial,Cdrag_visc_prime)[:,0][:,None] 
     
-    conditions.static_stability.derivatives.Clift_alpha = (Cdrag_visc_prime    - Clift_0) / (delta_angle)
-    conditions.static_stability.derivatives.Cdrag_alpha = (Clift_visc_prime    - Cdrag_0) / (delta_angle)  
+    conditions.static_stability.derivatives.Clift_alpha = (Clift_visc_prime    - Clift_0) / (delta_angle)
+    conditions.static_stability.derivatives.Cdrag_alpha = (Cdrag_visc_prime    - Cdrag_0) / (delta_angle)  
     conditions.static_stability.derivatives.CX_alpha    = (CX_visc_prime       - CX_0) / (delta_angle)   
     conditions.static_stability.derivatives.CY_alpha    = (CY_alpha_prime      - CY_0) / (delta_angle)  
     conditions.static_stability.derivatives.CZ_alpha    = (CZ_alpha_prime      - CZ_0) / (delta_angle) 
