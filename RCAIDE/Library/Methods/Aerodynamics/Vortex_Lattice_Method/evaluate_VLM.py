@@ -437,10 +437,11 @@ def evaluate_no_surrogate(state,settings,vehicle):
     CM_alpha_prime    = VLM_results.CM
     CN_alpha_prime    = VLM_results.CN
  
-    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.total   = Clift_i_alpha_prime     
-    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.wings  = VLM_results.CLift_wings          
-    pertubation_conditions.aerodynamics.coefficients.drag.induced.wings   = VLM_results.CDrag_induced_wings 
-    pertubation_conditions.aerodynamics.coefficients.drag.induced.total   = Cdrag_i_alpha_prime
+    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.total     = Clift_i_alpha_prime     
+    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.wings     = VLM_results.CLift_wings  
+    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.spanwise  = VLM_results.sectional_CLift        
+    pertubation_conditions.aerodynamics.coefficients.drag.induced.wings      = VLM_results.CDrag_induced_wings 
+    pertubation_conditions.aerodynamics.coefficients.drag.induced.total      = Cdrag_i_alpha_prime
      
     perturbation_state                  = RCAIDE.Framework.Mission.Common.State()
     perturbation_state.conditions       = pertubation_conditions  
@@ -450,6 +451,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     orientation(perturbation_state)
     orientations(perturbation_state) 
     
+    RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(perturbation_state,settings,vehicle)  
     for wing in  vehicle.wings: 
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(perturbation_state,settings,wing)
     for fuslage in vehicle.fuselages: 
@@ -540,6 +542,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     orientation(perturbation_state)
     orientations(perturbation_state)
     
+    RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(perturbation_state,settings,vehicle)  
     for wing in  vehicle.wings: 
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(perturbation_state,settings,wing)
     for fuslage in vehicle.fuselages: 
@@ -686,6 +689,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     orientation(perturbation_state)
     orientations(perturbation_state)
     
+    RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(perturbation_state,settings,vehicle)  
     for wing in  vehicle.wings: 
         RCAIDE.Library.Methods.Aerodynamics.Common.Drag.parasite_drag_wing(perturbation_state,settings,wing)
     for fuslage in vehicle.fuselages: 
