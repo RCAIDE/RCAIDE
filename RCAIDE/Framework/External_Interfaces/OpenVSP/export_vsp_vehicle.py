@@ -182,7 +182,7 @@ def export_vsp_vehicle(vehicle, vehicle_tag, fuel_tank_set_ind=3, verbose=True, 
     # ------------------------------------------------------------------------- 
     if write_file ==True:
         cwd = os.getcwd()
-        filename = geometry_tag + ".vsp3"
+        filename = vehicle_tag + ".vsp3"
         if verbose:
             print('Saving OpenVSP File at '+ cwd + '/' + filename)
         vsp.WriteVSPFile(filename)
@@ -195,6 +195,6 @@ def export_vsp_vehicle(vehicle, vehicle_tag, fuel_tank_set_ind=3, verbose=True, 
         geometry_id = vsp.FindContainersWithName('Vehicle')[0]
         parm_id = vsp.FindParm(geometry_id,'LabelID','IGESSettings')
         vsp.SetParmVal(parm_id, 0.)
-        vsp.ExportFile(geometry_tag + ".igs", OML_set_ind, vsp.EXPORT_IGES)
+        vsp.ExportFile(vehicle_tag + ".igs", OML_set_ind, vsp.EXPORT_IGES)
     
     return area_tags
