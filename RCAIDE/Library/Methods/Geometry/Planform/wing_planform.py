@@ -298,13 +298,6 @@ def wing_planform(wing):
         cs.span                 = cs_span
         cs.root_chord           = cs_chord_start
         cs.tip_chord            = cs_chord_end 
-                 
-    return wing
- 
-     
-def bwb_wing_planform(wing):
-
-    wing_planform(wing) 
 
     seg_keys = list(wing.segments.keys())  
     for tag, segment in enumerate(wing.segments): 
@@ -332,8 +325,8 @@ def bwb_wing_planform(wing):
             # estimate LEMAC
             wing.LEMAC =  LEMAC
 
-    return 
- 
+    return wing
+
 def segment_properties(wing):
     """Computes detailed segment properties. These are currently used for parasite drag calculations.
 
@@ -453,10 +446,10 @@ def segment_properties(wing):
                 
                 center_body_area += center_body_Sref_seg
                 aft_center_body_area +=  aft_center_body_Sref_seg 
-            else:
-                total_reference_area += Sref_seg   
-  
+            total_reference_area += Sref_seg   
+
     wing.areas.reference   = total_reference_area
+    wing.areas.projected   = total_reference_area
     if isinstance(wing,RCAIDE.Library.Components.Wings.Blended_Wing_Body):
         wing.center_body.area     = center_body_area
         wing.aft_center_body.area = aft_center_body_area 
