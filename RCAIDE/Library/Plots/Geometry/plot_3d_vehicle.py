@@ -6,8 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
-import RCAIDE
-from RCAIDE.Framework.Core import Units
+import RCAIDE 
 from RCAIDE.Library.Plots.Geometry.generate_3d_wing_points      import *
 from RCAIDE.Library.Plots.Geometry.generate_3d_fuselage_points  import *
 from RCAIDE.Library.Plots.Geometry.generate_3d_fuel_tank_points import *
@@ -55,8 +54,9 @@ def plot_3d_vehicle(vehicle,
                     tessellation                = 96,
                     camera_eye_x                = -1,
                     camera_eye_y                = -1,
-                    camera_eye_z                = 0.75 ,
-                    overwrite_geometry          = True, 
+                    camera_eye_z                = 0.75,
+                    overwrite_geometry          = True,
+                    export_gltf                 = False, 
                     show_figure                 = True):
     """
     Creates a complete 3D visualization of an aircraft including all major components.
@@ -338,9 +338,13 @@ def plot_3d_vehicle(vehicle,
         plotter.camera_position = [(L/2, 0 , L ), (L /2, 0,0), (0, 1, 0)]       
     else:
         plotter.camera_position = [(L * camera_eye_x, L * camera_eye_y, L * camera_eye_z), (L /2, 0, 0), (0, 0, 1)]
-   
+    
     plotter.window_size = [1500, 1500] # Set resolution
-    plotter.set_background('white') # Set background color 
+    plotter.set_background('white') # Set background color
+        
+    if export_gltf:
+        plotter.export_gltf(save_filename + ".gltf")
+        
     if save_figure:  
         # 4. Save the plot as a PNG image
         plotter.screenshot(save_filename + ".png")          
