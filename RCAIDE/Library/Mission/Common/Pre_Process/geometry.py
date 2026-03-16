@@ -65,7 +65,6 @@ def geometry(mission):
             list_idx    = config_tags.index(config_tag)
             segment_idx = segment_idxs[list_idx]
             segment.analyses.vehicle = deepcopy(mission.segments[segment_idx].analyses.vehicle)
-            test =  0
             #for wing in segment.analyses.vehicle.wings:
                 #for control_surface in wing.control_surfaces:
                     #control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection

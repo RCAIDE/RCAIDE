@@ -105,7 +105,6 @@ def mass_properties(mission):
             raise AssertionError('Define weights analysis method')
         else: 
             mass_properties_preprocess_routine(segment)
-            test = 0
     return 
 
 def mass_properties_preprocess_routine(segment):
