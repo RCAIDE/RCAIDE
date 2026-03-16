@@ -7,12 +7,19 @@ from RCAIDE.Library.Plots import *
 from RCAIDE.load import load as load_results
 from RCAIDE.save import save as save_results 
 from RCAIDE.Library.Methods.Geometry.LOPA import compute_layout_of_passenger_accommodations
-from RCAIDE.Library.Methods.Geometry.Planform import compute_fuel_volume, wing_planform,bwb_wing_planform
+from RCAIDE.Library.Methods.Geometry.Planform import compute_fuel_volume, wing_planform
 import numpy as  np 
 import sys
 import os
 
-sys.path.append(os.path.join( os.path.split(os.path.split(sys.path[0])[0])[0], 'Vehicles'))
+base_dir = os.path.dirname(os.path.abspath(__file__))
+
+vehicles_path = os.path.abspath(
+    os.path.join(base_dir, "..", "..", "Vehicles")
+)
+
+if vehicles_path not in sys.path:
+    sys.path.insert(0, vehicles_path)
 # the analysis functions
 
 from Boeing_737             import vehicle_setup as transport_setup
@@ -320,7 +327,7 @@ def BWB_Hydrogen_Aircraft_Test(update_regression_values,show_figure):
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     compute_layout_of_passenger_accommodations(wing)
-                    bwb_wing_planform(wing)
+                    wing_planform(wing)
                     vehicle.reference_area = wing.areas.reference 
             compute_fuel_volume(vehicle,compute_fuel_volume =True, update_max_fuel = False)
             weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
@@ -367,7 +374,7 @@ def BWB_Aircraft_Test(update_regression_values,show_figure):
             for wing in vehicle.wings: 
                 if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
                     compute_layout_of_passenger_accommodations(wing)
-                    bwb_wing_planform(wing)
+                    wing_planform(wing)
                     vehicle.reference_area = wing.areas.reference 
             weight_analysis.settings.FLOPS.fidelity   = 'Simple' if FLOPS_number == 0 else 'Complex'
             weight                   = weight_analysis.evaluate(vehicle)
