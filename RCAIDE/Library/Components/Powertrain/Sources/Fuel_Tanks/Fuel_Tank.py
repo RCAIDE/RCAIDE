@@ -184,8 +184,5 @@ class Fuel_Tank(Component):
         """
         
         _  = compute_cuboid_center_of_gravity(self, length=self.lengths.external)
-        # Working it with a different angle, the fuel selector ratio has a different purpose
-        # if self.fuel.mass_properties.mass != 0: 
-        #     self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel  
             
         return

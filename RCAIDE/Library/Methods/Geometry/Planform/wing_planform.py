@@ -395,6 +395,7 @@ def segment_properties(wing):
     # initialize areas to 0
     total_wetted_area         = 0.0 
     center_body_area          = 0.0
+    total_reference_area      = 0.0
     aft_center_body_area      = 0.0    
     
     for seg_idx in range(num_segments):
