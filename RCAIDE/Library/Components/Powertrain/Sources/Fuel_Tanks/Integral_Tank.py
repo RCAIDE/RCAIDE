@@ -201,6 +201,6 @@ class Integral_Tank(Fuel_Tank):
             _ = compute_wing_integral_tank_center_of_gravity(self,vehicle)
             
         if self.fuel.mass_properties.mass != 0: 
-            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel        
+            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.max_fuel        
         return
         

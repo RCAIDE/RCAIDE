@@ -7,7 +7,8 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 # RCAIDE imports
-import RCAIDE 
+import RCAIDE
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.update_moments_of_inertia import update_fuel_tank_moment_of_inertia
 
 # package imports 
 import numpy as np  
@@ -29,28 +30,35 @@ def compute_fuel_tank_properties(tank,state,distributor):
     
     tank_conditions = distributor_conditions.fuel_tanks[tank.tag]      
     if type(tank.fuel) == RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen:
-        '''needs updating'''
         # unpack
-        T_amb   = state.conditions.freestream.temperature  
+        T_amb  = state.conditions.freestream.temperature  
         
-        T_s     =  tank_conditions.surface_temperature 
-        h       =  0  
+        T_s =  tank_conditions.surface_temperature 
+        h   =  0 # NEED TO UPDATE 
         
         # unpack tank properties
-        epsilon = 0  
-        h_fg    = 0  
-        sigma   = 0  
+        epsilon = 0 # tant.  NEED TO UPDATE # check this
+        h_fg    = 0 #  tank.fuel  NEED TO UPDATE 
+        sigma   = 0 #  NEED TO UPDATE  
+                        
         
         # compute head added o system (tank) 
         Q_radianton  =  epsilon * sigma * (T_amb ** 4 -  T_s ** 4)
         Q_convection =  h * (T_amb - T_s) 
         Q_total      = Q_convection + Q_radianton
         
-        m_dot_boil_off = 0  
+        m_dot_boil_off = 0 #Q_dot_liquid / h_fg
          
         tank_conditions.boil_off_flow_rate =  m_dot_boil_off 
      
-    mass_flow_rate                                 = tank.fuel_selector_ratio*distributor_conditions.fuel_mass_flow_rate +  tank_conditions.secondary_mass_flow_rate #tank_conditions.boil_off_flow_rate 
+    m_0_fuel                                       = state.conditions.weights.components.mass[fuel.tag][0,0]  
+    mass_flow_rate                                 = tank.fuel_selector_ratio*distributor_conditions.fuel_mass_flow_rate + tank_conditions.boil_off_flow_rate +  tank_conditions.secondary_mass_flow_rate             
     tank_conditions.mass_flow_rate                 = mass_flow_rate
-         
+    if len(mass_flow_rate) > 1:
+        # update mass 
+        state.conditions.weights.components.mass[fuel.tag][:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten()
+        
+        # update moment of inertia of tank
+        if np.all(state.conditions.weights.vehicle.moments_of_inertia_Ixx):
+            update_fuel_tank_moment_of_inertia(tank,state)
     return 
