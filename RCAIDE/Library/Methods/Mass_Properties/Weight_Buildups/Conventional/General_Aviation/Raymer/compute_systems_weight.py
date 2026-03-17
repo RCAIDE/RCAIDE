@@ -137,35 +137,4 @@ def compute_systems_weight(vehicle, V_fuel, V_int, N_tank, N_eng):
                                   + output.W_ac + output.W_avionics + output.W_electrical \
                                   + output.W_furnish + output.W_fuel_system
     
-    # # Assign mass properties to components
-    # if has_air_conditioner:
-    #     vehicle.air_conditioner.mass_properties.mass    = output.empty.systems.air_conditioner 
-    
-    # avionics.mass_properties.mass           = W_avionics
-    # vehicle.avionics                                    = avionics
-
-    # control_systems                                  = RCAIDE.Library.Components.Component()
-    # control_systems.tag                              = 'control_systems'  
-    # electrical_systems                               = RCAIDE.Library.Components.Component()
-    # electrical_systems.tag                           = 'electrical_systems'
-    # furnishings                                      = RCAIDE.Library.Components.Component()
-    # furnishings.tag                                  = 'furnishings'
-    # air_conditioner                                  = RCAIDE.Library.Components.Component() 
-    # air_conditioner.tag                              = 'air_conditioner' 
-    # hydraulics                                       = RCAIDE.Library.Components.Component()
-    # hydraulics.tag                                   = 'hydraulics'  
-
-    # control_systems.mass_properties.mass    = W_flight_controls
-    # electrical_systems.mass_properties.mass = W_electrical
-    # furnishings.mass_properties.mass        = W_furnish
-    # air_conditioner.mass_properties.mass    = W_air_conditioning
-    # hydraulics.mass_properties.mass         = hyd_pnu_wt
-
-    # # assign components to vehicle
-    # vehicle.control_systems                             = control_systems
-    # vehicle.electrical_systems                          = electrical_systems
-    # vehicle.furnishings                                 = furnishings 
-    # vehicle.hydraulics                                  = hydraulics
-    
-
     return output
