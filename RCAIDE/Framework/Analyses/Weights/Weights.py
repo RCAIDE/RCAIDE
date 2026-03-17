@@ -58,7 +58,7 @@ class Weights(Analysis):
         self.settings                                               = Data() 
         self.settings.overwrite_operating_empty_weight              = True
         self.settings.run_weights_analysis                          = True
-        self.settings.run_center_of_gravity_analysis                = False
+        self.settings.run_center_of_gravity_analysis                = True
         self.settings.run_moments_of_inertia_analysis               = False
         self.settings.write_mass_properties                         = False
         self.settings.iterate_mtow                                  = False
