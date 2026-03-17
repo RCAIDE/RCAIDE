@@ -33,6 +33,7 @@ def vehicle_setup(fuel_cell_model= 'PEM'):
     vehicle.mass_properties.max_takeoff              = 5670  # kg 
     vehicle.mass_properties.takeoff                  = 5670  # kg 
     vehicle.mass_properties.max_zero_fuel            = 5670  # kg
+    vehicle.mass_properties.payload                  = 100   # kg
     
     vehicle.flight_envelope.design_cruise_altitude   = 5000 * Units.feet
     vehicle.flight_envelope.design_dynamic_pressure  = 2130.457961
