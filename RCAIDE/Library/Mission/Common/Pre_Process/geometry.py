@@ -76,7 +76,7 @@ def geometry(mission):
             for network in segment.analyses.vehicle.networks:
                 for fuel_line in network.fuel_lines:
                     for fuel_tank in fuel_line.fuel_tanks: 
-                        segment.analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tank[fuel_tank.tag] = deepcopy(mission.segments[0].analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tank[fuel_tank.tag])
+                        segment.analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag] = deepcopy(mission.segments[0].analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag])
                 
         
     return
