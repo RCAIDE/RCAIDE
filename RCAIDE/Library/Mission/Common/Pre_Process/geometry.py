@@ -50,44 +50,46 @@ def geometry(mission):
     RCAIDE.Library.Methods.Geometry.Planform
     RCAIDE.Framework.Mission.Segments
     """
+
     config_tags  = []
     segment_idxs = []
+    
+    # preprocess geometry of aircraft planform 
     for i, segment in enumerate(mission.segments):
         config_tag = segment.analyses.vehicle.tag 
         if segment.analyses.geometry is None: 
             raise AssertionError('Geometry Analyses not defined') 
         if config_tag not in config_tags: 
-            geometry_preprocess_routine(segment.analyses)
+            planform_preprocess_routine(segment.analyses)
             config_tags.append(config_tag)
             segment_idxs.append(i) 
-        else: 
-            #vehicle_0 = deepcopy(segment.analyses.vehicle)
+        else:   
             list_idx    = config_tags.index(config_tag)
             segment_idx = segment_idxs[list_idx]
             segment.analyses.vehicle = deepcopy(mission.segments[segment_idx].analyses.vehicle)
-            #for wing in segment.analyses.vehicle.wings:
-                #for control_surface in wing.control_surfaces:
-                    #control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
-            #for landing_gear in segment.analyses.vehicle.landing_gears:
-                #landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
             
-            #for network in segment.analyses.vehicle.networks: 
-                #for bus in network.busses:
-                    #bus.active = vehicle_0.networks[network.tag].busses[bus.tag].active
-                #for propulsor in network.propulsors:
-                    #if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
-                        #propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                        #propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity        
-                        #propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
-                        #propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity
-                        
-                    #if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
-                        #propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                        #propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
-                        #propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command
-    return   
+    # preprocess geometry of fuel tanks, since liquid hydrogen tank sizing take a while, we will only preprocess them once (i.e. the first segment)      
+    for i, segment in enumerate(mission.segments):
+        if i == 0: 
+            powertrain_preprocess_routine(segment.analyses)
+        else:
+            for network in segment.analyses.vehicle.networks:
+                for fuel_line in network.fuel_lines:
+                    for fuel_tank in fuel_line.fuel_tanks: 
+                        segment.analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tank[fuel_tank.tag] = deepcopy(mission.segments[0].analyses.vehicle.networks[network.tag].fuel_lines[fuel_line.tag].fuel_tank[fuel_tank.tag])
+                
         
-def geometry_preprocess_routine(analyses):
+    return
+
+def powertrain_preprocess_routine(analyses):
+
+    settings = analyses.geometry.settings
+    vehicle  = analyses.vehicle        
+    compute_fuel_volume(vehicle,compute_fuel_volume = settings.compute_fuel_volume, update_max_fuel=settings.update_max_fuel)
+    
+    return     
+            
+def planform_preprocess_routine(analyses):
     settings = analyses.geometry.settings
     vehicle  = analyses.vehicle
     
@@ -186,7 +188,6 @@ def geometry_preprocess_routine(analyses):
     # --------------------------------------------------------------------------------------------------------------------
     # Update passenger imformation 
     # --------------------------------------------------------------------------------------------------------------------
-  
     if  vehicle.number_of_passengers == 0:
         pass 
     else:   
@@ -198,10 +199,4 @@ def geometry_preprocess_routine(analyses):
             vehicle.number_of_first_class_seats    = vehicle.number_of_passengers / 20.
             vehicle.number_of_business_class_seats = vehicle.number_of_passengers / 10.
             vehicle.number_of_economy_class_seats  = vehicle.number_of_passengers - NPF - NPB 
-     
-    # --------------------------------------------------------------------------------------------------------------------
-    # Compute fuel volume  
-    # -------------------------------------------------------------------------------------------------------------------- 
-    compute_fuel_volume(vehicle,compute_fuel_volume = settings.compute_fuel_volume, update_max_fuel=settings.update_max_fuel)
-               
     return 
