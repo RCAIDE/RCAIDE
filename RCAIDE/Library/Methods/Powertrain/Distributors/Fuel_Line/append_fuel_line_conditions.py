@@ -77,7 +77,7 @@ def append_fuel_line_conditions(fuel_line,segment):
 
     # Check: if all tanks are manual, ratios must sum to ~1
     if not auto_tanks:
-        if manual_ratio!=1.0: 
+        if round(manual_ratio,4)!=1.0: 
             raise ValueError(f"Manual flow_split_ratio values sum to {manual_ratio:.3f}, must equal 1.0")
     return
 
