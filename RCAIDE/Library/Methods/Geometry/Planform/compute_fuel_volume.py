@@ -70,13 +70,9 @@ def compute_fuel_volume(vehicle, compute_fuel_volume = False, update_max_fuel = 
     for network in vehicle.networks: 
         for fuel_line in network.fuel_lines:
             fuel_tanks = fuel_line.fuel_tanks
-            i = 0
             for fuel_tank in fuel_tanks:
-                i += 1
-                print(f'iteration: {i}')
                 # update fuel tag to ensure no overwriting of mass 
-                fuel_tank.fuel.tag = fuel_tank.tag + '_' + fuel_tank.fuel.tag
-                                
+                fuel_tank.fuel.tag = fuel_tank.tag + '_' + fuel_tank.fuel.tag          
                 try:
                     compute_fuel_tank_volume = fuel_tank.compute_volume
                 except Exception as e:

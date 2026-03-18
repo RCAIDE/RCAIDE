@@ -80,6 +80,19 @@ def append_bus_conditions(bus,segment):
         segment.state.conditions.energy.busses[bus.tag].state_of_charge           = segment.initial_battery_state_of_charge* ones_row(1) 
         segment.state.conditions.energy.busses[bus.tag].depth_of_discharge        = 1 - segment.initial_battery_state_of_charge* ones_row(1)
    
+    if bus.fuel_tanks:
+        manual_ratio = sum(t.fuel_flow_split_ratio or 0 for t in bus.fuel_tanks)
+        auto_tanks   = [t for t in bus.fuel_tanks if t.fuel_flow_split_ratio is None]
+        total_auto_mass = sum(t.fuel.mass_properties.mass for t in auto_tanks)
+        remaining_ratio = max(0.0, 1.0 - manual_ratio)
+
+        for t in auto_tanks:
+            t.fuel_flow_split_ratio = (t.fuel.mass_properties.mass / total_auto_mass) * remaining_ratio if total_auto_mass else remaining_ratio / len(auto_tanks)
+
+        # Check: if all tanks are manual, ratios must sum to ~1
+        if not auto_tanks:
+            if manual_ratio!=1.0: 
+                raise ValueError(f"Manual flow_split_ratio values sum to {manual_ratio:.3f}, must equal 1.0")
     return
 
 
