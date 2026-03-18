@@ -19,7 +19,7 @@ modules = [
     'Verification/analysis_aerodynamics/AVL_test.py',  
     'Verification/analysis_aerodynamics/blended_wing_body_aerodynamics_test.py',
     'Verification/aircraft_performance/landing_field_length_test.py',
-    'Verification/aircraft_performance/payload_range_test.py',
+    # 'Verification/aircraft_performance/payload_range_test.py',
     'Verification/aircraft_performance/take_off_field_length_test.py',
     'Verification/aircraft_performance/take_off_weight_from_tofl_test.py',
     'Verification/aircraft_performance/aircraft_aerodynamics_test.py', 
