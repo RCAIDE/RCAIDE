@@ -30,7 +30,7 @@ class Integral_Tank(Fuel_Tank):
     tag : str
         Identifier for the fuel tank (default: 'wing_fuel_tank')
         
-    fuel_selector_ratio : float
+    fuel_flow_split_ratio : float
         Ratio of fuel flow allocation (default: 1.0)
         
     mass_properties.empty_mass : float
@@ -199,8 +199,5 @@ class Integral_Tank(Fuel_Tank):
 
         if self.wing_tag != None:
             _ = compute_wing_integral_tank_center_of_gravity(self,vehicle)
-            
-        if self.fuel.mass_properties.mass != 0: 
-            self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.max_fuel        
         return
         

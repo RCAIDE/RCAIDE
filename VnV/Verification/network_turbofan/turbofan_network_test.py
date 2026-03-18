@@ -193,8 +193,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Weights
-    weights                                          = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()  
-    weights.settings.run_center_of_gravity_analysis = True
+    weights                                          = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     analyses.append(weights)
  
     #  Aerodynamics Analysis

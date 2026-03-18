@@ -93,7 +93,7 @@ def integral_fuel_tank_volume_test():
     #  Main Wing Tanks
     #------------------------------------------------------------------------------------------------------------------------------------       
     wing_tank_1                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
-    wing_tank_1.fuel_selector_ratio          = 0.5
+    wing_tank_1.fuel_flow_split_ratio          = 0.5
     wing_tank_1.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()  
     wing_tank_1.segments_bounding_tank       = ['root', 'yehudi']  
     wing_tank_1.segments_percent_chord_start = [0.1, 0.1]
@@ -101,7 +101,7 @@ def integral_fuel_tank_volume_test():
     fuel_line.fuel_tanks.append(wing_tank_1)
     
     wing_tank_2                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)  
-    wing_tank_2.fuel_selector_ratio          = 0.5
+    wing_tank_2.fuel_flow_split_ratio          = 0.5
     wing_tank_2.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A()  
     wing_tank_2.segments_bounding_tank       = ['yehudi', 'section_2']  
     wing_tank_2.segments_percent_chord_start = [0.1, 0.1]
@@ -120,19 +120,19 @@ def integral_fuel_tank_volume_test():
     assert(abs(error)<1e-6)    
 
     fus_tank_1 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
-    fus_tank_1.fuel_selector_ratio     = 0.5
+    fus_tank_1.fuel_flow_split_ratio     = 0.5
     fus_tank_1.fuel                    = RCAIDE.Library.Attributes.Propellants.Jet_A()  
     fus_tank_1.segments_bounding_tank  = ['segment_5','segment_6'] 
     fuel_line.fuel_tanks.append(fus_tank_1)
     
     fus_tank_2 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
-    fus_tank_2.fuel_selector_ratio     = 0.5
+    fus_tank_2.fuel_flow_split_ratio     = 0.5
     fus_tank_2.fuel                    = RCAIDE.Library.Attributes.Propellants.Jet_A()  
     fus_tank_2.segments_bounding_tank  = ['segment_6','segment_7']  
     fuel_line.fuel_tanks.append(fus_tank_2)
     
     fus_tank_3 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.fuselages.fuselage)  
-    fus_tank_3.fuel_selector_ratio     = 0.5
+    fus_tank_3.fuel_flow_split_ratio     = 0.5
     fus_tank_3.fuel                    = RCAIDE.Library.Attributes.Propellants.Jet_A()  
     fus_tank_3.segments_bounding_tank  = ['segment_7','segment_8']  
     fuel_line.fuel_tanks.append(fus_tank_3) 

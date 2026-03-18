@@ -134,7 +134,6 @@ def base_analysis(vehicle):
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation()
     weights.type = 'Raymer'
-    weights.settings.run_center_of_gravity_analysis = True
     analyses.append(weights) 
 
     # ------------------------------------------------------------------

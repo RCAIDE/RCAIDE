@@ -224,9 +224,5 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
             length = self.lengths.external +  self.diameters.external
             _      = compute_cylinder_center_of_gravity(self, length )
         elif self.geometry_type == 'conformal':
-            pass
-
-        # This does not belong here
-        # if self.fuel.mass_properties.mass != 0: 
-        #     self.fuel_selector_ratio = self.fuel.mass_properties.mass / vehicle.mass_properties.fuel                
+            pass # cg calcs are done and stored on the fuel tank during volume computations
         return

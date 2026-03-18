@@ -169,7 +169,6 @@ def base_analysis(vehicle,weights_method):
         weights = RCAIDE.Framework.Analyses.Weights.Conventional_General_Aviation()
     if weights_method == 'electric': 
         weights = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation()
-    weights.settings.run_center_of_gravity_analysis = True
     analyses.append(weights) 
 
     # ------------------------------------------------------------------

@@ -183,9 +183,6 @@ def fuel_aircraft_base_analysis(vehicle):
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.FLOPS.fidelity = 'Complex'
-    weights.settings.overwrite_operating_empty_weight = True
-    weights.settings.run_weights_analysis = True
-
     analyses.append(weights)
 
     # ------------------------------------------------------------------
