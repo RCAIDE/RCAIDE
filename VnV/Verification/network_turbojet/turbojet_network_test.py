@@ -118,6 +118,7 @@ def base_analysis(vehicle):
     weights                 = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()  
     weights.settings.overwrite_center_of_gravity    = False
     weights.settings.overwrite_moments_of_inertia   = False 
+    weights.settings.iterate_mtow = True
     analyses.append(weights)
     
     # ------------------------------------------------------------------
