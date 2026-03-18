@@ -49,8 +49,8 @@ def compute_vehicle_center_of_gravity(vehicle,centre_of_gravity_df, overwrite_ce
         item = vehicle[key]  
         OEW_mass,OEW_moment = compute_component_center_of_gravity(centre_of_gravity_df,item,vehicle,OEW_mass,OEW_moment,None,False,False,False)    
     
-    # center of gravity 
-    OEW_CG = OEW_moment /OEW_mass 
+    # center of gravity
+    OEW_CG = OEW_moment / OEW_mass 
     OEW_mass_percentage = (OEW_mass[0] / vehicle.mass_properties.operating_empty) * 100 
      
     # --------------------------------------------------------------------------------------    

@@ -95,6 +95,9 @@ class Coolant_Line(Component):
         self.insulation.diameters                 = Data()
         self.insulation.diameters.external        = 0.0
         self.insulation.diameters.internal        = 0.0
+        self.fuel_probe_unit_mass                 = 0.0
+        self.valve_unit_mass                      = 0.0      
+        self.boost_pump_unit_mass                 = 0.0
 
                     
     def __init__ (self, distributor=None):

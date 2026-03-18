@@ -111,6 +111,8 @@ def base_analysis(vehicle):
 
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Weights()
+    weights.settings.run_weights_analysis = True
+    weights.settings.run_center_of_gravity_analysis = True
     analyses.append(weights)        
 
     #  Geometry

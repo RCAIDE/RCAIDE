@@ -47,7 +47,7 @@ def compute_fuel_tank_properties(tank,state,distributor):
         Q_convection =  h * (T_amb - T_s) 
         Q_total      = Q_convection + Q_radianton
         
-        m_dot_boil_off = 0 #Q_dot_liquid / h_fg
+        m_dot_boil_off = 0 # Q_dot_liquid / h_fg
          
         tank_conditions.boil_off_flow_rate =  m_dot_boil_off 
      

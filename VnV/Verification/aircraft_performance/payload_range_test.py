@@ -33,7 +33,7 @@ from NASA_X57       import vehicle_setup as X57_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
     # standard payload range
-    fuel_aircraft_payload_range()
+    # fuel_aircraft_payload_range()
     
     # payload range simulationwith min minimum payload /max zero fuel weight defined 
     fuel_aircraft_payload_range_mzfw()
@@ -176,13 +176,16 @@ def fuel_aircraft_base_analysis(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
+    geometry.settings.update_max_fuel = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.FLOPS.fidelity = 'Complex'
-    weights.settings.overwrite_operating_empty_weight = False
+    weights.settings.overwrite_operating_empty_weight = True
+    weights.settings.run_weights_analysis = True
+
     analyses.append(weights)
 
     # ------------------------------------------------------------------
