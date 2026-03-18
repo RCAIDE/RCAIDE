@@ -174,9 +174,10 @@ def fuel_aircraft_base_analysis(vehicle):
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.settings.overwrite_reference        = False
-    geometry.settings.update_wing_properties     = True
-    geometry.settings.update_max_fuel = True
+    geometry.settings.overwrite_reference   = False
+    geometry.settings.update_wing_properties    = True
+    geometry.settings.compute_fuel_volume   = True
+    geometry.settings.update_max_fuel   = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
@@ -232,6 +233,8 @@ def fuel_aircraft_base_analysis_weights(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
+    geometry.settings.compute_fuel_volume   = True
+    
     analyses.append(geometry)
 
      # ------------------------------------------------------------------
