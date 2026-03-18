@@ -46,6 +46,7 @@ dependencies = [
     "pytz",
     "shapely",
     "trimesh",
+    "triangle"
     "pyvista",
     "six",
     "vtk",
