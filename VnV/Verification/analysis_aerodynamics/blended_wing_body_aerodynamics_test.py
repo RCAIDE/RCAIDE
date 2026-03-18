@@ -3,6 +3,7 @@
 import RCAIDE
 from RCAIDE.Framework.Core import Data, Units  
 from RCAIDE.Library.Plots import *  
+from RCAIDE.Library.Methods.Performance.cruise_drag_buildup_table import cruise_drag_buildup_table
 import numpy as  np 
 import sys
 import os
@@ -23,6 +24,12 @@ from BWB    import vehicle_setup  ,  configs_setup
 # ----------------------------------------------------------------------
 def main():
     
+    vehicle  = vehicle_setup() 
+    configs  = configs_setup(vehicle) 
+    analyses = analyses_setup(configs)  
+    mission  = mission_setup(analyses)
+    cruise_drag_buildup_table(mission = mission, cruise_segment_tag = "cruise", save_filepath = None)
+
     vehicle  = vehicle_setup() 
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
