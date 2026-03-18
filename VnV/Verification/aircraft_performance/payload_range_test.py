@@ -35,11 +35,11 @@ def main():
     # standard payload range
     fuel_aircraft_payload_range()
     
-    # payload range simulationwith min minimum payload /max zero fuel weight defined 
-    fuel_aircraft_payload_range_mzfw()
+    # # payload range simulationwith min minimum payload /max zero fuel weight defined 
+    # fuel_aircraft_payload_range_mzfw()
     
-    # electric payload range 
-    electric_aircraft_payload_range() 
+    # # electric payload range 
+    # electric_aircraft_payload_range() 
     return
 
 def fuel_aircraft_payload_range():
