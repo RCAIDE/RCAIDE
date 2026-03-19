@@ -49,6 +49,13 @@ def main():
     
     # Step 5 execute flight profile
     results = missions.base_mission.evaluate()
+    CL_truth = 0.3975726457797412
+    CL    = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[0, 0]
+
+    abs_error = np.abs((CL - CL_truth)) 
+    assert abs_error <= 1e-3, ( # a larger tolerence is needed here because we iterate on MTOW and slight variations are expected
+        f"CL absolute error too large: {abs_error:.6e} (CL={CL:.6e}, CL_truth={CL_truth:.6e})"
+    )
 
     plot_aircraft_cg_weight_bubbles(results,vehicle)
     plot_fuel_flow_rates(results)

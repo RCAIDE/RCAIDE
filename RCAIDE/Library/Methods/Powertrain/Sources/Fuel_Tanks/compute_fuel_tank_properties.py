@@ -58,7 +58,4 @@ def compute_fuel_tank_properties(tank,state,distributor):
         # update mass 
         state.conditions.weights.components.mass[fuel.tag][:,0]  = m_0_fuel +  np.dot(I, -mass_flow_rate).flatten()
         
-        # update moment of inertia of tank
-        if np.all(state.conditions.weights.vehicle.moments_of_inertia_Ixx):
-            update_fuel_tank_moment_of_inertia(tank,state)
     return 
