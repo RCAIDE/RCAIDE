@@ -219,14 +219,45 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
 def write_geometry_to_excel(vehicle):
 
     """
-    THIS IS CURRENTLY MEANT ONLY FOR BWB AND THE AACES PROJECT EXCLUSIVELY 
-    DO NOT LET THIS GO THROUGH A PR WITHOUT INCLUDING OTHER COMPONENTS LIKE THE FUSELAGE...... 
+    Export vehicle geometry and related fuel/propulsor data to an Excel workbook.
+
+    Parameters
+    ----------
+    vehicle : RCAIDE.Vehicle
+        Vehicle object containing fuselages, wings, segments, networks, fuel tanks,
+        and propulsors to be serialized into tabular sheets.
+
+    Notes
+    -----
+    None
     """
+
     excel_filename = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), os.path.splitext(os.path.basename(sys.argv[0]))[0] + "_geometry_description.xlsx")
+    fuselage_rows = []
     wing_rows     = []
     segment_rows  = []
     fuel_rows     = []
     prop_rows     = []
+
+    # Collect Fuselage Level Properties
+    for fuselage in vehicle.fuselages:
+        fuselage_rows.append({
+            "Fuselage Tag"                           : fuselage.tag,
+            "Fuselage Origin"                        : fuselage.origin[0],
+            "Total Length (m)"                       : fuselage.lengths.total,
+            "Nose Length (m)"                        : fuselage.lengths.nose,
+            "Tail Length (m)"                        : fuselage.lengths.tail,
+            "Maximum Height (m)"                     : fuselage.heights.maximum,
+            "Width (m)"                              : fuselage.width,
+            "Effective Diameter (m)"                 : fuselage.effective_diameter,
+            "Fineness Nose"                          : fuselage.fineness.nose,
+            "Fineness Tail"                          : fuselage.fineness.tail,
+            "Front Projected Area (m^2)"             : fuselage.areas.front_projected,
+            "Side Projected Area (m^2)"              : fuselage.areas.side_projected,
+            "Wetted Area (m^2)"                      : fuselage.areas.wetted,
+            "Passengers"                             : fuselage.number_of_passengers,
+            "Seats"                                  : fuselage.number_of_seats,
+        })
 
     # Collect wing-level properties
     for wing in vehicle.wings:
@@ -301,6 +332,7 @@ def write_geometry_to_excel(vehicle):
 
     # Write to Excel with separate sheets for wings and segments
     with pd.ExcelWriter(excel_filename) as writer:
+        pd.DataFrame(fuselage_rows).to_excel(writer, sheet_name='Fuselage_Properties', index=False)
         pd.DataFrame(wing_rows).to_excel(writer, sheet_name='Wing_Properties', index=False)
         pd.DataFrame(segment_rows).to_excel(writer, sheet_name='Segment_Properties', index=False)
         pd.DataFrame(fuel_rows).to_excel(writer, sheet_name='Fuel_Tanks', index=False)
