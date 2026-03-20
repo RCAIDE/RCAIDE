@@ -41,6 +41,7 @@ dependencies = [
     "geopy",
     "importlib_metadata",
     "joblib",
+    "openpyxl",
     "pillow",
     "python-dateutil",
     "pytz",
