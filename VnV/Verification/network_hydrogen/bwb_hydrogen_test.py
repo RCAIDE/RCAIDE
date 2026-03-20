@@ -57,7 +57,7 @@ def main():
         f"CL absolute error too large: {abs_error:.6e} (CL={CL:.6e}, CL_truth={CL_truth:.6e})"
     )
 
-    plot_aircraft_cg_weight_bubbles(results,vehicle)
+    plot_aircraft_cg_weight_bubbles(results,vehicle,show_figure=False)
     plot_fuel_flow_rates(results)
 
     for filename in (

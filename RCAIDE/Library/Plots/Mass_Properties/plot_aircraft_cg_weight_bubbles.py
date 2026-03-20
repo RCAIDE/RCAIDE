@@ -23,7 +23,8 @@ def plot_aircraft_cg_weight_bubbles(results,vehicle0,
                              save_filename = "Bubble Plot" ,
                              file_type = ".png", 
                              width = 11, height = 7,
-                             bubble_scale = 1.2):
+                             bubble_scale = 1.2,
+                             show_figure = True):
     vehicle = results.segments[0].analyses.vehicle
     cg_df = vehicle.mass_properties.center_of_gravity_breakdown
     if cg_df is None or len(cg_df) == 0:
@@ -85,7 +86,7 @@ def plot_aircraft_cg_weight_bubbles(results,vehicle0,
     plotter.window_size = [int(width * 150), int(height * 150)]
     if save_figure:
         plotter.screenshot(save_filename + file_type)
-    else:
+    if show_figure:
         plotter.show()
 
     return
