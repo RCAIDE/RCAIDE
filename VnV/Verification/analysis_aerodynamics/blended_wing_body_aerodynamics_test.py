@@ -28,7 +28,17 @@ def main():
     configs  = configs_setup(vehicle) 
     analyses = analyses_setup(configs)  
     mission  = mission_setup(analyses)
-    cruise_drag_buildup_table(mission = mission, cruise_segment_tag = "cruise", save_filepath = None)
+    cruise_drag_buildup_table(mission = mission, cruise_segment_tag = "cruise", save_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__))))
+    for filename in (
+    "cruise_drag_buildup_parasite_zoom.png",
+    "cruise_drag_buildup.xlsx",
+    "cruise_drag_buildup_pie.png",
+    "cruise_drag_buildup.png",
+    ):
+        file_path = os.path.join(base_dir, filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+
 
     vehicle  = vehicle_setup() 
     configs  = configs_setup(vehicle) 

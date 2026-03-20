@@ -334,29 +334,16 @@ def cruise_drag_buildup_table(mission = None, cruise_segment_tag = "cruise", sav
     # -------------------------
     if save_filepath is not None:
         if os.path.isdir(save_filepath):
-            excel_path = os.path.join(save_filepath, "cruise_drag_buildup.xlsx")
-            img_path = os.path.join(save_filepath, "cruise_drag_buildup.png")
-            pie_img_path = os.path.join(save_filepath, "cruise_drag_buildup_pie.png")
-            parasite_zoom_img_path = os.path.join(save_filepath, "cruise_drag_buildup_parasite_zoom.png")
-        elif save_filepath.lower().endswith(".png"):
-            img_path = save_filepath
-            excel_path = os.path.splitext(save_filepath)[0] + ".xlsx"
-            pie_img_path = os.path.splitext(save_filepath)[0] + "_pie.png"
-            parasite_zoom_img_path = os.path.splitext(save_filepath)[0] + "_parasite_zoom.png"
-        elif save_filepath.lower().endswith(".xlsx"):
-            excel_path = save_filepath
-            img_path = os.path.splitext(save_filepath)[0] + ".png"
-            pie_img_path = os.path.splitext(save_filepath)[0] + "_pie.png"
-            parasite_zoom_img_path = os.path.splitext(save_filepath)[0] + "_parasite_zoom.png"
+            base_path = os.path.join(save_filepath, "cruise_drag_buildup")
         else:
-            excel_path = save_filepath + ".xlsx"
-            img_path = save_filepath + ".png"
-            pie_img_path = save_filepath + "_pie.png"
-            parasite_zoom_img_path = save_filepath + "_parasite_zoom.png"
+            base_path, _ = os.path.splitext(save_filepath)
 
-        out_dir = os.path.dirname(excel_path)
-        if out_dir:
-            os.makedirs(out_dir, exist_ok=True)
+        excel_path = f"{base_path}.xlsx"
+        img_path = f"{base_path}.png"
+        pie_img_path = f"{base_path}_pie.png"
+        parasite_zoom_img_path = f"{base_path}_parasite_zoom.png"
+
+        os.makedirs(os.path.dirname(excel_path) or ".", exist_ok=True)
 
         df.to_excel(excel_path, index=False)
         fig.savefig(img_path, dpi=200)

@@ -59,6 +59,7 @@ def main():
 
     plot_aircraft_cg_weight_bubbles(results,vehicle,show_figure=False)
     plot_fuel_flow_rates(results)
+    plot_fuel_tank_conditions(results)
 
     for filename in (
         "bwb_hydrogen_test_geometry_description.xlsx",

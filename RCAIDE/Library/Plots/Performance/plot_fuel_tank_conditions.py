@@ -52,7 +52,7 @@ def plot_fuel_tank_conditions(results,
                     time    = results.segments[i].conditions.frames.inertial.time[:,0] / Units.min    
                     tank_conditions    = results.segments[i].conditions.energy.fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag]
                     
-                    fsr                = tank_conditions.fuel_flow_split_ratio[:,0]
+                    fsr                = fuel_tank.fuel_flow_split_ratio
                     m_dot              = tank_conditions.mass_flow_rate[:,0]
                     sm_dot             = tank_conditions.secondary_mass_flow_rate[:,0] 
                     tank_mass          = results.segments[i].conditions.weights.components.mass[fuel_tank.tag]
