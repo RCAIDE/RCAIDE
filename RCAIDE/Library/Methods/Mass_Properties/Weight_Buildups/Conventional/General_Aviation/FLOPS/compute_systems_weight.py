@@ -226,8 +226,6 @@ def compute_systems_weight(vehicle):
                     system.mass_properties.mass = WAVONC * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
                     system.mass_properties.mass = WSC * Units.lbs
-                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-                    system.mass_properties.mass = WAPU * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
                     system.mass_properties.mass = WELEC * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
@@ -242,8 +240,6 @@ def compute_systems_weight(vehicle):
                     WAVONC = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
                     WSC    = system.mass_properties.mass / Units.lbs
-                if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-                    WAPU   = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
                     WELEC  = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 

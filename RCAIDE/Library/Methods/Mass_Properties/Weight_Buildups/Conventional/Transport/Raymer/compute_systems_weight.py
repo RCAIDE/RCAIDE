@@ -152,11 +152,11 @@ def compute_systems_weight(vehicle):
         if isinstance(system,Component):
             if system.mass_properties.mass == 0 or system.mass_properties.calculated_flag:
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
-                    system.mass_properties.mass = WAVONC * Units.lbs
+                    system.mass_properties.mass = WAVONCG * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
                     system.mass_properties.mass = WSC * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-                    system.mass_properties.mass = WAPU * Units.lbs
+                    system.mass_properties.mass = WAPUG * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
                     system.mass_properties.mass = WELEC * Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
@@ -168,11 +168,11 @@ def compute_systems_weight(vehicle):
                 system.mass_properties.calculated_flag = True
             else:
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Avionics:
-                    WAVONC = system.mass_properties.mass / Units.lbs
+                    WAVONCG = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls:
                     WSC    = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Auxillary_Power_Unit: 
-                    WAPU   = system.mass_properties.mass / Units.lbs
+                    WAPUG   = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Electrical: 
                     WELEC  = system.mass_properties.mass / Units.lbs
                 if type(system) == RCAIDE.Library.Components.Powertrain.Systems.Hydraulics: 
