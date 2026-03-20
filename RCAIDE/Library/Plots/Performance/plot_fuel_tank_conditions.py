@@ -53,11 +53,13 @@ def plot_fuel_tank_conditions(results,
                     tank_conditions    = results.segments[i].conditions.energy.fuel_lines[fuel_line.tag].fuel_tanks[fuel_tank.tag]
                     
                     fsr                = fuel_tank.fuel_flow_split_ratio
+                   
                     m_dot              = tank_conditions.mass_flow_rate[:,0]
                     sm_dot             = tank_conditions.secondary_mass_flow_rate[:,0] 
                     tank_mass          = results.segments[i].conditions.weights.components.mass[fuel_tank.tag]
                     fuel_mass          = results.segments[i].conditions.weights.components.mass[fuel_tank.fuel.tag]
                     total_mass         = tank_mass + fuel_mass  
+                    fsr                = fsr*np.ones_like(m_dot)
                 
                     if i ==0:                             
                         axis_1.plot(time, total_mass, color = line_colors[i], marker = ps.markers[t_i], linewidth = ps.line_width, label = fuel_tank.tag)
