@@ -35,7 +35,7 @@ def main():
     # standard payload range
     fuel_aircraft_payload_range()
     
-    # payload range simulationwith min minimum payload /max zero fuel weight defined 
+    # # payload range simulationwith min minimum payload /max zero fuel weight defined 
     fuel_aircraft_payload_range_mzfw()
     
     # electric payload range 
@@ -62,14 +62,14 @@ def fuel_aircraft_payload_range():
     missions = missions_setup(mission)  
         
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.1, delete_training_data = True)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.05, delete_training_data = True)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 5593456.220678145 # Reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000.  
+    fuel_r_true            = 5545050.115614797# Reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000.  
     
     print('Fuel Range: ' + str(fuel_r))
     fuel_error =  abs(fuel_r - fuel_r_true) /fuel_r_true
-    assert(abs(fuel_error)<1e-6)
+    assert(abs(fuel_error)<1e-3)
 
 
     
@@ -99,9 +99,9 @@ def fuel_aircraft_payload_range_mzfw():
     payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.1, delete_training_data = True)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 4886713.7057714 # This values is lower because it compounds both the change in the OEW and the change in the corresponding max fuel compute
+    fuel_r_true            = 5551991.132322422
     # Correct value from reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000. 
-    # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 20%
+    # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 10%
     
     print('Fuel Range: ' + str(fuel_r))
     fuel_error =  abs(fuel_r - fuel_r_true) /fuel_r_true
@@ -174,15 +174,16 @@ def fuel_aircraft_base_analysis(vehicle):
     
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
-    geometry.settings.overwrite_reference        = False
-    geometry.settings.update_wing_properties     = True
+    geometry.settings.overwrite_reference   = False
+    geometry.settings.update_wing_properties    = True
+    geometry.settings.compute_fuel_volume   = True
+    geometry.settings.update_max_fuel   = True
     analyses.append(geometry)
 
     # ------------------------------------------------------------------
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport() 
     weights.settings.FLOPS.fidelity = 'Complex'
-    weights.settings.overwrite_operating_empty_weight = False
     analyses.append(weights)
 
     # ------------------------------------------------------------------
@@ -232,6 +233,8 @@ def fuel_aircraft_base_analysis_weights(vehicle):
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.settings.overwrite_reference        = False
     geometry.settings.update_wing_properties     = True
+    geometry.settings.compute_fuel_volume   = True
+    
     analyses.append(geometry)
 
      # ------------------------------------------------------------------

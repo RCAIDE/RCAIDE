@@ -39,7 +39,7 @@ def main():
     ducted_fan_type  = ['Blade_Element_Momentum_Theory', 'Rankine_Froude_Momentum_Theory']
     
     # truth values 
-    thrust_truth         = [46.37988724561762, 61.825945342514395]
+    thrust_truth         = [46.37988724561762, 63.08075015806363]
    
     for i in range(len(ducted_fan_type)):  
         # vehicle data

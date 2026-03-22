@@ -615,7 +615,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_9'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[26.5,0,0]])
     fuel_tank.mass_properties.mass                 = 11096
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -623,7 +623,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_10'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[28.7,0,0]])
     fuel_tank.mass_properties.mass                 = 11943
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -631,7 +631,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_1_and_4'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[31.0,0,0]])
     fuel_tank.mass_properties.mass                 = 4198+4198
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -639,7 +639,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_5_and_8'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[32.9,0,0]])
     fuel_tank.mass_properties.mass                 = 7200+12838
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -647,7 +647,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_6_and_7'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[37.4,0,0]])
     fuel_tank.mass_properties.mass                 = 11587+7405
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -655,7 +655,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_5A_and_7A'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
     fuel_tank.mass_properties.mass                 = 2225+2225
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank) 
     
@@ -663,7 +663,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_2_and_3'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[40.2,0,0]])
     fuel_tank.mass_properties.mass                 = 4570+4570
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank)  
  
@@ -671,7 +671,7 @@ def vehicle_setup():
     fuel_tank.tag                                  = 'tank_11'
     fuel_tank.mass_properties.center_of_gravity    = np.array([[49.8,0,0]])
     fuel_tank.mass_properties.mass                 = 10415
-    fuel_tank.fuel_selector_ratio                  = 1/8
+    fuel_tank.fuel_flow_split_ratio                  = 1/8
     fuel_tank.fuel                                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
     fuel_line.fuel_tanks.append(fuel_tank)
      

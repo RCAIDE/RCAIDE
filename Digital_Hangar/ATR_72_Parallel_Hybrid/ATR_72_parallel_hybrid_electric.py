@@ -804,7 +804,7 @@ def vehicle_setup():
     # Crogenic Tank
     #------------------------------------------------------------------------------------------------------------------------------------       
     cryogenic_tank_1 = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank(vehicle.fuselages.fuselage)    
-    cryogenic_tank_1.fuel_selector_ratio  = 0.5 
+    cryogenic_tank_1.fuel_flow_split_ratio  = 0.5 
     cryogenic_tank_1.fuel                 = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen() 
     bus.fuel_tanks.append(cryogenic_tank_1)
      

@@ -203,6 +203,7 @@ def base_analysis(vehicle):
 
     #  Weights
     weights = RCAIDE.Framework.Analyses.Weights.Weights()
+    weights.settings.run_weights_analysis = False
     analyses.append(weights)    
     
     #  Energy

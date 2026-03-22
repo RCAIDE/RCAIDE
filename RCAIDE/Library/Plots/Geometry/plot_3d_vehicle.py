@@ -137,11 +137,14 @@ def plot_3d_vehicle(vehicle,
     # -------------------------------------------------------------------------
     L = 0
     geometry =  deepcopy(vehicle)  
-    for wing in geometry.wings: 
-        if overwrite_geometry:
-            wing_planform(wing) 
-        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body): 
-            compute_layout_of_passenger_accommodations(wing) 
+    for wing in geometry.wings:  
+        if isinstance(wing, RCAIDE.Library.Components.Wings.Blended_Wing_Body):
+            if overwrite_geometry: 
+                wing_planform(wing) 
+                compute_layout_of_passenger_accommodations(wing)
+        else:
+            if overwrite_geometry:
+                wing_planform(wing)
                 
         L = np.maximum(L, wing.spans.projected)
                      
@@ -278,18 +281,40 @@ def plot_3d_vehicle(vehicle,
                 if fuel_tank.wing_tag != None:
                     wing = geometry.wings[fuel_tank.wing_tag]
                     if issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank):
-                        GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation )  
-                        actor        = generate_vtk_object(GEOM.PTS) 
-                        vtk_data     = actor.GetMapper().GetInput() 
-                        pyvista_mesh = pv.wrap(vtk_data)                      
-                        plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)                           
-    
-                        if wing.xz_plane_symmetric: 
-                            GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                        if issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank) and fuel_tank.geometry_type == 'conformal' and fuel_tank.bwb_aft_tank:
+                            seg_bounds   = fuel_tank.aft_tank_root_chord_bounds   
+                            GEOM         = generate_aft_integral_wing_tank_points(wing,5,seg_bounds,fuel_tank)
                             actor        = generate_vtk_object(GEOM.PTS) 
                             vtk_data     = actor.GetMapper().GetInput() 
                             pyvista_mesh = pv.wrap(vtk_data)                      
-                            plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)   
+                            plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
+                        elif issubclass(type(fuel_tank), RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank) and fuel_tank.geometry_type == 'conformal':
+                            seg_bounds   = fuel_tank.segments_bounding_tank   
+                            GEOM         = generate_integral_wing_tank_points(wing,5,seg_bounds,fuel_tank)
+                            actor        = generate_vtk_object(GEOM.PTS) 
+                            vtk_data     = actor.GetMapper().GetInput() 
+                            pyvista_mesh = pv.wrap(vtk_data)                      
+                            plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
+                            if wing.xz_plane_symmetric:
+                                GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                                actor        = generate_vtk_object(GEOM.PTS) 
+                                vtk_data     = actor.GetMapper().GetInput() 
+                                pyvista_mesh = pv.wrap(vtk_data)                      
+                                plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
+                            
+                        else: 
+                            GEOM  = generate_non_integral_fuel_tank_points(fuel_tank,tessellation )  
+                            actor        = generate_vtk_object(GEOM.PTS) 
+                            vtk_data     = actor.GetMapper().GetInput() 
+                            pyvista_mesh = pv.wrap(vtk_data)                      
+                            plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)                           
+        
+                            if wing.xz_plane_symmetric: 
+                                GEOM.PTS[:, :, 1] = -GEOM.PTS[:, :, 1] 
+                                actor        = generate_vtk_object(GEOM.PTS) 
+                                vtk_data     = actor.GetMapper().GetInput() 
+                                pyvista_mesh = pv.wrap(vtk_data)                      
+                                plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)   
 
                     if type(fuel_tank) == RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank:  
                         seg_bounds   = fuel_tank.segments_bounding_tank   
@@ -328,14 +353,13 @@ def plot_3d_vehicle(vehicle,
                         vtk_data     = actor.GetMapper().GetInput() 
                         pyvista_mesh = pv.wrap(vtk_data)  
                         plotter.add_mesh(pyvista_mesh,color= fuel_tank_rgb_color,opacity= fuel_tank_opacity)  
-                    
-                            
+                                           
     if front_view:
-        plotter.camera_position = [(-L , 0, 0), (0, 0,0), (0, 0, 1)] 
+        plotter.camera_position = [(-2 * L , 0, 0), (0, 0,0), (0, 0, 1)] 
     elif side_view:
-        plotter.camera_position = [(L /2 , L, 0), (L /2, 0, 0), (0, 0, 1)]  
+        plotter.camera_position = [(L /2 , 2 * L, 0), (L /4, 0, 0), (0, 0, 1)]  
     elif top_view:
-        plotter.camera_position = [(L/2, 0 , L ), (L /2, 0,0), (0, 1, 0)]       
+        plotter.camera_position = [(L, 0 , 2 * L ), (L/4, 0,0), (0, 0, 1)]       
     else:
         plotter.camera_position = [(L * camera_eye_x, L * camera_eye_y, L * camera_eye_z), (L /2, 0, 0), (0, 0, 1)]
     
@@ -351,7 +375,7 @@ def plot_3d_vehicle(vehicle,
     else:
         if show_figure: 
             plotter.show()  
-    return
+    return plotter
 
 def add_lopa_seats(plotter, lopa_geometry, opacity):
     seats = getattr(lopa_geometry, "_lopa_seats", [])

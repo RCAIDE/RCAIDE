@@ -95,13 +95,14 @@ def base_analysis(vehicle):
     #  Geometry
     geometry = RCAIDE.Framework.Analyses.Geometry.Geometry()
     geometry.settings.overwrite_reference        = False
+    geometry.settings.compute_fuel_volume        = True
+    geometry.settings.update_max_fuel = True
     analyses.append(geometry)
  
     # ------------------------------------------------------------------
     #  Weights
     weights          = RCAIDE.Framework.Analyses.Weights.Electric_General_Aviation()  
-    weights.settings.overwrite_center_of_gravity       = False
-    weights.settings.overwrite_moments_of_inertia      = False  
+    weights.settings.overwrite_center_of_gravity       = True
     analyses.append(weights)
 
     # ------------------------------------------------------------------

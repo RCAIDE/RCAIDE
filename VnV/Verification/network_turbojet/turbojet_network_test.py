@@ -66,7 +66,7 @@ def main():
             print(val)
     
     # Truth values 
-    L_D_truth         = 7.236631632651507
+    L_D_truth         = 7.247823909318594
     
     # Store errors 
     error = Data() 
@@ -118,6 +118,7 @@ def base_analysis(vehicle):
     weights                 = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()  
     weights.settings.overwrite_center_of_gravity    = False
     weights.settings.overwrite_moments_of_inertia   = False 
+    weights.settings.iterate_mtow = True
     analyses.append(weights)
     
     # ------------------------------------------------------------------

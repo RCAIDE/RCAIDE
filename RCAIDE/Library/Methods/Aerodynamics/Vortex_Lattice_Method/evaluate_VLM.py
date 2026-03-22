@@ -236,7 +236,14 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.control_surfaces.rudder.static_stability.coefficients.L        = conditions.static_stability.derivatives.CL_delta_r * conditions.control_surfaces.rudder.deflection        
         conditions.control_surfaces.rudder.static_stability.coefficients.N        = conditions.static_stability.derivatives.CN_delta_r * conditions.control_surfaces.rudder.deflection       
     
+    # -----------------------------------------------------------------------------------------------------------------------
+    # Pack Aero Results 
+    # -----------------------------------------------------------------------------------------------------------------------   
+    conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
+    conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
+    # -----------------------------------------------------------------------------------------------------------------------
     # Flap 
+    # -----------------------------------------------------------------------------------------------------------------------
     if aerodynamics.flap_flag:
         if aerodynamics.stability_derivatives.CM_delta_f == None:
             conditions.static_stability.derivatives.CM_delta_f     = compute_stability_derivative(sub_sur.dCM_ddelta_f     ,trans_sur.dCM_ddelta_f     ,sup_sur.dCM_ddelta_f     ,h_sub,h_sup,Mach)
@@ -249,14 +256,9 @@ def evaluate_surrogate(state,settings,vehicle):
             conditions.static_stability.derivatives.Clift_delta_f = aerodynamics.stability_derivatives.Clift_delta_f* ones_row 
 
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection  
+        conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
         conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
-    
-    # -----------------------------------------------------------------------------------------------------------------------
-    # Pack Aero Results 
-    # -----------------------------------------------------------------------------------------------------------------------   
-    conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
-    conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha
-    
+        conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
     return
 
 def evaluate_no_surrogate(state,settings,vehicle):

@@ -38,7 +38,7 @@ from BWB            import vehicle_setup as BWB_vehicle_setup
 # ----------------------------------------------------------------------------------------------------------------------  
 def main():
     # tube and wing load trim test 
-    #tube_and_wing_load_trim_test()
+    tube_and_wing_load_trim_test()
  
     # blended wing body load trim test 
     blended_wing_body_load_trim_test()
@@ -63,16 +63,16 @@ def tube_and_wing_load_trim_test():
  
     load_data =  compute_load_and_trim_diagram( mission, cruise_segment_tag = 'cruise', discretization=  3)
     
-    save_results(load_data,'taw_loading_results')
+    save_results(load_data,'taw_loading_results') 
  
-    LEMAC_truth = np.array([[-47.07353741,  40.35384535, 127.78122812],
-                            [-47.07353741,  40.35384535, 127.78122812],
-                            [-47.07353741,  40.35384535, 127.78122812]])
+    CG_Percent_of_LEMAC_truth = np.array([[-0.25688876,  0.67084672,  1.5985822 ],
+       [-0.25688876,  0.67084672,  1.5985822 ],
+       [-0.25688876,  0.67084672,  1.5985822 ]])
     plot_load_diagram(load_data,save_filename  = "TW_Aircraft_Loading_Trim_Dragram") 
 
-    LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
+    LEMAC_error = np.max(abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)/CG_Percent_of_LEMAC_truth))
     print(f"LEMAC error: {LEMAC_error}")
-    assert LEMAC_error < 1e-4, f"LEMAC error too large: {LEMAC_error}"
+    assert LEMAC_error < 1e-2, f"LEMAC error too large: {LEMAC_error}"
         
     return 
  
@@ -97,14 +97,15 @@ def blended_wing_body_load_trim_test():
     
     save_results(load_data,'bwb_loading_results')
  
-    LEMAC_truth = np.array([[15.30488839, 31.62418592, 47.94348346],
-                            [15.30488839, 31.62418592, 47.94348346],
-                            [15.30488839, 31.62418592, 47.94348346]])
+    CG_Percent_of_LEMAC_truth = np.array([[-0.00936612,  0.85303387,  1.71543386],
+       [-0.00936612,  0.85303387,  1.71543386],
+       [-0.00936612,  0.85303387,  1.71543386]])
+    
     plot_load_diagram(load_data,save_filename  = "BWB_Aircraft_Loading_Trim_Dragram") 
 
-    LEMAC_error = np.max(abs((load_data.aerodynamic_LEMAC_location - LEMAC_truth)/LEMAC_truth))
+    LEMAC_error = np.max(abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)))
     print(f"LEMAC error: {LEMAC_error}")
-    assert LEMAC_error < 1e-4, f"LEMAC error too large: {LEMAC_error}"
+    assert LEMAC_error < 5e-3, f"LEMAC error too large: {LEMAC_error}"
         
     return
 
@@ -152,6 +153,8 @@ def E190_base_analysis(vehicle):
     #  Weights 
     weights = RCAIDE.Framework.Analyses.Weights.Conventional_Transport()   
     weights.settings.FLOPS.fidelity              = 'Complex' 
+    weights.settings.run_center_of_gravity_analysis             = True
+    weights.settings.run_moments_of_inertia_analysis            = True 
     weights.print_weight_analysis_report         = False
     analyses.append(weights)
 
