@@ -101,6 +101,8 @@ class Evaluate(Segment):
         
         # Unpack Unknowns
         iterate.unknowns                   = Process()
+        iterate.unknowns.controls          = Common.Unpack_Unknowns.control_surfaces 
+        iterate.unknowns.mission           = Common.Unpack_Unknowns.orientation
         
         # Update Conditions
         iterate.conditions = Process()
@@ -121,7 +123,8 @@ class Evaluate(Segment):
         iterate.conditions.planet_position       = Common.Update.planet_position
 
         # Solve Residuals
-        iterate.residuals = Process()     
+        iterate.residuals = Process()  
+        iterate.residuals.flight_dynamics  = Common.Residuals.flight_dynamics   
 
         # --------------------------------------------------------------  
         #  Post Process   
