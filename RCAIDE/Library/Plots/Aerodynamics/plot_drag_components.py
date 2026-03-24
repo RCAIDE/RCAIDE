@@ -20,7 +20,7 @@ def plot_drag_components(results,
                          show_legend= True,
                          save_filename="Drag_Components",
                          file_type=".png",
-                         width = 12, height = 7):
+                         width = 11, height = 7):
     """
     Generate plots showing the breakdown of aircraft drag components over time.
 
@@ -106,14 +106,7 @@ def plot_drag_components(results,
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
      
     fig   = plt.figure(save_filename)
-    axis_1 = plt.subplot(2,4,1)
-    axis_2 = plt.subplot(2,4,2)
-    axis_3 = plt.subplot(2,4,3)
-    axis_4 = plt.subplot(2,4,4)
-    axis_5 = plt.subplot(2,4,5)
-    axis_6 = plt.subplot(2,4,6)
-    axis_7 = plt.subplot(2,4,7)
-    axis_8 = plt.subplot(2,4,8)
+    axis_1 = plt.subplot(1,1,1)
     fig.set_size_inches(width,height)
     
     for i in range(len(results.segments)): 
@@ -129,47 +122,31 @@ def plot_drag_components(results,
         cd     = drag.total[:,0]  
         
         if i ==  0:
-            axis_1.plot(time, cd, color = line_colors[i], marker = ps.markers[7], linewidth = ps.line_width,  label  = r'$C_D$')
-            axis_2.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label  = r'$C_{Dpar}$') 
-            axis_3.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width,  label  = r'$C_{Dind}$')  
-            axis_4.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width,  label = r'$C_{Dcomp}$')  
-            axis_5.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width,  label = r'$C_{Dmisc}$')  
-            axis_6.plot(time,cdw, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width,  label  = r'$C_{Dwave}$')  
-            axis_7.plot(time, cdk, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width,  label = r'$C_{Dcool}$')  
-            axis_8.plot(time, cdf, color = line_colors[i], marker = ps.markers[6], linewidth = ps.line_width,  label = r'$C_{Dform}$')  
+            axis_1.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width, label = r'$C_{Dpar}$') 
+            axis_1.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width,  label = r'$C_{Dind}$')  
+            axis_1.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width,  label =r'$C_{Dcomp}$')  
+            axis_1.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width,  label =r'$C_{Dmisc}$')  
+            axis_1.plot(time,cdw, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width,  label = r'$C_{Dwave}$')  
+            axis_1.plot(time, cdk, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width,  label =r'$C_{Dcool}$')  
+            axis_1.plot(time, cdf, color = line_colors[i], marker = ps.markers[6], linewidth = ps.line_width,  label =r'$C_{Dform}$')  
+            axis_1.plot(time, cd, color = line_colors[i], marker = ps.markers[7], linewidth = ps.line_width,  label =r'$C_D$')
         else:
+            axis_1.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width,)
+            axis_1.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width, )
+            axis_1.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width,)
+            axis_1.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width,)
+            axis_1.plot(time,cdw, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width, )
+            axis_1.plot(time, cdk, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width,)
+            axis_1.plot(time, cdf, color = line_colors[i], marker = ps.markers[6], linewidth = ps.line_width,)
             axis_1.plot(time, cd, color = line_colors[i], marker = ps.markers[7], linewidth = ps.line_width, )
-            axis_2.plot(time, cdp, color = line_colors[i], marker = ps.markers[0], linewidth = ps.line_width,)
-            axis_3.plot(time,cdi, color = line_colors[i], marker = ps.markers[1], linewidth = ps.line_width, )
-            axis_4.plot(time, cdc, color = line_colors[i], marker = ps.markers[2], linewidth = ps.line_width,)
-            axis_5.plot(time, cdm, color = line_colors[i], marker = ps.markers[3], linewidth = ps.line_width,)
-            axis_6.plot(time,cdw, color = line_colors[i], marker = ps.markers[4], linewidth = ps.line_width, )
-            axis_7.plot(time, cdk, color = line_colors[i], marker = ps.markers[5], linewidth = ps.line_width,)
-            axis_8.plot(time, cdf, color = line_colors[i], marker = ps.markers[6], linewidth = ps.line_width,)
     
-        set_axes(axis_1)  
-        set_axes(axis_2)   
-        set_axes(axis_3)   
-        set_axes(axis_4)   
-        set_axes(axis_5)   
-        set_axes(axis_6)   
-        set_axes(axis_7)   
-        set_axes(axis_8) 
-        axis_5.set_xlabel('Time (mins)')
-        axis_6.set_xlabel('Time (mins)')
-        axis_7.set_xlabel('Time (mins)')
-        axis_8.set_xlabel('Time (mins)') 
-        axis_1.set_ylabel(r'$C_D$')
-        axis_2.set_ylabel(r'$C_{Dpar}$') 
-        axis_3.set_ylabel(r'$C_{Dind}$') 
-        axis_4.set_ylabel(r'$C_{Dcomp}$')
-        axis_5.set_ylabel(r'$C_{Dmisc}$')
-        axis_6.set_ylabel(r'$C_{Dwave}$')
-        axis_7.set_ylabel(r'$C_{Dcool}$')
-        axis_8.set_ylabel(r'$C_{Dform}$') 
+        set_axes(axis_1)            
+        axis_1.set_xlabel('Time (mins)')
+        axis_1.set_ylabel('Drag Components') 
+        
     
     if show_legend:                    
-        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 4)
+        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5)
     
     # Adjusting the sub-plots for legend 
     fig.tight_layout()
