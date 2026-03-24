@@ -155,8 +155,10 @@ def plot_drag_components(results,
         set_axes(axis_6)   
         set_axes(axis_7)   
         set_axes(axis_8) 
+        axis_5.set_xlabel('Time (mins)')
+        axis_6.set_xlabel('Time (mins)')
         axis_7.set_xlabel('Time (mins)')
-        axis_8.set_xlabel('Time (mins)')
+        axis_8.set_xlabel('Time (mins)') 
         axis_1.set_ylabel(r'$C_D$')
         axis_2.set_ylabel(r'$C_{Dpar}$') 
         axis_3.set_ylabel(r'$C_{Dind}$') 
@@ -167,7 +169,7 @@ def plot_drag_components(results,
         axis_8.set_ylabel(r'$C_{Dform}$') 
     
     if show_legend:                    
-        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 5)
+        leg =  fig.legend(bbox_to_anchor=(0.5, 0.95), loc='upper center', ncol = 4)
     
     # Adjusting the sub-plots for legend 
     fig.tight_layout()
