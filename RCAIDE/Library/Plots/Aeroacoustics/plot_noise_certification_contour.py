@@ -1,15 +1,24 @@
+# RCAIDE/Library/Plots/Thermal_Management/plot_air_cooled_conditions.py
+# 
+# 
+# Created:  Sep 2024, S. Shekar
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  IMPORT
+# ----------------------------------------------------------------------------------------------------------------------  
+
 # RCAIDE imports  
-import matplotlib.colors 
-import matplotlib.colors as colors
 from RCAIDE.Library.Plots import *
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
  
 # Pacakge imports 
 import numpy as np
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt 
+import matplotlib.colors as colors
 
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------- 
 #  Plot Aircraft Noise Certification Data  
-# ----------------------------------------------------------------------  
+# ---------------------------------------------------------------------------------------------------------------------- 
 def plot_noise_certification_contour( noise_data,
                                     noise_level       = None, 
                                     min_noise_level   = 45,  
