@@ -764,7 +764,7 @@ def compute_wing_integral_prismatic_tank_volume(fuel_tank,wing,fuel_tanks):
             fuel_tank.fuel.mass_properties.mass = total_fuel_volume *  fuel_tank.fuel.density   
             
     else:  
-       raise AttributeError('Need more than one segment in the wing to calculate segmented tank properties.')
+        raise AttributeError('Need more than one segment in the wing to calculate segmented tank properties.')
 
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density  
@@ -963,33 +963,25 @@ def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
     fuel_tank.max_volume_intersection_num_edges    = int(len(edge_lengths)) 
     fuel_tank.average_outer_width                  = (edge_lengths[0]+edge_lengths[2])/2
     fuel_tank.average_outer_length                 = fuel_tank.length_external
-    fuel_tank.average_outer_height                 = (edge_lengths[1]+edge_lengths[3])/2
-    
-    fuel_tank.aspect_ratio  = fuel_tank.average_outer_length /fuel_tank.average_outer_height
-    
-    # Outer Volume
-    tank_volume_o                = max_volume
-    # Inner Volume
-    tank_volume_i                = max_volume
-
-    
-    fuel_tank.volume_properties.net_volume         = tank_volume_i
-    fuel_tank.volume_properties.gross_volume       = tank_volume_o
+    fuel_tank.average_outer_height                 = (edge_lengths[1]+edge_lengths[3])/2 
+    fuel_tank.aspect_ratio                         = fuel_tank.average_outer_length /fuel_tank.average_outer_height 
+    fuel_tank.volume_properties.net_volume         = max_volume
+    fuel_tank.volume_properties.gross_volume       = max_volume
 
     if fuel_tank.fuel.mass_properties.mass != 0:
         actual_fuel_volume = fuel_tank.fuel.mass_properties.mass /  fuel_tank.fuel.density
         if actual_fuel_volume > fuel_tank.volume_properties.net_volume + 1e-8 :
             print('Warning:Specified fuel mass greater than mass of fuel capable of being stored in fuel tank')
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+        fuel_tank.fuel.volume_properties.net_volume = max_volume
     else:
-        fuel_tank.fuel.mass_properties.mass         = tank_volume_i *  fuel_tank.fuel.density
-        fuel_tank.fuel.volume_properties.net_volume = tank_volume_i
+        fuel_tank.fuel.mass_properties.mass         = max_volume *  fuel_tank.fuel.density
+        fuel_tank.fuel.volume_properties.net_volume = max_volume
    
     # Build a 3D tank mesh by extruding the 2D section over length_external.
     # Extrusion is centered about y = 0 (symmetric about origin in spanwise axis).
     tank_mesh = trimesh.creation.extrude_polygon(
         polygon=polygon_for_calc,
-        height=float(fuel_tank.length_external)
+        height=float(fuel_tank.length_external),
     )
     R = trimesh.transformations.rotation_matrix(-np.pi / 2.0, [1.0, 0.0, 0.0])
     T = trimesh.transformations.translation_matrix(
@@ -1000,23 +992,15 @@ def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
     tank_mesh.apply_transform(T)
 
     centroid = np.asarray(tank_mesh.center_mass, dtype=float)
-    I = tank_mesh.moment_inertia 
-    cg_x = centroid[0]
-    cg_y = 0
-    cg_z = centroid[2]
+    I        = tank_mesh.moment_inertia 
+    cg_x     = centroid[0]
+    cg_y     = 0
+    cg_z     = centroid[2]
     
-    fuel_tank.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]]
-    fuel_tank.fuel.mass_properties.center_of_gravity = [[cg_x, cg_y, cg_z]]
-
-    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I
-
-    fuel_tank.origin     =  [[0, 0, 0]]
-    fuel_tank.fuel.origin   = fuel_tank.origin
-
-    # tank_scene = trimesh.Scene()
-    # tank_scene.add_geometry(tank_mesh, geom_name="aft_integral_tank")
-    # fuel_tank.trimesh_scene = tank_scene
-    # tank_scene.show()
-
+    fuel_tank.mass_properties.center_of_gravity               = [[cg_x, cg_y, cg_z]]
+    fuel_tank.fuel.mass_properties.center_of_gravity          = [[cg_x, cg_y, cg_z]] 
+    fuel_tank.fuel.mass_properties.moments_of_inertia.tensor  = I 
+    fuel_tank.origin                                          =  [[0, 0, 0]]
+    fuel_tank.fuel.origin                                     = fuel_tank.origin
     
     return
