@@ -949,7 +949,7 @@ def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
 
     # Ensure it's 4-sided
     if len(coords) != 4:
-      raise AttributeError(f"Polygon has {len(coords)} sides, not 4.")
+        raise AttributeError(f"Polygon has {len(coords)} sides, not 4.")
 
     # Compute edge lengths
     edge_lengths = []
@@ -960,31 +960,10 @@ def compute_bwb_aft_integral_prismatic_tank_volume(fuel_tank, wing,fuel_tanks):
         edge_lengths.append(length)
 
     fuel_tank.max_volume_intersection_edge_lengths = np.array(edge_lengths)
-    fuel_tank.max_volume_intersection_num_edges = int(len(edge_lengths))
-
-    # # Print results
-    # for i, L in enumerate(edge_lengths):
-    #     print(f"Edge {i+1} length: {L:.6f} m")
-
-
-    # if best_polygon.geom_type == 'Polygon':
-    #     x, y = best_polygon.exterior.xy
-    #     ax.fill(x, y, color='tab:orange', alpha=0.4)
-
-    # elif best_polygon.geom_type == 'MultiPolygon':
-    #     for poly in best_polygon.geoms:
-    #         x, y = poly.exterior.xy
-    #         ax.fill(x, y, color='tab:orange', alpha=0.4)
-
-    # ax.set_aspect('equal', 'box')
-    # ax.set_xlabel("x (m)")
-    # ax.set_ylabel("z (m)")
-    # ax.set_title("Tank Section Polygons and Max Volume Intersection")
-    # plt.show()
-
-    fuel_tank.average_outer_width   = (edge_lengths[0]+edge_lengths[2])/2
-    fuel_tank.average_outer_length  = fuel_tank.length_external
-    fuel_tank.average_outer_height  = (edge_lengths[1]+edge_lengths[3])/2
+    fuel_tank.max_volume_intersection_num_edges    = int(len(edge_lengths)) 
+    fuel_tank.average_outer_width                  = (edge_lengths[0]+edge_lengths[2])/2
+    fuel_tank.average_outer_length                 = fuel_tank.length_external
+    fuel_tank.average_outer_height                 = (edge_lengths[1]+edge_lengths[3])/2
     
     fuel_tank.aspect_ratio  = fuel_tank.average_outer_length /fuel_tank.average_outer_height
     

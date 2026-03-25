@@ -110,10 +110,10 @@ def noise_base_analysis(vehicle):
     analyses.append(energy)
     
     # ------------------------------------------------------------------
-    #  Noise Analysis
+    #  Acoustics Analysis
     # ------------------------------------------------------------------
-    noise = RCAIDE.Framework.Analyses.Noise.Correlation_Buildup()  
-    analyses.append(noise)
+    aeroacoustics = RCAIDE.Framework.Analyses.Aeroacoustics.Semi_Empirical()  
+    analyses.append(aeroacoustics)
  
     # ------------------------------------------------------------------
     #  Planet Analysis
