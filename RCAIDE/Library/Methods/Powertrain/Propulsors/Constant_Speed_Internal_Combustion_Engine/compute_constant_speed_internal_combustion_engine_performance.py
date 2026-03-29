@@ -120,13 +120,13 @@ def compute_constant_speed_internal_combustion_engine_performance(propulsor, sta
     ice_cs_conditions.moment = moment   
 
     # Run the engine to calculate the throttle setting and the fuel burn
-    conditions.energy.converters[engine.tag].power        = conditions.energy.converters[propeller.tag].power 
+    conditions.energy.converters[engine.tag].power  = conditions.energy.converters[propeller.tag].power 
     compute_throttle_from_power(engine,conditions) 
     
     # Create the outputs
-    ice_cs_conditions.fuel_mass_flow_rate = conditions.energy.converters[engine.tag].fuel_mass_flow_rate  
-    stored_results_flag                   = True
-    stored_propulsor_tag                  = propulsor.tag  
+    ice_cs_conditions.fuel_mass_flow_rate    = conditions.energy.converters[engine.tag].fuel_mass_flow_rate  
+    stored_results_flag                      = True
+    stored_propulsor_tag                     = propulsor.tag  
 
     # currently, no hybridization
     power_elec =  0*state.ones_row(1)
