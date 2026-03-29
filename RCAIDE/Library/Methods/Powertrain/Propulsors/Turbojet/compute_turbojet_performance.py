@@ -396,7 +396,7 @@ def compute_turbojet_performance(turbojet, state, center_of_gravity=[[0.0, 0.0, 
     
     power_elec =  0*state.ones_row(1)
     
-    return thrust_vector,moment,power,power_elec,stored_results_flag,stored_propulsor_tag 
+    return turbojet_conditions.thrust,moment,power,power_elec,stored_results_flag,stored_propulsor_tag 
 
 def reuse_stored_turbojet_data(turbojet,state,network,stored_propulsor_tag,center_of_gravity= [[0.0, 0.0,0.0]]):
     '''Reuses results from one turbojet for identical propulsors
@@ -454,8 +454,7 @@ def reuse_stored_turbojet_data(turbojet,state,network,stored_propulsor_tag,cente
 
     # compute moment  
     moment_vector      = 0*state.ones_row(3)
-    thrust_vector      = 0*state.ones_row(3)
-    thrust_vector[:,0] = conditions.energy.propulsors[turbojet.tag].thrust[:,0] 
+    thrust_vector      = conditions.energy.propulsors[turbojet.tag].thrust
     moment_vector[:,0] = turbojet.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] = turbojet.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] = turbojet.origin[0][2]  -  center_of_gravity[0][2]
