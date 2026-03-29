@@ -323,7 +323,7 @@ def payload_range_mission_setup(analyses):
     segment.friction_coefficient                                          = 0.4
     segment.altitude                                                      = 0.0   
     segment.assigned_control_variables.elapsed_time.active                = True  
-    segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[30.]]  
+    segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[40.]]  
     mission.append_segment(segment)     
 
  
