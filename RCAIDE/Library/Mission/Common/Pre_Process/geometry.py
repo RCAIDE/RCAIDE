@@ -211,7 +211,6 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
                 propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity
                 
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
-                propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
                 propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
                 propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command
     return
