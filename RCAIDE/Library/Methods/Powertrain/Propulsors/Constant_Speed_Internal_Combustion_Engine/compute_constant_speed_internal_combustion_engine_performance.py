@@ -1,4 +1,4 @@
-# RCAIDE/Methods/Energy/Propulsors/Constant_Speed_ICE_Propulsor/compute_cs_ice_performance.py
+# RCAIDE/Methods/Energy/Propulsors/Constant_Speed_ICE_Propulsor/compute_constant_speed_internal_combustion_engine_performance.py
 # 
 # 
 # Created:  Jul 2023, M. Clarke
@@ -169,20 +169,14 @@ def reuse_stored_constant_speed_internal_combustion_engine_data(propulsor,state,
     conditions.energy.converters[propeller.tag]     = deepcopy(conditions.energy.converters[propeller_0.tag])
 
     # compute moment    
-    thrust                  = conditions.energy.converters[propeller.tag].thrust 
-    power                   = conditions.energy.converters[propeller.tag].power  
     moment_vector           = 0*state.ones_row(3) 
     moment_vector[:,0]      = propeller.origin[0][0]  -  center_of_gravity[0][0] 
     moment_vector[:,1]      = propeller.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2]      = propeller.origin[0][2]  -  center_of_gravity[0][2]
-    moment                  =  np.cross(moment_vector, conditions.energy.converters[propeller.tag].thrust)
-    
-    # pack results 
-    conditions.energy.converters[propeller.tag].moment = moment  
-    conditions.energy.propulsors[propulsor.tag].thrust = thrust   
-    conditions.energy.propulsors[propulsor.tag].moment = moment  
-    conditions.energy.propulsors[propulsor.tag].power  = power
+    moment                  = np.cross(moment_vector,conditions.energy.propulsors[propulsor.tag].thrust)
+    conditions.energy.converters[propeller.tag].moment = moment   
+    conditions.energy.propulsors[propulsor.tag].moment = moment 
     
     power_elec =  0*state.ones_row(1)  
-    return thrust,moment,power, power_elec
+    return conditions.energy.propulsors[propulsor.tag].thrust,moment,conditions.energy.propulsors[propulsor.tag].power,power_elec
  
