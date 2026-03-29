@@ -181,8 +181,7 @@ def geometry_preprocess_routine(analyses):
     compute_fuel_volume(vehicle,compute_fuel_volume = settings.compute_fuel_volume, update_max_fuel=settings.update_max_fuel)
 
     if settings.write_geometry_properties:
-        write_geometry_to_excel(vehicle)
-        
+        write_geometry_to_excel(vehicle) 
                
     return
 
@@ -198,7 +197,6 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
             control_surface.deflection = vehicle_0.wings[wing.tag].control_surfaces[control_surface.tag].deflection
     for landing_gear in segment.analyses.vehicle.landing_gears:
         landing_gear.gear_extended = vehicle_0.landing_gears[landing_gear.tag].gear_extended
-    
     for network in segment.analyses.vehicle.networks: 
         for bus in network.busses:
             bus.active = vehicle_0.networks[network.tag].busses[bus.tag].active
@@ -209,7 +207,6 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
                 propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity   
                 propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
                 propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity
-                
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Electric_Rotor):
                 propulsor.rotor.orientation_euler_angles =  propulsor_0.rotor.orientation_euler_angles 
                 propulsor.rotor.blade_pitch_command      =  propulsor_0.rotor.blade_pitch_command
@@ -339,3 +336,4 @@ def write_geometry_to_excel(vehicle):
         pd.DataFrame(prop_rows).to_excel(writer, sheet_name='Propulsors', index=False)
     
     print(f"Geometry Description written to Excel:\n  {excel_filename}")
+    return 
