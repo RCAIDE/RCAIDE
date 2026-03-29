@@ -203,9 +203,10 @@ def use_previous_segment_pre_processed_data(mission,segment,i):
         for bus in network.busses:
             bus.active = vehicle_0.networks[network.tag].busses[bus.tag].active
         for propulsor in network.propulsors:
+            propulsor_0       =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
+            propulsor.active  = propulsor_0.active 
             if isinstance(propulsor, RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan):
-                propulsor_0 =  vehicle_0.networks[network.tag].propulsors[propulsor.tag]
-                propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity        
+                propulsor.fan.angular_velocity        = propulsor_0.fan.angular_velocity   
                 propulsor.fan_nozzle.exit_velocity    = propulsor_0.fan_nozzle.exit_velocity 
                 propulsor.core_nozzle.exit_velocity   = propulsor_0.core_nozzle.exit_velocity
                 

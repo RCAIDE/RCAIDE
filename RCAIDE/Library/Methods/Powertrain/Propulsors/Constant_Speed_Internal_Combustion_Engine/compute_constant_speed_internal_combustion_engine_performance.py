@@ -178,7 +178,7 @@ def reuse_stored_constant_speed_internal_combustion_engine_data(propulsor,state,
     moment_vector[:,0]      = propeller.origin[0][0]  -  center_of_gravity[0][0] 
     moment_vector[:,1]      = propeller.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2]      = propeller.origin[0][2]  -  center_of_gravity[0][2]
-    moment                  =  np.cross(moment_vector, thrust)
+    moment                  =  np.cross(moment_vector, conditions.energy.converters[propeller.tag].thrust)
     
     # pack results 
     conditions.energy.converters[propeller.tag].moment = moment  

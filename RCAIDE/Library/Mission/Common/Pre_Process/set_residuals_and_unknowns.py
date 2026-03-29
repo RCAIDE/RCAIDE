@@ -147,6 +147,21 @@ def set_residuals_and_unknowns(mission):
             else:
                 segment.state.numerics.solver.lower_bounds.bank_angle =  -np.inf * ones_row(1) 
                 segment.state.numerics.solver.upper_bounds.bank_angle =   np.inf * ones_row(1)                
+        
+        # Sideslip Angle  
+        if ctrls.sideslip_angle.active:
+            segment.state.number_of_unknowns  += 1 
+            if ctrls.sideslip_angle.initial_guess_values !=  None:
+                segment.state.unknowns.sideslip_angle = ones_row(1) * ctrls.sideslip_angle.initial_guess_values[0][0]
+            else:
+                segment.state.unknowns.sideslip_angle = ones_row(1) * 0.0 * Units.degrees
+    
+            if ctrls.sideslip_angle.bounds !=  None:
+                segment.state.numerics.solver.lower_bounds.sideslip_angle = ctrls.sideslip_angle.bounds[0][0] * ones_row(1)
+                segment.state.numerics.solver.upper_bounds.sideslip_angle = ctrls.sideslip_angle.bounds[0][1] * ones_row(1)
+            else:
+                segment.state.numerics.solver.lower_bounds.sideslip_angle =  -np.inf * ones_row(1) 
+                segment.state.numerics.solver.upper_bounds.sideslip_angle =   np.inf * ones_row(1)
                 
         # Wing Angle  
         if ctrls.wind_angle.active:

@@ -274,13 +274,11 @@ def compute_turboprop_performance(turboprop, state, center_of_gravity=[[0.0, 0.0
     compute_thrust(turboprop,conditions) 
 
     # Compute forces and moments
-    moment_vector      = 0*state.ones_row(3)
-    thrust_vector      = 0*state.ones_row(3)
-    thrust_vector[:,0] = turboprop_conditions.thrust[:,0]
+    moment_vector      = 0*state.ones_row(3)  
     moment_vector[:,0] = turboprop.origin[0][0] -   center_of_gravity[0][0] 
     moment_vector[:,1] = turboprop.origin[0][1]  -  center_of_gravity[0][1] 
     moment_vector[:,2] = turboprop.origin[0][2]  -  center_of_gravity[0][2]
-    M                  = np.cross(moment_vector, thrust_vector)   
+    M                  = np.cross(moment_vector, turboprop_conditions.thrust)   
     moment             = M 
     power              = turboprop_conditions.power 
   

@@ -59,7 +59,12 @@ def unpack_body_angle(segment):
         segment.state.conditions.frames.body.inertial_rotations[:,0] = segment.state.unknowns.bank_angle[:,0]
     else:
         segment.state.conditions.frames.body.inertial_rotations[:,0] = segment.bank_angle
-            
+    
+    if ctrls.sideslip_angle.active: 
+        segment.state.conditions.frames.wind.body_rotations[:,2] = segment.state.unknowns.sideslip_angle[:,0]
+    else:
+        segment.state.conditions.frames.wind.body_rotations[:,2] = segment.sideslip_angle
+        
     segment.state.conditions.frames.body.inertial_rotations[:,2] =  segment.state.conditions.frames.planet.true_heading[:,0]     
          
 # ----------------------------------------------------------------------
