@@ -15,7 +15,7 @@ from collections import OrderedDict
 # ----------------------------------------------------------------------------------------------------------------------
 #  export_rcaide_data
 # ----------------------------------------------------------------------------------------------------------------------       
-def export_rcaide_data(vehicle=None, configurations = None, mission=None,analyses=None, filename, pickle_format=False):
+def export_rcaide_data(vehicle=None, configurations = None, missions=None,analyses=None, filename='RCAIDE_data', pickle_format=False):
     """
     Converts a RCAIDE data structure to a JSON or Pickle file for storage.
     
@@ -52,26 +52,43 @@ def export_rcaide_data(vehicle=None, configurations = None, mission=None,analyse
     RCAIDE.build_dict_base
     RCAIDE.build_dict_r
     """
-    # STEP 1: Compile data 
+
+    # STEP 1: Check Input
+    if (vehicle == None) and (configurations == None) and  (mission== None) and (analyses ==  None):
+        raise  AssertionError('No data to be saved!') 
+    
+    # STEP 2: Compile data 
     RCAIDE_DATA = {} 
     
     if vehicle != None:
-        RCAIDE_DATA['vehicle'] = vehicle
+        RCAIDE_DATA['rcaide_vehicle'] = vehicle 
+        
+    if configurations != None:
+        RCAIDE_DATA['rcaide_configurations'] = configurations
     
-    # TO DO!!!    
-    # add the rest 
+    if analyses != None:
+        RCAIDE_DATA['rcaide_analyses'] = analyses
+            
+    if missions != None:
+        RCAIDE_DATA['rcaide_missions'] = missions 
     
-    # STEP 2: Save data  
+    # STEP 3: Save data  
     if pickle_format:
         pickle_file  =  filename + '.pkl'
         with open(pickle_file, 'wb') as file:
             pickle.dump(RCAIDE_DATA, file) 
     else: 
-        # Create a dictionary structure with the results
-        res_dict = build_dict_base(RCAIDE_DATA) 
+        # Create a dictionary structure with the results 
+        keys = RCAIDE_DATA.keys()  
+        rcaide_dict = {}  
+        for k in keys:  
+            v = RCAIDE_DATA[k]
+            rcaide_dict[k] = build_dict_base(v) # recursive function 
+         
+        #res_dict = build_dict_base(RCAIDE_DATA) 
 
         with open( filename + '.json', 'w') as f:
-            json.dump(res_dict, f, indent=4) 
+            json.dump(rcaide_dict, f, indent=4) 
     return  
         
 def build_dict_base(base):
