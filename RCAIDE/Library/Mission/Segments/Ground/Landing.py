@@ -99,7 +99,7 @@ def initialize_conditions(segment):
     initialized_velocity = (vf - v0)*segment.state.numerics.dimensionless.control_points + v0
     
     # Initialize the x velocity unknowns to speed convergence:
-    segment.state.unknowns.ground_velocity = initialized_velocity #[1:,0]    
+    segment.state.unknowns.ground_velocity = initialized_velocity
 
     # pack conditions 
     conditions = segment.state.conditions    
