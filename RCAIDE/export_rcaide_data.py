@@ -54,7 +54,7 @@ def export_rcaide_data(vehicle=None, configurations = None, missions=None,analys
     """
 
     # STEP 1: Check Input
-    if (vehicle == None) and (configurations == None) and  (mission== None) and (analyses ==  None):
+    if (vehicle == None) and (configurations == None) and  (missions== None) and (analyses ==  None):
         raise  AssertionError('No data to be saved!') 
     
     # STEP 2: Compile data 
