@@ -47,9 +47,11 @@ from components and analyzed through various mission profiles.
 from . import Framework
 from . import Library
 
-from .Vehicle  import Vehicle
-from .load     import load 
-from .save     import save
+from .Vehicle             import Vehicle
+from .load                import load 
+from .save                import save
+from .load                import load 
+from .export_rcaide_data  import export_rcaide_data
 
 import os
 from warnings import simplefilter

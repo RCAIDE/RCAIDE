@@ -1,6 +1,6 @@
-# save.py 
+# export_rcaide_data.py 
 # 
-# Created:  Jul 2023, M. Clarke 
+# Created:  Mar 2026, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,9 +13,9 @@ import pickle
 from collections import OrderedDict
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  save
+#  export_rcaide_data
 # ----------------------------------------------------------------------------------------------------------------------       
-def save(data, filename, pickle_format=False):
+def export_rcaide_data(vehicle=None, configurations = None, mission=None,analyses=None, filename, pickle_format=False):
     """
     Converts a RCAIDE data structure to a JSON or Pickle file for storage.
     
@@ -52,26 +52,26 @@ def save(data, filename, pickle_format=False):
     RCAIDE.build_dict_base
     RCAIDE.build_dict_r
     """
+    # STEP 1: Compile data 
+    RCAIDE_DATA = {} 
+    
+    if vehicle != None:
+        RCAIDE_DATA['vehicle'] = vehicle
+    
+    # TO DO!!!    
+    # add the rest 
+    
+    # STEP 2: Save data  
     if pickle_format:
         pickle_file  =  filename + '.pkl'
         with open(pickle_file, 'wb') as file:
-            pickle.dump(data, file) 
+            pickle.dump(RCAIDE_DATA, file) 
     else: 
         # Create a dictionary structure with the results
-        res_dict = build_dict_base(data) 
+        res_dict = build_dict_base(RCAIDE_DATA) 
 
         with open( filename + '.json', 'w') as f:
-            json.dump(res_dict, f, indent=4)
-        
-        ################################################
-        # OLD FORMAT - DO NOT DELETE 
-        ## Convert the dictionary to a JSON string
-        #res_string = json.dumps(res_dict) 
-        ## Write results to a file
-        #f = open(filename,'w')   
-        #f.write(res_string)
-        #f.close()  
-        ################################################
+            json.dump(res_dict, f, indent=4) 
     return  
         
 def build_dict_base(base):
