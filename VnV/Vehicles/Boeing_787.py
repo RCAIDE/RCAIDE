@@ -854,7 +854,8 @@ def configs_setup(vehicle):
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'reverse_thrust'
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
+    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    config.networks.fuel.reverse_thrust = True
     config.landing_gears.main_gear.gear_extended    = True
     config.landing_gears.nose_gear.gear_extended    = True  
     for landing_gear in  config.landing_gears:
