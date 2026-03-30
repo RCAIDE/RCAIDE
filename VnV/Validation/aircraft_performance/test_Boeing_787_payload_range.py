@@ -316,6 +316,7 @@ def payload_range_mission_setup(analyses):
 
     segment = Segments.Ground.Landing(base_segment)
     segment.tag = "Landing"
+
     segment.analyses.extend( analyses.reverse_thrust ) 
     segment.velocity_start                                                = 160.0 * Units['knots']
     segment.velocity_end                                                  = 30 * Units.knots 
