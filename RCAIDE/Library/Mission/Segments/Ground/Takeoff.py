@@ -53,8 +53,7 @@ def initialize_conditions(segment):
     -------
     None
         Updates segment conditions directly:
-            - conditions.frames.inertial.velocity_vector [m/s]
-            - conditions.ground.incline [rad]
+            - conditions.frames.inertial.velocity_vector [m/s] 
             - conditions.ground.friction_coefficient [-]
             - conditions.freestream.altitude [m]
             - conditions.frames.inertial.position_vector [m]
@@ -110,20 +109,15 @@ def initialize_conditions(segment):
     # intial and final speed cannot be the same
     if v0 == vf:
         vf = vf + 0.01
-        
-    # repack
-    segment.air_speed_start = v0
-    segment.air_speed_end   = vf
-    
+         
     initialized_velocity = (vf - v0)*segment.state.numerics.dimensionless.control_points + v0
     
     # Initialize the x velocity unknowns to speed convergence:
-    segment.state.unknowns.ground_velocity = initialized_velocity[1:,0]    
+    segment.state.unknowns.ground_velocity = initialized_velocity # [1:,0]    
 
     # pack conditions 
     conditions = segment.state.conditions    
-    conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0]
-    conditions.ground.incline[:,0]                  = segment.ground_incline
+    conditions.frames.inertial.velocity_vector[:,0] = initialized_velocity[:,0] 
     conditions.ground.friction_coefficient[:,0]     = segment.friction_coefficient   
     conditions.freestream.altitude[:,0]             = alt
     conditions.frames.inertial.position_vector[:,2] = -alt    

@@ -60,10 +60,12 @@ def ground(segment):
     
     # unpack unknowns 
     ground_velocity = segment.state.unknowns.ground_velocity
-    time            = segment.state.unknowns.elapsed_time
     
-    # unpack givens
-    v0         = segment.air_speed_start  
+    # update start and end velocity 
+    ground_velocity[0, 0] = segment.velocity_start 
+     
+    # unpack givens 
+    time       = segment.state.unknowns.elapsed_time
     t_initial  = segment.state.conditions.frames.inertial.time[0,0]
     t_nondim   = segment.state.numerics.dimensionless.control_points
     
@@ -73,6 +75,5 @@ def ground(segment):
 
     # apply unknowns
     conditions = segment.state.conditions
-    conditions.frames.inertial.velocity_vector[1:,0] = ground_velocity
-    conditions.frames.inertial.velocity_vector[0,0]  = v0
+    conditions.frames.inertial.velocity_vector[:,0]  = ground_velocity[:,0] 
     conditions.frames.inertial.time[:,0]             = times[:,0]
