@@ -317,13 +317,14 @@ def payload_range_mission_setup(analyses):
     segment = Segments.Ground.Landing(base_segment)
     segment.tag = "Landing"
 
+    segment.state.numerics.solver.type = 'optimize'
     segment.analyses.extend( analyses.reverse_thrust ) 
     segment.velocity_start                                                = 160.0 * Units['knots']
     segment.velocity_end                                                  = 30 * Units.knots 
     segment.friction_coefficient                                          = 0.4
     segment.altitude                                                      = 0.0   
     segment.assigned_control_variables.elapsed_time.active                = True  
-    segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[40.]]  
+    segment.assigned_control_variables.elapsed_time.initial_guess_values  = [[30.]]  
     mission.append_segment(segment)     
 
  

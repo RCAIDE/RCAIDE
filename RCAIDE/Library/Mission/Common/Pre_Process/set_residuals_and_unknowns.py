@@ -78,10 +78,11 @@ def set_residuals_and_unknowns(mission):
     See Also
     --------
     RCAIDE.Framework.Mission.Segments
-    """     
+    """
+    
+    test =  0
     for segment in mission.segments:  
         ones_row    = segment.state.ones_row
-        ones_row_m1 = segment.state.ones_row_m1
         ctrls       = segment.assigned_control_variables
         dynamics    = segment.flight_dynamics
         
@@ -92,15 +93,10 @@ def set_residuals_and_unknowns(mission):
         
         # assign force and moment residuals i.e. degrees of freedom
         if dynamics.final_velocity_error == True:
-            segment.state.residuals.final_velocity_error = 0.0   
+            segment.state.residuals.final_velocity_error = 0.0  
             segment.state.number_of_residuals += 1
-            
-        if dynamics.force_x == True: 
-            if type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Takeoff or \
-               type(segment) == RCAIDE.Framework.Mission.Segments.Ground.Landing:
-                pass
-            else:
-                segment.state.residuals.force_x = ones_row(1) *0
+        if dynamics.force_x == True:  
+            segment.state.residuals.force_x = ones_row(1) *0
             segment.state.number_of_residuals += 1 
         if dynamics.force_y == True:
             segment.state.residuals.force_y = ones_row(1) *0 
@@ -235,11 +231,11 @@ def set_residuals_and_unknowns(mission):
                 segment.state.unknowns.ground_velocity = ones_row(1) *  100 
     
             if ctrls.ground_velocity.bounds !=  None:
-                segment.state.numerics.solver.lower_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][0] * ones_row_m1(1)
-                segment.state.numerics.solver.upper_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][1] * ones_row_m1(1)
+                segment.state.numerics.solver.lower_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][0] * ones_row(1)
+                segment.state.numerics.solver.upper_bounds.ground_velocity = ctrls.ground_velocity.bounds[0][1] * ones_row(1)
             else:
-                segment.state.numerics.solver.lower_bounds.ground_velocity =  -np.inf * ones_row_m1(1) 
-                segment.state.numerics.solver.upper_bounds.ground_velocity =   np.inf * ones_row_m1(1)
+                segment.state.numerics.solver.lower_bounds.ground_velocity =  -np.inf * ones_row(1) 
+                segment.state.numerics.solver.upper_bounds.ground_velocity =   np.inf * ones_row(1)
                         
         
         # Altitude
