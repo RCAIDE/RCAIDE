@@ -184,8 +184,7 @@ class Network(Component):
                             converter.inverse_calculation = True
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Pump):  
                                 P_mech, P_elec, stored_results_flag,stored_conveter_tag          = converter.compute_performance(state,fuel_line)   
-                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate += conditions.energy.converters[converter.tag].fuel_mass_flow_rate  
-                                a=90
+                                conditions.energy.fuel_lines[fuel_line.tag].fuel_mass_flow_rate += conditions.energy.converters[converter.tag].fuel_mass_flow_rate   
                                 
                             if isinstance(converter,RCAIDE.Library.Components.Powertrain.Converters.Turboelectric_Generator): 
                                 if stored_conveter_tag is False:
@@ -406,7 +405,7 @@ class Network(Component):
         
         for network in segment.analyses.vehicle.networks:
             for propulsor in network.propulsors: 
-                propulsor.append_operating_conditions(segment,segment.state.conditions.energy,segment.state.conditions.noise)     
+                propulsor.append_operating_conditions(segment,segment.state.conditions.energy,segment.state.conditions.aeroacoustics)     
     
             for converter in network.converters: 
                 converter.append_operating_conditions(segment,segment.state.conditions.energy)                 
