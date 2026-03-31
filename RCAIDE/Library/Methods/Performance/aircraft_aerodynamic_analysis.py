@@ -181,10 +181,7 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
                 state.conditions.control_surfaces.flap = Data()
                 state.conditions.control_surfaces.flap.deflection = control_surface.deflection * np.ones_like(angle_of_attacks)
                 state.conditions.control_surfaces.flap.static_stability = Data()
-                state.conditions.control_surfaces.flap.static_stability.coefficients = Data()
-    
-    
-
+                state.conditions.control_surfaces.flap.static_stability.coefficients = Data() 
   
     state.analyses  = analyses 
     state.analyses.aerodynamics.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "aerodynamic_training_data.pkl" )
@@ -215,7 +212,12 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
         moment_coefficient               = state.conditions.static_stability.coefficients.M, 
         state_conditions                 = state.conditions,
         
-    )  
-          
+    )
+    
+    # save surface distribution 
+    if type(state.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method: 
+        results.vortex_distribution                       =  state.analyses.aerodynamics.settings.vortex_distribution 
+        results.differential_surface_pressure_coefficient =  state.analyses.aerodynamics.coefficients.differential_surface_pressure_coefficient
+    
     return results  
  

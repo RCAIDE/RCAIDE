@@ -295,15 +295,15 @@ def evaluate_no_surrogate(state,settings,vehicle):
     CM    = VLM_results.CM
     CN    = VLM_results.CN
  
-    conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
-    conditions.aerodynamics.coefficients.lift.inviscid.total          = Clift
-    conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
-    conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
-    conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
-    conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
-    conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
-    conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
-    conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
+    conditions.aerodynamics.coefficients.lift.inviscid.wings                        = VLM_results.CLift_wings 
+    conditions.aerodynamics.coefficients.lift.inviscid.total                        = Clift
+    conditions.aerodynamics.coefficients.lift.inviscid.spanwise                     = VLM_results.sectional_CLift
+    conditions.aerodynamics.coefficients.drag.induced.wings                         = VLM_results.CDrag_induced_wings
+    conditions.aerodynamics.coefficients.drag.induced.spanwise                      = VLM_results.sectional_CDrag_induced
+    conditions.aerodynamics.coefficients.drag.induced.inviscid                      = Cdrag
+    conditions.aerodynamics.coefficients.differential_surface_pressure_coefficient  = VLM_results.CP
+    conditions.aerodynamics.angles.induced                                          = VLM_results.alpha_induced    
+    conditions.aerodynamics.spanwise_stations                                       = VLM_results.spanwise_stations
 
     # corrections 
     RCAIDE.Library.Methods.Aerodynamics.Common.Lift.fuselage_correction(state,settings,vehicle)     
@@ -380,15 +380,15 @@ def evaluate_no_surrogate(state,settings,vehicle):
     conditions.static_stability.coefficients.M_0 =  CM_0
     
     # Dimensionalize the lift and drag for each wing   
-    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
-    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.total          = VLM_results.CLift
-    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
-    equilibrium_conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
-    equilibrium_conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
-    equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid        = VLM_results.CDrag_induced
-    equilibrium_conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
-    equilibrium_conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
-    equilibrium_conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations    
+    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.wings                       = VLM_results.CLift_wings 
+    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.total                       = VLM_results.CLift
+    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.spanwise                    = VLM_results.sectional_CLift
+    equilibrium_conditions.aerodynamics.coefficients.drag.induced.wings                        = VLM_results.CDrag_induced_wings
+    equilibrium_conditions.aerodynamics.coefficients.drag.induced.spanwise                     = VLM_results.sectional_CDrag_induced
+    equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid                     = VLM_results.CDrag_induced
+    equilibrium_conditions.aerodynamics.coefficients.differential_surface_pressure_coefficient = VLM_results.CP
+    equilibrium_conditions.aerodynamics.angles.induced                                         = VLM_results.alpha_induced    
+    equilibrium_conditions.aerodynamics.spanwise_stations                                      = VLM_results.spanwise_stations    
     
     equilibrium_state                    = RCAIDE.Framework.Mission.Common.State()
     equilibrium_state.conditions         = equilibrium_conditions  
