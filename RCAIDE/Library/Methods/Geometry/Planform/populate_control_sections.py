@@ -38,7 +38,7 @@ def populate_control_sections(wing):
         seg.control_surfaces = Container()
     
     # loop throught the control surfaces on the wing 
-    for cs in w_cs :
+    for cs in w_cs:
         sf    = np.zeros(2) # set a temporary data structure to store the span fraction bounds
         sf[0] = cs.span_fraction_start
         sf[1] = cs.span_fraction_end

@@ -12,7 +12,7 @@ import  RCAIDE
 
 from RCAIDE.Framework.Core import  Data
 from RCAIDE.Library.Components.Wings.All_Moving_Surface import All_Moving_Surface 
-from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder 
+from RCAIDE.Library.Components.Wings.Control_Surfaces import Aileron , Elevator , Slat , Flap , Rudder , Spoiler
 from RCAIDE.Library.Methods.Geometry.Planform import populate_control_sections
 from RCAIDE.Library.Methods.Geometry.Planform.convert_sweep import convert_sweep_segments
 
@@ -89,10 +89,17 @@ def make_VLM_wings(geometry, settings):
             for segment in wing.segments: #unsupported by convention
                 if 'control_surfaces' in segment.keys() and len(segment.control_surfaces) > 0:
                     raise ValueError('Input: control surfaces should be appended to the wing, not its segments. ' + 
-                                     'This function will move the control surfaces to wing segments itself.')  
+                                     'This function will move the control surfaces to wing segments itself.')
+                
+        # Remove spoilers sinces they are only used for emprical calculations
+        for control_surface in geometry.wings[wing.tag].control_surfaces: 
+            if type(control_surface) == Spoiler:
+                wing.control_surfaces.pop(control_surface.tag)             
+            
         
         #move wing control surfaces to from wing to its segments
-        wing = populate_control_sections(wing)  
+        wing = populate_control_sections(wing)
+        
         
         #ensure wing has attributes that will be needed later
         wing_halfspan = wing.spans.projected * 0.5 if wing.xz_plane_symmetric else wing.spans.projected
@@ -441,7 +448,7 @@ def make_cs_wing_from_cs(cs, seg_a, seg_b, wing, cs_ID):
     cs_wing.vortex_lift           = wing.vortex_lift
 
     #non-standard wing attributes, mostly to do with cs_wing's identity as a control surface-----------------------
-    #metadata
+    # metadata
     cs_wing.is_a_control_surface  = True
     cs_wing.cs_ID                 = cs_ID
     cs_wing.name                  = wing.tag + '__' + seg_b.tag + '__' + cs.tag + '__cs_ID_{}'.format(cs_ID)

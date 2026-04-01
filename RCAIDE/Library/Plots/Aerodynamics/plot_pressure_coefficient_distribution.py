@@ -112,7 +112,7 @@ def plot_pressure_coefficient_distribution(results,
             x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0] 
             color_map = plt.cm.get_cmap('jet')
             rev_cm    = color_map.reversed() 
-            CS        = axes.contourf(y_pts,x_pts_p, z_pts, cmap = rev_cm,extend='both')
+            CS        = axes.contourf(y_pts,x_pts_p, z_pts,levels = 30, cmap = rev_cm,extend='both')
 
         # Set Color bar
         cbar = fig.colorbar(CS, ax=axes)
