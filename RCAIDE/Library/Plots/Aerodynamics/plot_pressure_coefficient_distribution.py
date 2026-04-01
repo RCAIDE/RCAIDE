@@ -89,28 +89,14 @@ def plot_pressure_coefficient_distribution(results,
     """
      
     VD         = results.vortex_distribution
-    n_cw       = VD.n_cw 
-    n_sw       = VD.n_sw
-    CP         = results.plot_pressure_coefficient_distribution 
-    b_pts      = np.concatenate(([0],np.cumsum(VD.n_sw[0]*VD.n_cw[0])))
-
-    ## Create a boolean for not plotting vertical wings
-    #idx        = 0
-    #plot_flag  = np.ones(VD.n_w[0][0])
-    #for wing in vehicle.wings:
-        #if wing.vertical:
-            #plot_flag[idx] = 0
-            #idx += 1
-        #else:
-            #idx += 1
-        #if wing.vertical and wing.xz_plane_symmetric:
-            #plot_flag[idx] = 0
-            #idx += 1
-        #else:
-            #idx += 1 
+    n_cw       = VD.n_cw # number of panels chordwise (including control surfaces)
+    n_sw       = VD.n_sw # number of panels spanwise  (including control surfaces)
+    CP         = results.differential_surface_pressure_coefficient  
+    b_pts      = np.concatenate(([0],np.cumsum(VD.n_sw[0]*VD.n_cw[0]))) 
     
-    for ti in range(CP): 
-        fig        = plt.figure()
+    for ti in range(len(CP)): 
+        figure_name = r'$\Delta$ $C_P$ Surface Distribution_' + str(ti+1)
+        fig        = plt.figure(figure_name)
         axes       = plt.subplot(1, 1, 1)
         x_max      = max(VD.XC[ti]) + 2
         y_max      = max(VD.YC[ti]) + 2
@@ -122,7 +108,7 @@ def plot_pressure_coefficient_distribution(results,
             xc_pts    = VD.X[ti,i*(n_pts):(i+1)*(n_pts)]
             x_pts     = np.reshape(np.atleast_2d(VD.XC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             y_pts     = np.reshape(np.atleast_2d(VD.YC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
-            z_pts     = np.reshape(np.atleast_2d(CP[b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
+            z_pts     = np.reshape(np.atleast_2d(CP[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0] 
             color_map = plt.cm.get_cmap('jet')
             rev_cm    = color_map.reversed() 
@@ -130,7 +116,7 @@ def plot_pressure_coefficient_distribution(results,
 
         # Set Color bar
         cbar = fig.colorbar(CS, ax=axes)
-        cbar.ax.set_ylabel('$C_{P}$', rotation =  0)
+        cbar.ax.set_ylabel(r'$\Delta$ $C_{P}$', rotation =  0)
         plt.axis('off')
         plt.grid(None)
 

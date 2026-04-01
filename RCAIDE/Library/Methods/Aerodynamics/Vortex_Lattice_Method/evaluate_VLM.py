@@ -301,7 +301,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     conditions.aerodynamics.coefficients.drag.induced.wings                         = VLM_results.CDrag_induced_wings
     conditions.aerodynamics.coefficients.drag.induced.spanwise                      = VLM_results.sectional_CDrag_induced
     conditions.aerodynamics.coefficients.drag.induced.inviscid                      = Cdrag
-    conditions.aerodynamics.coefficients.differential_surface_pressure_coefficient  = VLM_results.CP
+    conditions.aerodynamics.coefficients.differential_surface_pressure              = VLM_results.CP
     conditions.aerodynamics.angles.induced                                          = VLM_results.alpha_induced    
     conditions.aerodynamics.spanwise_stations                                       = VLM_results.spanwise_stations
 
@@ -326,13 +326,24 @@ def evaluate_no_surrogate(state,settings,vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)
     
 
-    T_wind2inertial = conditions.frames.wind.transform_to_inertial   
-    no_beta   = np.all(conditions.aerodynamics.angles.beta == 0)
-    no_ail    = np.all(conditions.control_surfaces.aileron.deflection == 0) 
-    no_rud    = np.all(conditions.control_surfaces.rudder.deflection == 0) 
+    T_wind2inertial = conditions.frames.wind.transform_to_inertial
+     
+
+    for wing in vehicle.wings: 
+        for control_surface in wing.control_surfaces: 
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                aerodynamics.aileron_flag  = True 
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator: 
+                aerodynamics.elevator_flag = True 
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
+                aerodynamics.rudder_flag   = True 
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap: 
+                aerodynamics.flap_flag      = True
+                
+    no_beta   = np.all(conditions.aerodynamics.angles.beta == 0) 
     no_bank   = np.all(conditions.aerodynamics.angles.phi == 0)  
 
-    if no_beta and no_ail and no_rud and no_bank:
+    if no_beta and (aerodynamics.rudder_flag == False) and (aerodynamics.aileron_flag ==False) and no_bank:
         CY = CY * 0 
     conditions.static_stability.coefficients.X     = CX 
     conditions.static_stability.coefficients.Y     = CY 
@@ -385,8 +396,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.spanwise                    = VLM_results.sectional_CLift
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.wings                        = VLM_results.CDrag_induced_wings
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.spanwise                     = VLM_results.sectional_CDrag_induced
-    equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid                     = VLM_results.CDrag_induced
-    equilibrium_conditions.aerodynamics.coefficients.differential_surface_pressure_coefficient = VLM_results.CP
+    equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid                     = VLM_results.CDrag_induced 
     equilibrium_conditions.aerodynamics.angles.induced                                         = VLM_results.alpha_induced    
     equilibrium_conditions.aerodynamics.spanwise_stations                                      = VLM_results.spanwise_stations    
     

@@ -483,13 +483,15 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     
     # get geometry of wing  
     span          = wing.spans.projected
-    sym_para      = wing.xz_plane_symmetric 
+    xz_sym        = wing.xz_plane_symmetric 
+    xy_sym        = wing.xy_plane_symmetric 
+    yz_sym        = wing.yz_plane_symmetric 
     vertical_wing = wing.vertical
     wing_origin   = wing.origin[0]
     VD.vortex_lift.append(wing.vortex_lift)
 
     # determine if vehicle has symmetry 
-    if sym_para is True :
+    if xz_sym is True :
         span = span/2
         VD.vortex_lift.append(wing.vortex_lift)
         
@@ -575,7 +577,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         section_TE_cut[i_break] = span_breaks[i_break].cuts[1,1]
 
     VD.wing_areas.append(np.sum(section_area[:], dtype=precision))
-    if sym_para is True :
+    if xz_sym is True :
         VD.wing_areas.append(np.sum(section_area[:], dtype=precision))            
 
     #Shift spanwise vortices onto section breaks  
@@ -621,10 +623,9 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     
     # -------------------------------------------------------------------------------------------------------------
     # Run the strip contruction loop again if wing is symmetric. 
-    # Reflection plane = x-y plane for vertical wings. Otherwise, reflection plane = x-z plane
-    signs         = np.array([1, -1]) # acts as a multiplier for symmetry. -1 is only ever used for symmetric wings
-    symmetry_mask = [True,sym_para]
-    for sym_sign in signs[symmetry_mask]:
+    # Reflection plane = x-y plane for vertical wings. Otherwise, reflection plane = x-z plane 
+    symmetry_mask = np.array([[0,0,0],[yz_sym,xz_sym,xy_sym]])
+    for wing_side in range(len(symmetry_mask)):
         # create empty vectors for coordinates 
         xah   = np.zeros(n_cw*n_sw)
         yah   = np.zeros(n_cw*n_sw)
@@ -662,9 +663,12 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         cs_w  = np.zeros(n_sw)        
         
         # adjust origin for symmetry with special case for vertical symmetry
-        wing_origin_x = wing_origin[0]
-        wing_origin_y = wing_origin[1] * ((1-vertical_wing)*sym_sign+vertical_wing)
-        wing_origin_z = wing_origin[2] * ((1-vertical_wing)+sym_sign*vertical_wing)
+        yz_sym_sign = 1 if symmetry_mask[wing_side,0] == 0 else -1
+        xz_sym_sign = 1 if symmetry_mask[wing_side,1] == 0 else -1
+        xy_sym_sign = 1 if symmetry_mask[wing_side,2] == 0 else -1
+        wing_origin_x = wing_origin[0] * yz_sym_sign
+        wing_origin_y = wing_origin[1] * xz_sym_sign
+        wing_origin_z = wing_origin[2] * xy_sym_sign
             
         # ---------------------------------------------------------------------------------------------------------
         # Loop over each strip of panels in the wing
@@ -677,7 +681,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             eta   = (y_b[idx_y] - del_y[idx_y]/2 - break_spans[i_break]) 
             
             # Inverted wing
-            wing.inverted_wing = -np.sign(break_dihedral[i_break] - np.pi/2)
+            wing.inverted_wing = -np.sign(break_dihedral[i_break] - np.pi/2) 
     
             segment_chord_ratio = (break_chord[i_break+1] - break_chord[i_break])/section_span[i_break+1]
             segment_twist_ratio = (break_twist[i_break+1] - break_twist[i_break])/section_span[i_break+1]
@@ -796,17 +800,17 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             
             # Define y-coordinate and other arrays-----------------------------------------------------------------
             # take normal value for first wing, then reflect over xz plane for a symmetric wing
-            y_prime_as = (np.ones(n_cw+1)*y_a[idx_y]                 ) *sym_sign          
+            y_prime_as = (np.ones(n_cw+1)*y_a[idx_y]                 ) *xz_sym_sign          
             y_prime_a1 = (y_prime_as[:-1]                            ) *1       
             y_prime_ah = (y_prime_as[:-1]                            ) *1       
             y_prime_ac = (y_prime_as[:-1]                            ) *1          
             y_prime_a2 = (y_prime_as[:-1]                            ) *1        
-            y_prime_bs = (np.ones(n_cw+1)*y_b[idx_y]                 ) *sym_sign            
+            y_prime_bs = (np.ones(n_cw+1)*y_b[idx_y]                 ) *xz_sym_sign            
             y_prime_b1 = (y_prime_bs[:-1]                            ) *1         
             y_prime_bh = (y_prime_bs[:-1]                            ) *1         
             y_prime_bc = (y_prime_bs[:-1]                            ) *1         
             y_prime_b2 = (y_prime_bs[:-1]                            ) *1   
-            y_prime_ch = (np.ones(n_cw)*(y_b[idx_y] - del_y[idx_y]/2)) *sym_sign
+            y_prime_ch = (np.ones(n_cw)*(y_b[idx_y] - del_y[idx_y]/2)) *xz_sym_sign
             y_prime    = (y_prime_ch                                 ) *1    
             
             # populate all corners of all panels. Right side only populated for last strip wing the wing
@@ -817,24 +821,18 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             
             # reflect over the plane y = z for a vertical wing-----------------------------------------------------
             if vertical_wing:
-                y_prime_a1, zeta_prime_a1 = zeta_prime_a1, wing.inverted_wing*y_prime_a1
-                y_prime_ah, zeta_prime_ah = zeta_prime_ah, wing.inverted_wing*y_prime_ah
-                y_prime_ac, zeta_prime_ac = zeta_prime_ac, wing.inverted_wing*y_prime_ac
-                y_prime_a2, zeta_prime_a2 = zeta_prime_a2, wing.inverted_wing*y_prime_a2
-                                                                     
-                y_prime_b1, zeta_prime_b1 = zeta_prime_b1, wing.inverted_wing*y_prime_b1
-                y_prime_bh, zeta_prime_bh = zeta_prime_bh, wing.inverted_wing*y_prime_bh
-                y_prime_bc, zeta_prime_bc = zeta_prime_bc, wing.inverted_wing*y_prime_bc
-                y_prime_b2, zeta_prime_b2 = zeta_prime_b2, wing.inverted_wing*y_prime_b2
-                
-                y_prime_ch, zeta_prime_ch = zeta_prime_ch, wing.inverted_wing*y_prime_ch
-                y_prime   , zeta_prime    = zeta_prime   , wing.inverted_wing*y_prime
-                
-                y_prime_as, zeta_prime_as = zeta_prime_as, wing.inverted_wing*y_prime_as
-
- 
-                y_prime_bs = wing.inverted_wing*y_prime_bs
-                y_prime_bs, zeta_prime_bs = zeta_prime_bs, y_prime_bs
+                y_prime_a1, zeta_prime_a1 = zeta_prime_a1*xz_sym_sign, wing.inverted_wing*y_prime_a1
+                y_prime_ah, zeta_prime_ah = zeta_prime_ah*xz_sym_sign, wing.inverted_wing*y_prime_ah
+                y_prime_ac, zeta_prime_ac = zeta_prime_ac*xz_sym_sign, wing.inverted_wing*y_prime_ac
+                y_prime_a2, zeta_prime_a2 = zeta_prime_a2*xz_sym_sign, wing.inverted_wing*y_prime_a2 
+                y_prime_b1, zeta_prime_b1 = zeta_prime_b1*xz_sym_sign, wing.inverted_wing*y_prime_b1
+                y_prime_bh, zeta_prime_bh = zeta_prime_bh*xz_sym_sign, wing.inverted_wing*y_prime_bh
+                y_prime_bc, zeta_prime_bc = zeta_prime_bc*xz_sym_sign, wing.inverted_wing*y_prime_bc
+                y_prime_b2, zeta_prime_b2 = zeta_prime_b2*xz_sym_sign, wing.inverted_wing*y_prime_b2 
+                y_prime_ch, zeta_prime_ch = zeta_prime_ch*xz_sym_sign, wing.inverted_wing*y_prime_ch
+                y_prime   , zeta_prime    = zeta_prime   *xz_sym_sign, wing.inverted_wing*y_prime 
+                y_prime_as, zeta_prime_as = zeta_prime_as*xz_sym_sign, wing.inverted_wing*y_prime_as 
+                y_prime_bs, zeta_prime_bs = zeta_prime_bs*xz_sym_sign, wing.inverted_wing* y_prime_bs 
                  
             # store coordinates of panels, horseshoeces vortices and control points relative to wing root----------
             xa1[idx_y*n_cw:(idx_y+1)*n_cw] = xi_prime_a1     # top left corner of panel
@@ -961,8 +959,8 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         VD.spanwise_breaks  = np.append(VD.spanwise_breaks , np.int32(first_strip_ind ))            
         VD.n_sw             = np.append(VD.n_sw            , np.int16(n_sw)            )
         VD.n_cw             = np.append(VD.n_cw            , np.int16(n_cw)            )
-        VD.surface_ID       = np.append(VD.surface_ID      , np.ones(n_cw*n_sw)*ID*sym_sign) # Update me when the loop is gone
-        VD.surface_ID_full  = np.append(VD.surface_ID_full , np.ones((n_cw+1)*(n_sw+1))*ID*sym_sign) # Update me when the loop is gone    
+        VD.surface_ID       = np.append(VD.surface_ID      , np.ones(n_cw*n_sw)*ID*xz_sym_sign) # Update me when the loop is gone
+        VD.surface_ID_full  = np.append(VD.surface_ID_full , np.ones((n_cw+1)*(n_sw+1))*ID*xz_sym_sign) # Update me when the loop is gone    
                 
         # ---------------------------------------------------------------------------------------
         # STEP 7: Store wing in vehicle vector
@@ -1004,7 +1002,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         VD.DY     = np.append(VD.DY   , np.array(del_y, dtype=precision))    
     #End symmetry loop
     
-    VD.symmetric_wings = np.append(VD.symmetric_wings, int(sym_para))
+    VD.symmetric_wings = np.append(VD.symmetric_wings, int(xz_sym))
     
     # Pack wing data
     wing.n_sw = n_sw

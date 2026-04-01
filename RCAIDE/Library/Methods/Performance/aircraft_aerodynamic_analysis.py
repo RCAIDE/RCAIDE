@@ -216,8 +216,8 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
     
     # save surface distribution 
     if type(state.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method: 
-        results.vortex_distribution                       =  state.analyses.aerodynamics.settings.vortex_distribution 
-        results.differential_surface_pressure_coefficient =  state.analyses.aerodynamics.coefficients.differential_surface_pressure_coefficient
+        results.vortex_distribution           =  state.analyses.aerodynamics.settings.vortex_distribution 
+        results.differential_surface_pressure_coefficient =  state.conditions.aerodynamics.coefficients.differential_surface_pressure
     
     return results  
  
