@@ -337,8 +337,6 @@ def get_paths(type_str):
         paths = ['tag',
                 'origin',
                 'xz_plane_symmetric',
-                'xy_plane_symmetric',
-                'yz_plane_symmetric',
                 'vertical',
                 'taper',
                 'dihedral',
@@ -436,7 +434,7 @@ def make_cs_wing_from_cs(cs, seg_a, seg_b, wing, cs_ID):
     cs_wing.taper                 = cs_wing.chords.tip / cs_wing.chords.root
     cs_wing.sweeps.quarter_chord  = 0.  # leave at 0. VLM will use leading edge
 
-    cs_wing.xz_plane_symmetric    = wing.xz_plane_symmetric
+    cs_wing.xz_plane_symmetric             = wing.xz_plane_symmetric
     cs_wing.vertical              = wing.vertical
     cs_wing.vortex_lift           = wing.vortex_lift
 
