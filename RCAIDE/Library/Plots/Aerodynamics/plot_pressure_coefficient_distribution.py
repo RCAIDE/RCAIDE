@@ -6,9 +6,9 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-
 from RCAIDE.Library.Plots.Common import set_axes, plot_style
 import matplotlib.pyplot as plt 
+import matplotlib.colors as colors
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
@@ -103,16 +103,19 @@ def plot_pressure_coefficient_distribution(results,
         axes.set_ylim(x_max, 0)
         axes.set_xlim(-y_max, y_max)
         fig.set_size_inches(8,8)
+        
+    
+        norm = colors.TwoSlopeNorm(vmin=-1, vcenter=0, vmax=1)
+        cp_levels   = np.linspace(-1,1, 21)
+        
         for i in range(VD.n_w[0][0]):
             n_pts     = (n_sw[ti,i] + 1) * (n_cw[ti,i]+ 1)
             xc_pts    = VD.X[ti,i*(n_pts):(i+1)*(n_pts)]
             x_pts     = np.reshape(np.atleast_2d(VD.XC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             y_pts     = np.reshape(np.atleast_2d(VD.YC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             z_pts     = np.reshape(np.atleast_2d(CP[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
-            x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0] 
-            color_map = plt.cm.get_cmap('jet')
-            rev_cm    = color_map.reversed() 
-            CS        = axes.contourf(y_pts,x_pts_p, z_pts, levels = 20 ,  cmap = rev_cm,extend='both')
+            x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0]  
+            CS        = axes.contourf(y_pts,x_pts_p, z_pts, levels = cp_levels ,  cmap = 'coolwarm_r', norm=norm,extend='both')
 
         # Set Color bar
         cbar = fig.colorbar(CS, ax=axes)
