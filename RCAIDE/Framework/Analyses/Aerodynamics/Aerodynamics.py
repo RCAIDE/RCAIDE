@@ -62,7 +62,8 @@ class Aerodynamics(Analysis):
         self.settings.recalculate_total_wetted_area                      = False
         self.settings.oswald_efficiency_factor                           = None
         self.settings.span_efficiency                                    = None
-        self.settings.store_training_data                                = False
+        self.settings.store_training_data                                = True
+        self.settings.reuse_stored_surrogate_model                       = False
         self.settings.use_surrogate                                      = True  
 
         self.settings.subsonic                                           = Data() 

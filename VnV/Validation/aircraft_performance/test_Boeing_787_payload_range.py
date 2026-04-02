@@ -28,7 +28,7 @@ def main():
     missions = missions_setup(mission)
      
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.05, delete_training_data = True) 
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.10, delete_training_data = True) 
     
 
     # #### DO NOT CHANGE THESE VALUES WITHOUT CONSULTING THE AIRPORT PLANNING MANUAL FIRST ###############
@@ -385,9 +385,7 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Energy
     energy = RCAIDE.Framework.Analyses.Energy.Energy() 
-    analyses.append(energy)
-    
-  
+    analyses.append(energy) 
 
     # ------------------------------------------------------------------
     #  Planet Analysis
