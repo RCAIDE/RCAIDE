@@ -10,9 +10,7 @@ from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender
 from RCAIDE.Library.Components.Wings          import Main_Wing 
 
 # package imports
-import numpy as np  
-from RCAIDE.Library.Plots.Common import set_axes, plot_style
-import matplotlib.pyplot as plt
+import numpy as np
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressibility Drag Total
@@ -134,15 +132,9 @@ def compressibility_drag(state,settings,geometry):
     
     # Apply smoothing functions
     sub_CDc          = subsonic_CDc *(sub_h00(Mach)) 
-    trans_CDw_lift   = transonic_CDw_lift  * (1-sub_h00(Mach))  #  *   sup_h00(Mach)
+    trans_CDw_lift   = transonic_CDw_lift  * (1-sub_h00(Mach))  
     sup_CDw_lift     = supersonic_CDw_lift  * (1-sup_h00(Mach))
-    sup_CDw_volume   = supersonic_CDw_volume * (1-sup_h00(Mach))
-    
-
-    #fig   = plt.figure('smoothing')
-    #axis_1 = plt.subplot(1,1,1) 
-    #axis_1.plot(Mach[:, 0],trans_CDw_lift[:, 0],'g-',marker='x' , label ='subsonic') 
-    #plt.show()
+    sup_CDw_volume   = supersonic_CDw_volume * (1-sup_h00(Mach)) 
     
     # compute totals 
     total_CDc        = sup_CDw_lift +  trans_CDw_lift  +  sup_CDw_volume  +  sub_CDc

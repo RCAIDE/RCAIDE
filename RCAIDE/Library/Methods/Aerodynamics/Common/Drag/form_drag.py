@@ -162,6 +162,6 @@ def form_drag(state,settings,geometry):
             CD_form += CD_form_wing /geometry.reference_area 
     
     
-    CD_form_total =  CD_form #*  (sub_h00(Mach)) 
+    CD_form_total =  CD_form
     state.conditions.aerodynamics.coefficients.drag.form.total = CD_form_total  
     return

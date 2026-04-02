@@ -85,6 +85,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment.root_chord_percent            = 1.
     segment.dihedral_outboard             = 8.0 * Units.degrees
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
+    #segment.twist                         = 2.0 * Units.degrees
     segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)
 
@@ -97,6 +98,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment.dihedral_outboard             = 7.0 * Units.degrees
     segment.sweeps.quarter_chord          = 31. * Units.degrees
     segment.thickness_to_chord            = 0.125
+    #segment.twist                         = 1.0 * Units.degrees
     segment.append_airfoil(yehudi_airfoil)
     wing.append_segment(segment)
 
@@ -108,7 +110,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment.root_chord_percent            = 0.155 
     segment.dihedral_outboard             = 12.0 * Units.degrees
     segment.sweeps.quarter_chord          = 42.0 * Units.degrees
-    segment.twist                         = -0.95 * Units.degrees
+    segment.twist                         = 0.0 * Units.degrees
     segment.append_airfoil(tip_airfoil)
     wing.append_segment(segment)
 
@@ -117,7 +119,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
     segment.tag                           = 'Winglet'
     segment.percent_span_location         = 1.00
-    segment.twist                         = -1.0 * Units.degrees
+    segment.twist                         = 0.0 * Units.degrees
     segment.root_chord_percent            = 0.093 
     segment.dihedral_outboard             = 0.0 * Units.degrees
     segment.sweeps.quarter_chord          = 0.0 * Units.degrees
