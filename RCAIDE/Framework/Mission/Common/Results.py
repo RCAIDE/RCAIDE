@@ -170,7 +170,8 @@ class Results(Conditions):
         self.aerodynamics.coefficients.drag.parasite                           = Conditions()
         self.aerodynamics.coefficients.drag.miscellaneous                      = Conditions()
         self.aerodynamics.coefficients.drag.compressible                       = Conditions() 
-        self.aerodynamics.coefficients.drag.compressible.total                 = Conditions()  
+        self.aerodynamics.coefficients.drag.compressible.total                 = ones_1col * 0  
+        self.aerodynamics.coefficients.drag.compressible.wave                  = Conditions() 
         self.aerodynamics.coefficients.drag.compressible.wave.total            = Conditions() 
         self.aerodynamics.coefficients.drag.compressible.wave.volume           = ones_1col * 0  
         self.aerodynamics.coefficients.drag.compressible.wave.lift             = ones_1col * 0  

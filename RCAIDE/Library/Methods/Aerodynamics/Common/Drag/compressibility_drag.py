@@ -12,6 +12,8 @@ from RCAIDE.Library.Components.Wings          import Main_Wing
 
 # package imports
 import numpy as np
+from RCAIDE.Library.Plots.Common import set_axes, plot_style
+import matplotlib.pyplot as plt
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressibility Drag Total
@@ -127,24 +129,38 @@ def compressibility_drag(state,settings,geometry):
     sub_h00    = lambda M:sub_spline.compute(M)   
 
     subsonic_CDc          = subsonic_compressibility_drag(state,settings,geometry) 
-    transonic_CDw_volume  = supersonic_volume_wave_drag(conditions, settings, geometry) # 
     transonic_CDw_lift    = transonic_lift_wave_drag(conditions, settings, geometry) 
+    supersonic_CDw_volume = supersonic_volume_wave_drag(conditions, settings, geometry) 
     supersonic_CDw_lift   = supersonic_lift_wave_drag(conditions, settings, geometry)
     
     # Apply smoothing functions
-    sub_CDc          = subsonic_CDc *(1-sub_h00(Mach))        
-    trans_CDw_volume = transonic_CDw_volume *(1-sup_h00(Mach)) 
-    trans_CDw_lift   = transonic_CDw_lift   * sup_h00(Mach) 
-    sup_CDw_lift     = supersonic_CDw_lift  * (1-sup_h00(Mach)) 
+    sub_CDc          = subsonic_CDc *(sub_h00(Mach)) 
+    trans_CDw_lift   = transonic_CDw_lift   * (1-sub_h00(Mach))  *   sup_h00(Mach)
+    sup_CDw_lift     = supersonic_CDw_lift  * (1-sup_h00(Mach))
+    sup_CDw_volume   = supersonic_CDw_volume * (1-sup_h00(Mach))
+    
+    subsonic_fuction   = (sub_h00(Mach)) 
+    tansonic_function  =  (1-sub_h00(Mach))  *   sup_h00(Mach)
+    supersonic_fuction = (1-sup_h00(Mach))
+    
+    total_inf =  subsonic_fuction + tansonic_function +  supersonic_fuction
+    
+    fig   = plt.figure('smoothing')
+    axis_1 = plt.subplot(1,1,1) 
+    axis_1.plot(Mach[:, 0],subsonic_fuction[:, 0],'g-',marker='x' , label ='subsonic')
+    axis_1.plot(Mach[:, 0],tansonic_function[:, 0],'b-' , label='transionic')
+    axis_1.plot(Mach[:, 0],supersonic_fuction[:, 0],'r-', label='supersonic' ) 
+    axis_1.plot(Mach[:, 0],total_inf[:, 0],'k-',marker='o',linewidth = 4, label='supersonic' ) 
+    #plt.show()
     
     total_CDc_w_l = sup_CDw_lift +  trans_CDw_lift
-    total_CDc_w   = sup_CDw_lift +  trans_CDw_lift +  trans_CDw_volume
+    total_CDc_w   = total_CDc_w_l +  sup_CDw_volume
     total_CDc     = total_CDc_w  +  sub_CDc 
     
     # store results  
     conditions.aerodynamics.coefficients.drag.compressible.total[:,0]       = total_CDc[:,0]   
     conditions.aerodynamics.coefficients.drag.compressible.wave.total[:,0]  = total_CDc_w[:,0]             
-    conditions.aerodynamics.coefficients.drag.compressible.wave.volume[:,0] = trans_CDw_volume[:,0]                
+    conditions.aerodynamics.coefficients.drag.compressible.wave.volume[:,0] = supersonic_CDw_volume[:,0]                
     conditions.aerodynamics.coefficients.drag.compressible.wave.lift[:,0]   = total_CDc_w_l[:,0]              
 
     return  
@@ -500,7 +516,8 @@ def supersonic_lift_wave_drag(conditions,configuration,geometry):
             
             Kw           = (1+1/p)*ret/(2*beta**2*(s/l)**2) 
             cd_lift_wave = CL**2 * (beta**2/np.pi*p*(s/l)*Kw) 
-
+    
+    #cd_lift_wave[np.isnan(cd_lift_wave)] = 0.  
     return cd_lift_wave
 
 def supersonic_volume_wave_drag(conditions, settings, vehicle):
