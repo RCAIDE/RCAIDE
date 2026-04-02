@@ -517,7 +517,8 @@ def supersonic_lift_wave_drag(conditions,configuration,geometry):
             Kw           = (1+1/p)*ret/(2*beta**2*(s/l)**2) 
             cd_lift_wave = CL**2 * (beta**2/np.pi*p*(s/l)*Kw) 
     
-    #cd_lift_wave[np.isnan(cd_lift_wave)] = 0.  
+    cd_lift_wave[cd_lift_wave<0] = 0.
+    cd_lift_wave[np.isnan(cd_lift_wave)] = 0.  
     return cd_lift_wave
 
 def supersonic_volume_wave_drag(conditions, settings, vehicle):
