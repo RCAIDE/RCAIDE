@@ -119,7 +119,7 @@ def compressibility_drag(state,settings,geometry):
     sup_low_mach_cutoff  = settings.supersonic.begin_drag_rise_mach_number 
     sup_high_mach_cutoff = settings.supersonic.end_drag_rise_mach_number
     sub_low_mach_cutoff  = settings.subsonic.begin_transonic_rise_mach_number      
-    sub_high_mach_cutoff = settings.subsonic.end_transonic_rise_rise_mach_number    
+    sub_high_mach_cutoff = 0.7 # settings.subsonic.end_transonic_rise_rise_mach_number    
     
     # functions smoothing 
     sup_spline = Cubic_Spline_Blender(sup_low_mach_cutoff,sup_high_mach_cutoff) 
@@ -134,7 +134,7 @@ def compressibility_drag(state,settings,geometry):
     
     # Apply smoothing functions
     sub_CDc          = subsonic_CDc *(sub_h00(Mach)) 
-    trans_CDw_lift   = transonic_CDw_lift  #  * (1-sub_h00(Mach))  #  *   sup_h00(Mach)
+    trans_CDw_lift   = transonic_CDw_lift  * (1-sub_h00(Mach))  #  *   sup_h00(Mach)
     sup_CDw_lift     = supersonic_CDw_lift  * (1-sup_h00(Mach))
     sup_CDw_volume   = supersonic_CDw_volume * (1-sup_h00(Mach))
     
