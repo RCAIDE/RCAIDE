@@ -6,14 +6,11 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 import RCAIDE
-from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender 
-from RCAIDE.Framework.Core                    import Data
+from RCAIDE.Library.Methods.Utilities         import Cubic_Spline_Blender  
 from RCAIDE.Library.Components.Wings          import Main_Wing 
 
 # package imports
-import numpy as np
-from RCAIDE.Library.Plots.Common import set_axes, plot_style
-import matplotlib.pyplot as plt
+import numpy as np 
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Compressibility Drag Total
@@ -139,29 +136,16 @@ def compressibility_drag(state,settings,geometry):
     sup_CDw_lift     = supersonic_CDw_lift  * (1-sup_h00(Mach))
     sup_CDw_volume   = supersonic_CDw_volume * (1-sup_h00(Mach))
     
-    subsonic_fuction   = (sub_h00(Mach)) 
-    tansonic_function  =  (1-sub_h00(Mach))  *   sup_h00(Mach)
-    supersonic_fuction = (1-sup_h00(Mach))
-    
-    total_inf =  subsonic_fuction + tansonic_function +  supersonic_fuction
-    
-    fig   = plt.figure('smoothing')
-    axis_1 = plt.subplot(1,1,1) 
-    axis_1.plot(Mach[:, 0],subsonic_fuction[:, 0],'g-',marker='x' , label ='subsonic')
-    axis_1.plot(Mach[:, 0],tansonic_function[:, 0],'b-' , label='transionic')
-    axis_1.plot(Mach[:, 0],supersonic_fuction[:, 0],'r-', label='supersonic' ) 
-    axis_1.plot(Mach[:, 0],total_inf[:, 0],'k-',marker='o',linewidth = 4, label='supersonic' ) 
-    #plt.show()
-    
-    total_CDc_w_l = sup_CDw_lift +  trans_CDw_lift
-    total_CDc_w   = total_CDc_w_l +  sup_CDw_volume
-    total_CDc     = total_CDc_w  +  sub_CDc 
+    # compute totals 
+    total_CDc        = sup_CDw_lift +  trans_CDw_lift  +  sup_CDw_volume  +  sub_CDc
+    total_CDw        = sup_CDw_lift  + sup_CDw_volume  + trans_CDw_lift   
+    total_CDw_lift   = sup_CDw_lift  + trans_CDw_lift
     
     # store results  
-    conditions.aerodynamics.coefficients.drag.compressible.total[:,0]       = total_CDc[:,0]   
-    conditions.aerodynamics.coefficients.drag.compressible.wave.total[:,0]  = total_CDc_w[:,0]             
-    conditions.aerodynamics.coefficients.drag.compressible.wave.volume[:,0] = supersonic_CDw_volume[:,0]                
-    conditions.aerodynamics.coefficients.drag.compressible.wave.lift[:,0]   = total_CDc_w_l[:,0]              
+    conditions.aerodynamics.coefficients.drag.compressible.total[:,0]           = total_CDc[:,0]   
+    conditions.aerodynamics.coefficients.drag.compressible.wave.total[:,0]      = total_CDw[:,0]             
+    conditions.aerodynamics.coefficients.drag.compressible.wave.volume[:,0]     = sup_CDw_volume[:,0]                
+    conditions.aerodynamics.coefficients.drag.compressible.wave.lift[:,0]       = total_CDw_lift[:,0]              
 
     return  
 

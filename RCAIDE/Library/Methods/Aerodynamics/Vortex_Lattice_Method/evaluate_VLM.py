@@ -47,10 +47,10 @@ def evaluate_surrogate(state,settings,vehicle):
     Beta             = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach             = np.atleast_2d(conditions.freestream.mach_number)  
     ones_row         = np.ones_like(AoA)  
-    hsub_min         = aerodynamics.hsub_min
-    hsub_max         = aerodynamics.hsub_max
-    hsup_min         = aerodynamics.hsup_min
-    hsup_max         = aerodynamics.hsup_max
+    hsub_min         = aerodynamics.surrogates.subsonic_smoothing_min   
+    hsub_max         = aerodynamics.surrogates.subsonic_smoothing_max   
+    hsup_min         = aerodynamics.surrogates.supersonic_smoothing_min 
+    hsup_max         = aerodynamics.surrogates.supersonic_smoothing_max 
 
     # Spline for Subsonic-to-Transonic-to-Supersonic Regimes
     sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)

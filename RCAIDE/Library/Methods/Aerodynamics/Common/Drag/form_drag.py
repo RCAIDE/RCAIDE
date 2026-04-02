@@ -113,12 +113,12 @@ def form_drag(state,settings,geometry):
     RCAIDE.Library.Methods.Utilities.Cubic_Spline_Blender
     """
 
-    conditions       = state.conditions   
-    Mach             = conditions.freestream.mach_number 
-    alpha            = conditions.aerodynamics.angles.alpha  
+    conditions           = state.conditions   
+    Mach                 = conditions.freestream.mach_number 
+    alpha                = conditions.aerodynamics.angles.alpha  
     sub_low_mach_cutoff  = settings.subsonic.begin_transonic_rise_mach_number      
     sub_high_mach_cutoff = settings.subsonic.end_transonic_rise_rise_mach_number 
-    CD_form          = 0
+    CD_form              = 0
     
     # transonic and supersonic smoothing out  
     sub_spline = Cubic_Spline_Blender(sub_low_mach_cutoff, sub_high_mach_cutoff)  
