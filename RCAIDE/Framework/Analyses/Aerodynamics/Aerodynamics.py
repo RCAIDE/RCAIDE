@@ -51,7 +51,7 @@ class Aerodynamics(Analysis):
         self.settings.fuselage_lift_correction                           = 1.20
         self.settings.trim_drag_correction_factor                        = 1.02
         self.settings.wing_parasite_drag_form_factor                     = 1.1  
-        self.settings.fuselage_parasite_drag_form_factor                 = 2.1  
+        self.settings.fuselage_parasite_drag_form_factor                 = 2.3
         self.settings.drag_reduction_factors                             = Data()
         self.settings.drag_reduction_factors.parasite_drag               = 0.0  # Reduction factors are proportional (.1 is a 10% drag reduction)
         self.settings.drag_reduction_factors.induced_drag                = 0.0  # Reduction factors are proportional (.1 is a 10% drag reduction)
@@ -66,8 +66,8 @@ class Aerodynamics(Analysis):
         self.settings.use_surrogate                                      = True  
 
         self.settings.subsonic                                           = Data() 
-        self.settings.subsonic.begin_transonic_rise_mach_number          = 0.65
-        self.settings.subsonic.end_transonic_rise_rise_mach_number       = 0.7 
+        self.settings.subsonic.begin_transonic_rise_mach_number          = 0.7
+        self.settings.subsonic.end_transonic_rise_rise_mach_number       = 0.825
         self.settings.supersonic                                         = Data() 
         self.settings.supersonic.begin_drag_rise_mach_number             = 0.85
         self.settings.supersonic.end_drag_rise_mach_number               = 1.15     
