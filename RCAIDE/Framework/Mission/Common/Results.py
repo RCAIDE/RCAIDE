@@ -188,7 +188,9 @@ class Results(Conditions):
         self.aerodynamics.coefficients.drag.trim                               = Conditions()
         self.aerodynamics.coefficients.drag.trim.total                         = ones_1col * 0
         self.aerodynamics.coefficients.drag.windmilling                        = Conditions()
-        self.aerodynamics.coefficients.drag.windmilling.total                  = ones_1col * 0 
+        self.aerodynamics.coefficients.drag.windmilling.total                  = ones_1col * 0  
+        self.aerodynamics.coefficients.drag.asymmetry_trim                     = Conditions()
+        self.aerodynamics.coefficients.drag.asymmetry_trim.total               = ones_1col * 0  
         self.aerodynamics.oswald_efficiency                                    = ones_1col * 0 
  
         # ----------------------------------------------------------------------------------------------------------------------

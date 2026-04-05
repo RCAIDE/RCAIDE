@@ -95,7 +95,7 @@ def plot_pressure_coefficient_distribution(results,
     b_pts      = np.concatenate(([0],np.cumsum(VD.n_sw[0]*VD.n_cw[0]))) 
     
     for ti in range(len(CP)): 
-        figure_name = r'$\Delta$ $C_P$ Surface Distribution_' + str(ti+1)
+        figure_name = r'Delta_CP Surface Distribution_' + str(ti+1)
         fig        = plt.figure(figure_name)
         axes       = plt.subplot(1, 1, 1)
         x_max      = max(VD.XC[ti]) + 2
@@ -114,8 +114,10 @@ def plot_pressure_coefficient_distribution(results,
             x_pts     = np.reshape(np.atleast_2d(VD.XC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             y_pts     = np.reshape(np.atleast_2d(VD.YC[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
             z_pts     = np.reshape(np.atleast_2d(CP[ti,b_pts[i]:b_pts[i+1]]).T, (n_sw[ti,i],-1))
-            x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0]  
-            CS        = axes.contourf(y_pts,x_pts_p, z_pts, levels = cp_levels ,  cmap = 'coolwarm_r', norm=norm,extend='both')
+            x_pts_p   = x_pts*((n_cw[ti,i]+1)/n_cw[ti, i]) - x_pts[0,0]*((n_cw[ti,i]+1)/n_cw[ti,i])  +  xc_pts[0]
+            
+            if len(z_pts) > 1: 
+                CS        = axes.contourf(y_pts,x_pts_p, z_pts, levels = cp_levels ,  cmap = 'coolwarm_r', norm=norm,extend='both')
 
         # Set Color bar
         cbar = fig.colorbar(CS, ax=axes)
