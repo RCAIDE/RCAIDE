@@ -67,7 +67,7 @@ def main():
             rel_error = np.where(denom != 0, numer / denom, 0.0)
             error = np.max(rel_error)
 
-        assert error < 5e-3, f"{key} error too large: {error}"
+        assert error < 2e-3, f"{key} error too large: {error}"
     tf                   = time.time()
     elapsed_time         = round((tf-ti),2)
     print('Payload Range simulation Time: ' + str(elapsed_time) + ' seconds') 
