@@ -571,8 +571,9 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     alpha   = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
     n_wings = len(VD.n_sw[0])
+    divisions = np.cumsum(VD.n_sw[0])[:-1]
     rho = 1
-    
+    cl_split = np.split(cl[0], divisions)
     # ------------------------------------------------------------------------------------------
     # Trefftz Plane Drag 
     # ------------------------------------------------------------------------------------------
@@ -586,9 +587,47 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
 
     # Calculate circulation for this case
     circulation_dist = 0.5 * chord_dist[0] * v_inf * cl 
-   
-    ws = 0
 
+    circulation_dist_segmented = np.split(circulation_dist, divisions)
+    
+    ws = 0
+    # Create centerpoints 
+    y_control_points = np.split(y_dist[0] , divisions)
+    z_control_points = np.split(z_dist[0] , divisions)
+    x_control_points = np.split(x_dist[0] , divisions)
+
+    # Centerpoints 
+    y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
+    z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
+    x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
+
+    # Trefftz Plane Y-Z location:
+    TP_y_centerpoints   = y_centerpoints
+    TP_z_centerpoints   = np.cos(alpha) * z_centerpoints - np.sin(alpha) * x_centerpoints
+    TP_y_control_points = y_control_points
+    TP_z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
+    # compute shed vortex strength (located at centerpoints)
+    for wing_number in range(len(n_wings)):
+        # Shed vortices
+        
+        if VD.symmetric_wings[0][wing_number]: # symmetric
+            # add on the tip circulation distribution at the very end
+            test = 0
+        else: # not symmetric
+            # Add on both tips
+            test = 0
+
+
+    # Compute induced downwash velocity (at control points)
+
+
+    # Compute induced angle of attack
+    # alpha_induced_dist = np.arctan(induced_velocity_dist / v_inf)
+
+    # Compute induced drag
+    # cd_induced_dist = alpha_induced_dist * cl_dist
+    # CDi_total = integrate.trapezoid(cd_induced_dist * chord_dist / s_ref, y_dist)
+    
 
     CDi_total = np.sum(D_induced, axis=1) / (0.5 * rho * v_inf**2 * SREF) 
  
