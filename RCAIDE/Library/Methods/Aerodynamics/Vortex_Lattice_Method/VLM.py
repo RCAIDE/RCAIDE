@@ -609,17 +609,32 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     # compute shed vortex strength (located at centerpoints)
     shed_vortex = np.diff(circulation_dist[:,0:-1]) * 0.5 + np.diff(circulation_dist[:,1:]) * 0.5
     shed_vortex = np.unstack(shed_vortex)
+    shed_vortex_new = []
+    symmetric_wing = []
+    for i in VD.symmetric_wings[0]:
+        if i:
+            symmetric_wing.append(1)
+            symmetric_wing.append(1)
+        else:
+            symmetric_wing.append(0)
+
     for wing_number in range(n_wings):
-        if VD.symmetric_wings[0][wing_number]: # symmetric
+        
+        if symmetric_wing[wing_number]: # symmetric
             # add on the tip circulation distribution at the very end
-            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
-            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, 0)
+            start_col = (circulation_dist[wing_number][[0]]+ 0.5 * (circulation_dist[wing_number][[1]] - circulation_dist[wing_number][[0]]))
+            end_col = np.array([0])
+
+            shed_vortex_new.append(np.concatenate([start_col, shed_vortex[wing_number], end_col]) ) # (5, 15)
+            
+            # shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
+            # shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, 0)
             test = 0
             
         else: # not symmetric
             # Add on both tips
-            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
-            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, circulation_dist[wing_number][-1] + 0.5 * (circulation_dist[wing_number][-1] - circulation_dist[wing_number][-2]))
+            # shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
+            # shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, circulation_dist[wing_number][-1] + 0.5 * (circulation_dist[wing_number][-1] - circulation_dist[wing_number][-2]))
             test = 0
     # Compute induced downwash velocity (at control points)
 
