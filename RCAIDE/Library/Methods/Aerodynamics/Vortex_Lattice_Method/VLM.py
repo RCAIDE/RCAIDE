@@ -587,37 +587,40 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
 
     # Calculate circulation for this case
     circulation_dist = 0.5 * chord_dist[0] * v_inf * cl 
-
-    circulation_dist_segmented = np.split(circulation_dist, divisions)
+    circulation_dist = np.stack(np.split(circulation_dist[0], divisions))
     
-    ws = 0
-    # Create centerpoints 
-    y_control_points = np.split(y_dist[0] , divisions)
-    z_control_points = np.split(z_dist[0] , divisions)
-    x_control_points = np.split(x_dist[0] , divisions)
+    # Create centerpoints in body frame
+    
+    y_control_points = np.stack(np.split(y_dist[0] , divisions))
+    z_control_points = np.stack(np.split(z_dist[0] , divisions))
+    x_control_points = np.stack(np.split(x_dist[0] , divisions))
 
-    # Centerpoints 
+    # Centerpoints in the body frame
     y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
     z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
     x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
 
-    # Trefftz Plane Y-Z location:
+    # Trefftz Plane Y-Z location: (inertial frame)
     TP_y_centerpoints   = y_centerpoints
-    TP_z_centerpoints   = np.cos(alpha) * z_centerpoints - np.sin(alpha) * x_centerpoints
+    TP_z_centerpoints   = np.cos(alpha[0]) * z_centerpoints - np.sin(alpha[0]) * x_centerpoints
     TP_y_control_points = y_control_points
-    TP_z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
+    TP_z_control_points = np.cos(alpha[0]) * z_control_points - np.sin(alpha[0]) * x_control_points
+    
     # compute shed vortex strength (located at centerpoints)
-    for wing_number in range(len(n_wings)):
-        # Shed vortices
-        
+    shed_vortex = np.diff(circulation_dist[:,0:-1]) * 0.5 + np.diff(circulation_dist[:,1:]) * 0.5
+    shed_vortex = np.unstack(shed_vortex)
+    for wing_number in range(n_wings):
         if VD.symmetric_wings[0][wing_number]: # symmetric
             # add on the tip circulation distribution at the very end
+            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
+            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, 0)
             test = 0
+            
         else: # not symmetric
             # Add on both tips
+            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], 0, circulation_dist[wing_number][0] + 0.5 * (circulation_dist[wing_number][1] - circulation_dist[wing_number][0]))
+            shed_vortex[wing_number] = np.insert(shed_vortex[wing_number], -1, circulation_dist[wing_number][-1] + 0.5 * (circulation_dist[wing_number][-1] - circulation_dist[wing_number][-2]))
             test = 0
-
-
     # Compute induced downwash velocity (at control points)
 
 
