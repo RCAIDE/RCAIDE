@@ -610,13 +610,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     shed_vortex = np.diff(circulation_dist[:,0:-1]) * 0.5 + np.diff(circulation_dist[:,1:]) * 0.5
     shed_vortex = np.unstack(shed_vortex)
     shed_vortex_new = []
-    symmetric_wing = []
-    for i in VD.symmetric_wings[0]:
-        if i:
-            symmetric_wing.append(1)
-            symmetric_wing.append(1)
-        else:
-            symmetric_wing.append(0)
+    symmetric_wing = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
 
     for wing_number in range(n_wings):
         
