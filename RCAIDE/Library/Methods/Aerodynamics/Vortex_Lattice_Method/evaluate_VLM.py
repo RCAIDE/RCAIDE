@@ -328,8 +328,10 @@ def evaluate_no_surrogate(state,settings,vehicle):
 
     T_wind2inertial = conditions.frames.wind.transform_to_inertial   
     no_beta   = np.all(conditions.aerodynamics.angles.beta == 0)
-    no_ail    = np.all(conditions.control_surfaces.aileron.deflection == 0) 
-    no_rud    = np.all(conditions.control_surfaces.rudder.deflection == 0) 
+    aileron   = getattr(conditions.control_surfaces, 'aileron', None)
+    rudder    = getattr(conditions.control_surfaces, 'rudder', None)
+    no_ail    = True if aileron is None else np.all(aileron.deflection == 0)
+    no_rud    = True if rudder is None else np.all(rudder.deflection == 0)
     no_bank   = np.all(conditions.aerodynamics.angles.phi == 0)  
 
     if no_beta and no_ail and no_rud and no_bank:
