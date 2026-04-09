@@ -568,12 +568,15 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     
 def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist,SREF,b_ref, v_inf=1):
      
+    k = 0
     alpha   = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
-    n_wings = len(VD.n_sw[0])
-    divisions = np.cumsum(VD.n_sw[0])[:-1]
+    n_wings = len(VD.n_sw[k])
+    divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
+    divisions = np.cumsum(VD.n_sw[k])[:-1]
     rho = 1
-    cl_split = np.stack(np.split(cl[0], divisions))
+    cl_split = np.stack(np.split(cl[k], divisions))
+    chord_split = np.stack(np.split(chord_dist[k], divisions))
     # ------------------------------------------------------------------------------------------
     # Trefftz Plane Drag 
     # ------------------------------------------------------------------------------------------
@@ -586,55 +589,78 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     alpha_i           = np.zeros_like(cl) 
 
     # Calculate circulation for this case
-    circulation_dist = 0.5 * chord_dist[0] * v_inf * cl 
-    circulation_dist = np.stack(np.split(circulation_dist[0], divisions))
+    circulation_dist = 0.5 * chord_dist[k] * v_inf * cl 
+    circulation_dist = np.stack(np.split(circulation_dist[k], divisions))
     
     # Create centerpoints in body frame
     
-    y_control_points = np.unique(VD.Y) #np.stack(np.split(y_dist[0] , divisions))
+    y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
     # z_control_points = np.stack(np.split(z_dist[0] , divisions))
     # x_control_points = np.stack(np.split(x_dist[0] , divisions))
 
     # Centerpoints in the body frame
-    y_centerpoints = np.stack(np.split(y_dist[0], divisions))
+    y_centerpoints = np.stack(np.split(y_dist[k], divisions))
     # z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
     # x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
+    symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
+
+    shed_vortices = np.zeros_like(y_control_points)
+    for wing_number in range(n_wings):
+        if symmetric_wing_flags[wing_number]: # symmetric
+            shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
+            shed_vortices[wing_number,0] = 0
+            shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
+            a = 0
+            
+        else:
+            shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
+            shed_vortices[wing_number,0] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][0]
+            shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
+            b=0
+
+    # temp = deepcopy(y_centerpoints[0])
+    # temp2 = np.flip(y_centerpoints[1])
+    # y_centerpoints[0] = temp2
+    # y_centerpoints[1] = temp
+
+    # temp = deepcopy(cl_split[0])
+    # temp2 = np.flip(cl_split[1])
+    # cl_split[0] = temp2
+    # cl_split[1] = temp
+
+    # temp = deepcopy(circulation_dist[0])
+    # temp2 = np.flip(circulation_dist[1]) 
+    # circulation_dist[0] = temp2
+    # circulation_dist[1] = temp
+    # shed_vortex_new = np.zeros_like(y_control_points)
+    # shed_vortex_new[1:-1] = np.diff(circulation_dist.ravel())
+    # shed_vortex_new[0] = circulation_dist[0][0]
+    # shed_vortex_new[-1] = -1*circulation_dist[-1][-1]
     
-
-    temp = deepcopy(y_centerpoints[0])
-    temp2 = np.flip(y_centerpoints[1])
-    y_centerpoints[0] = temp2
-    y_centerpoints[1] = temp
-
-    temp = deepcopy(cl_split[0])
-    temp2 = np.flip(cl_split[1])
-    cl_split[0] = temp2
-    cl_split[1] = temp
-
-    temp = deepcopy(circulation_dist[0])
-    temp2 = np.flip(circulation_dist[1]) 
-    circulation_dist[0] = temp2
-    circulation_dist[1] = temp
-    shed_vortex_new = np.zeros_like(y_control_points)
-    shed_vortex_new[1:-1] = np.diff(circulation_dist.ravel())
-    shed_vortex_new[0] = circulation_dist[0][0]
-    shed_vortex_new[-1] = -1*circulation_dist[-1][-1]
-    
-    induced_velocity = np.zeros_like(y_centerpoints.ravel())
-    for i in range(len(y_centerpoints.ravel())):
-        for j in range(len(y_control_points)):
-            distance = y_centerpoints.ravel()[i] - y_control_points[j]
-            velocity_contribution = shed_vortex_new[j] / (4.0 * np.pi * distance)
-            induced_velocity[i] += velocity_contribution
+    induced_velocity = np.zeros_like(y_centerpoints)
+    for i in range(n_wings):
+        for j in range(len(y_centerpoints[i])):
+            # Centerpoints:
+            for l in range(n_wings):
+                for m in range(len(y_control_points[l])):
+                    distance = y_centerpoints[i][j] - y_control_points[l][m]
+                    velocity_contribution = shed_vortices[l][m] / (4.0 * np.pi * distance)
+                    induced_velocity[i][j] += velocity_contribution
     
     alpha_induced_dist = np.arctan(induced_velocity / v_inf)
-    cd_induced_dist = alpha_induced_dist * cl_split.ravel()
-
-
+    # cd_induced_dist = np.zeros_like(induced_velocity)
+    # for i in range(n_wings):
+    cd_induced_dist = alpha_induced_dist * cl_split
+    CDi = 0
+    for i in range(n_wings):
+        
+        if np.sign(shed_vortices[i,1]-shed_vortices[i,0])<0:
+            CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, y_centerpoints[i])
+        else:
+            CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(y_centerpoints[i]))
     # Compute induced drag coefficient
-    CDi = trapezoid(cd_induced_dist * chord_dist / SREF, y_centerpoints.ravel())
 
-    CDi_total = np.sum(D_induced, axis=1) / (0.5 * rho * v_inf**2 * SREF) 
+    # CDi_total = np.sum(D_induced, axis=1) / (0.5 * rho * v_inf**2 * SREF) 
  
     # Package results
     results                          = Data()
