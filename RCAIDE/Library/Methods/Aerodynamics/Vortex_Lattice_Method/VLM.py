@@ -628,8 +628,6 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
                     for m in range(len(y_control_points[l])):
                         distance = np.sqrt((y_centerpoints[i][j] - y_control_points[l][m])**2 + (z_centerpoints[i][j] - z_control_points[l][m])**2)
                         vortex_direction = 1/distance * np.array([ -1 * (z_centerpoints[i][j] - z_control_points[l][m]),(y_centerpoints[i][j] - y_control_points[l][m])])
-                        vortex_test = 1/distance * np.array([ (y_centerpoints[i][j] - y_control_points[l][m]),  -1 * (z_centerpoints[i][j] - z_control_points[l][m])])
-                        test = 0
                         v_hat = np.dot(norm_split[i][j][1:], vortex_direction)
 
                         velocity_contribution = shed_vortices[l][m] / (4.0 * np.pi * distance)
@@ -638,14 +636,17 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         alpha_induced_dist = np.arctan(induced_velocity / v_inf)
         cd_induced_dist = alpha_induced_dist * cl_split
         CDi = 0
+
+        # Calulcate distances for line integral
+        line_distance = np.cumsum(np.sqrt(np.diff(y_control_points, axis=1)**2 + np.diff(z_control_points, axis=1)**2),axis=1)
         for i in range(n_wings):
             CDi_wing_sum = 0
-            if np.sign(shed_vortices[i,1]-shed_vortices[i,0])<0:
-                CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, y_centerpoints[i])
-                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, y_centerpoints[i])
+            if np.sign(shed_vortices[i,-1]-shed_vortices[i,0])<0:
+                CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
+                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
             else:
-                CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(y_centerpoints[i]))
-                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(y_centerpoints[i]))
+                CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
+                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
             CDi_wing[k][i] = CDi_wing_sum
         
         CDi_total[k] = CDi
