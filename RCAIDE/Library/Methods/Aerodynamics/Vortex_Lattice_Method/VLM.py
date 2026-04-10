@@ -579,6 +579,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     
 
     for k in range(n_cases):
+        alpha   = conditions.aerodynamics.angles.alpha [k]
         n_wings = len(VD.n_sw[k])
         divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
         divisions = np.cumsum(VD.n_sw[k])[:-1]
