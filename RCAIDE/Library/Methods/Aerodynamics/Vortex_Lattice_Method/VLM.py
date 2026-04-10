@@ -598,11 +598,16 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
         z_control_points = np.stack(np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
         x_control_points = np.stack(np.split(VD.X[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
-
+        z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
         # Centerpoints in the body frame
-        y_centerpoints = np.stack(np.split(y_dist[k], divisions))
-        z_centerpoints = np.stack(np.split(z_dist[k], divisions))
-        x_centerpoints = np.stack(np.split(x_dist[k], divisions))
+        y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
+        z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
+        x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
+    
+        # y_centerpoints = np.stack(np.split(y_dist[k], divisions))
+        # z_centerpoints = np.stack(np.split(z_dist[k], divisions))
+        # x_centerpoints = np.stack(np.split(x_dist[k], divisions))
+        # z_centerpoints = np.cos(alpha) * z_centerpoints - np.sin(alpha) * x_centerpoints
 
         symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
 
