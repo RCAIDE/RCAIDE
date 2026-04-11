@@ -576,7 +576,6 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     Cd_i_distribution = np.zeros_like(cl)
     alpha_i           = np.zeros_like(cl) 
 
-    
 
     for k in range(n_cases):
         alpha   = conditions.aerodynamics.angles.alpha [k]
@@ -591,20 +590,32 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         # Trefftz Plane Drag 
         # ------------------------------------------------------------------------------------------        
         # Calculate circulation for this case
-        circulation_dist = 0.5 * chord_dist[k] * v_inf * cl 
-        circulation_dist = np.stack(np.split(circulation_dist[k], divisions))
+        circulation_dist = 0.5 * chord_dist[k] * v_inf * cl[k] 
+        circulation_dist = np.stack(np.split(circulation_dist, divisions))
         
         # Create centerpoints in body frame
         
         y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
         z_control_points = np.stack(np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
-        x_control_points = np.stack(np.split(VD.X[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
-        z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
-        # Centerpoints in the body frame
+
         y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
+        
+        interp_chord = np.zeros_like(y_control_points)
+        for f in range(n_wings):
+            if np.sign(y_control_points[f,1]-y_control_points[f,0]) >0:
+                interp_chord[f,:] = np.interp(y_control_points[f], y_centerpoints[f],chord_split[f])
+            else:
+                interp_chord[f,:] = np.interp(y_control_points[f], np.flip(y_centerpoints[f]),np.flip(chord_split[f]))
+        
+        x_control_points = np.stack(np.split(VD.X[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) +0.25*interp_chord
+        z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
+
+        # Centerpoints in the body frame
+        
         z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
-        x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
-    
+
+        # x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
+
         # y_centerpoints = np.stack(np.split(y_dist[k], divisions))
         # z_centerpoints = np.stack(np.split(z_dist[k], divisions))
         # x_centerpoints = np.stack(np.split(x_dist[k], divisions))
@@ -634,7 +645,8 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
                     for m in range(len(y_control_points[l])):
                         distance = np.sqrt((y_centerpoints[i][j] - y_control_points[l][m])**2 + (z_centerpoints[i][j] - z_control_points[l][m])**2)
                         vortex_direction = 1/distance * np.array([ -1 * (z_centerpoints[i][j] - z_control_points[l][m]),(y_centerpoints[i][j] - y_control_points[l][m])])
-                        v_hat = np.dot(norm_split[i][j][1:], vortex_direction)
+                        # v_hat = np.dot(norm_split[i][j][1:], vortex_direction)
+                        v_hat = np.dot(np.array([0,1]), vortex_direction)
 
                         velocity_contribution = shed_vortices[l][m] / (4.0 * np.pi * distance)
                         induced_velocity[i][j] += velocity_contribution * v_hat
