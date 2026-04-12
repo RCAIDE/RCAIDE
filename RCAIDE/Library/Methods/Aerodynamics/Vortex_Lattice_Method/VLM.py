@@ -590,9 +590,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         # Trefftz Plane Drag 
         # ------------------------------------------------------------------------------------------        
         # Calculate circulation for this case
-        circulation_dist = 0.5 * chord_dist[k] * v_inf * cl[k] 
-        circulation_dist = np.stack(np.split(circulation_dist, divisions))
-        
+        circulation_dist = 0.5 * chord_split * v_inf * cl_split 
         # Create centerpoints in body frame
         
         y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
