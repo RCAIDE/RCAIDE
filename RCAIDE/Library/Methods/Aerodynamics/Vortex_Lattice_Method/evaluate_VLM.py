@@ -301,7 +301,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
     conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
     conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
-    conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
+    conditions.aerodynamics.coefficients.differential_surface_pressure             = VLM_results.CP
     conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
     conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
 
@@ -388,7 +388,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid        = VLM_results.CDrag_induced
-    equilibrium_conditions.aerodynamics.coefficients.surface_pressure             = VLM_results.CP
+    equilibrium_conditions.aerodynamics.coefficients.differential_surface_pressure             = VLM_results.CP
     equilibrium_conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
     equilibrium_conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations    
     

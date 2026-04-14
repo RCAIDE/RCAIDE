@@ -159,7 +159,7 @@ class Results(Conditions):
                                                                                
         # aerodynamic coefficients                                             
         self.aerodynamics.coefficients                                         = Conditions()
-        self.aerodynamics.coefficients.surface_pressure                        = None
+        self.aerodynamics.coefficients.differential_surface_pressure                        = None
         self.aerodynamics.coefficients.lift                                    = Conditions()
         self.aerodynamics.coefficients.lift.total                              = ones_1col * 0   
         self.aerodynamics.coefficients.lift.inviscid                           = Conditions()

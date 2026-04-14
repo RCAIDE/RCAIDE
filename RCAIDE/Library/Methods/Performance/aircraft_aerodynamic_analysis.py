@@ -151,10 +151,10 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
     state.conditions.frames.wind.transform_to_inertial = np.tile( np.array([[[1., 0., 0.],[0., 1., 0.],[0., 0.,  1.]]]) , ( ctrl_pts,  1, 1)  ) 
     state.conditions.expand_rows(ctrl_pts)
     state.conditions.control_surfaces = Data()
-    analyses.aerodynamics.aileron_flag  = False
-    analyses.aerodynamics.rudder_flag  = False
+    analyses.aerodynamics.aileron_flag   = False
+    analyses.aerodynamics.rudder_flag    = False
     analyses.aerodynamics.elevator_flag  = False
-    analyses.aerodynamics.flap_flag  = False
+    analyses.aerodynamics.flap_flag      = False
 
     for wing in analyses.vehicle.wings: 
         for control_surface in wing.control_surfaces: 
@@ -181,10 +181,7 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
                 state.conditions.control_surfaces.flap = Data()
                 state.conditions.control_surfaces.flap.deflection = control_surface.deflection * np.ones_like(angle_of_attacks)
                 state.conditions.control_surfaces.flap.static_stability = Data()
-                state.conditions.control_surfaces.flap.static_stability.coefficients = Data()
-    
-    
-
+                state.conditions.control_surfaces.flap.static_stability.coefficients = Data() 
   
     state.analyses  = analyses 
     state.analyses.aerodynamics.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "aerodynamic_training_data.pkl" )
@@ -208,7 +205,6 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
         form_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.form.total,
         wave_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.wave.total,
         induced_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.induced.total,
-        inviscid_induced_drag_coefficient= state.conditions.aerodynamics.coefficients.drag.induced.inviscid,
         miscellaneous_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total,
         compressibility_drag_coefficient = state.conditions.aerodynamics.coefficients.drag.compressible.total,
         cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
@@ -216,7 +212,12 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
         moment_coefficient               = state.conditions.static_stability.coefficients.M, 
         state_conditions                 = state.conditions,
         
-    )  
-          
+    )
+    
+    # save surface distribution 
+    if type(state.analyses.aerodynamics) == RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method: 
+        results.vortex_distribution           =  state.analyses.aerodynamics.settings.vortex_distribution 
+        results.differential_surface_pressure_coefficient =  state.conditions.aerodynamics.coefficients.differential_surface_pressure
+    
     return results  
  
