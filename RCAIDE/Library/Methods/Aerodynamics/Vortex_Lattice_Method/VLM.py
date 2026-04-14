@@ -587,37 +587,29 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         chord_split = np.stack(np.split(chord_dist[k], divisions))
 
         # ------------------------------------------------------------------------------------------
-        # Trefftz Plane Drag 
-        # ------------------------------------------------------------------------------------------        
-        # Calculate circulation for this case
-        circulation_dist = 0.5 * chord_split * v_inf * cl_split 
+        # Trefftz Plane Drag
+        # ------------------------------------------------------------------------------------------
         # Create centerpoints in body frame
         
         y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
         z_control_points = np.stack(np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
 
         y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
-        
-        interp_chord = np.zeros_like(y_control_points)
-        for f in range(n_wings):
-            if np.sign(y_control_points[f,1]-y_control_points[f,0]) >0:
-                interp_chord[f,:] = np.interp(y_control_points[f], y_centerpoints[f],chord_split[f])
-            else:
-                interp_chord[f,:] = np.interp(y_control_points[f], np.flip(y_centerpoints[f]),np.flip(chord_split[f]))
-        
-        x_control_points = np.stack(np.split(VD.X[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) +0.25*interp_chord
-        z_control_points = np.cos(alpha) * z_control_points - np.sin(alpha) * x_control_points
-
-        # Centerpoints in the body frame
-        
+        # FIX 1: AVL TPFORC uses ALFAT=0 in its PG transform, so Trefftz-plane Z = body-axis Z.
+        # Removed: interp_chord, x_control_points, and the alpha rotation of z_control_points.
         z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
 
-        # x_centerpoints = (x_control_points[:,:-1] + x_control_points[:,1:]) / 2
-
-        # y_centerpoints = np.stack(np.split(y_dist[k], divisions))
-        # z_centerpoints = np.stack(np.split(z_dist[k], divisions))
-        # x_centerpoints = np.stack(np.split(x_dist[k], divisions))
-        # z_centerpoints = np.cos(alpha) * z_centerpoints - np.sin(alpha) * x_centerpoints
+        # FIX 2: arc-length correction for dihedral.
+        # RCAIDE normalises Clift_y by arc-length area (chord × DS where DS = sqrt(DY²+DZ²)),
+        # not projected area (chord × DY).  From KJ: Γ = 0.5·V·c·cl·(DS/|DY|).
+        # For a flat wing DS = DY, so the factor is 1 and this matches the original.
+        dy_strips = np.diff(y_control_points, axis=1)    # (n_wings, n_sw)
+        mask = [dy_strips ==0]
+        dy_strips[mask[0]]= 1e-6        
+        dz_strips = np.diff(z_control_points, axis=1)    # (n_wings, n_sw)
+        DS_strips = np.sqrt(dy_strips**2 + dz_strips**2)
+        # Calculate circulation for this case
+        circulation_dist = 0.5 * chord_split * v_inf * cl_split * (DS_strips / np.abs(dy_strips))
 
         symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
 
@@ -643,8 +635,13 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
                     for m in range(len(y_control_points[l])):
                         distance = np.sqrt((y_centerpoints[i][j] - y_control_points[l][m])**2 + (z_centerpoints[i][j] - z_control_points[l][m])**2)
                         vortex_direction = 1/distance * np.array([ -1 * (z_centerpoints[i][j] - z_control_points[l][m]),(y_centerpoints[i][j] - y_control_points[l][m])])
-                        # v_hat = np.dot(norm_split[i][j][1:], vortex_direction)
-                        v_hat = np.dot(np.array([0,1]), vortex_direction)
+                        # FIX 3: project onto strip normal, not fixed [0,1].
+                        # sign(strip_dy) ensures the normal points "upward" on both wing halves.
+                        # For a flat wing strip_dz=0 and the formula reduces to [0,1], recovering the original.
+                        strip_dy = y_control_points[i][j+1] - y_control_points[i][j]
+                        strip_dz = z_control_points[i][j+1] - z_control_points[i][j]
+                        strip_ds = np.sqrt(strip_dy**2 + strip_dz**2)
+                        v_hat = np.sign(strip_dy) * np.dot(np.array([-strip_dz/strip_ds, strip_dy/strip_ds]), vortex_direction)
 
                         velocity_contribution = shed_vortices[l][m] / (4.0 * np.pi * distance)
                         induced_velocity[i][j] += velocity_contribution * v_hat
