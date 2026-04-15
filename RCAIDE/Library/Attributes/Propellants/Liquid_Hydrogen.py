@@ -8,7 +8,6 @@
 #  IMPORT
 # ---------------------------------------------------------------------------------------------------------------------- 
 import RCAIDE
-from pylab import fill
 from .Propellant import Propellant 
 
 import os
