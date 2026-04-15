@@ -135,9 +135,9 @@ class Liquid_Natural_Gas(Propellant):
         self.global_warming_potential_100.Soot      = 1166  # [CO2e/kg]    soot / black carbon
         self.global_warming_potential_100.Contrails = 11    # [CO2e/km]    contrail radiative forcing
 
-        self.materials_properties = self.liquid_natural_gas_properties()
+        self.materials_properties = self.cryogen_properties()
 
-    def liquid_natural_gas_properties(self, T, prop_name):
+    def cryogen_properties(self, T, prop_name):
         """
         Return an interpolated LNG thermophysical property value at a given temperature.
 

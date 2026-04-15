@@ -1,4 +1,4 @@
-# RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/Liquid_Hydrogen_Tank.py
+# RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/Liquid_Natural_Gas_Tank.py
 # 
 # Created: Aug 2025, S. Shekar
 #
@@ -20,14 +20,14 @@ from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_ro
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Hydrogen Tank
 # ---------------------------------------------------------------------------------------------------------------------    
-class Liquid_Hydrogen_Tank(Non_Integral_Tank):
+class Liquid_Natural_Gas_Tank(Non_Integral_Tank):
     """
     A class representing a non-integral liquid hydrogen (LH₂) fuel tank.  
 
     Attributes
     ----------
     tag : str
-        Identifier for the fuel tank (default: 'Liquid_Hydrogen_Tank').  
+        Identifier for the fuel tank (default: 'Liquid_Natural_Gas_Tank').  
     material : Solid
         Primary tank material (default: None).  
     insulation_material : Solid
@@ -74,9 +74,9 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         Class for integral fuel tanks within wing or fuselage structure.  
     RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume  
         Equations for computing volume of non-integral tanks.  
-    RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_structural_performance  
+    RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Natural_Gas_Tank.compute_structural_performance  
         Structural solver for cryogenic hydrogen tanks.  
-    RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_thermal_performance  
+    RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Natural_Gas_Tank.compute_thermal_performance  
         Thermal solver for cryogenic hydrogen tanks.  
     """
 
@@ -92,12 +92,12 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         -------
         None  
         """
-        self.tag                      = 'Liquid_Hydrogen_Tank'
-        self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Hydrogen()
+        self.tag                      = 'Liquid_Natural_Gas_Tank'
+        self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Natural_Gas()
         self.material                 = None
         self.insulation_material      = None
         self.geometry_type            = 'cylindrical' # conformal
-        self.design_inlet_temperature = 20
+        self.design_inlet_temperature = 100
         self.design_altitiude         = 0
         self.acceptable_heat_leak     = 20
         self.acceptable_total_heat_leak= 2000
@@ -136,9 +136,9 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
         --------
         RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume  
             Equations for computing non-integral tank volumes.  
-        RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_structural_performance  
+        RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Natural_Gas_Tank.compute_structural_performance  
             Structural solver for cryogenic hydrogen tanks.  
-        RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Hydrogen_Tank.compute_thermal_performance  
+        RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Liquid_Natural_Gas_Tank.compute_thermal_performance  
             Thermal solver for cryogenic hydrogen tanks.  
         """
         if self.geometry_type == 'cylindrical':
@@ -155,19 +155,19 @@ class Liquid_Hydrogen_Tank(Non_Integral_Tank):
                         compute_bwb_aft_tank_volume(self, wing,fuel_tanks)
                         if hasattr(fuel_tanks,self.tag):
                             compute_cryogenic_cylindrical_tank_volume(self,fuel_tanks)
-        elif self.geometry_type == 'conformal':
-             if self.wing_tag != None and self.bwb_aft_tank is False:
-                wing = wings[self.wing_tag]  
-                compute_wing_integral_prismatic_tank_volume(self, wing,fuel_tanks)
-                if hasattr(fuel_tanks,self.tag):
-                    compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
-             else:
-                if self.bwb_aft_tank == True:
-                    if self.wing_tag != None:
-                        wing = wings[self.wing_tag]  
-                        compute_bwb_aft_integral_prismatic_tank_volume(self, wing,fuel_tanks)
-                        if hasattr(fuel_tanks,self.tag):
-                            compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
+        # elif self.geometry_type == 'conformal':
+        #      if self.wing_tag != None and self.bwb_aft_tank is False:
+        #         wing = wings[self.wing_tag]  
+        #         compute_wing_integral_prismatic_tank_volume(self, wing,fuel_tanks)
+        #         if hasattr(fuel_tanks,self.tag):
+        #             compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
+        #      else:
+        #         if self.bwb_aft_tank == True:
+        #             if self.wing_tag != None:
+        #                 wing = wings[self.wing_tag]  
+        #                 compute_bwb_aft_integral_prismatic_tank_volume(self, wing,fuel_tanks)
+        #                 if hasattr(fuel_tanks,self.tag):
+        #                     compute_liquid_hydrogen_tank_conformal_volume(self,fuel_tanks)
         else:
             raise NotImplementedError
 
