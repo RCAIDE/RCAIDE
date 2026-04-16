@@ -65,8 +65,8 @@ def compute_cryogenic_cylindrical_tank_volume(fuel_tank,fuel_tanks):
     fuel_tank.volume_properties.net_volume = None
 
     # Constants
-    safety_factor   = 1.6          # structural factor of safety
-    pressure_factor = 5.0          # internal pressure multiplier for sizing
+    safety_factor   = fuel_tank.safety_factor          # structural factor of safety
+    pressure_factor = fuel_tank.pressure_factor        # internal pressure multiplier for sizing
     T_inlet         = fuel_tank.design_inlet_temperature
 
     # Saturation and design pressures

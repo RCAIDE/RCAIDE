@@ -92,20 +92,22 @@ class Liquid_Natural_Gas_Tank(Non_Integral_Tank):
         -------
         None  
         """
-        self.tag                      = 'Liquid_Natural_Gas_Tank'
-        self.fuel                     = RCAIDE.Library.Attributes.Propellants.Liquid_Natural_Gas()
-        self.material                 = None
-        self.insulation_material      = None
-        self.geometry_type            = 'cylindrical' # conformal
-        self.design_inlet_temperature = 100
-        self.design_altitiude         = 0
-        self.acceptable_heat_leak     = 20
-        self.acceptable_total_heat_leak= 2000
-        self.design_altitude          = 30000 * Units.ft
-        self.design_isa_deviation     = 0
-        self.ullage_volume_fraction   = 0.07
-        self.design_external_pressure = 0 
+        self.tag                           = 'Liquid_Natural_Gas_Tank'
+        self.fuel                          = RCAIDE.Library.Attributes.Propellants.Liquid_Natural_Gas()
+        self.material                      = None
+        self.insulation_material           = None
+        self.geometry_type                 = 'cylindrical' # conformal
+        self.design_inlet_temperature      = 100
+        self.design_altitiude              = 0
+        self.acceptable_heat_leak          = 20
+        self.acceptable_total_heat_leak    = 2000
+        self.design_altitude               = 30000 * Units.ft
+        self.design_isa_deviation          = 0
+        self.ullage_volume_fraction        = 0.07
+        self.design_external_pressure      = 0 
         self.tank_accesories_weight_factor = 1.5
+        self.safety_factor                 = 1.6 # structural factor of safety
+        self.pressure_factor               = 5   # internal pressure multiplier for sizing
 
     def compute_volume(self, wings, fuselages,fuel_tanks):
         """
