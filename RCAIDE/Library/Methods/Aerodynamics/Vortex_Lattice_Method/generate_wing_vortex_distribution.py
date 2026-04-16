@@ -197,8 +197,8 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                         TE_angle          = -cs.deflection * xz_sym_sign 
                         TE_chord_fraction = cs.chord_fraction                        
                     else:
-                        TE_angle          = -cs.deflection 
-                        TE_chord_fraction =  cs.chord_fraction 
+                        TE_angle          = cs.deflection 
+                        TE_chord_fraction = cs.chord_fraction 
                 
             airfoil_x_pts_3, airfoil_z_pts_3 = apply_control_surface_deflections(airfoil_x_pts_2, airfoil_z_pts_2,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
            
@@ -476,12 +476,21 @@ def apply_control_surface_deflections(airfoil_x_pts_2, airfoil_z_pts_2,LE_angle,
     TE_hinge_distance = airfoil_x_pts_2 - TE_chord_loc 
     TE_hinge_distance[airfoil_x_pts_2<TE_chord_loc] = 0
 
-    LE_deflection = np.tan(LE_angle)*LE_hinge_distance
-    TE_deflection = np.tan(TE_angle)*TE_hinge_distance
-    Total_CS_deflection = LE_deflection + TE_deflection
+    LE_x_deflection = LE_chord_loc - np.tan(LE_angle)*LE_hinge_distance
+    LE_x_deflection[airfoil_x_pts_2>LE_chord_loc] = 0
+    TE_x_deflection = - np.sin(TE_angle)*TE_hinge_distance 
+    TE_x_deflection[airfoil_x_pts_2<TE_chord_loc] = 0
+
+    LE_z_deflection = -np.sin(LE_angle)*LE_hinge_distance
+    LE_z_deflection[airfoil_x_pts_2>LE_chord_loc] = 0
+    TE_z_deflection = -np.sin(TE_angle)*TE_hinge_distance
+    TE_z_deflection[airfoil_x_pts_2<TE_chord_loc] = 0
+    
+    Total_CS_z_deflection = LE_z_deflection + TE_z_deflection
+    Total_CS_x_deflection = LE_x_deflection + TE_x_deflection
 
     # shift points of airfoil by control surface deflection 
-    airfoil_x_pts_3 = airfoil_x_pts_2
-    airfoil_z_pts_3 = airfoil_z_pts_2 + Total_CS_deflection        
+    airfoil_x_pts_3 = airfoil_x_pts_2 + Total_CS_x_deflection
+    airfoil_z_pts_3 = airfoil_z_pts_2 + Total_CS_z_deflection        
 
     return airfoil_x_pts_3, airfoil_z_pts_3
