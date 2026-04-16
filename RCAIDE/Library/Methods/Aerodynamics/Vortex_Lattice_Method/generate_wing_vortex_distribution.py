@@ -77,7 +77,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     symmetry_mask = np.array([[0,0,0],[yz_sym,xz_sym,xy_sym]])
     signs         = np.array([1, -1])  
     side_idx = 0
-    for _ in signs[[True,xz_sym]]:
+    for sym_sign in signs[[True,xz_sym]]:
 
         yz_sym_sign   = 1 if symmetry_mask[side_idx,0] == 0 else -1
         xz_sym_sign   = 1 if symmetry_mask[side_idx,1] == 0 else -1
@@ -187,13 +187,13 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                 if (eta_y >= cs.span_fraction_start) and  (eta_y <= cs.span_fraction_end):
                     if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Spoiler:
                         continue
-                    if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
+                    elif type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
                         LE_angle          = cs.deflection  
                         LE_chord_fraction = cs.chord_fraction
-                    if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
-                        TE_angle          = -cs.deflection * xz_sym_sign 
+                    elif type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron: 
+                        TE_angle          = -1*cs.deflection * sym_sign 
                         TE_chord_fraction = cs.chord_fraction 
-                    if type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
+                    elif type(cs) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder: 
                         TE_angle          = -cs.deflection * xz_sym_sign 
                         TE_chord_fraction = cs.chord_fraction                        
                     else:
@@ -206,7 +206,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             airfoil_x_pts_4 = np.cos(local_twist)*airfoil_x_pts_3 + np.sin(local_twist)*airfoil_z_pts_3
             airfoil_z_pts_4 = - np.sin(local_twist)*airfoil_x_pts_3 + np.cos(local_twist)*airfoil_z_pts_3
             
-            # shift points from origin [0,0,0] to relative wing origin
+            # shift sectional points from origin [0,0,0] to relative wing origin
             airfoil_x_pts_5 = airfoil_x_pts_4 + delta_x
             airfoil_z_pts_5 = airfoil_z_pts_4 + delta_z
             
@@ -429,8 +429,8 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
                 a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,npts*2+1)   
         else:
             a_geo_1 =  Data()
-            a_geo_1.camber_coordinates = np.zeros(npts)              
-            a_geo_1.x_upper_surface    = np.linspace(0,1,npts)
+            a_geo_1.camber_coordinates = np.zeros(npts+1)              
+            a_geo_1.x_upper_surface    = np.linspace(0,1,npts+1)
     
     
         # Get points of outboard segment airfoil     
@@ -441,8 +441,8 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
                 a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,npts*2+1)   
         else:
             a_geo_2 =  Data()
-            a_geo_2.camber_coordinates = np.zeros(npts)              
-            a_geo_2.x_upper_surface    = np.linspace(0,1,npts)
+            a_geo_2.camber_coordinates = np.zeros(npts+1)              
+            a_geo_2.x_upper_surface    = np.linspace(0,1,npts+1)
                 
         
         # for each point around the airfoil, interpolate between the two given airfoil coordinates
@@ -490,7 +490,7 @@ def apply_control_surface_deflections(airfoil_x_pts_2, airfoil_z_pts_2,LE_angle,
     TE_z_deflection[airfoil_x_pts_2<TE_chord_loc] = 0
     
     Total_CS_z_deflection = LE_z_deflection + TE_z_deflection
-    Total_CS_x_deflection = LE_x_deflection + TE_x_deflection
+    Total_CS_x_deflection = LE_x_deflection - TE_x_deflection
 
     # shift points of airfoil by control surface deflection 
     airfoil_x_pts_3 = airfoil_x_pts_2 + Total_CS_x_deflection

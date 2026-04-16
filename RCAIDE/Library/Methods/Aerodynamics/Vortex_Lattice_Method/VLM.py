@@ -494,6 +494,7 @@ def VLM(conditions,settings,geometry):
         i+=1 
     results.CLift_wings         = Clift_wings
     results.CDrag_induced_wings = Cdrag_wings
+    results.VD = VD
     return results
 
 # ----------------------------------------------------------------------

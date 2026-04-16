@@ -7,6 +7,7 @@
 # RCAIDE imports  
 import RCAIDE 
 from RCAIDE.Framework.Core import  Data 
+from RCAIDE.Library.Plots import *
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM   import VLM 
 from copy import deepcopy 
 
@@ -354,6 +355,8 @@ def train_model(aerodynamics,Mach, vehicle):
                     CY_d_a[a_i,:]        =  -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
                     CL_d_a[a_i,:]        =  -(CL_res[:,0]   - CL_alpha_0[0,:])   # Negative sign is due to convention
                     CN_d_a[a_i,:]        =  (CN_res[:,0]   - CN_alpha_0[0,:]  ) 
+                    # plot_3d_vehicle_vlm_panelization(VLM_results.VD)
+                    
                 training.dCY_ddelta_a    = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
                 training.dCL_ddelta_a    = ((CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1]))
                 training.dCN_ddelta_a    = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
@@ -400,13 +403,14 @@ def train_model(aerodynamics,Mach, vehicle):
                     CY_res      = VLM_results.CY
                     CL_res      = VLM_results.CL
                     CN_res      = VLM_results.CN
-                    CY_d_r[r_i,:]  =   -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
-                    CL_d_r[r_i,:]  =   -(CL_res[:,0]   - CL_alpha_0[0,:]  ) # Negative sign is due to convention
+                    CY_d_r[r_i,:]  =   (CY_res[:,0]   - CY_alpha_0[0,:]  ) 
+                    CL_d_r[r_i,:]  =   (CL_res[:,0]   - CL_alpha_0[0,:]  ) 
                     CN_d_r[r_i,:]  =   (CN_res[:,0]   - CN_alpha_0[0,:] )
+                    # plot_3d_vehicle_vlm_panelization(VLM_results.VD)
                   
                 training.dCY_ddelta_r  = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
                 training.dCL_ddelta_r  = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])  
-                training.dCN_ddelta_r  = -1*(CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
+                training.dCN_ddelta_r  = (CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
                 control_surface.deflection = delta_r_0
                     
             # --------------------------------------------------------------------------------------------------------------
