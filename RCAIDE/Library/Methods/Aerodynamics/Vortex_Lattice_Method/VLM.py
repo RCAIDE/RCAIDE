@@ -752,7 +752,6 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         n_wings = len(VD.n_sw[k])
         divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
         divisions = np.cumsum(VD.n_sw[k])[:-1]
-        rho = 1
         cl_split = np.stack(np.split(cl[k], divisions))
         chord_split = np.stack(np.split(chord_dist[k], divisions))
 
@@ -790,7 +789,9 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         # Calculate circulation for this case
         circulation_dist = 0.5 * chord_split * v_inf * cl_split * (DS_strips / np.abs(dy_strips))
 
-        symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
+        is_symmetric = np.array(VD.symmetric_wings[0], dtype=bool)
+        is_vertical  = np.array(VD.vertical_wing[0],   dtype=bool)
+        symmetric_wing_flags = np.concatenate([np.repeat(is_symmetric & ~is_vertical, 2), np.zeros(np.count_nonzero(~is_symmetric), dtype=bool)])[:n_wings]
 
         shed_vortices = np.zeros_like(y_control_points)
         for wing_number in range(n_wings):

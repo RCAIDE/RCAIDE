@@ -383,14 +383,17 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         
         side_idx += 1
     
-    if( xz_sym == True) or (yz_sym == True)  or xy_sym == True :
+    if ( xz_sym == True) or (yz_sym == True)  or (xy_sym == True ):
         sym = 1
     else:
         sym = 0
         
     VD.symmetric_wings = np.append(VD.symmetric_wings, int(sym))
     
-    
+    if wing.vertical:
+        VD.vertical_wing =  np.append(VD.vertical_wing, int(1))
+    else:
+        VD.vertical_wing =  np.append(VD.vertical_wing, int(0))
     
     area = wing.areas.reference
     VD.wing_areas.append(area/(sym+1))
