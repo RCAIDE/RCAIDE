@@ -1,20 +1,23 @@
+
 # VLM.py
 # 
-# Created : Aug 2025, M. Clarke  
-# Modified: Apr 2026, S. Shekar, A. Molloy
+# Created: Aug 2025, M. Clarke    
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
 
-# package imports  
-from RCAIDE.Framework.Core import Data 
+# package imports 
+import RCAIDE
+from RCAIDE.Framework.Core import Data
+from RCAIDE.Library.Plots.Geometry import plot_3d_vehicle_vlm_panelization 
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix
 
-from scipy.integrate import trapezoid 
-import numpy as np 
+from scipy.integrate import trapezoid
+from copy import  deepcopy
+import numpy as np
 # ----------------------------------------------------------------------
 #  Vortex Lattice
 # ----------------------------------------------------------------------
@@ -490,7 +493,7 @@ def VLM(conditions,settings,geometry):
             Cdrag_wings[wing.tag]      = np.atleast_2d(dim_wing_drags[:,i]).T/ref
         i+=1 
     results.CLift_wings         = Clift_wings
-    results.CDrag_induced_wings = Cdrag_wings 
+    results.CDrag_induced_wings = Cdrag_wings
     return results
 
 # ----------------------------------------------------------------------
@@ -749,7 +752,6 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         n_wings = len(VD.n_sw[k])
         divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
         divisions = np.cumsum(VD.n_sw[k])[:-1]
-        rho = 1
         cl_split = np.stack(np.split(cl[k], divisions))
         chord_split = np.stack(np.split(chord_dist[k], divisions))
 
@@ -787,7 +789,9 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         # Calculate circulation for this case
         circulation_dist = 0.5 * chord_split * v_inf * cl_split * (DS_strips / np.abs(dy_strips))
 
-        symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
+        is_symmetric = np.array(VD.symmetric_wings[0], dtype=bool)
+        is_vertical  = np.array(VD.vertical_wing[0],   dtype=bool)
+        symmetric_wing_flags = np.concatenate([np.repeat(is_symmetric & ~is_vertical, 2), np.zeros(np.count_nonzero(~is_symmetric), dtype=bool)])[:n_wings]
 
         shed_vortices = np.zeros_like(y_control_points)
         for wing_number in range(n_wings):
