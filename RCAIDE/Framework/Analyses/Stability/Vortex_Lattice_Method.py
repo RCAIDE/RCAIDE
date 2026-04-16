@@ -64,8 +64,8 @@ class Vortex_Lattice_Method(Stability):
         self.settings.use_surrogate                                 = True  
         self.settings.propeller_wake_model                          = False  
         self.settings.model_fuselage                                = False    
-        self.settings.number_of_spanwise_vortices                   = 15
-        self.settings.number_of_chordwise_vortices                  = 5
+        self.settings.number_of_spanwise_vortices                   = 40
+        self.settings.number_of_chordwise_vortices                  = 15
         self.settings.wing_spanwise_vortices                        = None
         self.settings.wing_chordwise_vortices                       = None
         self.settings.fuselage_spanwise_vortices                    = None
