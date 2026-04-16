@@ -106,7 +106,9 @@ def plot_pressure_coefficient_distribution(results,
         y_max      = max(VD.YC[ti]) + 2
         axes.set_ylim(x_max, 0)
         axes.set_xlim(-y_max, y_max)
-        fig.set_size_inches(8,8)
+        fig_w = 10.0
+        fig_h = fig_w * (x_max / (2 * y_max)) if y_max > 0 else fig_w
+        fig.set_size_inches(fig_w, fig_h)
         
         AoA = results.alpha[ti, 0]  
         CL  = results.lift_coefficient[ti, 0]  
