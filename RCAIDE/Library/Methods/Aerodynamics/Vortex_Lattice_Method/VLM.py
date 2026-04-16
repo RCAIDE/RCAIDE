@@ -18,6 +18,10 @@ from .compute_RHS_matrix                 import compute_RHS_matrix
 from scipy.integrate import trapezoid
 from copy import  deepcopy
 import numpy as np
+
+from RCAIDE.Library.Plots                  import * 
+import matplotlib.pyplot as plt
+
 # ----------------------------------------------------------------------
 #  Vortex Lattice
 # ----------------------------------------------------------------------
@@ -494,6 +498,10 @@ def VLM(conditions,settings,geometry):
         i+=1 
     results.CLift_wings         = Clift_wings
     results.CDrag_induced_wings = Cdrag_wings
+    
+    plot_3d_vehicle_vlm_panelization(VD, show_wing_control_points=False)
+    plt.show()
+    
     return results
 
 # ----------------------------------------------------------------------
