@@ -162,16 +162,16 @@ def vehicle_setup():
     slat.span_fraction_end        = 0.963
     slat.deflection               = 0.0 * Units.degrees
     slat.chord_fraction           = 0.075
-    wing.append_control_surface(slat)
+    #wing.append_control_surface(slat)
 
     flap                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Flap()
     flap.tag                      = 'flap'
     flap.span_fraction_start      = 0.2
     flap.span_fraction_end        = 0.7
-    flap.deflection               = 0.0 * Units.degrees
+    flap.deflection               = 5.0 * Units.degrees
     flap.configuration_type       = 'double_slotted'
     flap.chord_fraction           = 0.30
-    wing.append_control_surface(flap)
+    #wing.append_control_surface(flap)
 
     aileron                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron()
     aileron.tag                   = 'aileron'
@@ -179,7 +179,7 @@ def vehicle_setup():
     aileron.span_fraction_end     = 0.963
     aileron.deflection            = 0.0 * Units.degrees
     aileron.chord_fraction        = 0.16
-    wing.append_control_surface(aileron)
+    #wing.append_control_surface(aileron)
 
     spoiler                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Spoiler()
     spoiler.tag                   = 'spoiler'
@@ -187,7 +187,7 @@ def vehicle_setup():
     spoiler.span_fraction_end     = 0.7
     spoiler.deflection            = 0.0 * Units.degrees
     spoiler.chord_fraction        = 0.05
-    wing.append_control_surface(spoiler)   
+    #wing.append_control_surface(spoiler)   
 
     # add to vehicle
     vehicle.append_component(wing)
@@ -697,8 +697,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'takeoff'
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
+    #config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    #config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  3470. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  3470. * Units.rpm 
     configs.append(config)
@@ -710,8 +710,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'cutback'
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
+    #config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    #config.wings['main_wing'].control_surfaces.slat.deflection  = 20. * Units.deg
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  2780. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  2780. * Units.rpm 
     configs.append(config)   
@@ -724,8 +724,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'landing'
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    #config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
+    #config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  2030. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  2030. * Units.rpm
     for landing_gear in  config.landing_gears:
@@ -738,8 +738,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'short_field_takeoff'    
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
+    #config.wings['main_wing'].control_surfaces.flap.deflection  = 20. * Units.deg
+    #config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg
     config.networks.fuel.propulsors['propulsor_1'].fan.angular_velocity =  3470. * Units.rpm
     config.networks.fuel.propulsors['propulsor_2'].fan.angular_velocity      =  3470. * Units.rpm 
     for landing_gear in  config.landing_gears:
@@ -752,8 +752,8 @@ def configs_setup(vehicle):
 
     config = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag = 'reverse_thrust'
-    config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
+    #config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
+    #config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
     config.networks.fuel.reverse_thrust                         = True
     for landing_gear in  config.landing_gears:
         landing_gear.gear_extended = True 
