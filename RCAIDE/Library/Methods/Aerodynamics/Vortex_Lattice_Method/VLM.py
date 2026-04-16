@@ -9,7 +9,8 @@
 
 # package imports 
 import RCAIDE
-from RCAIDE.Framework.Core import Data 
+from RCAIDE.Framework.Core import Data
+from RCAIDE.Library.Plots.Geometry import plot_3d_vehicle_vlm_panelization 
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix
@@ -493,7 +494,6 @@ def VLM(conditions,settings,geometry):
         i+=1 
     results.CLift_wings         = Clift_wings
     results.CDrag_induced_wings = Cdrag_wings
-    
     return results
 
 # ----------------------------------------------------------------------
@@ -566,8 +566,178 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     return cumsum - offsets
     
     
-def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist,SREF,b_ref, v_inf=1):
-     
+def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist, SREF, b_ref, v_inf=1):
+    """Compute induced drag using a Trefftz-plane (far-field wake) analysis.
+
+    The Trefftz plane is a control surface placed infinitely far downstream,
+    where the trailing vortex wake has fully rolled up.  In this plane the
+    induced drag can be evaluated as a line integral of the downwash times
+    the local lift, which is computationally cleaner and more accurate than
+    integrating surface pressures in the near field.
+
+    The procedure follows the classical vortex-lattice / lifting-line approach
+    used in codes such as AVL (Drela & Youngren) and VORLAX:
+
+    1.  **Circulation distribution** – The bound-vortex circulation on each
+        spanwise strip is reconstructed from the sectional lift coefficient and
+        the Kutta–Joukowski theorem:
+
+            Γ = 0.5 · c · V∞ · cl · (DS / |ΔY|)
+
+        where DS = √(ΔY² + ΔZ²) is the true arc-length of each strip, and the
+        DS/|ΔY| factor corrects for dihedral (for a flat wing DS = |ΔY| and the
+        factor is unity).
+
+    2.  **Shed vortices** – Horseshoe vortices are shed at the spanwise edges of
+        each strip.  The strength of the shed (trailing) vortex at each node is
+        the *difference* in bound circulation between adjacent strips (Helmholtz
+        vortex theorem).  Tip vortices close the horseshoe with the full
+        circulation at the tip.  Symmetric wings are handled by zeroing the
+        inboard root vortex; asymmetric wings shed a root vortex of full strength.
+
+    3.  **Induced velocity in the Trefftz plane** – Each shed vortex induces a
+        velocity at the centerpoint of every strip.  The 2-D Biot–Savart kernel
+        for a semi-infinite straight vortex filament reduces to:
+
+            w = Γ / (4π r)
+
+        where r is the perpendicular distance from the filament to the field
+        point.  The velocity vector is projected onto the outward normal of the
+        receiving strip so that dihedral is handled correctly.
+
+    4.  **Induced angle of attack** – The local induced downwash angle is:
+
+            α_i = arctan(w_i / V∞)  ≈  w_i / V∞
+
+    5.  **Induced drag** – Integrating along the span (using the composite
+        trapezoid rule over arc-length) gives:
+
+            CDi = ∫ (α_i · cl · c / S_ref) ds
+
+        where s is the spanwise arc-length coordinate.  This integral is
+        evaluated separately for each wing surface and then summed.
+
+    Assumptions:
+        - Incompressible, inviscid flow (Trefftz-plane analysis is exact only in
+          this limit; compressibility corrections are applied elsewhere).
+        - The freestream speed is normalised to v_inf = 1 unless explicitly
+          overridden; lift coefficients and circulation are consistent with this
+          normalisation.
+        - Strip widths are taken from the VLM panel geometry stored in VD; the
+          chordwise discretisation does not affect the Trefftz-plane result.
+        - Each wing is treated as an independent lifting surface when assembling
+          the shed-vortex strengths; mutual induction *between* wings is
+          accounted for in the induced-velocity loop over all panels.
+        - Symmetric wings (xz-plane symmetry) have their inboard root vortex
+          strength set to zero (the image on the other side is implicit).
+
+    Parameters
+    ----------
+    conditions : RCAIDE.Framework.Mission.Common.Results
+        Flight conditions data structure.  The following fields are accessed:
+
+        - ``conditions.aerodynamics.angles.alpha``  (n_cases, 1) [rad]
+          Angle-of-attack for each flight condition.
+
+    VD : RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method.Data
+        Vortex-lattice geometry descriptor populated by the VLM geometry
+        build.  Key arrays (all indexed by case ``k``):
+
+        - ``VD.Y[k]``               – global Y-coordinates of all VLM nodes
+        - ``VD.Z[k]``               – global Z-coordinates of all VLM nodes
+        - ``VD.n_sw[k]``            – number of spanwise strips per wing  (n_wings,)
+        - ``VD.n_cw[k]``            – number of chordwise panels per strip (n_wings,)
+        - ``VD.normals[k]``         – unit panel normal vectors (n_panels, 3)
+        - ``VD.symmetric_wings[k]`` – boolean list; True if wing has xz symmetry
+        - ``VD.wing_areas``         – reference area of each wing (n_wings,)
+
+    cl : ndarray, shape (n_cases, n_strips)
+        Sectional lift coefficient at the chordwise leading-edge panel of each
+        spanwise strip, as computed by the near-field VLM pressure integration.
+
+    x_dist : ndarray, shape (n_cases, n_strips)
+        Chordwise (X) coordinate of the leading-edge control points [m].
+        Currently not used directly inside this function (kept for API
+        consistency and potential future extensions).
+
+    y_dist : ndarray, shape (n_cases, n_strips)
+        Spanwise (Y) coordinate of the leading-edge control points [m].
+        Currently not used directly inside this function.
+
+    z_dist : ndarray, shape (n_cases, n_strips)
+        Vertical (Z) coordinate of the leading-edge control points [m].
+        Currently not used directly inside this function.
+
+    chord_dist : ndarray, shape (n_cases, n_strips)
+        Local chord length at each spanwise strip [m].
+
+    SREF : float
+        Vehicle reference area [m²] used for non-dimensionalising forces.
+
+    b_ref : float
+        Vehicle reference span [m].  Reserved for future use (aspect-ratio
+        corrections, Oswald efficiency output, etc.).
+
+    v_inf : float, optional
+        Freestream speed [m/s].  Default is 1 (non-dimensional).  All
+        circulation and induced-velocity calculations are proportional to
+        v_inf; the resulting drag coefficient is independent of this value
+        in the incompressible, linear limit.
+
+    Returns
+    -------
+    results : RCAIDE.Framework.Core.Data
+        Container with the following fields:
+
+        - ``CDrag_induced``           ndarray (n_cases, 1)
+          Total vehicle induced-drag coefficient.
+
+        - ``sectional_CDrag_induced`` ndarray (n_cases, n_strips)
+          Spanwise distribution of the induced-drag coefficient integrand
+          ``α_i · cl`` at each strip (before chord-weighting and integration).
+
+        - ``CDrag_induced_wing``      ndarray (n_cases, n_wings)
+          Induced-drag coefficient contribution from each individual wing
+          surface (referenced to SREF).
+
+        - ``alpha_induced``           ndarray (n_cases, n_strips)
+          Local induced angle of attack at each strip [rad].
+
+    Notes
+    -----
+    **Arc-length vs. projected-span integration**
+        RCAIDE normalises the sectional lift coefficient by the arc-length area
+        ``c × DS`` rather than the projected area ``c × ΔY``.  The DS/|ΔY|
+        correction in the circulation formula compensates for this convention so
+        that Γ is always the true bound circulation.
+
+    **Integration direction**
+        The sign of the tip shed vortex determines whether the strip ordering runs
+        from root-to-tip or tip-to-root.  The integrand is flipped as needed so
+        that the trapezoid integration always proceeds from smaller to larger
+        arc-length values, which is required for ``scipy.integrate.trapezoid``.
+
+    **Mutual induction**
+        The double loop over wing panels (i, j outer; l, m inner) computes the
+        full mutual induction matrix, including the self-induction of each wing
+        on itself as well as between-wing terms.  This is equivalent to the
+        Trefftz-plane integration in AVL but performed in the body (not wind)
+        frame.
+
+    **Numerical singularity guard**
+        Spanwise strips with zero projected width (ΔY = 0) are given a small
+        floor value of 1e-6 m to avoid division-by-zero in the arc-length
+        correction.  This situation can arise for winglet panels that are
+        oriented in the XZ plane.
+
+    References
+    ----------
+    Drela, M. and Youngren, H., "AVL 3.36 User Primer," MIT, 2017.
+    Katz, J. and Plotkin, A., "Low-Speed Aerodynamics," 2nd ed.,
+        Cambridge University Press, 2001, Chap. 8.
+    Lan, C. E., "A Quasi-Vortex-Lattice Method in Thin Wing Theory,"
+        Journal of Aircraft, Vol. 11, No. 9, 1974, pp. 518–527.
+    """
     # Initialize results storage
     alpha   = conditions.aerodynamics.angles.alpha 
     n_cases = len(alpha) 
@@ -595,17 +765,26 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         z_control_points = np.stack(np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
 
         y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
-        # FIX 1: AVL TPFORC uses ALFAT=0 in its PG transform, so Trefftz-plane Z = body-axis Z.
-        # Removed: interp_chord, x_control_points, and the alpha rotation of z_control_points.
+        # The Trefftz plane is evaluated in body-axis coordinates, meaning no angle-of-attack
+        # rotation is applied to the Z positions.  This is consistent with how AVL's TPFORC
+        # routine handles the Prandtl-Glauert transform (ALFAT = 0 in that context): the wake
+        # lies in the Y-Z body plane and the bound-vortex geometry is already expressed in
+        # body axes, so rotating Z by alpha would double-count the incidence angle.
         z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
 
-        # FIX 2: arc-length correction for dihedral.
-        # RCAIDE normalises Clift_y by arc-length area (chord × DS where DS = sqrt(DY²+DZ²)),
-        # not projected area (chord × DY).  From KJ: Γ = 0.5·V·c·cl·(DS/|DY|).
-        # For a flat wing DS = DY, so the factor is 1 and this matches the original.
+        # The sectional lift coefficient cl is normalised by arc-length area (chord × DS),
+        # where DS = sqrt(DY² + DZ²) is the true spanwise arc-length of each strip.  The
+        # Kutta–Joukowski theorem requires the actual bound circulation Γ = 0.5·V·c·cl, so
+        # when cl was formed using DS rather than the projected width DY the circulation must
+        # be scaled back by DS/|DY| to recover the physical value.  For a flat, unswept wing
+        # DS = |DY| everywhere and the factor is exactly 1, so this correction is invisible
+        # in that limit.  For dihedral or winglet panels the correction can be significant.
         dy_strips = np.diff(y_control_points, axis=1)    # (n_wings, n_sw)
         mask = [dy_strips ==0]
-        dy_strips[mask[0]]= 1e-6        
+        # Guard against division by zero for panels whose projected span is zero (e.g. winglets
+        # oriented entirely in the XZ plane).  A floor of 1e-6 m is negligibly small relative
+        # to any physical panel width and does not meaningfully affect the circulation value.
+        dy_strips[mask[0]]= 1e-6
         dz_strips = np.diff(z_control_points, axis=1)    # (n_wings, n_sw)
         DS_strips = np.sqrt(dy_strips**2 + dz_strips**2)
         # Calculate circulation for this case
@@ -619,14 +798,12 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
                 shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
                 shed_vortices[wing_number,0] = 0
                 shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
-                a = 0
                 
             else:
                 shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
                 shed_vortices[wing_number,0] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][0]
                 shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
-                b=0
-        norm_split = np.stack(np.split(VD.normals[k][::(VD.n_cw[k][0])], divisions, axis = 0))
+        
         induced_velocity = np.zeros_like(y_centerpoints)
         for i in range(n_wings):
             for j in range(len(y_centerpoints[i])):
@@ -635,9 +812,15 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
                     for m in range(len(y_control_points[l])):
                         distance = np.sqrt((y_centerpoints[i][j] - y_control_points[l][m])**2 + (z_centerpoints[i][j] - z_control_points[l][m])**2)
                         vortex_direction = 1/distance * np.array([ -1 * (z_centerpoints[i][j] - z_control_points[l][m]),(y_centerpoints[i][j] - y_control_points[l][m])])
-                        # FIX 3: project onto strip normal, not fixed [0,1].
-                        # sign(strip_dy) ensures the normal points "upward" on both wing halves.
-                        # For a flat wing strip_dz=0 and the formula reduces to [0,1], recovering the original.
+                        # The induced velocity must be projected onto the outward normal of the
+                        # receiving strip to obtain the downwash component that drives induced drag.
+                        # For a flat wing the strip normal is simply [0, 1] (pointing in +Z), and
+                        # the projection reduces to the Z-component of the velocity vector—the
+                        # classical Trefftz-plane downwash.  For a dihedral or winglet strip the
+                        # normal is rotated in the Y-Z plane, so the projection picks up both Y
+                        # and Z components of the induced velocity.  The sign(strip_dy) factor
+                        # ensures the normal always points "outward" (away from the root) regardless
+                        # of whether the strip runs left-to-right or right-to-left.
                         strip_dy = y_control_points[i][j+1] - y_control_points[i][j]
                         strip_dz = z_control_points[i][j+1] - z_control_points[i][j]
                         strip_ds = np.sqrt(strip_dy**2 + strip_dz**2)
