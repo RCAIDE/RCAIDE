@@ -66,8 +66,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         # settings              
         self.settings.propeller_wake_model                          = False  
         self.settings.model_fuselage                                = False   
-        self.settings.number_of_spanwise_vortices                   = 40
-        self.settings.number_of_chordwise_vortices                  = 15
+        self.settings.number_of_spanwise_vortices                   = 30
+        self.settings.number_of_chordwise_vortices                  = 10
         self.settings.wing_spanwise_vortices                        = None
         self.settings.wing_chordwise_vortices                       = None
         self.settings.fuselage_spanwise_vortices                    = None

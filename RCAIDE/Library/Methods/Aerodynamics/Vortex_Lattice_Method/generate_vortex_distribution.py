@@ -1,4 +1,4 @@
-# generate_vortex_distribution.py
+# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_vortex_distribution.py
 # 
 # Created:  May 2018, M. Clarke
 # Modified: Apr 2020, M. Clarke

@@ -1,27 +1,20 @@
-
 # VLM.py
 # 
-# Created: Aug 2025, M. Clarke    
+# Created : Aug 2025, M. Clarke  
+# Modified: Apr 2026, S. Shekar, A. Molloy
 
 # ----------------------------------------------------------------------
 #  Imports
 # ----------------------------------------------------------------------
 
-# package imports 
-import RCAIDE
-from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Plots.Geometry import plot_3d_vehicle_vlm_panelization 
+# package imports  
+from RCAIDE.Framework.Core import Data 
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix
 
-from scipy.integrate import trapezoid
-from copy import  deepcopy
-import numpy as np
-
-from RCAIDE.Library.Plots                  import * 
-import matplotlib.pyplot as plt
-
+from scipy.integrate import trapezoid 
+import numpy as np 
 # ----------------------------------------------------------------------
 #  Vortex Lattice
 # ----------------------------------------------------------------------
@@ -497,11 +490,7 @@ def VLM(conditions,settings,geometry):
             Cdrag_wings[wing.tag]      = np.atleast_2d(dim_wing_drags[:,i]).T/ref
         i+=1 
     results.CLift_wings         = Clift_wings
-    results.CDrag_induced_wings = Cdrag_wings
-    
-    plot_3d_vehicle_vlm_panelization(VD, show_wing_control_points=False)
-    plt.show()
-    
+    results.CDrag_induced_wings = Cdrag_wings 
     return results
 
 # ----------------------------------------------------------------------
