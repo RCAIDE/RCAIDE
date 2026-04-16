@@ -567,319 +567,112 @@ def strip_cumsum(arr, chord_breaks, strip_lengths):
     
     
 def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dist, chord_dist,SREF,b_ref, v_inf=1):
-    """
-    Compute far-field induced drag using the Trefftz-plane method.
+     
+    # Initialize results storage
+    alpha   = conditions.aerodynamics.angles.alpha 
+    n_cases = len(alpha) 
+    CDi_total         = np.zeros(n_cases)
+    CDi_wing          = np.zeros((n_cases, len(VD.n_sw[0])))
+    Cd_i_distribution = np.zeros_like(cl)
+    alpha_i           = np.zeros_like(cl) 
 
-    The Trefftz plane is a cross-sectional plane located infinitely far downstream of
-    the wing.  In this plane, the horseshoe trailing vortices appear as semi-infinite
-    2-D line vortices that induce a crossflow velocity field (VY, VZ).  The induced
-    drag follows from the kinetic energy of that crossflow:
-
-        dCDi_strip = Γ_strip * (DZT * VY - DYT * VZ) / S_ref
-
-    where DYT and DZT are the projected strip widths in the Trefftz plane, and
-    VY, VZ are the induced velocities at the strip center.
-
-    Approach
-    --------
-    Rather than summing with total strip circulations (as AVL does), this routine
-    uses the equivalent shed-vortex representation:
-
-      1. The strip circulation Γ is derived from the sectional lift coefficient via
-         the Kutta-Joukowski theorem, with an arc-length correction for dihedral.
-      2. Shed vortex strengths are the spanwise differences of Γ, placed at the
-         vortex lattice spanwise stations.  Each shed vortex is a semi-infinite
-         2-D point vortex in the Trefftz plane.
-      3. The induced downwash at each strip centre is obtained by summing the
-         contributions of all shed vortices, projected onto the local strip normal.
-      4. The sectional induced drag coefficient is alpha_i * cl, and the total CDi
-         is obtained by integrating chord * cdi / S_ref along the arc-length span.
-
-    Geometry note — why body-axis Z is used in the Trefftz plane
-    -------------------------------------------------------------
-    The trailing vortices extend from the bound-vortex trailing edge rearward in
-    the body-x direction (flat-wake assumption).  Their position in the Trefftz
-    plane (x → ∞) is therefore simply their body-axis (y, z) coordinates — no
-    alpha rotation is needed.  AVL's TPFORC confirms this: it calls PGMAT with
-    ALFAT = 0, making the transformation an identity on Y and Z.
-
-    Circulation arc-length correction
-    ----------------------------------
-    RCAIDE's Clift_y is normalised by the actual arc-length panel area
-    (chord × DS, DS = sqrt(DY² + DZ²)), not the projected area (chord × DY).
-    From the Kutta-Joukowski theorem applied to a dihedraled strip:
-        Lift = rho * V * Γ * DY  (lift acts on projected span DY)
-        Clift_y = Lift / (0.5 * rho * V² * chord * DS)
-               = 2 * Γ * DY / (V * chord * DS)
-        → Γ = 0.5 * V * chord * cl * (DS / DY)
-    For a flat wing DS = DY, the correction factor is 1 and the formula reduces
-    to the standard expression.
-
-    Strip-normal projection
-    -----------------------
-    The induced downwash that contributes to drag is the velocity component
-    perpendicular to the strip and in the plane of the Trefftz cross-section
-    (i.e., the outward normal to the strip in the Y-Z plane).  For a flat wing
-    this normal is simply [0, 1] (vertical), which is what the original formula
-    assumed.  For a dihedraled strip oriented at angle δ the normal rotates to
-    [-sin δ, cos δ].  A sign(DY) multiplier is applied so the normal consistently
-    points "upward" (positive Z component) for both the left and right wing halves.
-
-    Parameters
-    ----------
-    conditions  : flight conditions object, supplies alpha
-    VD          : vortex distribution object (panel geometry, n_sw, n_cw, etc.)
-    cl          : sectional lift coefficient, shape (n_cases, n_panels)
-    x_dist      : x coordinates of strip load-points (unused, kept for API compat.)
-    y_dist      : y coordinates of strip load-points (unused, kept for API compat.)
-    z_dist      : z coordinates of strip load-points (unused, kept for API compat.)
-    chord_dist  : chord at each strip, shape (n_cases, n_strips)
-    SREF        : reference area
-    b_ref       : reference span (unused, kept for API compat.)
-    v_inf       : freestream speed (default 1, since cl is already normalised)
-
-    Returns
-    -------
-    results.CDrag_induced           : total induced drag coefficient, (n_cases, 1)
-    results.sectional_CDrag_induced : strip cdi distribution
-    results.CDrag_induced_wing      : induced drag per surface
-    results.alpha_induced           : induced angle of attack distribution
-    """
-
-    # ------------------------------------------------------------------
-    # Allocate output arrays for all flight cases
-    # ------------------------------------------------------------------
-    alpha   = conditions.aerodynamics.angles.alpha
-    n_cases = len(alpha)
-    CDi_total         = np.zeros(n_cases)                        # scalar CDi per case
-    CDi_wing          = np.zeros((n_cases, len(VD.n_sw[0])))    # CDi per lifting surface
-    Cd_i_distribution = np.zeros_like(cl)                        # strip cdi
-    alpha_i           = np.zeros_like(cl)                        # strip induced AoA
 
     for k in range(n_cases):
-
-        alpha   = conditions.aerodynamics.angles.alpha[k]        # flight alpha for this case
-        n_wings = len(VD.n_sw[k])                                 # number of lifting surfaces
-
-        # cumulative split indices: spanwise control-point stations have n_sw+1 nodes per surface
+        alpha   = conditions.aerodynamics.angles.alpha [k]
+        n_wings = len(VD.n_sw[k])
         divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
-        # cumulative split indices for strip-level (n_sw strips per surface)
-        divisions               = np.cumsum(VD.n_sw[k])[:-1]
+        divisions = np.cumsum(VD.n_sw[k])[:-1]
+        rho = 1
+        cl_split = np.stack(np.split(cl[k], divisions))
+        chord_split = np.stack(np.split(chord_dist[k], divisions))
 
-        # sectional lift coefficient and chord, split per surface.
-        # np.empty(n_wings, dtype=object) + manual assignment guarantees a 1-D object
-        # array of length n_wings regardless of whether sub-arrays share the same length.
-        cl_split    = np.empty(n_wings, dtype=object)
-        chord_split = np.empty(n_wings, dtype=object)
-        for w, (c, ch) in enumerate(zip(np.split(cl[k], divisions),
-                                        np.split(chord_dist[k], divisions))):
-            cl_split[w]    = c
-            chord_split[w] = ch
-
-        # ------------------------------------------------------------------
-        # Trefftz-plane geometry
-        # ------------------------------------------------------------------
-        # Each element of VD.Y[k] / VD.Z[k] is already a per-wing node array.
-        # Stride every (n_cw+1) entries to extract the leading spanwise node per strip.
-        # Body-axis Z is used directly (no alpha rotation); see docstring for details.
-        y_nodes_list = []
-        z_nodes_list = []
-
-        n_sw = VD.n_sw[k]
-        n_cw = VD.n_cw[k]
-        discretization = np.insert(np.cumsum((n_sw+1)*(n_cw+1)), 0, 0)
-
-        for index in range(len(discretization) - 1):
-            y_nodes_list.append(np.asarray(VD.Y[k][discretization[index]:discretization[index+1]][::(VD.n_cw[k][index] + 1)]))
-            z_nodes_list.append(np.asarray(VD.Z[k][discretization[index]:discretization[index+1]][::(VD.n_cw[k][index] + 1)]))
-
-        y_nodes = np.empty(len(y_nodes_list), dtype=object)
-        z_nodes = np.empty(len(z_nodes_list), dtype=object)
-
-        for i in range(len(y_nodes_list)):
-            y_nodes[i] = y_nodes_list[i]
-            z_nodes[i] = z_nodes_list[i]
+        # ------------------------------------------------------------------------------------------
+        # Trefftz Plane Drag
+        # ------------------------------------------------------------------------------------------
+        # Create centerpoints in body frame
         
-        y_control_points = np.empty(n_wings, dtype=object)
-        z_control_points = np.empty(n_wings, dtype=object)
-        y_centerpoints   = np.empty(n_wings, dtype=object)
-        z_centerpoints   = np.empty(n_wings, dtype=object)
-        for w in range(n_wings):
-            y_control_points[w] = y_nodes[w]                               # body-axis Y corner nodes
-            z_control_points[w] = z_nodes[w]                               # body-axis Z corner nodes
-            y_centerpoints[w]   = (y_nodes[w][:-1] + y_nodes[w][1:]) / 2  # mid-Y per strip
-            z_centerpoints[w]   = (z_nodes[w][:-1] + z_nodes[w][1:]) / 2  # mid-Z per strip
+        y_control_points = np.stack(np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)) #np.stack(np.split(y_dist[0] , divisions))
+        z_control_points = np.stack(np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point))
 
-        # ------------------------------------------------------------------
-        # Strip arc-length and Kutta-Joukowski circulation with dihedral correction
-        # ------------------------------------------------------------------
-        # Spanwise increments between adjacent corner nodes in body axes.
-        # np.diff with axis=1 does not work on jagged object arrays, so loop per surface.
-        dy_strips = np.empty(n_wings, dtype=object)
-        dz_strips = np.empty(n_wings, dtype=object)
-        DS_strips = np.empty(n_wings, dtype=object)
-        for w in range(n_wings):
-            d = np.diff(y_control_points[w])             # projected spanwise width DY per strip
-            d[d == 0] = 1e-6                             # guard against root-plane symmetry node
-            dy_strips[w] = d
-            dz_strips[w] = np.diff(z_control_points[w]) # body-axis Z increment per strip (dihedral)
-            DS_strips[w] = np.sqrt(dy_strips[w]**2 + dz_strips[w]**2)  # arc-length strip width DS
+        y_centerpoints = (y_control_points[:,:-1] + y_control_points[:,1:]) / 2
+        # FIX 1: AVL TPFORC uses ALFAT=0 in its PG transform, so Trefftz-plane Z = body-axis Z.
+        # Removed: interp_chord, x_control_points, and the alpha rotation of z_control_points.
+        z_centerpoints = (z_control_points[:,:-1] + z_control_points[:,1:]) / 2
 
-        # Strip circulation from Kutta-Joukowski with arc-length correction.
-        # Because RCAIDE normalises Clift_y by chord × DS (arc-length area), the
-        # correct circulation is Γ = 0.5 * V * chord * cl * (DS / |DY|).
-        # For a flat wing DS = |DY|, so the correction factor equals 1.
-        circulation_dist = np.empty(n_wings, dtype=object)
-        for w in range(n_wings):
-            circulation_dist[w] = 0.5 * chord_split[w] * v_inf * cl_split[w] * (DS_strips[w] / np.abs(dy_strips[w]))
+        # FIX 2: arc-length correction for dihedral.
+        # RCAIDE normalises Clift_y by arc-length area (chord × DS where DS = sqrt(DY²+DZ²)),
+        # not projected area (chord × DY).  From KJ: Γ = 0.5·V·c·cl·(DS/|DY|).
+        # For a flat wing DS = DY, so the factor is 1 and this matches the original.
+        dy_strips = np.diff(y_control_points, axis=1)    # (n_wings, n_sw)
+        mask = [dy_strips ==0]
+        dy_strips[mask[0]]= 1e-6        
+        dz_strips = np.diff(z_control_points, axis=1)    # (n_wings, n_sw)
+        DS_strips = np.sqrt(dy_strips**2 + dz_strips**2)
+        # Calculate circulation for this case
+        circulation_dist = 0.5 * chord_split * v_inf * cl_split * (DS_strips / np.abs(dy_strips))
 
-        # ------------------------------------------------------------------
-        # Shed-vortex strengths at spanwise stations
-        # ------------------------------------------------------------------
-        # Each trailing vortex filament has strength equal to the spanwise change in
-        # bound circulation (by Helmholtz's theorem).  The sign convention follows the
-        # spanwise traversal direction: sign(DY) > 0 for the right half-wing and
-        # sign(DY) < 0 for the left half-wing.
-        #
-        # For a symmetric surface the root vortex (station 0) cancels with the mirror
-        # image and is therefore set to zero.  For a non-symmetric surface (e.g. a
-        # vertical tail) both root and tip vortices are non-zero.
-        symmetric_wing_flags = np.concatenate([
-            np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),
-            np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)
-        ])[:n_wings]
+        symmetric_wing_flags = np.concatenate([np.repeat(np.array(VD.symmetric_wings[0], dtype=bool), 2),np.zeros(np.count_nonzero(~np.array(VD.symmetric_wings[0], dtype=bool)), dtype=bool)])[:n_wings]
 
-        # Each sub-array has n_sw+1 nodes (one per spanwise station); initialise per surface.
-        # np.zeros_like on an object array does not produce sub-arrays of the right size,
-        # so allocate explicitly with a loop.
-        shed_vortices = np.empty(n_wings, dtype=object)
+        shed_vortices = np.zeros_like(y_control_points)
         for wing_number in range(n_wings):
-            shed_vortices[wing_number] = np.zeros(len(y_control_points[wing_number]))
-            # spanwise traversal direction (+1 right, -1 left)
-            # Use [1] / [0] sub-indexing — 2D comma indexing fails on object arrays.
-            span_sign = np.sign(y_control_points[wing_number][1] - y_control_points[wing_number][0])
-            if symmetric_wing_flags[wing_number]:
-                # interior nodes: Δ circulation between adjacent strips
-                shed_vortices[wing_number][1:-1] = span_sign * np.diff(circulation_dist[wing_number])
-                # root node: zero because the mirror half cancels
-                shed_vortices[wing_number][0]    = 0
-                # tip node: full tip circulation closes the vortex sheet
-                shed_vortices[wing_number][-1]   = -span_sign * circulation_dist[wing_number][-1]
+            if symmetric_wing_flags[wing_number]: # symmetric
+                shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
+                shed_vortices[wing_number,0] = 0
+                shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
+                a = 0
+                
             else:
-                # interior nodes: Δ circulation
-                shed_vortices[wing_number][1:-1] = span_sign * np.diff(circulation_dist[wing_number])
-                # root node: full root circulation (no cancelling mirror)
-                shed_vortices[wing_number][0]    = -span_sign * circulation_dist[wing_number][0]
-                # tip node: full tip circulation
-                shed_vortices[wing_number][-1]   = -span_sign * circulation_dist[wing_number][-1]
-
-        # ------------------------------------------------------------------
-        # Induced velocity at each strip centre (Trefftz-plane summation)
-        # ------------------------------------------------------------------
-        # Each shed vortex at station (y_vort, z_vort) with strength Γ_shed induces a
-        # 2-D velocity at field point (y_ctr, z_ctr).  The velocity direction is
-        # perpendicular to the radius vector and has magnitude Γ / (4π × distance).
-        # Summing over all shed vortices on all surfaces gives the total Trefftz-plane
-        # crossflow at each strip centre.
-        # Same reasoning as shed_vortices — initialise per-surface arrays explicitly.
-        induced_velocity = np.empty(n_wings, dtype=object)
-        for i in range(n_wings):
-            induced_velocity[i] = np.zeros(len(y_centerpoints[i]))
+                shed_vortices[wing_number,1:-1] = np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * np.diff(circulation_dist[wing_number])
+                shed_vortices[wing_number,0] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][0]
+                shed_vortices[wing_number,-1] = -1*np.sign(y_control_points[wing_number,1]-y_control_points[wing_number,0]) * circulation_dist[wing_number][-1]
+                b=0
+        norm_split = np.stack(np.split(VD.normals[k][::(VD.n_cw[k][0])], divisions, axis = 0))
+        induced_velocity = np.zeros_like(y_centerpoints)
         for i in range(n_wings):
             for j in range(len(y_centerpoints[i])):
+                # Centerpoints:
                 for l in range(n_wings):
                     for m in range(len(y_control_points[l])):
-
-                        # radial distance from shed vortex to strip centre
-                        distance = np.sqrt(
-                            (y_centerpoints[i][j] - y_control_points[l][m])**2 +
-                            (z_centerpoints[i][j] - z_control_points[l][m])**2)
-
-                        # unit vector in the direction of the 2-D induced velocity from
-                        # a positive (CCW) point vortex: perpendicular to the radius,
-                        # rotated 90° CCW → [-DZ, DY] / distance
-                        vortex_direction = (1.0/distance) * np.array([
-                            -(z_centerpoints[i][j] - z_control_points[l][m]),
-                             (y_centerpoints[i][j] - y_control_points[l][m])])
-
-                        # Outward strip normal in the Trefftz plane: perpendicular to the
-                        # strip vector (strip_dy, strip_dz) and pointing away from the wing
-                        # surface (upward for a normal wing).  The 90° CCW rotation of the
-                        # strip direction gives (-strip_dz, strip_dy) / strip_ds.
-                        # Multiplying by sign(strip_dy) ensures the normal points consistently
-                        # "upward" (positive Z component) for both the left and right halves:
-                        #   right half: strip_dy > 0 → normal = (-sin δ,  cos δ)
-                        #   left  half: strip_dy < 0 → sign flips → normal = (+sin δ, cos δ)
-                        # For a flat wing strip_dz = 0, so the normal reduces to [0, 1],
-                        # which matches the original flat-wing formula.
+                        distance = np.sqrt((y_centerpoints[i][j] - y_control_points[l][m])**2 + (z_centerpoints[i][j] - z_control_points[l][m])**2)
+                        vortex_direction = 1/distance * np.array([ -1 * (z_centerpoints[i][j] - z_control_points[l][m]),(y_centerpoints[i][j] - y_control_points[l][m])])
+                        # FIX 3: project onto strip normal, not fixed [0,1].
+                        # sign(strip_dy) ensures the normal points "upward" on both wing halves.
+                        # For a flat wing strip_dz=0 and the formula reduces to [0,1], recovering the original.
                         strip_dy = y_control_points[i][j+1] - y_control_points[i][j]
                         strip_dz = z_control_points[i][j+1] - z_control_points[i][j]
                         strip_ds = np.sqrt(strip_dy**2 + strip_dz**2)
-                        strip_normal = np.sign(strip_dy) * np.array([-strip_dz/strip_ds,
-                                                                       strip_dy/strip_ds])
+                        v_hat = np.sign(strip_dy) * np.dot(np.array([-strip_dz/strip_ds, strip_dy/strip_ds]), vortex_direction)
 
-                        # scalar projection of the induced velocity onto the strip normal
-                        v_hat = np.dot(strip_normal, vortex_direction)
-
-                        # velocity magnitude from a semi-infinite 2-D point vortex
                         velocity_contribution = shed_vortices[l][m] / (4.0 * np.pi * distance)
-
-                        # accumulate normal-velocity contribution at strip centre i,j
                         induced_velocity[i][j] += velocity_contribution * v_hat
-
-        # ------------------------------------------------------------------
-        # Sectional induced angle of attack and drag coefficient
-        # ------------------------------------------------------------------
-        # The induced angle of attack is the downwash angle: α_i = arctan(w / V_inf).
-        # The sectional induced drag coefficient is then cdi = α_i × cl (small-angle form).
-        alpha_induced_dist = np.empty(n_wings, dtype=object)
-        cd_induced_dist    = np.empty(n_wings, dtype=object)
-        for i in range(n_wings):
-            alpha_induced_dist[i] = np.arctan(induced_velocity[i] / v_inf)  # downwash angle per strip
-            cd_induced_dist[i]    = alpha_induced_dist[i] * cl_split[i]     # sectional cdi = α_i × cl
-
-        # ------------------------------------------------------------------
-        # Integrate CDi along the arc-length span
-        # ------------------------------------------------------------------
-        # The cumulative arc-length from root to each strip centre, computed in body
-        # axes.  Using arc-length (not projected span) is correct for dihedraled wings.
-        # np.cumsum with axis=1 does not work on jagged object arrays; loop per surface.
-        line_distance = np.empty(n_wings, dtype=object)
-        for w in range(n_wings):
-            line_distance[w] = np.cumsum(np.sqrt(np.diff(y_control_points[w])**2 +
-                                                 np.diff(z_control_points[w])**2))
-
+        
+        alpha_induced_dist = np.arctan(induced_velocity / v_inf)
+        cd_induced_dist = alpha_induced_dist * cl_split
         CDi = 0
+
+        # Calulcate distances for line integral
+        line_distance = np.cumsum(np.sqrt(np.diff(y_control_points, axis=1)**2 + np.diff(z_control_points, axis=1)**2),axis=1)
         for i in range(n_wings):
             CDi_wing_sum = 0
-            # Traversal direction: if the shed vortex at the tip is negative relative
-            # to the root, the strips run from root to tip → integrate directly.
-            # Otherwise flip so the integrand is ordered root-to-tip.
-            if np.sign(shed_vortices[i][-1] - shed_vortices[i][0]) < 0:
-                CDi         += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF,
-                                         line_distance[i])
-                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF,
-                                          line_distance[i])
+            if np.sign(shed_vortices[i,-1]-shed_vortices[i,0])<0:
+                CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
+                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
             else:
-                CDi         += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF,
-                                         np.flip(-line_distance[i]))
-                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF,
-                                          np.flip(-line_distance[i]))
+                CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
+                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
             CDi_wing[k][i] = CDi_wing_sum
+        
+        CDi_total[k] = CDi
+        Cd_i_distribution[k] = cd_induced_dist.ravel()
+        alpha_i[k] = alpha_induced_dist.ravel()
 
-        CDi_total[k]          = CDi
-        # .ravel() on an object array of sub-arrays does not concatenate them;
-        # use np.concatenate to flatten the per-surface arrays into one flat array.
-        Cd_i_distribution[k]  = np.concatenate([cd_induced_dist[i]    for i in range(n_wings)])
-        alpha_i[k]            = np.concatenate([alpha_induced_dist[i]  for i in range(n_wings)])
+        
 
-    # ------------------------------------------------------------------
-    # Pack and return results
-    # ------------------------------------------------------------------
-    results                         = Data()
-    results.CDrag_induced           = CDi_total[:,np.newaxis]
-    results.sectional_CDrag_induced = Cd_i_distribution
-    results.CDrag_induced_wing      = CDi_wing
-    results.alpha_induced           = alpha_i
+    # Package results
+    results                          = Data()
+    results.CDrag_induced            = CDi_total[:,np.newaxis]
+    results.sectional_CDrag_induced  = Cd_i_distribution
+    results.CDrag_induced_wing       = CDi_wing
+    results.alpha_induced            = alpha_i
 
     return results
