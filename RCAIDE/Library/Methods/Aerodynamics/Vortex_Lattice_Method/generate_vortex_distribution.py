@@ -10,11 +10,9 @@
 import RCAIDE
 from RCAIDE.Framework.Core                                                              import  Data
 from RCAIDE.Library.Components.Wings.All_Moving_Surface                                 import All_Moving_Surface 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_VD_helpers      import postprocess_VD
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.make_VLM_wings           import make_VLM_wings 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.deflect_control_surface  import deflect_control_surface
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_VD_helpers      import postprocess_VD 
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_lofted_body_vortex_distribution  import generate_lofted_body_vortex_distribution
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_wing_vortex_distribution         import generate_wing_vortex_distribution ,  generate_wing_vortex_distribution_new
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_wing_vortex_distribution         import generate_wing_vortex_distribution 
 from RCAIDE.Library.Methods.Geometry.Airfoil                                                             import compute_naca_4series, import_airfoil_geometry
   
 # package imports 
@@ -151,7 +149,7 @@ def generate_vortex_distribution(conditions,settings,geometry):
             VD_seg.SLE                       =  np.atleast_2d(VD_i.SLE                      )
             VD_seg.D                         =  np.atleast_2d(VD_i.D                        )
             VD_seg.tangent_incidence_angle   =  np.atleast_2d(VD_i.tangent_incidence_angle  ) 
-            VD_seg.VLM_wings                 =  VD_i.VLM_wings
+            #VD_seg.VLM_wings                 =  VD_i.VLM_wings
             VD_seg.is_postprocessed          =  VD_i.is_postprocessed
             
         else:
@@ -412,25 +410,9 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     VD.wing_areas  = [] # instantiate wing areas
     VD.vortex_lift = []
     VD.counter     = 0
-    
-    #reformat/preprocess wings and control surfaces for VLM panelization
-    VLM_wings    = make_VLM_wings(geometry, settings)
-    VD.VLM_wings = VLM_wings
-    
-    #generate panelization for each wing. Wings first, then control surface wings
-    #for wing in VD.VLM_wings:
-        #if not wing.is_a_control_surface:
-            #if show_prints: print('discretizing ' + wing.tag) 
-            #VD, wing = generate_wing_vortex_distribution(VD,wing,n_cw_wing,n_sw_wing,spc,precision)
             
     for wing in geometry.wings:         
-        VD = generate_wing_vortex_distribution_new(VD,wing,n_cw_wing,n_sw_wing,spc,precision)   
-                    
-    #for wing in VD.VLM_wings:
-        #if wing.is_a_control_surface:
-            #if show_prints:print('discretizing ' + wing.tag)
-            #VD, wing = generate_wing_vortex_distribution(VD,wing,n_cw_wing,n_sw_wing,spc,precision)     
-            
+        VD = generate_wing_vortex_distribution(VD,wing,n_cw_wing,n_sw_wing,spc,precision)  
             
     # ---------------------------------------------------------------------------------------
     # Unpack aircraft fuselage geometry
@@ -440,15 +422,6 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     for fus in geometry.fuselages:
         if show_prints: print('discretizing ' + fus.tag)
         VD = generate_lofted_body_vortex_distribution(VD,fus,n_cw_fuse,n_sw_fuse,precision,model_fuselage) 
-
-    ## ---------------------------------------------------------------------------------------
-    ## Deflect Control Surfaces
-    ## ---------------------------------------------------------------------------------------      
-    #for wing in VD.VLM_wings:
-        #wing_is_all_moving = (not wing.is_a_control_surface) and issubclass(wing.wing_type, All_Moving_Surface)        
-        #if wing.is_a_control_surface or wing_is_all_moving:
-            ## Deflect the control surface
-            #VD, wing = deflect_control_surface(VD, wing)
             
     # ---------------------------------------------------------------------------------------
     # Postprocess VD information
