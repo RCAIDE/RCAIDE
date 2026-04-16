@@ -1,7 +1,8 @@
- # generate_VD_helpers.py
+# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_VD_helpers.py
 # 
 # Created:  Aug 2025, M. Clarke
-#           
+#           Apr 2026, M. Clarke
+        
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
