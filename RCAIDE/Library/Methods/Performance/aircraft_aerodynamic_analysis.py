@@ -155,6 +155,7 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
     analyses.aerodynamics.rudder_flag    = False
     analyses.aerodynamics.elevator_flag  = False
     analyses.aerodynamics.flap_flag      = False
+    analyses.aerodynamics.slat_flag      = False
 
     for wing in analyses.vehicle.wings: 
         for control_surface in wing.control_surfaces: 
@@ -182,6 +183,12 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
                 state.conditions.control_surfaces.flap.deflection = control_surface.deflection * np.ones_like(angle_of_attacks)
                 state.conditions.control_surfaces.flap.static_stability = Data()
                 state.conditions.control_surfaces.flap.static_stability.coefficients = Data() 
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
+                analyses.aerodynamics.slat_flag      = True
+                state.conditions.control_surfaces.slat = Data()
+                state.conditions.control_surfaces.slat.deflection = control_surface.deflection * np.ones_like(angle_of_attacks)
+                state.conditions.control_surfaces.slat.static_stability = Data()
+                state.conditions.control_surfaces.slat.static_stability.coefficients = Data() 
   
     state.analyses  = analyses 
     state.analyses.aerodynamics.filename =  os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "aerodynamic_training_data.pkl" )

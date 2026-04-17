@@ -153,13 +153,10 @@ def build_surrogate(aerodynamics, training, vehicle):
         surrogates.dCM_ddelta_f     = interpolate.interp1d(mach_data,training.dCM_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value='extrapolate') 
         surrogates.dClift_ddelta_f  = interpolate.interp1d(mach_data,training.dClift_ddelta_f  ,kind = 'linear',   bounds_error=False, fill_value='extrapolate') 
 
-    if aerodynamics.slat_flag: 
-        surrogates.dCY_ddelta_s     = interpolate.interp1d(mach_data,training.dCY_ddelta_s       ,kind = 'linear',   bounds_error=False, fill_value='extrapolate')   
-        surrogates.dCL_ddelta_s     = interpolate.interp1d(mach_data,training.dCL_ddelta_s       ,kind = 'linear',   bounds_error=False, fill_value='extrapolate')  
-        surrogates.dCN_ddelta_s     = interpolate.interp1d(mach_data,training.dCN_ddelta_s       ,kind = 'linear',   bounds_error=False, fill_value='extrapolate')             
-    
-    if aerodynamics.flap_flag:
-        surrogates.dCM_ddelta_f     = interpolate.interp1d(mach_data,training.dCM_ddelta_f     ,kind = 'linear',   bounds_error=False, fill_value='extrapolate') 
+    if aerodynamics.slat_flag:    
+        surrogates.dCM_ddelta_s     = interpolate.interp1d(mach_data,training.dCM_ddelta_s     ,kind = 'linear',   bounds_error=False, fill_value='extrapolate') 
+        surrogates.dClift_ddelta_s  = interpolate.interp1d(mach_data,training.dClift_ddelta_s  ,kind = 'linear',   bounds_error=False, fill_value='extrapolate')             
+     
      
     return surrogates
  
@@ -228,6 +225,10 @@ def no_surrogate(aerodynamics, training, vehicle):
     
     if aerodynamics.flap_flag:
         surrogates.dClift_ddelta_f  = None 
-        surrogates.dCM_ddelta_f     = None  
+        surrogates.dCM_ddelta_f     = None 
+    
+    if aerodynamics.slat_flag:
+        surrogates.dClift_ddelta_s  = None 
+        surrogates.dCM_ddelta_s     = None          
    
     return surrogates 

@@ -76,6 +76,7 @@ def train_model(aerodynamics,Mach, vehicle):
     delta_e_0 = 0
     delta_r_0 = 0
     delta_f_0 = 0
+    delta_s_0 = 0
     for wing in vehicle.wings: 
         for control_surface in wing.control_surfaces: 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:
@@ -95,10 +96,14 @@ def train_model(aerodynamics,Mach, vehicle):
                 len_d_r                    = len(delta_r)  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:
                 delta_f_0                   =  control_surface.deflection
-                delta_f                     = aerodynamics.training.rudder_deflection
+                delta_f                     = aerodynamics.training.flap_deflection
                 len_d_f                     = len(delta_f)  
                 aerodynamics.flap_flag      = True
-                
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:
+                delta_s_0                   =  control_surface.deflection
+                delta_s                     = aerodynamics.training.slat_deflection
+                len_d_s                     = len(delta_s)  
+                aerodynamics.slat_flag      = True 
             control_surface.deflection = 0 # set all control surfaces to be 0
              
     u              = aerodynamics.training.u
@@ -432,6 +437,29 @@ def train_model(aerodynamics,Mach, vehicle):
                 training.dCM_ddelta_f     = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
                 control_surface.deflection = delta_f_0
                 
+            # --------------------------------------------------------------------------------------------------------------
+            # Slat
+            # --------------------------------------------------------------------------------------------------------------      
+            if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat: 
+                CM_d_s         = np.zeros((len_d_s,len_Mach)) 
+                Clift_d_s      = np.zeros((len_d_s,len_Mach))   
+                for s_i in range(len_d_s): 
+                    Machs                                           = np.atleast_2d(np.repeat(Mach,1)).T         
+                    conditions                                      = RCAIDE.Framework.Mission.Common.Results()
+                    conditions.expand_rows(len(Mach),override=False)
+                    conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
+                    conditions.freestream.mach_number               = Machs    
+                    control_surface.deflection = delta_s[s_i]
+                    VLM_results  = VLM(conditions,settings,vehicle)
+                    CM_res       = VLM_results.CM
+                    Clift_res    = VLM_results.CLift 
+                    Clift_d_s[s_i,:]      = Clift_res[:,0]  - Clift_alpha_0[0,:]  
+                    CM_d_s[s_i,:]         = CM_res[:,0]   - CM_alpha_0[0,:]            
+                training.dClift_ddelta_s  = (Clift_d_s[0,:] - Clift_d_s[1,:]) / (delta_s[0] - delta_s[1]) 
+                training.dCM_ddelta_s     = (CM_d_s[0,:] - CM_d_s[1,:]) / (delta_s[0] - delta_s[1])  
+                control_surface.deflection = delta_s_0
+                
     # reset vortex distribution after training 
     settings.vortex_distribution = VD_0
     return training 
@@ -599,7 +627,13 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     if aerodynamics.flap_flag:  
         training.dClift_ddelta_f = np.array([training_subsonic.dClift_ddelta_f[-1] , training_subsonic.dClift_ddelta_f[0]]) 
         training.dCM_ddelta_f    = np.array([training_subsonic.dCM_ddelta_f[-1]    , training_subsonic.dCM_ddelta_f[0]   ])
-         
+    
+    # --------------------------------------------------------------------------------------------------------------
+    # Slat
+    # -------------------------------------------------------------------------------------------------------------- 
+    if aerodynamics.slat_flag:  
+        training.dClift_ddelta_s = np.array([training_subsonic.dClift_ddelta_s[-1] , training_subsonic.dClift_ddelta_s[0]]) 
+        training.dCM_ddelta_s    = np.array([training_subsonic.dCM_ddelta_s[-1]    , training_subsonic.dCM_ddelta_s[0]   ])         
     return training
 
 
