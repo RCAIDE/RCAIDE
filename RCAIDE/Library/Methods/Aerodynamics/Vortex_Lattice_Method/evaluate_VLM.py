@@ -47,10 +47,10 @@ def evaluate_surrogate(state,settings,vehicle):
     Beta             = np.atleast_2d(conditions.aerodynamics.angles.beta)    
     Mach             = np.atleast_2d(conditions.freestream.mach_number)  
     ones_row         = np.ones_like(AoA)  
-    hsub_min         = aerodynamics.hsub_min
-    hsub_max         = aerodynamics.hsub_max
-    hsup_min         = aerodynamics.hsup_min
-    hsup_max         = aerodynamics.hsup_max
+    hsub_min         = aerodynamics.surrogates.subsonic_smoothing_min   
+    hsub_max         = aerodynamics.surrogates.subsonic_smoothing_max   
+    hsup_min         = aerodynamics.surrogates.supersonic_smoothing_min 
+    hsup_max         = aerodynamics.surrogates.supersonic_smoothing_max 
 
     # Spline for Subsonic-to-Transonic-to-Supersonic Regimes
     sub_trans_spline = Cubic_Spline_Blender(hsub_min,hsub_max)
@@ -63,12 +63,14 @@ def evaluate_surrogate(state,settings,vehicle):
     results_alpha = compute_coefficients(sub_sur.Clift_alpha,  sub_sur.Cdrag_induced_alpha,  sub_sur.CX_alpha,  sub_sur.CY_alpha,  sub_sur.CZ_alpha,  sub_sur.CL_alpha,  sub_sur.CM_alpha,   sub_sur.CN_alpha,
                                          trans_sur.Clift_alpha,trans_sur.Cdrag_induced_alpha,trans_sur.CX_alpha,trans_sur.CY_alpha,trans_sur.CZ_alpha,trans_sur.CL_alpha,trans_sur.CM_alpha, trans_sur.CN_alpha,
                                          sup_sur.Clift_alpha,  sup_sur.Cdrag_induced_alpha,  sup_sur.CX_alpha,  sup_sur.CY_alpha,  sup_sur.CZ_alpha,  sup_sur.CL_alpha,  sup_sur.CM_alpha,   sup_sur.CN_alpha,
+                                         sub_sur.Clift_spanwise, trans_sur.Clift_spanwise, sup_sur.Clift_spanwise,
                                          h_sub,h_sup,Mach, pts_alpha)      
     Clift_alpha             = results_alpha.Clift   
     Cdrag_induced_alpha     = results_alpha.Cdrag
     CM                      = results_alpha.CM
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
+    conditions.aerodynamics.coefficients.lift.inviscid.spanwise =  results_alpha.Clift_spanwise
     
     for wing in vehicle.wings:   
         inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha)
@@ -343,8 +345,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(state,settings,vehicle)
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)  
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(state,settings,vehicle) 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(state,settings,vehicle)   
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(state,settings,vehicle)
     
@@ -438,7 +439,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(equilibrium_state,settings,vehicle)  
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(equilibrium_state,settings,vehicle) 
+    # RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(equilibrium_state,settings,vehicle) 
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(equilibrium_state,settings,vehicle)
     
@@ -1009,7 +1010,7 @@ def compute_stability_derivative(sub_sur,trans_sur,sup_sur,h_sub,h_sup,Mach):
 
 def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_sur_CZ,sub_sur_CL,sub_sur_CM,sub_sur_CN,
                          trans_sur_Clift,trans_sur_Cdrag,trans_sur_CX,trans_sur_CY,trans_sur_CZ,trans_sur_CL,trans_sur_CM,trans_sur_CN,
-                         sup_sur_Clift,sup_sur_Cdrag,sup_sur_CX,sup_sur_CY,sup_sur_CZ,sup_sur_CL,sup_sur_CM,sup_sur_CN,
+                         sup_sur_Clift,sup_sur_Cdrag,sup_sur_CX,sup_sur_CY,sup_sur_CZ,sup_sur_CL,sup_sur_CM,sup_sur_CN, sub_sur_cl_spanwise, trans_sur_cl_spanwise, sup_sur_cl_spanwise,
                          h_sub,h_sup,Mach, pts): 
     
 
@@ -1021,7 +1022,7 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     sub_CZ        = np.atleast_2d(sub_sur_CZ(pts)).T     
     sub_CL        = np.atleast_2d(sub_sur_CL(pts)).T     
     sub_CM        = np.atleast_2d(sub_sur_CM(pts)).T     
-    sub_CN        = np.atleast_2d(sub_sur_CN(pts)).T
+    sub_CN        = np.atleast_2d(sub_sur_CN(pts)).T 
     
     
     if trans_sur_Clift ==  None and  sup_sur_Clift == None:
@@ -1069,6 +1070,7 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     results.CL    = h_sub(Mach)*sub_CL    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CL     + h_sup(Mach)*sup_CL   
     results.CM    = h_sub(Mach)*sub_CM    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CM     + h_sup(Mach)*sup_CM   
     results.CN    = h_sub(Mach)*sub_CN    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CN     + h_sup(Mach)*sup_CN
+    results.Clift_spanwise    = h_sub(Mach)*sub_sur_cl_spanwise(pts)    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_sur_cl_spanwise(pts)     + h_sup(Mach)*sup_sur_cl_spanwise(pts)
 
     return results
 

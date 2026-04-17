@@ -112,15 +112,15 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.rudder_flag                                            = False 
         self.elevator_flag                                          = False 
         self.slat_flag                                              = False
-                         
-        # blending function                  
-        self.hsub_min                                               = 0.85
-        self.hsub_max                                               = 0.95
-        self.hsup_min                                               = 1.05
-        self.hsup_max                                               = 1.15  
                                       
         # surrogoate models                                  
         self.surrogates                                             = Data() 
+                         
+        # blending function                  
+        self.surrogates.subsonic_smoothing_min                      = 0.85
+        self.surrogates.subsonic_smoothing_max                      = 0.95
+        self.surrogates.supersonic_smoothing_min                    = 1.05
+        self.surrogates.supersonic_smoothing_max                    = 1.15  
                  
         # build the evaluation process                 
         compute                                                     = Process() 
@@ -142,8 +142,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         compute.drag.cooling                                        = Common.Drag.cooling_drag        
         compute.drag.compressibility                                = Common.Drag.compressibility_drag 
         compute.drag.miscellaneous                                  = Common.Drag.miscellaneous_drag 
-        compute.drag.form                                           = Common.Drag.form_drag  
-        compute.drag.wave                                           = Common.Drag.wave_drag
+        compute.drag.form                                           = Common.Drag.form_drag   
         compute.drag.trim                                           = Common.Drag.trim_drag 
         compute.drag.total                                          = Common.Drag.total_drag
         self.process.compute                                        = compute

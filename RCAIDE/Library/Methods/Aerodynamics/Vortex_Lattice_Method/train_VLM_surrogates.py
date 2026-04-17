@@ -131,7 +131,7 @@ def train_model(aerodynamics,Mach, vehicle):
     conditions.freestream.mach_number               = Machs
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
    
-    clean_wing_vehicle = deepcopy(vehicle) # Double check this is correct
+    clean_wing_vehicle = deepcopy(vehicle)
     for wing in clean_wing_vehicle.wings:
         wing.control_surfaces = []
     VLM_results = VLM(conditions,settings,clean_wing_vehicle)
@@ -143,8 +143,10 @@ def train_model(aerodynamics,Mach, vehicle):
     CZ_res           = VLM_results.CZ
     CL_res           = VLM_results.CL
     CM_res           = VLM_results.CM
-    CN_res           = VLM_results.CN        
-    
+    CN_res           = VLM_results.CN    
+
+
+    training.Clift_spanwise            = VLM_results.sectional_CLift.reshape(len_Mach, len_AoA, np.shape(VLM_results.sectional_CLift)[1]).transpose(1, 0, 2)
     Clift_alpha           = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
     Cdrag_induced_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
     CX_alpha              = np.reshape(CX_res,(len_Mach,len_AoA)).T 
@@ -496,6 +498,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     # Alpha
     # --------------------------------------------------------------------------------------------------------------  
     Clift_alpha           =  np.concatenate((training_subsonic.Clift_alpha[:,-1][:,None] , training_supersonic.Clift_alpha[:,0][:,None] ), axis = 1)
+    Clift_spanwise        =np.concatenate((training_subsonic.Clift_spanwise[:,-1][:,None] , training_supersonic.Clift_spanwise[:,0][:,None] ), axis = 1)
     Cdrag_induced_alpha   =  np.concatenate((training_subsonic.Cdrag_induced_alpha[:,-1][:,None]  , training_supersonic.Cdrag_induced_alpha[:,0][:,None] ), axis = 1) 
     CX_alpha              =  np.concatenate((training_subsonic.CX_alpha[:,-1][:,None]    , training_supersonic.CX_alpha[:,0][:,None] ), axis = 1)   
     CY_alpha              =  np.concatenate((training_subsonic.CY_alpha[:,-1][:,None]    , training_supersonic.CY_alpha[:,0][:,None] ), axis = 1)   
@@ -564,6 +567,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     training.CM_alpha                  = CM_alpha  
     training.CN_alpha                  = CN_alpha
     training.CM_0                      = CM_0  
+    training.Clift_spanwise            = Clift_spanwise
     
     
     training.Clift_beta                = Clift_beta
