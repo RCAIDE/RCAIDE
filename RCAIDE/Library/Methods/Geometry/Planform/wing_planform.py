@@ -297,6 +297,24 @@ def wing_planform(wing):
 
         # estimate LEMAC
         wing.LEMAC =  wing.origin[0][0] + np.tan(wing.sweeps.leading_edge) * y_coord  
+
+        segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
+        segment.tag                           = 'root'
+        segment.percent_span_location         = 0.0
+        segment.root_chord_percent            = 1.0 
+        segment.sweeps.leading_edge           = le_sweep
+        segment.dihedral_outboard             = dihedral
+        segment.thickness_to_chord            = t_c_w
+        wing.append_segment(segment)  
+
+        segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
+        segment.tag                           = 'tip'
+        segment.percent_span_location         = 1.0
+        segment.root_chord_percent            = taper  
+        segment.thickness_to_chord            = t_c_w
+        wing.append_segment(segment)     
+
+        segment_properties(wing) 
       
     # control surface  
     taper = wing.taper 
