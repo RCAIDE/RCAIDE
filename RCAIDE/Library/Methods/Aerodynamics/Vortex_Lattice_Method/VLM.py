@@ -80,13 +80,8 @@ def VLM(conditions,settings,geometry):
         fineness.nose                          [Unitless]
         fineness.tail                          [Unitless]
         
-    settings.number_of_spanwise_vortices       [Unitless]  <---|
-    settings.number_of_chordwise_vortices      [Unitless]  <---|
-                                                               |--Either/or; see generate_vortex_distribution() for more details
-    settings.wing_spanwise_vortices            [Unitless]  <---|
-    settings.wing_chordwise_vortices           [Unitless]  <---|
-    settings.fuselage_spanwise_vortices        [Unitless]  <---|
-    settings.fuselage_chordwise_vortices       [Unitless]  <---|  
+    settings.number_of_spanwise_vortices       [Unitless]   
+    settings.number_of_chordwise_vortices      [Unitless]   
        
     settings.use_surrogate                     [Unitless]
     settings.propeller_wake_model              [Unitless] 

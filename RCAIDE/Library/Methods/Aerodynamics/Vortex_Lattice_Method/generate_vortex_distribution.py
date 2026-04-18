@@ -278,11 +278,7 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     
     Of the following settings, the user should define either the number_ atrributes or the wing_ and fuse_ attributes.
     settings.number_of_spanwise_vortices             - a base number of vortices to be applied to both wings and fuselages
-    settings.number_of_chordwise_vortices            - a base number of vortices to be applied to both wings and fuselages
-    settings.wing_spanwise_vortices               - the number of vortices to be applied to only the wings
-    settings.wing_chordwise_vortices              - the number of vortices to be applied to only the wings
-    settings.fuselage_spanwise_vortices           - the number of vortices to be applied to only the fuslages
-    settings.fuselage_chordwise_vortices          - the number of vortices to be applied to only the fuselages 
+    settings.number_of_chordwise_vortices            - a base number of vortices to be applied to both wings and fuselages 
        
     Outputs:                                   
     VD - vehicle vortex distribution              [Unitless] 
