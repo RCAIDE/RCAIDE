@@ -64,10 +64,11 @@ def evaluate_surrogate(state,settings,vehicle):
                                          trans_sur.Clift_alpha,trans_sur.Cdrag_induced_alpha,trans_sur.CX_alpha,trans_sur.CY_alpha,trans_sur.CZ_alpha,trans_sur.CL_alpha,trans_sur.CM_alpha, trans_sur.CN_alpha,
                                          sup_sur.Clift_alpha,  sup_sur.Cdrag_induced_alpha,  sup_sur.CX_alpha,  sup_sur.CY_alpha,  sup_sur.CZ_alpha,  sup_sur.CL_alpha,  sup_sur.CM_alpha,   sup_sur.CN_alpha,
                                          sub_sur.Clift_spanwise, trans_sur.Clift_spanwise, sup_sur.Clift_spanwise,
-                                         h_sub,h_sup,Mach, pts_alpha)      
-    Clift_alpha             = results_alpha.Clift   
-    Cdrag_induced_alpha     = results_alpha.Cdrag
-    CM                      = results_alpha.CM
+                                         h_sub,h_sup,Mach, pts_alpha)   
+      
+    conditions.aerodynamics.coefficients.lift.inviscid.total    = results_alpha.Clift   
+    conditions.aerodynamics.coefficients.drag.induced.inviscid  = results_alpha.Cdrag 
+    conditions.static_stability.coefficients.M                  = results_alpha.CM
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
     conditions.aerodynamics.coefficients.lift.inviscid.spanwise =  results_alpha.Clift_spanwise
@@ -168,7 +169,6 @@ def evaluate_surrogate(state,settings,vehicle):
      
     conditions.static_stability.coefficients.Y      = conditions.static_stability.derivatives.CY_beta * Beta
     conditions.static_stability.coefficients.L      = conditions.static_stability.derivatives.CL_beta * Beta 
-    conditions.static_stability.coefficients.M      = CM  
     conditions.static_stability.coefficients.N      = conditions.static_stability.derivatives.CN_beta * Beta
  
     # -----------------------------------------------------------------------------------------------------------------------
@@ -190,10 +190,16 @@ def evaluate_surrogate(state,settings,vehicle):
             conditions.static_stability.derivatives.CN_delta_a     = compute_stability_derivative(sub_sur.dCN_ddelta_a     ,trans_sur.dCN_ddelta_a     ,sup_sur.dCN_ddelta_a     ,h_sub,h_sup,Mach) 
         else:
             conditions.static_stability.derivatives.CN_delta_a     = aerodynamics.stability_derivatives.CN_delta_a* ones_row
+            
+        if aerodynamics.stability_derivatives.Cdrag_delta_a == None:
+            conditions.static_stability.derivatives.Cdrag_delta_a     = compute_stability_derivative(sub_sur.dCdrag_ddelta_a     ,trans_sur.dCdrag_ddelta_a     ,sup_sur.dCdrag_ddelta_a     ,h_sub,h_sup,Mach)
+        else:
+            conditions.static_stability.derivatives.Cdrag_delta_a = aerodynamics.stability_derivatives.Cdrag_delta_a* ones_row
         
         conditions.static_stability.coefficients.Y                                   += conditions.static_stability.derivatives.CY_delta_a * conditions.control_surfaces.aileron.deflection  
         conditions.static_stability.coefficients.L                                   += conditions.static_stability.derivatives.CL_delta_a * conditions.control_surfaces.aileron.deflection
         conditions.static_stability.coefficients.N                                   += conditions.static_stability.derivatives.CN_delta_a * conditions.control_surfaces.aileron.deflection
+        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_a * conditions.control_surfaces.aileron.deflection
                      
         conditions.control_surfaces.aileron.static_stability.coefficients.Y          = conditions.static_stability.derivatives.CY_delta_a * conditions.control_surfaces.aileron.deflection               
         conditions.control_surfaces.aileron.static_stability.coefficients.L          = conditions.static_stability.derivatives.CL_delta_a * conditions.control_surfaces.aileron.deflection          
@@ -209,11 +215,17 @@ def evaluate_surrogate(state,settings,vehicle):
         if aerodynamics.stability_derivatives.Clift_delta_e == None:
             conditions.static_stability.derivatives.Clift_delta_e = compute_stability_derivative(sub_sur.dClift_ddelta_e     ,trans_sur.dClift_ddelta_e     ,sup_sur.dClift_ddelta_e     ,h_sub,h_sup,Mach)
         else:
-            conditions.static_stability.derivatives.Clift_delta_e = aerodynamics.stability_derivatives.Clift_delta_e* ones_row 
+            conditions.static_stability.derivatives.Clift_delta_e = aerodynamics.stability_derivatives.Clift_delta_e* ones_row
+    
+        if aerodynamics.stability_derivatives.Cdrag_delta_e == None:
+            conditions.static_stability.derivatives.Cdrag_delta_e     = compute_stability_derivative(sub_sur.dCdrag_ddelta_e    ,trans_sur.dCdrag_ddelta_e     ,sup_sur.dCdrag_ddelta_e     ,h_sub,h_sup,Mach)
+        else:
+            conditions.static_stability.derivatives.Cdrag_delta_e = aerodynamics.stability_derivatives.Cdrag_delta_e* ones_row
+                        
         
         conditions.static_stability.coefficients.M                              += conditions.static_stability.derivatives.CM_delta_e * conditions.control_surfaces.elevator.deflection   
+        #conditions.aerodynamics.coefficients.drag.induced.inviscid              += conditions.static_stability.derivatives.Cdrag_delta_e * conditions.control_surfaces.elevator.deflection 
         conditions.control_surfaces.elevator.static_stability.coefficients.M     = conditions.static_stability.derivatives.CM_delta_e * conditions.control_surfaces.elevator.deflection   
-    
     # Rudder  
     if aerodynamics.rudder_flag:  
         if aerodynamics.stability_derivatives.CY_delta_r == None:
@@ -229,11 +241,17 @@ def evaluate_surrogate(state,settings,vehicle):
         if aerodynamics.stability_derivatives.CN_delta_r == None:
             conditions.static_stability.derivatives.CN_delta_r = compute_stability_derivative(sub_sur.dCN_ddelta_r ,trans_sur.dCN_ddelta_r     ,sup_sur.dCN_ddelta_r     ,h_sub,h_sup,Mach) 
         else:
-            conditions.static_stability.derivatives.CN_delta_r = aerodynamics.stability_derivatives.CN_delta_r* ones_row 
+            conditions.static_stability.derivatives.CN_delta_r = aerodynamics.stability_derivatives.CN_delta_r* ones_row
+    
+        if aerodynamics.stability_derivatives.Cdrag_delta_r == None:
+            conditions.static_stability.derivatives.Cdrag_delta_r     = compute_stability_derivative(sub_sur.dCdrag_ddelta_r    ,trans_sur.dCdrag_ddelta_r     ,sup_sur.dCdrag_ddelta_r     ,h_sub,h_sup,Mach)
+        else:
+            conditions.static_stability.derivatives.Cdrag_delta_r = aerodynamics.stability_derivatives.Cdrag_delta_r* ones_row            
         
         conditions.static_stability.coefficients.Y                               += conditions.static_stability.derivatives.CY_delta_r * conditions.control_surfaces.rudder.deflection  
         conditions.static_stability.coefficients.L                               += conditions.static_stability.derivatives.CL_delta_r * conditions.control_surfaces.rudder.deflection
         conditions.static_stability.coefficients.N                               += conditions.static_stability.derivatives.CN_delta_r * conditions.control_surfaces.rudder.deflection
+        #conditions.aerodynamics.coefficients.drag.induced.inviscid               += conditions.static_stability.derivatives.Cdrag_delta_r* conditions.control_surfaces.rudder.deflection 
         conditions.control_surfaces.rudder.static_stability.coefficients.Y        = conditions.static_stability.derivatives.CY_delta_r * conditions.control_surfaces.rudder.deflection          
         conditions.control_surfaces.rudder.static_stability.coefficients.L        = conditions.static_stability.derivatives.CL_delta_r * conditions.control_surfaces.rudder.deflection        
         conditions.control_surfaces.rudder.static_stability.coefficients.N        = conditions.static_stability.derivatives.CN_delta_r * conditions.control_surfaces.rudder.deflection       
@@ -252,11 +270,17 @@ def evaluate_surrogate(state,settings,vehicle):
             conditions.static_stability.derivatives.Clift_delta_f     = compute_stability_derivative(sub_sur.dClift_ddelta_f     ,trans_sur.dClift_ddelta_f     ,sup_sur.dClift_ddelta_f     ,h_sub,h_sup,Mach)
         else:
             conditions.static_stability.derivatives.Clift_delta_f = aerodynamics.stability_derivatives.Clift_delta_f* ones_row 
-
+    
+        if aerodynamics.stability_derivatives.Cdrag_delta_f == None:
+            conditions.static_stability.derivatives.Cdrag_delta_f     = compute_stability_derivative(sub_sur.dCdrag_ddelta_f   ,trans_sur.dCdrag_ddelta_f     ,sup_sur.dCdrag_ddelta_f     ,h_sub,h_sup,Mach)
+        else:
+            conditions.static_stability.derivatives.Cdrag_delta_f = aerodynamics.stability_derivatives.Cdrag_delta_f* ones_row
+            
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection  
-        conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
-        conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
+        conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection 
+        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_f* conditions.control_surfaces.flap.deflection  
         conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
+        conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
         
     
     # -----------------------------------------------------------------------------------------------------------------------
@@ -272,18 +296,18 @@ def evaluate_surrogate(state,settings,vehicle):
             conditions.static_stability.derivatives.Clift_delta_s     = compute_stability_derivative(sub_sur.dClift_ddelta_s     ,trans_sur.dClift_ddelta_s     ,sup_sur.dClift_ddelta_s     ,h_sub,h_sup,Mach)
         else:
             conditions.static_stability.derivatives.Clift_delta_s = aerodynamics.stability_derivatives.Clift_delta_s* ones_row 
-
+     
+        if aerodynamics.stability_derivatives.Cdrag_delta_s == None:
+            conditions.static_stability.derivatives.Cdrag_delta_s     = compute_stability_derivative(sub_sur.dCdrag_ddelta_s   ,trans_sur.dCdrag_ddelta_s     ,sup_sur.dCdrag_ddelta_s     ,h_sub,h_sup,Mach)
+        else:
+            conditions.static_stability.derivatives.Cdrag_delta_s = aerodynamics.stability_derivatives.Cdrag_delta_s* ones_row
+                
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_s * conditions.control_surfaces.slat.deflection  
         conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_s * conditions.control_surfaces.slat.deflection  
-        conditions.control_surfaces.slat.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_s * conditions.control_surfaces.slat.deflection      
+        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_s* conditions.control_surfaces.slat.deflection  
         conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_s * conditions.control_surfaces.slat.deflection
-        
-    
-    # -----------------------------------------------------------------------------------------------------------------------
-    # Pack Aero Results 
-    # -----------------------------------------------------------------------------------------------------------------------   
-    conditions.aerodynamics.coefficients.lift.inviscid.total    = Clift_alpha
-    conditions.aerodynamics.coefficients.drag.induced.inviscid  = Cdrag_induced_alpha        
+        conditions.control_surfaces.slat.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_s * conditions.control_surfaces.slat.deflection      
+              
     return
 
 def evaluate_no_surrogate(state,settings,vehicle):

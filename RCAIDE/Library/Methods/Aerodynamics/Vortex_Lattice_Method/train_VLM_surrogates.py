@@ -369,7 +369,7 @@ def train_model(aerodynamics,Mach, vehicle):
                 training.dCY_ddelta_a      = (CY_d_a[0,:] - CY_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
                 training.dCL_ddelta_a      = ((CL_d_a[0,:] - CL_d_a[1,:]) / (delta_a[0] - delta_a[1]))
                 training.dCN_ddelta_a      = (CN_d_a[0,:] - CN_d_a[1,:]) / (delta_a[0] - delta_a[1]) 
-                training.dCdrag_ddelta_a   = abs((Cdrag_d_a[0,:] - Cdrag_d_a[1,:]) / (delta_a[0] - delta_a[1]))
+                training.dCdrag_ddelta_a   = (Cdrag_d_a[0,:] - Cdrag_d_a[1,:]) / (delta_a[0] - delta_a[1])
                 control_surface.deflection = delta_a_0
 
             # --------------------------------------------------------------------------------------------------------------
@@ -397,7 +397,7 @@ def train_model(aerodynamics,Mach, vehicle):
                     
                 training.dClift_ddelta_e   = ((Clift_d_e[0,:] - Clift_d_e[1,:]) / (delta_e[0] - delta_e[1]))
                 training.dCM_ddelta_e      = (CM_d_e[0,:] - CM_d_e[1,:]) / (delta_e[0] - delta_e[1])  
-                training.dCdrag_ddelta_e   = abs(((Cdrag_d_e[0,:] - Cdrag_d_e[1,:]) / (delta_e[0] - delta_e[1])))
+                training.dCdrag_ddelta_e   = ((Cdrag_d_e[0,:] - Cdrag_d_e[1,:]) / (delta_e[0] - delta_e[1]))
                 control_surface.deflection = delta_e_0
     
             # --------------------------------------------------------------------------------------------------------------
@@ -428,7 +428,7 @@ def train_model(aerodynamics,Mach, vehicle):
                 training.dCY_ddelta_r      = (CY_d_r[0,:] - CY_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
                 training.dCL_ddelta_r      = (CL_d_r[0,:] - CL_d_r[1,:]) / (delta_r[0] - delta_r[1])  
                 training.dCN_ddelta_r      = (CN_d_r[0,:] - CN_d_r[1,:]) / (delta_r[0] - delta_r[1]) 
-                training.dCdrag_ddelta_r   = abs((Cdrag_d_r[0,:] - Cdrag_d_r[1,:]) / (delta_r[0] - delta_r[1]))
+                training.dCdrag_ddelta_r   = (Cdrag_d_r[0,:] - Cdrag_d_r[1,:]) / (delta_r[0] - delta_r[1])
                 control_surface.deflection = delta_r_0
                     
             # --------------------------------------------------------------------------------------------------------------
@@ -456,7 +456,7 @@ def train_model(aerodynamics,Mach, vehicle):
                       
                 training.dClift_ddelta_f   = (Clift_d_f[0,:] - Clift_d_f[1,:]) / (delta_f[0] - delta_f[1]) 
                 training.dCM_ddelta_f      = (CM_d_f[0,:] - CM_d_f[1,:]) / (delta_f[0] - delta_f[1])  
-                training.dCdrag_ddelta_f   = abs((Cdrag_d_f[0,:] - Cdrag_d_f[1,:]) / (delta_f[0] - delta_f[1]))
+                training.dCdrag_ddelta_f   = (Cdrag_d_f[0,:] - Cdrag_d_f[1,:]) / (delta_f[0] - delta_f[1])
                 control_surface.deflection = delta_f_0
                 
             # --------------------------------------------------------------------------------------------------------------
@@ -483,7 +483,7 @@ def train_model(aerodynamics,Mach, vehicle):
                     CM_d_s[s_i,:]         = CM_res[:,0]   - CM_alpha_0[0,:]            
                 training.dClift_ddelta_s  = (Clift_d_s[0,:] - Clift_d_s[1,:]) / (delta_s[0] - delta_s[1]) 
                 training.dCM_ddelta_s     = (CM_d_s[0,:] - CM_d_s[1,:]) / (delta_s[0] - delta_s[1])  
-                training.dCdrag_ddelta_s  = abs((Cdrag_d_s[0,:] - Cdrag_d_s[1,:]) / (delta_s[0] - delta_s[1]))
+                training.dCdrag_ddelta_s  = (Cdrag_d_s[0,:] - Cdrag_d_s[1,:]) / (delta_s[0] - delta_s[1])
                 control_surface.deflection = delta_s_0
                 
     # reset vortex distribution after training 

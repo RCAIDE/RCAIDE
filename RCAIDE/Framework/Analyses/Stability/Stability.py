@@ -103,7 +103,12 @@ class Stability(Analysis):
         self.stability_derivatives.CM_delta_f                            = None
         self.stability_derivatives.Clift_delta_f                         = None
         self.stability_derivatives.CM_delta_s                            = None
-        self.stability_derivatives.Clift_delta_s                         = None      
+        self.stability_derivatives.Clift_delta_s                         = None    
+        self.stability_derivatives.Cdrag_delta_a                         = None 
+        self.stability_derivatives.Cdrag_delta_r                         = None 
+        self.stability_derivatives.Cdrag_delta_e                         = None 
+        self.stability_derivatives.Cdrag_delta_f                         = None 
+        self.stability_derivatives.Cdrag_delta_s                         = None    
  
         return
 

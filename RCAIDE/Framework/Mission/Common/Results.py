@@ -301,6 +301,11 @@ class Results(Conditions):
         self.static_stability.derivatives.Clift_delta_r                        = ones_1col * 0
         self.static_stability.derivatives.Clift_delta_f                        = ones_1col * 0
         self.static_stability.derivatives.Clift_delta_s                        = ones_1col * 0
+        self.static_stability.derivatives.Cdrag_delta_a                        = ones_1col * 0
+        self.static_stability.derivatives.Cdrag_delta_e                        = ones_1col * 0
+        self.static_stability.derivatives.Cdrag_delta_r                        = ones_1col * 0
+        self.static_stability.derivatives.Cdrag_delta_f                        = ones_1col * 0
+        self.static_stability.derivatives.Cdrag_delta_s                        = ones_1col * 0
         self.static_stability.derivatives.Cdrag_induced_alpha                  = ones_1col * 0
         self.static_stability.derivatives.Cdrag_induced_beta                   = ones_1col * 0
         self.static_stability.derivatives.Cdrag_induced_delta_a                = ones_1col * 0
