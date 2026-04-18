@@ -345,7 +345,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
     conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
     conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
-    conditions.aerodynamics.coefficients.differential_surface_pressure             = VLM_results.CP
+    conditions.aerodynamics.coefficients.differential_surface_pressure= VLM_results.CP
     conditions.aerodynamics.angles.induced                            = VLM_results.alpha_induced    
     conditions.aerodynamics.spanwise_stations                         = VLM_results.spanwise_stations
 
@@ -791,10 +791,10 @@ def evaluate_no_surrogate(state,settings,vehicle):
     conditions.static_stability.derivatives.CM_r     = (CM_r_prime      - CM_0) / (delta_rate)  
     conditions.static_stability.derivatives.CN_r     = (CN_r_prime      - CN_0) / (delta_rate) 
  
-    # only compute derivative if control surface exists 
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)  
     for wing in vehicle.wings: 
         for control_surface in wing.control_surfaces:  
+            # only compute derivative if control surface exists 
+            pertubation_conditions                             = deepcopy(equilibrium_conditions)  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron:  
                 vehicle.wings[wing.tag].control_surfaces.aileron.deflection =  delta_ctrl_surf
                 
@@ -835,11 +835,8 @@ def evaluate_no_surrogate(state,settings,vehicle):
                 conditions.static_stability.derivatives.CZ_delta_a    = dCZ_ddelta_a    
                 conditions.static_stability.derivatives.CL_delta_a    = dCL_ddelta_a    
                 conditions.static_stability.derivatives.CM_delta_a    = dCM_ddelta_a    
-                conditions.static_stability.derivatives.CN_delta_a    = dCN_ddelta_a
-      
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)  
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
+                conditions.static_stability.derivatives.CN_delta_a    = dCN_ddelta_a 
+  
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator:  
                 vehicle.wings[wing.tag].control_surfaces.elevator.deflection =  delta_ctrl_surf
 
@@ -882,9 +879,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
                 conditions.static_stability.derivatives.CM_delta_e    = dCM_ddelta_e    
                 conditions.static_stability.derivatives.CN_delta_e    = dCN_ddelta_e   
      
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)  
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
+ 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder:  
                 vehicle.wings[wing.tag].control_surfaces.rudder.deflection =  delta_ctrl_surf 
                 VLM_results = VLM(pertubation_conditions,settings,vehicle)
@@ -925,10 +920,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
                 conditions.static_stability.derivatives.CM_delta_r    = dCM_ddelta_r    
                 conditions.static_stability.derivatives.CN_delta_r    = dCN_ddelta_r
      
-    pertubation_conditions                             = deepcopy(equilibrium_conditions)
-
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
+ 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Flap:  
                 vehicle.wings[wing.tag].control_surfaces.flap.deflection =  delta_ctrl_surf 
                 VLM_results = VLM(pertubation_conditions,settings,vehicle)
@@ -969,10 +961,8 @@ def evaluate_no_surrogate(state,settings,vehicle):
                 conditions.static_stability.derivatives.CZ_delta_f    = dCZ_ddelta_f    
                 conditions.static_stability.derivatives.CL_delta_f    = dCL_ddelta_f    
                 conditions.static_stability.derivatives.CM_delta_f    = dCM_ddelta_f    
-                conditions.static_stability.derivatives.CN_delta_f    = dCN_ddelta_f
-            
-    for wing in vehicle.wings: 
-        for control_surface in wing.control_surfaces:  
+                conditions.static_stability.derivatives.CN_delta_f    = dCN_ddelta_f 
+ 
             if type(control_surface) == RCAIDE.Library.Components.Wings.Control_Surfaces.Slat:  
                 vehicle.wings[wing.tag].control_surfaces.slat.deflection =  delta_ctrl_surf 
                 VLM_results = VLM(pertubation_conditions,settings,vehicle)

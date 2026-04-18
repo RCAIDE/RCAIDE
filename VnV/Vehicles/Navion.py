@@ -104,19 +104,7 @@ def vehicle_setup():
     wing.xz_plane_symmetric               = True
     wing.high_lift                        = True 
     wing.winglet_fraction                 = 0.0  
-    wing.dynamic_pressure_ratio           = 1.0    
-
-    ospath                                = os.path.abspath(__file__)
-    separator                             = os.path.sep
-    rel_path                              = os.path.dirname(ospath) + separator  
-
-    tip_airfoil                           = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    tip_airfoil.NACA_4_Series_code        = '6410'      
-    tip_airfoil.coordinate_file           = rel_path + 'Airfoils' + separator + 'NACA_6410.txt' 
-   
-    root_airfoil                          = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    root_airfoil.NACA_4_Series_code       = '4415'   
-    root_airfoil.coordinate_file          = rel_path + 'Airfoils' + separator + 'NACA_4415.txt' 
+    wing.dynamic_pressure_ratio           = 1.0     
     
     # Wing Segments 
     segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
@@ -127,6 +115,9 @@ def vehicle_setup():
     segment.dihedral_outboard             = 7.5 * Units.degrees  
     segment.sweeps.quarter_chord          = 0.165 * Units.degrees  
     segment.thickness_to_chord            = .15 
+    root_airfoil                          = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    root_airfoil.NACA_4_Series_code       = '4415'           
+    segment.append_airfoil(root_airfoil)
     wing.append_segment(segment)  
          
     segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
@@ -137,6 +128,8 @@ def vehicle_setup():
     segment.dihedral_outboard             = 0 * Units.degrees
     segment.sweeps.quarter_chord          = 0 * Units.degrees  
     segment.thickness_to_chord            = .12
+    tip_airfoil                           = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
+    tip_airfoil.NACA_4_Series_code        = '6410'       
     segment.append_airfoil(tip_airfoil)
     wing.append_segment(segment)     
                                         

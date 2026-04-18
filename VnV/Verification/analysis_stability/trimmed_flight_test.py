@@ -112,8 +112,7 @@ def base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
-    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
-    aerodynamics.settings.number_of_spanwise_vortices   = 30 
+    aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()   
     analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------
@@ -159,70 +158,104 @@ def plot_mission(results):
 
 def mission_setup(analyses):
 
+
     # ------------------------------------------------------------------
     #   Initialize the Mission
     # ------------------------------------------------------------------
-
     mission = RCAIDE.Framework.Mission.Sequential_Segments()
     mission.tag = 'the_mission'
 
-
     # unpack Segments module
     Segments = RCAIDE.Framework.Mission.Segments
-
-    # base segment
-    base_segment = Segments.Segment() 
-    base_segment.state.numerics.number_of_control_points    = 3
-
-    # ------------------------------------------------------------------
-    #   Climb Segment : Constant Speed Constant Rate
-    # ------------------------------------------------------------------ 
-    segment = Segments.Climb.Constant_Speed_Constant_Rate(base_segment)
-    segment.tag = "climb"  
-    segment.analyses.extend( analyses.base )
-    segment.altitude_start                                                      = 0.0 * Units.feet
-    segment.altitude_end                                                        = 12000 * Units.feet
-    segment.air_speed                                                           = 120 * Units['mph']
-    segment.climb_rate                                                          = 1000* Units['ft/min']
-    segment.sideslip_angle                                                      = 1 * Units.degrees
-                     
-    # define flight dynamics to model                       
-    segment.flight_dynamics.force_x                                             = True    
-    segment.flight_dynamics.force_z                                             = True    
-                
-    # define flight controls               
-    segment.assigned_control_variables.throttle.active                          = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]
-    segment.assigned_control_variables.body_angle.active                        = True
     
-    # Longidinal Flight Mechanics
-    segment.flight_dynamics.moment_y                                            = True 
-    segment.assigned_control_variables.elevator_deflection.active               = True    
-    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']]
-    segment.assigned_control_variables.elevator_deflection.initial_guess_values = [[0.02]]
-    segment.assigned_control_variables.elevator_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
-   
-    # Lateral Flight Mechanics 
-    segment.flight_dynamics.force_y                                             = True     
+    base_segment = Segments.Segment() 
+ 
+    # ------------------------------------------------------------------    
+    #   Cruise Segment: Constant Speed Constant Altitude
+    # ------------------------------------------------------------------      
+    segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag = "cruise" 
+    segment.analyses.extend( analyses.base )   
+    segment.altitude                                                            = 1000. * Units.feet
+    segment.air_speed                                                           = 50.00
+    segment.sideslip_angle                                                      = 10.0 * Units.deg  
+    
+    # equations of motion
+    segment.flight_dynamics.force_x                                             = True    
+    segment.flight_dynamics.force_z                                             = True
+    segment.flight_dynamics.force_y                                             = True        
     segment.flight_dynamics.moment_x                                            = True
     segment.flight_dynamics.moment_z                                            = True
-    segment.assigned_control_variables.aileron_deflection.active                = True
-    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
-    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[0]]
-    segment.assigned_control_variables.aileron_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
-    segment.assigned_control_variables.rudder_deflection.active                 = True
-    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
-    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[0]]
-    segment.assigned_control_variables.rudder_deflection.bounds               = [[-90 *Units.degree, 90 *Units.degree]]
-    segment.assigned_control_variables.bank_angle.active                        = True    
-    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[0]]
-    segment.assigned_control_variables.bank_angle.bounds                        = [[-90 *Units.degree, 90 *Units.degree]]
-
-    segment.assigned_control_variables.acceleration.active                      = True
-    segment.assigned_control_variables.acceleration.bounds                      = [[-20, 60]]
+    segment.flight_dynamics.moment_y                                            = True  
     
+    # flight controls              
+    segment.assigned_control_variables.throttle.active                          = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
+    segment.assigned_control_variables.body_angle.active                        = True     
+    segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
+    segment.assigned_control_variables.elevator_deflection.active               = True    
+    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']] 
+    segment.assigned_control_variables.aileron_deflection.active                = True    
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
+    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[-10. * Units.degrees]]
+    segment.assigned_control_variables.rudder_deflection.active                 = True    
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
+    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[14 * Units.degrees]] 
+    segment.assigned_control_variables.bank_angle.active                        = True        
+    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[12 * Units.degrees]] 
+    mission.append_segment(segment)
 
-    mission.append_segment(segment) 
+     # ------------------------------------------------------------------    
+    #   Cruise Segment: Constant Speed Constant Altitude
+    # ------------------------------------------------------------------      
+    segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag = "cruise_2" 
+    segment.analyses.extend( analyses.base )   
+    segment.altitude                                                            = 1000. * Units.feet
+    segment.air_speed                                                           = 50.00
+    segment.sideslip_angle                                                      = 10.0 * Units.deg    
+    
+    # equations of motion
+    segment.flight_dynamics.force_x                                             = True    
+    segment.flight_dynamics.force_z                                             = True
+    
+    # flight controls              
+    segment.assigned_control_variables.throttle.active                          = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
+    segment.assigned_control_variables.body_angle.active                        = True     
+    segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
+    mission.append_segment(segment)
+ 
+    # ------------------------------------------------------------------    
+    #   Cruise Segment: Constant Speed Constant Altitude
+    # ------------------------------------------------------------------      
+    segment     = Segments.Cruise.Constant_Speed_Constant_Altitude(base_segment)
+    segment.tag = "cruise_3" 
+    segment.analyses.extend( analyses.base )   
+    segment.altitude                                                            = 1000. * Units.feet
+    segment.air_speed                                                           = 50.00
+    segment.sideslip_angle                                                      = 10.0 * Units.deg    
+
+    # equations of motion
+    segment.flight_dynamics.force_x                                             = True    
+    segment.flight_dynamics.force_z                                             = True
+    segment.flight_dynamics.force_y                                             = True        
+    segment.flight_dynamics.moment_x                                            = True
+    segment.flight_dynamics.moment_z                                            = True
+    segment.flight_dynamics.moment_y                                            = True  
+    
+    # flight controls              
+    segment.assigned_control_variables.throttle.active                          = True           
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
+    segment.assigned_control_variables.body_angle.active                        = True       
+    segment.assigned_control_variables.elevator_deflection.active               = True    
+    segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']] 
+    segment.assigned_control_variables.aileron_deflection.active                = True    
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']] 
+    segment.assigned_control_variables.rudder_deflection.active                 = True    
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']] 
+    segment.assigned_control_variables.bank_angle.active                        = True                 
+    mission.append_segment(segment)  
 
     return mission 
 

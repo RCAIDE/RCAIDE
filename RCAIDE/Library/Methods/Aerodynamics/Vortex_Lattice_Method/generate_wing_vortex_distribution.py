@@ -422,7 +422,7 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         # Get points of inboard segment airfoil 
         if inboard_segment.airfoil: 
             if type(inboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,n_cw*2+1)
+                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,n_cw*2-1)
             else:
                 a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,n_cw*2+1)   
         else:
@@ -434,7 +434,7 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         # Get points of outboard segment airfoil     
         if outboard_segment.airfoil: 
             if type(outboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,n_cw*2+1)
+                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,n_cw*2-1)
             else:
                 a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,n_cw*2+1)   
         else:
