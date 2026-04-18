@@ -90,7 +90,9 @@ def base_analysis(vehicle, configs):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
-    aerodynamics.settings.use_surrogate                = False 
+    aerodynamics.settings.use_surrogate                 = False
+    aerodynamics.settings.number_of_spanwise_vortices   = 10
+    aerodynamics.settings.number_of_chordwise_vortices  = 2    
     analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------
@@ -102,6 +104,8 @@ def base_analysis(vehicle, configs):
     #  Stability Analysis
     stability = RCAIDE.Framework.Analyses.Stability.Vortex_Lattice_Method()  
     stability.settings.use_surrogate                = False 
+    stability.settings.number_of_spanwise_vortices   = 10
+    stability.settings.number_of_chordwise_vortices  = 2  
     analyses.append(stability)
     
     # ------------------------------------------------------------------

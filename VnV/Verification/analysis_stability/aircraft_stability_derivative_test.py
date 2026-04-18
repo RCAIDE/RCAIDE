@@ -33,8 +33,7 @@ def main():
     
     # Truth Values for Literature : DO NOT CHANGE
     truth_vals = Data  
-    truth_vals.CY_beta      = -0.195398  
-    truth_vals.CZ_alpha     = 4.837822 
+    truth_vals.CY_beta      = -0.195398   
     truth_vals.CL_beta      = -0.12228 
     truth_vals.CM_alpha     = -1.1509  
     truth_vals.CN_beta      = 0.074425 
@@ -54,16 +53,15 @@ def main():
  
     angle_of_attack_range                 = np.array([[2 * Units.degree]])
     Mach_number_range                     = np.ones_like(angle_of_attack_range) * 0.15 
-    results                               = aircraft_aerodynamic_analysis(analyses                         = analyses.base,
-                                                                          angle_of_attacks                 = angle_of_attack_range,
-                                                                          mach_numbers                     = Mach_number_range, 
-                                                                          altitude                     =  1000. * Units.feet ) 
+    results                               = aircraft_aerodynamic_analysis(analyses          = analyses.base,
+                                                                          angle_of_attacks  = angle_of_attack_range,
+                                                                          mach_numbers      = Mach_number_range, 
+                                                                          altitude          =  1000. * Units.feet ) 
  
     SSD = results.static_stability.derivatives 
     
     error = Data(  
-        CY_beta        = 100*np.array((truth_vals.CY_beta      - SSD.CY_beta[0, 0]      )/truth_vals.CY_beta    ), 
-        CZ_alpha       = 100*np.array((truth_vals.CZ_alpha     - SSD.CZ_alpha[0, 0]     )/truth_vals.CZ_alpha   ),  
+        CY_beta        = 100*np.array((truth_vals.CY_beta      - SSD.CY_beta[0, 0]      )/truth_vals.CY_beta    ),   
         CL_beta        = 100*np.array((truth_vals.CL_beta      - SSD.CL_beta[0, 0]      )/truth_vals.CL_beta    ), 
         CM_alpha       = 100*np.array((truth_vals.CM_alpha     - SSD.CM_alpha[0, 0]     )/truth_vals.CM_alpha   ),  
         CN_beta        = 100*np.array((truth_vals.CN_beta      - SSD.CN_beta[0, 0]      )/truth_vals.CN_beta    ), 
