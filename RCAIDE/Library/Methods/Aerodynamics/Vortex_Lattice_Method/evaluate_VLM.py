@@ -1015,14 +1015,15 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     
 
      #  subsonic 
-    sub_Clift     = np.atleast_2d(sub_sur_Clift(pts)).T  
-    sub_Cdrag     = np.atleast_2d(sub_sur_Cdrag(pts)).T  
-    sub_CX        = np.atleast_2d(sub_sur_CX(pts)).T 
-    sub_CY        = np.atleast_2d(sub_sur_CY(pts)).T     
-    sub_CZ        = np.atleast_2d(sub_sur_CZ(pts)).T     
-    sub_CL        = np.atleast_2d(sub_sur_CL(pts)).T     
-    sub_CM        = np.atleast_2d(sub_sur_CM(pts)).T     
-    sub_CN        = np.atleast_2d(sub_sur_CN(pts)).T 
+    sub_Clift          = np.atleast_2d(sub_sur_Clift(pts)).T  
+    sub_Cdrag          = np.atleast_2d(sub_sur_Cdrag(pts)).T  
+    sub_CX             = np.atleast_2d(sub_sur_CX(pts)).T 
+    sub_CY             = np.atleast_2d(sub_sur_CY(pts)).T     
+    sub_CZ             = np.atleast_2d(sub_sur_CZ(pts)).T     
+    sub_CL             = np.atleast_2d(sub_sur_CL(pts)).T     
+    sub_CM             = np.atleast_2d(sub_sur_CM(pts)).T     
+    sub_CN             = np.atleast_2d(sub_sur_CN(pts)).T
+    sub_Clift_y        = sub_sur_cl_spanwise(pts) 
     
     
     if trans_sur_Clift ==  None and  sup_sur_Clift == None:
@@ -1035,7 +1036,8 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
         results.CZ    = h_sub(Mach) * sub_CZ   
         results.CL    = h_sub(Mach) * sub_CL   
         results.CM    = h_sub(Mach) * sub_CM   
-        results.CN    = h_sub(Mach) * sub_CN   
+        results.CN    = h_sub(Mach) * sub_CN
+        results.Clift_spanwise = h_sub(Mach)*sub_Clift_y
         
         return results
    
@@ -1049,6 +1051,7 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     trans_CL      = np.atleast_2d(trans_sur_CL(pts)).T     
     trans_CM      = np.atleast_2d(trans_sur_CM(pts)).T     
     trans_CN      = np.atleast_2d(trans_sur_CN(pts)).T
+    trans_Clift_y = trans_sur_cl_spanwise(pts) 
 
     # supersonic 
     sup_Clift     = np.atleast_2d(sup_sur_Clift(pts)).T  
@@ -1058,7 +1061,8 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     sup_CZ        = np.atleast_2d(sup_sur_CZ(pts)).T     
     sup_CL        = np.atleast_2d(sup_sur_CL(pts)).T     
     sup_CM        = np.atleast_2d(sup_sur_CM(pts)).T     
-    sup_CN        = np.atleast_2d(sup_sur_CN(pts)).T            
+    sup_CN        = np.atleast_2d(sup_sur_CN(pts)).T   
+    sup_Clift_y   = sup_sur_cl_spanwise(pts)          
 
     # apply 
     results       = Data() 
@@ -1070,7 +1074,7 @@ def compute_coefficients(sub_sur_Clift,sub_sur_Cdrag,sub_sur_CX,sub_sur_CY,sub_s
     results.CL    = h_sub(Mach)*sub_CL    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CL     + h_sup(Mach)*sup_CL   
     results.CM    = h_sub(Mach)*sub_CM    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CM     + h_sup(Mach)*sup_CM   
     results.CN    = h_sub(Mach)*sub_CN    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_CN     + h_sup(Mach)*sup_CN
-    results.Clift_spanwise    = h_sub(Mach)*sub_sur_cl_spanwise(pts)    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_sur_cl_spanwise(pts)     + h_sup(Mach)*sup_sur_cl_spanwise(pts)
+    results.Clift_spanwise = h_sub(Mach)*sub_Clift_y    + (1 - (h_sup(Mach) + h_sub(Mach)))*trans_Clift_y     + h_sup(Mach)*sup_Clift_y
 
     return results
 

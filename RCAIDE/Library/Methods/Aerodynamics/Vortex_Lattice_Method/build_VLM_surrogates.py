@@ -180,7 +180,8 @@ def no_surrogate(aerodynamics, training, vehicle):
      
     # Pack the outputs     
     surrogates.Clift_alpha            = None     
-    surrogates.Clift_beta             = None  
+    surrogates.Clift_beta             = None
+    surrogates.Clift_spanwise         = None
     surrogates.Cdrag_induced_alpha    = None     
     surrogates.Cdrag_induced_beta     = None 
     surrogates.CX_alpha               = None    
