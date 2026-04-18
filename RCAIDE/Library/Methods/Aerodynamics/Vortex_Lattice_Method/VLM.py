@@ -210,7 +210,7 @@ def VLM(conditions,settings,geometry):
     # STEP 10: Generate A and RHS matrices from VD and geometry
     # ------------------ --------------------------------------------------------------------    
     # Compute flow tangency conditions
-    phi   = abs(np.arctan((VD.ZBC - VD.ZAC)/(VD.YBC - VD.YAC))) # dihedral angle 
+    phi   = np.arctan((VD.ZBC - VD.ZAC)/(VD.YBC - VD.YAC)) # dihedral angle 
     delta = np.arctan((VD.ZC - VD.ZCH)/((VD.XC - VD.XCH))) # mean camber surface angle 
 
     # Build the RHS vector    
