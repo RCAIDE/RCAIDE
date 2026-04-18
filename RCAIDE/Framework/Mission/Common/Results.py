@@ -163,8 +163,7 @@ class Results(Conditions):
         self.aerodynamics.coefficients.lift                                    = Conditions()
         self.aerodynamics.coefficients.lift.total                              = ones_1col * 0   
         self.aerodynamics.coefficients.lift.inviscid                           = Conditions()
-        self.aerodynamics.coefficients.lift.inviscid.total                     = ones_1col * 0   
-        self.aerodynamics.coefficients.lift.inviscid.wings                     = Conditions()  
+        self.aerodynamics.coefficients.lift.inviscid.total                     = ones_1col * 0    
         self.aerodynamics.coefficients.drag                                    = Conditions()  
         self.aerodynamics.coefficients.drag.total                              = ones_1col * 0   
         self.aerodynamics.coefficients.drag.parasite                           = Conditions()
@@ -176,8 +175,7 @@ class Results(Conditions):
         self.aerodynamics.coefficients.drag.compressible.wave.volume           = ones_1col * 0  
         self.aerodynamics.coefficients.drag.compressible.wave.lift             = ones_1col * 0  
         self.aerodynamics.coefficients.drag.induced                            = Conditions()
-        self.aerodynamics.coefficients.drag.induced.total                      = ones_1col * 0  
-        self.aerodynamics.coefficients.drag.induced.wings                      = Conditions() 
+        self.aerodynamics.coefficients.drag.induced.total                      = ones_1col * 0   
         self.aerodynamics.coefficients.drag.induced.viscous                    = ones_1col * 0 
         self.aerodynamics.coefficients.drag.induced.inviscid                   = ones_1col * 0 
         self.aerodynamics.coefficients.drag.induced.efficiency_factor          = ones_1col * 0 

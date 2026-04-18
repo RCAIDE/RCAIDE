@@ -66,8 +66,8 @@ class Vortex_Lattice_Method(Aerodynamics):
         # settings              
         self.settings.propeller_wake_model                          = False  
         self.settings.model_fuselage                                = False   
-        self.settings.number_of_spanwise_vortices                   = 30
-        self.settings.number_of_chordwise_vortices                  = 10
+        self.settings.number_of_spanwise_vortices                   = 40
+        self.settings.number_of_chordwise_vortices                  = 15
         self.settings.wing_spanwise_vortices                        = None
         self.settings.wing_chordwise_vortices                       = None
         self.settings.fuselage_spanwise_vortices                    = None
@@ -79,9 +79,10 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.settings.floating_point_precision                      = np.float32     
     
         # conditions table, used for surrogate model training
-        self.training                                               = Data()
-        self.training.angle_of_attack                               = np.array([-5., -2. , 1E-20 , 2.0, 5.0, 8.0, 12., 45., 75.]) * Units.deg 
-        self.training.Mach                                          = np.array([0.1  ,0.3,  0.5,  0.65 , 0.85 , 0.9, 1.3, 1.35 , 1.5 , 2.0, 2.25 , 2.5  , 3.5])             
+        self.training                                               = Data() 
+        self.training.angle_of_attack                               = np.array([ -2. , 1E-20 , 2.0, 5.0, 8.0, 12., 45.]) * Units.deg   
+        self.training.Mach                                          = np.array([0.1  , 0.3,  0.5,  0.65 , 0.85 , 0.9, 1.3, 1.5 , 2.0  , 2.5  , 3.5])             
+                                
                       
         self.training.subsonic                                      = None
         self.training.supersonic                                    = None

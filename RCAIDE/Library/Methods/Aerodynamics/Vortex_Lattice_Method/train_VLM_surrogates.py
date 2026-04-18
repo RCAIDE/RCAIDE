@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import  Data
 from RCAIDE.Library.Plots import *
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM   import VLM 
 from copy import deepcopy 
-
+import time  
 # package imports
 import numpy  as np
 
@@ -65,7 +65,10 @@ def train_model(aerodynamics,Mach, vehicle):
         
     Returns: 
         None    
-    """     
+    """
+
+    ti                   = time.time()
+    
     settings       = aerodynamics.settings
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle 
@@ -130,11 +133,16 @@ def train_model(aerodynamics,Mach, vehicle):
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.freestream.mach_number               = Machs
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*AoAs 
+    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)*AoAs  
+    conditions.freestream.velocity                  = np.zeros_like(Machs)*AoAs  
+    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)*AoAs  
+    conditions.static_stability.roll_rate           = np.zeros_like(Machs)*AoAs  
+    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)*AoAs 
    
     clean_wing_vehicle = deepcopy(vehicle)
     for wing in clean_wing_vehicle.wings:
         wing.control_surfaces = []
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    VLM_results      = call_VLM(conditions,settings,clean_wing_vehicle)
     Clift_res        = VLM_results.CLift
     VD_0             = settings.vortex_distribution
     Cdrag_res        = VLM_results.CDrag_induced
@@ -143,18 +151,17 @@ def train_model(aerodynamics,Mach, vehicle):
     CZ_res           = VLM_results.CZ
     CL_res           = VLM_results.CL
     CM_res           = VLM_results.CM
-    CN_res           = VLM_results.CN    
+    CN_res           = VLM_results.CN   
 
-
-    training.Clift_spanwise            = VLM_results.sectional_CLift.reshape(len_Mach, len_AoA, np.shape(VLM_results.sectional_CLift)[1]).transpose(1, 0, 2)
-    Clift_alpha           = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
-    Cdrag_induced_alpha   = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
-    CX_alpha              = np.reshape(CX_res,(len_Mach,len_AoA)).T 
-    CY_alpha              = np.reshape(CY_res,(len_Mach,len_AoA)).T 
-    CZ_alpha              = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
-    CL_alpha              = np.reshape(CL_res,(len_Mach,len_AoA)).T 
-    CM_alpha              = np.reshape(CM_res,(len_Mach,len_AoA)).T 
-    CN_alpha              = np.reshape(CN_res,(len_Mach,len_AoA)).T  
+    training.Clift_spanwise  = VLM_results.sectional_CLift.reshape(len_Mach, len_AoA, np.shape(VLM_results.sectional_CLift)[1]).transpose(1, 0, 2)
+    Clift_alpha              = np.reshape(Clift_res,(len_Mach,len_AoA)).T 
+    Cdrag_induced_alpha      = np.reshape(Cdrag_res,(len_Mach,len_AoA)).T 
+    CX_alpha                 = np.reshape(CX_res,(len_Mach,len_AoA)).T 
+    CY_alpha                 = np.reshape(CY_res,(len_Mach,len_AoA)).T 
+    CZ_alpha                 = np.reshape(CZ_res,(len_Mach,len_AoA)).T 
+    CL_alpha                 = np.reshape(CL_res,(len_Mach,len_AoA)).T 
+    CM_alpha                 = np.reshape(CM_res,(len_Mach,len_AoA)).T 
+    CN_alpha                 = np.reshape(CN_res,(len_Mach,len_AoA)).T  
     
     # Angle of Attack at 0 Degrees .
     Clift_alpha_0   =  np.tile(Clift_alpha[2][None,:],(2,1))
@@ -164,12 +171,7 @@ def train_model(aerodynamics,Mach, vehicle):
     CZ_alpha_0      =  np.tile(CZ_alpha[2][None,:],(2, 1)) 
     CL_alpha_0      =  0 * np.tile(CL_alpha[2][None,:],(2, 1)) 
     CM_alpha_0      =  np.tile(CM_alpha[2][None,:],(2, 1)) 
-    CN_alpha_0      =  0 * np.tile(CN_alpha[2][None,:],(2, 1))
-    Clift_wing_alpha = Data()
-    Cdrag_induced_wing_alpha = Data() 
-    for wing in vehicle.wings: 
-        Clift_wing_alpha[wing.tag] = np.reshape(VLM_results.CLift_wings[wing.tag],(len_Mach,len_AoA)).T    
-        Cdrag_induced_wing_alpha[wing.tag] = np.reshape(VLM_results.CDrag_induced_wings[wing.tag],(len_Mach,len_AoA)).T
+    CN_alpha_0      =  0 * np.tile(CN_alpha[2][None,:],(2, 1)) 
         
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
@@ -179,10 +181,14 @@ def train_model(aerodynamics,Mach, vehicle):
     conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
     conditions.expand_rows(rows= len(Machs))
     conditions.freestream.mach_number               = Machs 
+    conditions.freestream.velocity                  = np.zeros_like(Machs)  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
-    conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas   
+    conditions.aerodynamics.angles.beta             = np.ones_like(Machs)*Betas  
+    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)   
+    conditions.static_stability.roll_rate           = np.zeros_like(Machs)   
+    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)    
     
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     Clift_res   = VLM_results.CLift
     Cdrag_res   = VLM_results.CDrag_induced
     CX_res      = VLM_results.CX
@@ -210,7 +216,11 @@ def train_model(aerodynamics,Mach, vehicle):
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
     conditions.freestream.mach_number               = Machs + u_s/343 
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    conditions.freestream.velocity                  = np.zeros_like(Machs)   
+    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)   
+    conditions.static_stability.roll_rate           = np.zeros_like(Machs)   
+    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)   
+    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     CX_res    = VLM_results.CX
     CZ_res    = VLM_results.CZ
     CM_res    = VLM_results.CM
@@ -225,12 +235,14 @@ def train_model(aerodynamics,Mach, vehicle):
     Machs   = np.atleast_2d(np.repeat(Mach,len_q)).T 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs 
+    conditions.freestream.velocity                  = Machs * 343 # speed of sound  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s     
-    conditions.freestream.velocity                  = Machs * 343 # speed of sound   
+    conditions.static_stability.pitch_rate          = np.ones_like(Machs)*q_s      
+    conditions.static_stability.roll_rate           = np.zeros_like(Machs)   
+    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)    
     
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     CM_res      = VLM_results.CM  
     CM_q        = np.reshape(CM_res,(len_Mach,len_q)).T    - CM_alpha_0    
     CZ_q        = np.reshape(CZ_res,(len_Mach,len_q)).T    - CZ_alpha_0
@@ -242,11 +254,13 @@ def train_model(aerodynamics,Mach, vehicle):
     Machs         = np.atleast_2d(np.repeat(Mach,len_p)).T 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs  
+    conditions.freestream.velocity                  = Machs * 343 # speed of sound  
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12 
-    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s 
-    conditions.freestream.velocity                  = Machs * 343 # speed of sound           
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    conditions.aerodynamics.angles.beta             = np.zeros_like(Machs)     
+    conditions.static_stability.pitch_rate          = np.zeros_like(Machs) 
+    conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s     
+    conditions.static_stability.yaw_rate            = np.zeros_like(Machs)         
+    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     CL_res      = VLM_results.CL
     CN_res      = VLM_results.CN
     CY_res      = VLM_results.CY
@@ -261,13 +275,15 @@ def train_model(aerodynamics,Mach, vehicle):
     Machs   = np.atleast_2d(np.repeat(Mach,len_r)).T
 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
+    conditions.freestream.mach_number               = Machs 
+    conditions.freestream.velocity                  = Machs * 343   
     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs)*1E-2 
     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
-    conditions.freestream.mach_number               = Machs 
-    conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s
-    conditions.freestream.velocity                  = Machs * 343
+    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)   
+    conditions.static_stability.roll_rate           = np.zeros_like(Machs)  
+    conditions.static_stability.yaw_rate            = np.ones_like(Machs)*r_s  
     
-    VLM_results = VLM(conditions,settings,clean_wing_vehicle)
+    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     CL_res      = VLM_results.CL
     CN_res      = VLM_results.CN
     CY_res      = VLM_results.CY
@@ -276,9 +292,7 @@ def train_model(aerodynamics,Mach, vehicle):
     CY_r        = (np.reshape(CY_res,(len_Mach,len_r)).T    - CY_alpha_0   )
         
     # STABILITY COEFFICIENTS  
-    training.Clift_alpha               = Clift_alpha 
-    training.Clift_wing_alpha          = Clift_wing_alpha
-    training.Cdrag_induced_wing_alpha  = Cdrag_induced_wing_alpha  
+    training.Clift_alpha               = Clift_alpha  
     training.Cdrag_induced_alpha       = Cdrag_induced_alpha   
     training.CX_alpha                  = CX_alpha
     training.CY_alpha                  = CY_alpha 
@@ -286,8 +300,7 @@ def train_model(aerodynamics,Mach, vehicle):
     training.CL_alpha                  = CL_alpha   
     training.CM_alpha                  = CM_alpha 
     training.CN_alpha                  = CN_alpha    
-    training.CM_0                      = CM_alpha_0[0] 
-            
+    training.CM_0                      = CM_alpha_0[0]  
             
     training.Clift_beta                = Clift_beta 
     training.Cdrag_induced_beta        = Cdrag_induced_beta  
@@ -355,8 +368,12 @@ def train_model(aerodynamics,Mach, vehicle):
                     conditions.aerodynamics.angles.alpha  = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta   = np.zeros_like(Machs) 
                     conditions.freestream.mach_number     = Machs    
+                    conditions.freestream.velocity        = np.zeros_like(Machs)   
+                    conditions.static_stability.pitch_rate= np.zeros_like(Machs)   
+                    conditions.static_stability.roll_rate = np.zeros_like(Machs)   
+                    conditions.static_stability.yaw_rate  = np.zeros_like(Machs) 
                     control_surface.deflection            = delta_a[a_i]
-                    VLM_results            = VLM(conditions,settings,vehicle)
+                    VLM_results            = call_VLM(conditions,settings,vehicle)
                     CY_res                 = VLM_results.CY
                     CL_res                 = VLM_results.CL
                     CN_res                 = VLM_results.CN
@@ -383,11 +400,15 @@ def train_model(aerodynamics,Mach, vehicle):
                 for e_i in range(len_d_e):         
                     conditions                           = RCAIDE.Framework.Mission.Common.Results()
                     conditions.expand_rows(len(Mach),override=False)
-                    conditions.aerodynamics.angles.alpha = np.ones_like(Machs) *1E-12
-                    conditions.aerodynamics.angles.beta  = np.zeros_like(Machs) 
-                    conditions.freestream.mach_number    = Machs     
-                    control_surface.deflection           =  delta_e[e_i]
-                    VLM_results            = VLM(conditions,settings,vehicle)
+                    conditions.aerodynamics.angles.alpha  = np.ones_like(Machs) *1E-12
+                    conditions.aerodynamics.angles.beta   = np.zeros_like(Machs) 
+                    conditions.freestream.mach_number     = Machs     
+                    conditions.freestream.velocity        = np.zeros_like(Machs)   
+                    conditions.static_stability.pitch_rate= np.zeros_like(Machs)   
+                    conditions.static_stability.roll_rate = np.zeros_like(Machs)   
+                    conditions.static_stability.yaw_rate  = np.zeros_like(Machs) 
+                    control_surface.deflection            =  delta_e[e_i]
+                    VLM_results            = call_VLM(conditions,settings,vehicle)
                     Clift_res              = VLM_results.CLift
                     Cdrag_res              = VLM_results.CDrag_induced
                     CM_res                 = VLM_results.CM 
@@ -414,8 +435,12 @@ def train_model(aerodynamics,Mach, vehicle):
                     conditions.aerodynamics.angles.alpha  = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta   = np.zeros_like(Machs) 
                     conditions.freestream.mach_number     = Machs    
+                    conditions.freestream.velocity        = np.zeros_like(Machs)   
+                    conditions.static_stability.pitch_rate= np.zeros_like(Machs)   
+                    conditions.static_stability.roll_rate = np.zeros_like(Machs)   
+                    conditions.static_stability.yaw_rate  = np.zeros_like(Machs) 
                     control_surface.deflection            = delta_r[r_i]
-                    VLM_results      = VLM(conditions,settings,vehicle)
+                    VLM_results      = call_VLM(conditions,settings,vehicle)
                     Cdrag_res        = VLM_results.CDrag_induced
                     CY_res           = VLM_results.CY
                     CL_res           = VLM_results.CL
@@ -445,8 +470,12 @@ def train_model(aerodynamics,Mach, vehicle):
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)   
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)   
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)   
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs) 
                     control_surface.deflection = delta_f[f_i]
-                    VLM_results            = VLM(conditions,settings,vehicle)
+                    VLM_results            = call_VLM(conditions,settings,vehicle)
                     CM_res                 = VLM_results.CM
                     Clift_res              = VLM_results.CLift 
                     Cdrag_res              = VLM_results.CDrag_induced 
@@ -473,8 +502,12 @@ def train_model(aerodynamics,Mach, vehicle):
                     conditions.aerodynamics.angles.alpha            = np.ones_like(Machs) *1E-12
                     conditions.aerodynamics.angles.beta             = np.zeros_like(Machs) 
                     conditions.freestream.mach_number               = Machs    
+                    conditions.freestream.velocity                  = np.zeros_like(Machs)   
+                    conditions.static_stability.pitch_rate          = np.zeros_like(Machs)   
+                    conditions.static_stability.roll_rate           = np.zeros_like(Machs)   
+                    conditions.static_stability.yaw_rate            = np.zeros_like(Machs) 
                     control_surface.deflection = delta_s[s_i]
-                    VLM_results  = VLM(conditions,settings,vehicle)
+                    VLM_results  = call_VLM(conditions,settings,vehicle)
                     CM_res       = VLM_results.CM
                     Clift_res    = VLM_results.CLift 
                     Cdrag_res    = VLM_results.CDrag_induced
@@ -487,7 +520,11 @@ def train_model(aerodynamics,Mach, vehicle):
                 control_surface.deflection = delta_s_0
                 
     # reset vortex distribution after training 
-    settings.vortex_distribution = VD_0
+    settings.vortex_distribution = VD_0 
+    
+    tf                   = time.time()
+    elapsed_time         = round((tf-ti)/60,2)
+    #print(' Surrogate Training Time: ' + str(elapsed_time) + ' mins')       
     return training 
 
 def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub_Mach, sup_Mach, vehicle): 
@@ -527,13 +564,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     CM_alpha              =  np.concatenate((training_subsonic.CM_alpha[:,-1][:,None]    , training_supersonic.CM_alpha[:,0][:,None] ), axis = 1)   
     CN_alpha              =  np.concatenate((training_subsonic.CN_alpha[:,-1][:,None]    , training_supersonic.CN_alpha[:,0][:,None] ), axis = 1) 
     CM_0                  =  np.concatenate((training_subsonic.CM_0[:][-1,None]    , training_supersonic.CM_0[:][0,None] ))      
-
-    Clift_wing_alpha = Data()
-    Cdrag_induced_wing_alpha = Data() 
-    for wing in vehicle.wings: 
-        Clift_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Clift_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Clift_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
-        Cdrag_induced_wing_alpha[wing.tag] =  np.concatenate((training_subsonic.Cdrag_induced_wing_alpha[wing.tag][:,-1][:,None] , training_supersonic.Cdrag_induced_wing_alpha[wing.tag][:,0][:,None] ), axis = 1)     
-    
+ 
     # --------------------------------------------------------------------------------------------------------------
     # Beta 
     # -------------------------------------------------------------------------------------------------------------- 
@@ -576,10 +607,8 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
     CN_r        =  np.concatenate((training_subsonic.CN_r[:,-1][:,None]    , training_supersonic.CN_r[:,0][:,None] ), axis = 1)         
  
     # STABILITY COEFFICIENTS 
-    training.Clift_alpha              = Clift_alpha
-    training.Clift_wing_alpha         = Clift_wing_alpha 
-    training.Cdrag_induced_alpha       = Cdrag_induced_alpha  
-    training.Cdrag_induced_wing_alpha  = Cdrag_induced_wing_alpha  
+    training.Clift_alpha               = Clift_alpha 
+    training.Cdrag_induced_alpha       = Cdrag_induced_alpha   
     training.CX_alpha                  = CX_alpha   
     training.CY_alpha                  = CY_alpha
     training.CZ_alpha                  = CZ_alpha  
@@ -664,6 +693,7 @@ def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub
         training.dClift_ddelta_s = np.array([training_subsonic.dClift_ddelta_s[-1] , training_subsonic.dClift_ddelta_s[0]]) 
         training.dCM_ddelta_s    = np.array([training_subsonic.dCM_ddelta_s[-1]    , training_subsonic.dCM_ddelta_s[0]   ])         
         training.dCdrag_ddelta_s = np.array([training_subsonic.dCdrag_ddelta_s[-1] , training_subsonic.dCdrag_ddelta_s[0] ])
+               
     return training
 
 
@@ -687,3 +717,43 @@ def neutral_point_objective(cg_location,conditions,settings,clean_wing_vehicle_n
      
     # find abs 
     return  abs(dCM_dalpha)
+
+
+def call_VLM(full_conditions,settings,vehicle): 
+
+    num_cases =  len(full_conditions.aerodynamics.angles.alpha)
+    for i in  range(num_cases): 
+        conditions                                      = RCAIDE.Framework.Mission.Common.Results() 
+        conditions.freestream.mach_number               = np.atleast_2d(full_conditions.freestream.mach_number[i,:])    
+        conditions.aerodynamics.angles.alpha            = np.atleast_2d(full_conditions.aerodynamics.angles.alpha[i,:])  
+        conditions.aerodynamics.angles.beta             = np.atleast_2d(full_conditions.aerodynamics.angles.beta[i,:])     
+        conditions.freestream.velocity                  = np.atleast_2d(full_conditions.freestream.velocity[i,:])          
+        conditions.static_stability.pitch_rate          = np.atleast_2d(full_conditions.static_stability.pitch_rate[i,:])  
+        conditions.static_stability.roll_rate           = np.atleast_2d(full_conditions.static_stability.roll_rate[i,:])   
+        conditions.static_stability.yaw_rate            = np.atleast_2d(full_conditions.static_stability.yaw_rate[i,:])   
+
+        VLM_results         = VLM(conditions,settings,vehicle)         
+        if i == 0: 
+            RES                 = Data()
+            RES.CLift           = VLM_results.CLift
+            RES.CDrag_induced   = VLM_results.CDrag_induced
+            RES.CX              = VLM_results.CX
+            RES.CY              = VLM_results.CY
+            RES.CZ              = VLM_results.CZ
+            RES.CL              = VLM_results.CL
+            RES.CM              = VLM_results.CM
+            RES.CN              = VLM_results.CN
+            RES.sectional_CLift = VLM_results.sectional_CLift         
+            settings.vortex_distribution  = settings.vortex_distribution  
+        else: 
+            RES.CLift           = np.vstack((RES.CLift          ,VLM_results.CLift)) 
+            RES.CDrag_induced   = np.vstack((RES.CDrag_induced  ,VLM_results.CDrag_induced))
+            RES.CX              = np.vstack((RES.CX             ,VLM_results.CX))
+            RES.CY              = np.vstack((RES.CY             ,VLM_results.CY))
+            RES.CZ              = np.vstack((RES.CZ             ,VLM_results.CZ))
+            RES.CL              = np.vstack((RES.CL             ,VLM_results.CL))
+            RES.CM              = np.vstack((RES.CM             ,VLM_results.CM))
+            RES.CN              = np.vstack((RES.CN             ,VLM_results.CN))
+            RES.sectional_CLift = np.vstack((RES.sectional_CLift,VLM_results.sectional_CLift))   
+    
+    return RES

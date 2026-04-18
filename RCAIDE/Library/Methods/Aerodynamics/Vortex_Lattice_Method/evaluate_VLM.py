@@ -71,13 +71,7 @@ def evaluate_surrogate(state,settings,vehicle):
     conditions.static_stability.coefficients.M                  = results_alpha.CM
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
-    conditions.aerodynamics.coefficients.lift.inviscid.spanwise =  results_alpha.Clift_spanwise
-    
-    for wing in vehicle.wings:   
-        inviscid_wing_lifts = compute_coefficient(sub_sur.Clift_wing_alpha[wing.tag],trans_sur.Clift_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha)
-        inviscid_wing_drags = compute_coefficient(sub_sur.Cdrag_induced_wing_alpha[wing.tag],trans_sur.Cdrag_induced_wing_alpha[wing.tag],sup_sur.Cdrag_induced_wing_alpha[wing.tag] ,h_sub,h_sup,Mach,pts_alpha) 
-        conditions.aerodynamics.coefficients.lift.inviscid.wings[wing.tag] =  inviscid_wing_lifts  
-        conditions.aerodynamics.coefficients.drag.induced.wings[wing.tag]  =  inviscid_wing_drags       
+    conditions.aerodynamics.coefficients.lift.inviscid.spanwise =  results_alpha.Clift_spanwise     
     
     # -----------------------------------------------------------------------------------------------------------------------
     # Query control surface surrogates if derivatives are not user defined
@@ -199,7 +193,7 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.static_stability.coefficients.Y                                   += conditions.static_stability.derivatives.CY_delta_a * conditions.control_surfaces.aileron.deflection  
         conditions.static_stability.coefficients.L                                   += conditions.static_stability.derivatives.CL_delta_a * conditions.control_surfaces.aileron.deflection
         conditions.static_stability.coefficients.N                                   += conditions.static_stability.derivatives.CN_delta_a * conditions.control_surfaces.aileron.deflection
-        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_a * conditions.control_surfaces.aileron.deflection
+        conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_a * conditions.control_surfaces.aileron.deflection
                      
         conditions.control_surfaces.aileron.static_stability.coefficients.Y          = conditions.static_stability.derivatives.CY_delta_a * conditions.control_surfaces.aileron.deflection               
         conditions.control_surfaces.aileron.static_stability.coefficients.L          = conditions.static_stability.derivatives.CL_delta_a * conditions.control_surfaces.aileron.deflection          
@@ -224,8 +218,9 @@ def evaluate_surrogate(state,settings,vehicle):
                         
         
         conditions.static_stability.coefficients.M                              += conditions.static_stability.derivatives.CM_delta_e * conditions.control_surfaces.elevator.deflection   
-        #conditions.aerodynamics.coefficients.drag.induced.inviscid              += conditions.static_stability.derivatives.Cdrag_delta_e * conditions.control_surfaces.elevator.deflection 
-        conditions.control_surfaces.elevator.static_stability.coefficients.M     = conditions.static_stability.derivatives.CM_delta_e * conditions.control_surfaces.elevator.deflection   
+        conditions.aerodynamics.coefficients.drag.induced.inviscid              += conditions.static_stability.derivatives.Cdrag_delta_e * conditions.control_surfaces.elevator.deflection 
+        conditions.control_surfaces.elevator.static_stability.coefficients.M     = conditions.static_stability.derivatives.CM_delta_e * conditions.control_surfaces.elevator.deflection
+        
     # Rudder  
     if aerodynamics.rudder_flag:  
         if aerodynamics.stability_derivatives.CY_delta_r == None:
@@ -251,7 +246,7 @@ def evaluate_surrogate(state,settings,vehicle):
         conditions.static_stability.coefficients.Y                               += conditions.static_stability.derivatives.CY_delta_r * conditions.control_surfaces.rudder.deflection  
         conditions.static_stability.coefficients.L                               += conditions.static_stability.derivatives.CL_delta_r * conditions.control_surfaces.rudder.deflection
         conditions.static_stability.coefficients.N                               += conditions.static_stability.derivatives.CN_delta_r * conditions.control_surfaces.rudder.deflection
-        #conditions.aerodynamics.coefficients.drag.induced.inviscid               += conditions.static_stability.derivatives.Cdrag_delta_r* conditions.control_surfaces.rudder.deflection 
+        conditions.aerodynamics.coefficients.drag.induced.inviscid               += conditions.static_stability.derivatives.Cdrag_delta_r* conditions.control_surfaces.rudder.deflection 
         conditions.control_surfaces.rudder.static_stability.coefficients.Y        = conditions.static_stability.derivatives.CY_delta_r * conditions.control_surfaces.rudder.deflection          
         conditions.control_surfaces.rudder.static_stability.coefficients.L        = conditions.static_stability.derivatives.CL_delta_r * conditions.control_surfaces.rudder.deflection        
         conditions.control_surfaces.rudder.static_stability.coefficients.N        = conditions.static_stability.derivatives.CN_delta_r * conditions.control_surfaces.rudder.deflection       
@@ -278,7 +273,7 @@ def evaluate_surrogate(state,settings,vehicle):
             
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection  
         conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection 
-        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_f* conditions.control_surfaces.flap.deflection  
+        conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_f* conditions.control_surfaces.flap.deflection  
         conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_f * conditions.control_surfaces.flap.deflection  
         conditions.control_surfaces.flap.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_f * conditions.control_surfaces.flap.deflection      
         
@@ -304,7 +299,7 @@ def evaluate_surrogate(state,settings,vehicle):
                 
         conditions.static_stability.coefficients.M                                   += conditions.static_stability.derivatives.CM_delta_s * conditions.control_surfaces.slat.deflection  
         conditions.static_stability.coefficients.Z                                   += conditions.static_stability.derivatives.Clift_delta_s * conditions.control_surfaces.slat.deflection  
-        #conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_s* conditions.control_surfaces.slat.deflection  
+        conditions.aerodynamics.coefficients.drag.induced.inviscid                   += conditions.static_stability.derivatives.Cdrag_delta_s* conditions.control_surfaces.slat.deflection  
         conditions.aerodynamics.coefficients.lift.inviscid.total                     += conditions.static_stability.derivatives.Clift_delta_s * conditions.control_surfaces.slat.deflection
         conditions.control_surfaces.slat.static_stability.coefficients.M              = conditions.static_stability.derivatives.CM_delta_s * conditions.control_surfaces.slat.deflection      
               
@@ -462,8 +457,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.cooling_drag(equilibrium_state,settings,vehicle)     
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.compressibility_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.miscellaneous_drag(equilibrium_state,settings,vehicle)
-    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(equilibrium_state,settings,vehicle)  
-    # RCAIDE.Library.Methods.Aerodynamics.Common.Drag.wave_drag(equilibrium_state,settings,vehicle) 
+    RCAIDE.Library.Methods.Aerodynamics.Common.Drag.form_drag(equilibrium_state,settings,vehicle)   
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.trim_drag(equilibrium_state,settings,vehicle)
     RCAIDE.Library.Methods.Aerodynamics.Common.Drag.total_drag(equilibrium_state,settings,vehicle)
     

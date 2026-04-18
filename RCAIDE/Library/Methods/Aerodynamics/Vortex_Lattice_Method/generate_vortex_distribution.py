@@ -302,39 +302,8 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     show_prints    = settings.verbose if ('verbose' in settings.keys()) else False
     
     # unpack discretization settings------------------------------------------
-    n_sw_global    = settings.number_of_spanwise_vortices
-    n_cw_global    = settings.number_of_chordwise_vortices
-    n_sw_wing      = settings.wing_spanwise_vortices  
-    n_cw_wing      = settings.wing_chordwise_vortices
-    n_sw_fuse      = settings.fuselage_spanwise_vortices  
-    n_cw_fuse      = settings.fuselage_chordwise_vortices
-    
-    #make sure n_cw and n_sw are both defined or not defined
-    invalid_global_n   = bool(n_sw_global) != bool(n_cw_global) 
-    invalid_wing_n     = bool(n_sw_wing)   != bool(n_cw_wing)
-    invalid_fuse_n     = bool(n_sw_fuse)   != bool(n_cw_fuse)
-    invalid_separate_n = bool(n_sw_wing)   != bool(n_sw_fuse)
-    if invalid_global_n:
-        raise AssertionError('If using global surface discretization, both n_sw and n_cw must be defined')
-    elif invalid_wing_n or invalid_fuse_n:
-        raise AssertionError('If using separate surface discretization, all n_sw and n_cw values must be defined')
-    elif invalid_separate_n:
-        raise AssertionError('If using separate surface discretization, both wing and fuselage discretization must be defined')
-    
-    #make sure that global and separate settings aren't both defined
-    global_n_defined   = bool(n_sw_global) 
-    separate_n_defined = bool(n_sw_wing)
-    if global_n_defined == separate_n_defined:
-        raise AssertionError('Specify either global or separate discretization')
-    elif global_n_defined:
-        n_sw_wing = n_sw_global
-        n_cw_wing = n_cw_global
-        n_sw_fuse = n_sw_global
-        n_cw_fuse = n_cw_global
-    else: #separate_n_defined
-        #everything is already set up to use separate discretization
-        pass
-    
+    n_sw           = settings.number_of_spanwise_vortices
+    n_cw           = settings.number_of_chordwise_vortices 
     # ---------------------------------------------------------------------------------------
     # STEP 1: Define empty vectors for coordinates of panes, control points and bound vortices
     # ---------------------------------------------------------------------------------------
@@ -415,7 +384,7 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     VD.counter     = 0
             
     for wing in geometry.wings:         
-        VD = generate_wing_vortex_distribution(VD,wing,n_cw_wing,n_sw_wing,spc,precision)  
+        VD = generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision)  
             
     # ---------------------------------------------------------------------------------------
     # Unpack aircraft fuselage geometry
@@ -424,7 +393,7 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     VD.n_fus      = 0   
     for fus in geometry.fuselages:
         if show_prints: print('discretizing ' + fus.tag)
-        VD = generate_lofted_body_vortex_distribution(VD,fus,n_cw_fuse,n_sw_fuse,precision,model_fuselage) 
+        VD = generate_lofted_body_vortex_distribution(VD,fus,n_cw,n_sw,precision,model_fuselage) 
             
     # ---------------------------------------------------------------------------------------
     # Postprocess VD information
