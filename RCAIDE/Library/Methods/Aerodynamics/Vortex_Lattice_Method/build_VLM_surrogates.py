@@ -97,7 +97,7 @@ def build_surrogate(aerodynamics, training, vehicle):
     surrogates.CY_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CY_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)
     surrogates.CL_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CL_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)
     surrogates.CN_alpha           = RegularGridInterpolator((AoA_data ,mach_data),training.CN_alpha           ,method = 'linear',   bounds_error=False, fill_value=None)  
-    surrogates.Clift_spanwise     = RegularGridInterpolator((AoA_data, mach_data),training.Clift_spanwise      ,method='nearest',    bounds_error=False, fill_value=None)      
+    surrogates.Clift_spanwise     = RegularGridInterpolator((AoA_data, mach_data),training.Clift_spanwise      ,method='linear',    bounds_error=False, fill_value=None)      
 
     surrogates.Clift_beta         = RegularGridInterpolator((Beta_data ,mach_data),training.Clift_beta        ,method = 'linear',   bounds_error=False, fill_value=None)   
     surrogates.Cdrag_induced_beta = RegularGridInterpolator((Beta_data ,mach_data),training.Cdrag_induced_beta,method = 'linear',   bounds_error=False, fill_value=None)    
