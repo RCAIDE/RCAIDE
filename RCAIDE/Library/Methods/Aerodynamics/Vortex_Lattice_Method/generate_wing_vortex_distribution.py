@@ -169,10 +169,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             delta_x  = inboard_segment.origin[0][0] +  np.tan(LE_sweep) * local_y_val 
              
             # Step 4. get points of airfoil
-            airfoil_x_pts_0 , airfoil_z_pts_0 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,n_cw+1,local_percent_y_val) 
-            
-            airfoil_x_pts_1 = np.linspace(0.,1.,n_cw+1)
-            airfoil_z_pts_1 = np.interp(airfoil_x_pts_1, airfoil_x_pts_0, airfoil_z_pts_0)
+            airfoil_x_pts_1 , airfoil_z_pts_1 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,n_cw+1,local_percent_y_val)  
             
             # Step 5 scale airfoil by local chord 
             airfoil_x_pts_2 = airfoil_x_pts_1*local_chord
@@ -407,7 +404,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     
     return VD
 
-def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,local_percent_y_val,npts=100): 
+def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,local_percent_y_val): 
         """ Takes in two airfoils, interpolates between their coordinates to generate new
         airfoil geometries and saves new airfoil files.
         
@@ -425,29 +422,29 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         # Get points of inboard segment airfoil 
         if inboard_segment.airfoil: 
             if type(inboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,npts*2+1)
+                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,n_cw*2+1)
             else:
-                a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,npts*2+1)   
+                a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,n_cw*2+1)   
         else:
             a_geo_1 =  Data()
-            a_geo_1.camber_coordinates = np.zeros(npts+1)              
-            a_geo_1.x_upper_surface    = np.linspace(0,1,npts+1)
+            a_geo_1.camber_coordinates = np.zeros(n_cw)              
+            a_geo_1.x_upper_surface    = np.linspace(0,1,n_cw)
     
     
         # Get points of outboard segment airfoil     
         if outboard_segment.airfoil: 
             if type(outboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,npts*2+1)
+                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,n_cw*2+1)
             else:
-                a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,npts*2+1)   
+                a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,n_cw*2+1)   
         else:
             a_geo_2 =  Data()
-            a_geo_2.camber_coordinates = np.zeros(npts+1)              
-            a_geo_2.x_upper_surface    = np.linspace(0,1,npts+1)
+            a_geo_2.camber_coordinates = np.zeros(n_cw)              
+            a_geo_2.x_upper_surface    = np.linspace(0,1,n_cw)
                 
         
         # for each point around the airfoil, interpolate between the two given airfoil coordinates
-        z = np.linspace(0,1,npts)
+        z = np.linspace(0,1,n_cw)
         
         y_u_lb = a_geo_1.camber_coordinates 
         y_u_ub = a_geo_2.camber_coordinates  
@@ -458,7 +455,7 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         cambers = (z[None,...] * (y_u_ub[...,None] - y_u_lb[...,None]) + (y_u_lb[...,None])).T 
         x_vals  = (z[None,...] * (x_u_ub[...,None] - x_u_lb[...,None]) + (x_u_lb[...,None])).T  
            
-        idx = int(local_percent_y_val *npts)
+        idx = int(local_percent_y_val *n_cw)
         
         if idx == len(cambers):
             idx -= 1

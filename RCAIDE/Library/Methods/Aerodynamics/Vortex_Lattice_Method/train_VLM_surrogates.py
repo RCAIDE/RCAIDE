@@ -10,7 +10,7 @@ from RCAIDE.Framework.Core import  Data
 from RCAIDE.Library.Plots import *
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM   import VLM 
 from copy import deepcopy 
-import time  
+
 # package imports
 import numpy  as np
 
@@ -66,9 +66,6 @@ def train_model(aerodynamics,Mach, vehicle):
     Returns: 
         None    
     """
-
-    ti                   = time.time()
-    
     settings       = aerodynamics.settings
     AoA            = aerodynamics.training.angle_of_attack                  
     Beta           = aerodynamics.training.sideslip_angle 
@@ -520,11 +517,7 @@ def train_model(aerodynamics,Mach, vehicle):
                 control_surface.deflection = delta_s_0
                 
     # reset vortex distribution after training 
-    settings.vortex_distribution = VD_0 
-    
-    tf                   = time.time()
-    elapsed_time         = round((tf-ti)/60,2)
-    #print(' Surrogate Training Time: ' + str(elapsed_time) + ' mins')       
+    settings.vortex_distribution = VD_0      
     return training 
 
 def train_trasonic_model(aerodynamics, training_subsonic,training_supersonic,sub_Mach, sup_Mach, vehicle): 
