@@ -180,10 +180,10 @@ def vehicle_setup():
     
     elevator                              = RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator()
     elevator.tag                          = 'elevator'
-    elevator.span_fraction_start          = 0.1
-    elevator.span_fraction_end            = 0.9
+    elevator.span_fraction_start          = 0.05
+    elevator.span_fraction_end            = 0.95
     elevator.deflection                   = 0.0  * Units.deg
-    elevator.chord_fraction               = 0.35
+    elevator.chord_fraction               = 0.45
     wing.append_control_surface(elevator)
     
     

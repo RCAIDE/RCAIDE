@@ -68,7 +68,9 @@ def train_model(aerodynamics,Mach, vehicle):
     """
     settings       = aerodynamics.settings
     AoA            = aerodynamics.training.angle_of_attack                  
-    Beta           = aerodynamics.training.sideslip_angle 
+    Beta           = aerodynamics.training.sideslip_angle
+    MAC            = vehicle.reference_chord
+    b              = vehicle.reference_span
     training       = Data()
     training.Mach  = Mach 
     
@@ -200,7 +202,7 @@ def train_model(aerodynamics,Mach, vehicle):
     CX_beta            =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
     CY_beta            =    np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
     CZ_beta            =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
-    CL_beta            = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0)  
+    CL_beta            =    np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0  
     CM_beta            =    np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
     CN_beta            =    np.reshape(CN_res,(len_Mach,len_Beta)).T    - CN_alpha_0  
  
@@ -241,8 +243,8 @@ def train_model(aerodynamics,Mach, vehicle):
     
     VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
     CM_res      = VLM_results.CM  
-    CM_q        = np.reshape(CM_res,(len_Mach,len_q)).T    - CM_alpha_0    
-    CZ_q        = np.reshape(CZ_res,(len_Mach,len_q)).T    - CZ_alpha_0
+    CM_q        = np.reshape(CM_res,(len_Mach,len_q)).T   # - CM_alpha_0    
+    CZ_q        = np.reshape(CZ_res,(len_Mach,len_q)).T   # - CZ_alpha_0
 
     # -------------------------------------------------------               
     # Roll  Rate 
@@ -261,9 +263,9 @@ def train_model(aerodynamics,Mach, vehicle):
     CL_res      = VLM_results.CL
     CN_res      = VLM_results.CN
     CY_res      = VLM_results.CY
-    CL_p        = -1*(np.reshape(CL_res,(len_Mach,len_p)).T    - CL_alpha_0   ) # Note negative sign correction
-    CN_p        = -1*(np.reshape(CN_res,(len_Mach,len_p)).T    - CN_alpha_0   ) # Note negative sign correction
-    CY_p        = -1*(np.reshape(CY_res,(len_Mach,len_p)).T    - CY_alpha_0   ) # Note negative sign correction
+    CL_p        = np.reshape(CL_res,(len_Mach,len_p)).T    - CL_alpha_0    
+    CN_p        = np.reshape(CN_res,(len_Mach,len_p)).T    - CN_alpha_0    
+    CY_p        = np.reshape(CY_res,(len_Mach,len_p)).T    - CY_alpha_0    
 
     # -------------------------------------------------------               
     # Yaw Rate 
@@ -284,9 +286,9 @@ def train_model(aerodynamics,Mach, vehicle):
     CL_res      = VLM_results.CL
     CN_res      = VLM_results.CN
     CY_res      = VLM_results.CY
-    CL_r        = (np.reshape(CL_res,(len_Mach,len_r)).T    - CL_alpha_0   )
-    CN_r        = (np.reshape(CN_res,(len_Mach,len_r)).T    - CN_alpha_0   ) 
-    CY_r        = (np.reshape(CY_res,(len_Mach,len_r)).T    - CY_alpha_0   )
+    CL_r        = np.reshape(CL_res,(len_Mach,len_r)).T    - CL_alpha_0   
+    CN_r        = np.reshape(CN_res,(len_Mach,len_r)).T    - CN_alpha_0   
+    CY_r        = np.reshape(CY_res,(len_Mach,len_r)).T    - CY_alpha_0
         
     # STABILITY COEFFICIENTS  
     training.Clift_alpha               = Clift_alpha  
@@ -324,28 +326,30 @@ def train_model(aerodynamics,Mach, vehicle):
     training.CY_r                      = CY_r 
        
     # STABILITY DERIVATIVES 
+    V = np.reshape(conditions.freestream.velocity ,(len_Mach,len_r)).T
+    
     training.dClift_dalpha = (Clift_alpha[0,:] - Clift_alpha[1,:]) / (AoA[0] - AoA[1])       
     training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])       
     training.dCX_du     = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                     
 
-    training.dCY_dbeta  = ((CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])) 
-    training.dCY_dr     = (CY_r[0,:] - CY_r[1,:]) / (yaw_rate[0]-yaw_rate[1]) 
+    training.dCY_dbeta  = (CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])
+    training.dCY_dr     = (CY_r[0,:] - CY_r[1,:]) / ((yaw_rate[0]-yaw_rate[1])* b / (2 *V[0,:]))   
 
     training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             
     training.dCZ_du     = (CZ_u[0,:] - CZ_u[1,:]) / (u[0] - u[1])    
-    training.dCZ_dq     = (CZ_q[0,:] - CZ_q[1,:]) / (pitch_rate[0]-pitch_rate[1])    
+    training.dCZ_dq     = (CZ_q[0,:] - CZ_q[1,:]) / ((pitch_rate[0]-pitch_rate[1])* MAC / (2 *V[0,:]))    
     
-    training.dCL_dbeta  = ((CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1]))  
-    training.dCL_dp     = ((CL_p[0,:] - CL_p[1,:]) / (roll_rate[0]-roll_rate[1]))    
-    training.dCL_dr     = (CL_r[0,:] - CL_r[1,:]) / (yaw_rate[0]-yaw_rate[1])    
+    training.dCL_dbeta  = (CL_beta[0,:] - CL_beta[1,:]) / (Beta[0] - Beta[1])  
+    training.dCL_dp     = (CL_p[0,:] - CL_p[1,:]) / ((roll_rate[0]-roll_rate[1])* b / (2 *V[0,:]))  
+    training.dCL_dr     = (CL_r[0,:] - CL_r[1,:]) / ((yaw_rate[0]-yaw_rate[1])* b / (2 *V[0,:]))   
 
     training.dCM_dalpha = (CM_alpha[0,:] - CM_alpha[1,:]) / (AoA[0] - AoA[1])          
     training.dCM_du     = (CM_u[0,:] - CM_u[1,:]) / (u[0] - u[1])                                               
-    training.dCM_dq     = ((CM_q[0,:] - CM_q[1,:]) / (pitch_rate[0]-pitch_rate[1]))        
+    training.dCM_dq     = (CM_q[0,:] - CM_q[1,:]) / ((pitch_rate[0]-pitch_rate[1])* MAC / (2 *V[0,:]))      
             
     training.dCN_dbeta  = (CN_beta[0,:] - CN_beta[1,:]) / (Beta[0] - Beta[1]) 
-    training.dCN_dp     = ((CN_p[0,:] - CN_p[1,:]) / (roll_rate[0]-roll_rate[1]))    
-    training.dCN_dr     = ((CN_r[0,:] - CN_r[1,:]) / (yaw_rate[0]-yaw_rate[1])) 
+    training.dCN_dp     = (CN_p[0,:] - CN_p[1,:]) / ((roll_rate[0]-roll_rate[1])* b / (2 *V[0,:]))  
+    training.dCN_dr     = (CN_r[0,:] - CN_r[1,:]) / ((yaw_rate[0]-yaw_rate[1])* b / (2 *V[0,:]))  
 
     # for control surfaces, subtract inflence WITHOUT control surface deflected from coefficients WITH control surfaces  
     Machs                                 = np.atleast_2d(np.repeat(Mach,1)).T         
@@ -375,8 +379,8 @@ def train_model(aerodynamics,Mach, vehicle):
                     CL_res                 = VLM_results.CL
                     CN_res                 = VLM_results.CN
                     Cdrag_res              = VLM_results.CDrag_induced
-                    CY_d_a[a_i,:]          =  -(CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
-                    CL_d_a[a_i,:]          =  -(CL_res[:,0]   - CL_alpha_0[0,:])   # Negative sign is due to convention
+                    CY_d_a[a_i,:]          =  (CY_res[:,0]   - CY_alpha_0[0,:]  ) # Negative sign is due to convention
+                    CL_d_a[a_i,:]          =  (CL_res[:,0]   - CL_alpha_0[0,:])   # Negative sign is due to convention
                     CN_d_a[a_i,:]          =  (CN_res[:,0]   - CN_alpha_0[0,:]  ) 
                     Cdrag_d_a[a_i,:]       =  (Cdrag_res[:,0] - Cdrag_alpha_0[0,:])
                       

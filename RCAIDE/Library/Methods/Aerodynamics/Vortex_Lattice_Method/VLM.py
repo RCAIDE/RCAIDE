@@ -254,8 +254,8 @@ def VLM(conditions,settings,geometry):
     COSINP = COSALF *SINPSI
     COSCOS = COSALF *COPSI
     PITCH  = PITCHQ /VINF
-    ROLL   = ROLLQ /VINF
-    YAW    = YAWQ /VINF    
+    ROLL   = ROLLQ  /VINF
+    YAW    = YAWQ   /VINF    
     
     # reshape CHORD 
     dim_1 = len(np.sum(LE_ind, axis=1))
@@ -446,7 +446,7 @@ def VLM(conditions,settings,geometry):
 
     # moment coefficients 
     CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_ref  
-    CL_mom   = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref*(-1)                             
+    CL_mom   = - np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref*(-1)                             
     CN_mom   = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref*(-1)                            
    
     # ---------------------------------------------------------------------------------------
