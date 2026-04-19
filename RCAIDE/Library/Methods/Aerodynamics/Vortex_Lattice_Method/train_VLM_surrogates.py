@@ -198,7 +198,7 @@ def train_model(aerodynamics,Mach, vehicle):
     Clift_beta         =    np.reshape(Clift_res,(len_Mach,len_Beta)).T - Clift_alpha_0
     Cdrag_induced_beta =    np.reshape(Cdrag_res,(len_Mach,len_Beta)).T - Cdrag_alpha_0                                
     CX_beta            =    np.reshape(CX_res,(len_Mach,len_Beta)).T    - CX_alpha_0   
-    CY_beta            =    - np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
+    CY_beta            =    np.reshape(CY_res,(len_Mach,len_Beta)).T    - CY_alpha_0    
     CZ_beta            =    np.reshape(CZ_res,(len_Mach,len_Beta)).T    - CZ_alpha_0   
     CL_beta            = - (np.reshape(CL_res,(len_Mach,len_Beta)).T    - CL_alpha_0)  
     CM_beta            =    np.reshape(CM_res,(len_Mach,len_Beta)).T    - CM_alpha_0   
@@ -328,7 +328,7 @@ def train_model(aerodynamics,Mach, vehicle):
     training.dCX_dalpha = (CX_alpha[0,:] - CX_alpha[1,:]) / (AoA[0] - AoA[1])       
     training.dCX_du     = (CX_u[0,:] - CX_u[1,:]) / (u[0] - u[1])                                     
 
-    training.dCY_dbeta  = -1 *((CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])) # Note correction 
+    training.dCY_dbeta  = ((CY_beta[0,:] - CY_beta[1,:]) / (Beta[0] - Beta[1])) 
     training.dCY_dr     = (CY_r[0,:] - CY_r[1,:]) / (yaw_rate[0]-yaw_rate[1]) 
 
     training.dCZ_dalpha = (CZ_alpha[0,:] - CZ_alpha[1,:]) / (AoA[0] - AoA[1])             

@@ -88,7 +88,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.speed_of_sound                                = 343 
         self.training.angle_purtubation                             = 10 * Units.deg          
         self.training.speed_purtubation                             = 5  
-        self.training.rate_purtubation                              = 10 * Units.deg / Units.sec   
+        self.training.rate_purtubation                              = 0.05 * Units.deg / Units.sec   # 0.05 * Units.deg / Units.sec   
         self.training.control_surface_purtubation                   = 10 * Units.deg          
         self.training.sideslip_angle                                = np.array([10  , 5.0 ]) * Units.deg
         self.training.aileron_deflection                            = np.array([10  , 5.0 ]) * Units.deg
@@ -99,9 +99,9 @@ class Vortex_Lattice_Method(Aerodynamics):
         self.training.u                                             = np.array([10 , 5 ])  
         self.training.v                                             = np.array([10 , 5 ])  
         self.training.w                                             = np.array([10 , 5 ])    
-        self.training.pitch_rate                                    = np.array([3 ,1.5 ])  * Units.deg / Units.sec
-        self.training.roll_rate                                     = np.array([3 ,1.5 ])  * Units.deg / Units.sec
-        self.training.yaw_rate                                      = np.array([3 ,1.5 ])  * Units.deg / Units.sec 
+        self.training.pitch_rate                                    = np.array([0.05 ,1E-2 ])  * Units.deg / Units.sec
+        self.training.roll_rate                                     = np.array([0.05 ,1E-2 ])  * Units.deg / Units.sec
+        self.training.yaw_rate                                      = np.array([0.05 ,1E-2 ])  * Units.deg / Units.sec 
         
         # control surface flags                  
         self.aileron_flag                                           = False 

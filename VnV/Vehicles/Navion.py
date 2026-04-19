@@ -36,7 +36,7 @@ def vehicle_setup():
     vehicle.mass_properties.max_takeoff               = 2948 * Units.pounds
     vehicle.mass_properties.takeoff                   = 2948 * Units.pounds
     vehicle.mass_properties.moments_of_inertia.tensor = [[1420.8784,0.0,0.0],[0.0,4067.4,0.0],[0.0,0.0,4785.974]]
-    vehicle.mass_properties.center_of_gravity         = [[2.239696797,0,-0.131189711 ]] 
+    vehicle.mass_properties.center_of_gravity         = [[2.5,0,-0.131189711 ]] 
     vehicle.mass_properties.max_fuel                  =  60 * Units.pounds
     vehicle.mass_properties.fuel                      =  60 * Units.pounds
     vehicle.mass_properties.max_payload               =  700 *  Units.lbs 
@@ -148,7 +148,7 @@ def vehicle_setup():
     aileron.span_fraction_start   = 0.7
     aileron.span_fraction_end     = 0.9 
     aileron.deflection            = 0.0 * Units.degrees
-    aileron.chord_fraction        = 0.2
+    aileron.chord_fraction        = 0.23
     wing.append_control_surface(aileron)      
 
     # add to vehicle

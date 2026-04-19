@@ -7,16 +7,13 @@
 #  Imports
 # ----------------------------------------------------------------------
 
-# package imports 
-import RCAIDE
-from RCAIDE.Framework.Core import Data
-from RCAIDE.Library.Plots.Geometry import plot_3d_vehicle_vlm_panelization 
+# package imports  
+from RCAIDE.Framework.Core import Data 
 from .compute_wing_induced_velocity      import compute_wing_induced_velocity
 from .generate_vortex_distribution       import generate_vortex_distribution 
 from .compute_RHS_matrix                 import compute_RHS_matrix
 
-from scipy.integrate import trapezoid
-from copy import  deepcopy
+from scipy.integrate import trapezoid 
 import numpy as np
 # ----------------------------------------------------------------------
 #  Vortex Lattice

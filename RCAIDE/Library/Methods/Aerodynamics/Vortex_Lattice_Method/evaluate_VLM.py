@@ -544,14 +544,14 @@ def evaluate_no_surrogate(state,settings,vehicle):
     CM_beta_prime    = VLM_results.CM
     CN_beta_prime    = VLM_results.CN
     
-    conditions.static_stability.derivatives.Clift_beta = (Clift_beta_prime   - Clift_0) / (delta_angle)
-    conditions.static_stability.derivatives.Cdrag_beta = (Cdrag_beta_prime   - Cdrag_0) / (delta_angle) 
-    conditions.static_stability.derivatives.CX_beta    = (CX_beta_prime      - CX_0) / (delta_angle)  
-    conditions.static_stability.derivatives.CY_beta    = (CY_beta_prime      - CY_0) / (delta_angle) 
-    conditions.static_stability.derivatives.CZ_beta    = (CZ_beta_prime      - CZ_0) / (delta_angle) 
-    conditions.static_stability.derivatives.CL_beta    = (CL_beta_prime      - CL_0) / (delta_angle)   
-    conditions.static_stability.derivatives.CM_beta    = (CM_beta_prime      - CM_0) / (delta_angle)  
-    conditions.static_stability.derivatives.CN_beta    = (CN_beta_prime      - CN_0) / (delta_angle) 
+    conditions.static_stability.derivatives.Clift_beta =   (Clift_beta_prime   - Clift_0) / (delta_angle)
+    conditions.static_stability.derivatives.Cdrag_beta =   (Cdrag_beta_prime   - Cdrag_0) / (delta_angle) 
+    conditions.static_stability.derivatives.CX_beta    =   (CX_beta_prime      - CX_0) / (delta_angle)  
+    conditions.static_stability.derivatives.CY_beta    = - (CY_beta_prime      - CY_0) / (delta_angle) 
+    conditions.static_stability.derivatives.CZ_beta    =   (CZ_beta_prime      - CZ_0) / (delta_angle) 
+    conditions.static_stability.derivatives.CL_beta    = - (CL_beta_prime      - CL_0) / (delta_angle)   
+    conditions.static_stability.derivatives.CM_beta    =   (CM_beta_prime      - CM_0) / (delta_angle)  
+    conditions.static_stability.derivatives.CN_beta    =   (CN_beta_prime      - CN_0) / (delta_angle) 
 
     # --------------------------------------------------------------------------------------------      
     # U-Velocity Pertubation 
@@ -683,7 +683,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     # Roll Rate (p) Purtubation
     # --------------------------------------------------------------------------------------------  
     pertubation_conditions                                 = deepcopy(equilibrium_conditions)    
-    pertubation_conditions.static_stability.roll_rate[:,0] += delta_rate
+    pertubation_conditions.static_stability.roll_rate[:,0] = delta_rate  
     
     VLM_results   = VLM(pertubation_conditions,settings,vehicle)
     Clift_p_prime = VLM_results.CLift
@@ -709,7 +709,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     # ---------------------------------------------------------------------------------------------------    
     perturbation_state                                      = deepcopy(equilibrium_state)
     pertubation_conditions                                  = deepcopy(equilibrium_conditions)   
-    pertubation_conditions.static_stability.pitch_rate[:,0] += delta_rate  
+    pertubation_conditions.static_stability.pitch_rate[:,0] = delta_rate  
      
     VLM_results     = VLM(pertubation_conditions,settings,vehicle)
     Clift_i_q_prime = VLM_results.CLift
@@ -782,14 +782,14 @@ def evaluate_no_surrogate(state,settings,vehicle):
     CM_r_prime    = VLM_results.CM
     CN_r_prime    = VLM_results.CN
      
-    conditions.static_stability.derivatives.Clift_r  = (Clift_r_prime   - Clift_0) / (delta_rate)
-    conditions.static_stability.derivatives.Cdrag_r  = (Cdrag_r_prime   - Cdrag_0) / (delta_rate) 
-    conditions.static_stability.derivatives.CX_r     = (CX_r_prime      - CX_0) / (delta_rate)  
-    conditions.static_stability.derivatives.CY_r     = (CY_r_prime      - CY_0) / (delta_rate) 
-    conditions.static_stability.derivatives.CZ_r     = (CZ_r_prime      - CZ_0) / (delta_rate) 
-    conditions.static_stability.derivatives.CL_r     = (CL_r_prime      - CL_0) / (delta_rate) 
-    conditions.static_stability.derivatives.CM_r     = (CM_r_prime      - CM_0) / (delta_rate)  
-    conditions.static_stability.derivatives.CN_r     = (CN_r_prime      - CN_0) / (delta_rate) 
+    conditions.static_stability.derivatives.Clift_r  =  (Clift_r_prime   - Clift_0) / (delta_rate)
+    conditions.static_stability.derivatives.Cdrag_r  =  (Cdrag_r_prime   - Cdrag_0) / (delta_rate) 
+    conditions.static_stability.derivatives.CX_r     =  (CX_r_prime      - CX_0) / (delta_rate)  
+    conditions.static_stability.derivatives.CY_r     =  (CY_r_prime      - CY_0) / (delta_rate) 
+    conditions.static_stability.derivatives.CZ_r     =  (CZ_r_prime      - CZ_0) / (delta_rate) 
+    conditions.static_stability.derivatives.CL_r     = -(CL_r_prime      - CL_0) / (delta_rate) 
+    conditions.static_stability.derivatives.CM_r     =  (CM_r_prime      - CM_0) / (delta_rate)  
+    conditions.static_stability.derivatives.CN_r     =  (CN_r_prime      - CN_0) / (delta_rate) 
  
     for wing in vehicle.wings: 
         for control_surface in wing.control_surfaces:  

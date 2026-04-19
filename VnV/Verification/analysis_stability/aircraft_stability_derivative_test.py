@@ -31,20 +31,22 @@ from Navion    import vehicle_setup, configs_setup
 # ---------------------------------------------------------------------- 
 def main():
     
-    # Truth Values for Literature : DO NOT CHANGE
-    truth_vals = Data  
-    truth_vals.CY_beta      = -0.195398   
-    truth_vals.CL_beta      = -0.12228 
-    truth_vals.CM_alpha     = -1.1509  
-    truth_vals.CN_beta      = 0.074425 
-    truth_vals.CY_delta_a   = 0.03569527063665028
-    truth_vals.CL_delta_a   = 0.11310186875882451 
-    truth_vals.Clift_delta_e= 0.5314183549838385
-    truth_vals.CN_delta_a   = -0.0012032113697747287
-    truth_vals.CM_delta_e   = -1.3917717801522826
-    truth_vals.CY_delta_r   = -0.1098933051060919
-    truth_vals.CL_delta_r   = -0.011172677005051052
-    truth_vals.CN_delta_r   = 0.05993138537068411 
+    # Truth Values for Literature RANGE
+    truth_vals = Data()  
+    truth_vals.Clift_alpha  = np.array([4.2,5.5])
+    truth_vals.CY_beta      = np.array([-0.77, -0.2])
+    truth_vals.CL_beta      = np.array([-0.1, -0.05])
+    truth_vals.CM_alpha     = np.array([-1.24,-0.5])
+    truth_vals.CN_beta      = np.array([0.033,0.09])
+    truth_vals.CL_p         = np.array([-0.48, -0.3])
+    truth_vals.CL_r         = np.array([0.07,0.27])
+    truth_vals.CM_q         = np.array([-13.29,-9.5])
+    truth_vals.CN_p         = np.array([-0.1, -0.01])
+    truth_vals.CN_r         = np.array([-0.14, -0.06]) 
+    truth_vals.CM_delta_e   = np.array([-1.5, -1.42]) 
+    truth_vals.CL_delta_a   = np.array([0.152,0.15 ]) 
+    truth_vals.CN_delta_a   = np.array([ -0.0047, -0.0013]) 
+    truth_vals.CN_delta_r   = np.array([-0.093, -0.075 ])
 
     vehicle  = vehicle_setup()    
     configs  = configs_setup(vehicle) 
@@ -58,31 +60,62 @@ def main():
                                                                           mach_numbers      = Mach_number_range, 
                                                                           altitude          =  1000. * Units.feet ) 
  
-    SSD = results.static_stability.derivatives 
+    SSD = results.static_stability.derivatives
     
-    error = Data(  
-        CY_beta        = 100*np.array((truth_vals.CY_beta      - SSD.CY_beta[0, 0]      )/truth_vals.CY_beta    ),   
-        CL_beta        = 100*np.array((truth_vals.CL_beta      - SSD.CL_beta[0, 0]      )/truth_vals.CL_beta    ), 
-        CM_alpha       = 100*np.array((truth_vals.CM_alpha     - SSD.CM_alpha[0, 0]     )/truth_vals.CM_alpha   ),  
-        CN_beta        = 100*np.array((truth_vals.CN_beta      - SSD.CN_beta[0, 0]      )/truth_vals.CN_beta    ), 
-        CY_delta_a     = 100*np.array((truth_vals.CY_delta_a   - SSD.CY_delta_a[0, 0]   )/truth_vals.CY_delta_a ),
-        CL_delta_a     = 100*np.array((truth_vals.CL_delta_a   - SSD.CL_delta_a[0, 0]   )/truth_vals.CL_delta_a ),
-        Clift_delta_e  = 100*np.array((truth_vals.Clift_delta_e- SSD.Clift_delta_e[0, 0])/truth_vals.Clift_delta_e),
-        CN_delta_a     = 100*np.array((truth_vals.CN_delta_a   - SSD.CN_delta_a[0, 0]   )/truth_vals.CN_delta_a   ),
-        CM_delta_e     = 100*np.array((truth_vals.CM_delta_e   - SSD.CM_delta_e[0, 0]   )/truth_vals.CM_delta_e   ),
-        CY_delta_r     = 100*np.array((truth_vals.CY_delta_r   - SSD.CY_delta_r[0, 0]   )/truth_vals.CY_delta_r   ),
-        CL_delta_r     = 100*np.array((truth_vals.CL_delta_r   - SSD.CL_delta_r[0, 0]   )/truth_vals.CL_delta_r   ),
-        CN_delta_r     = 100*np.array((truth_vals.CN_delta_r   - SSD.CN_delta_r[0, 0]   )/truth_vals.CN_delta_r   ), 
+    
+    
+
+    print('Validation Test ')
+    for key ,val in list(truth_vals.items()):
+        violation = truth_vals[key][0] < SSD[key][0, 0] and    truth_vals[key][1] > SSD[key][0, 0]
+        
+        lower_bound_violation_percent_error = 100* abs((truth_vals[key][0] - SSD[key][0, 0]) / truth_vals[key][0])
+        upper_bound_violation_percent_error = 100* abs((truth_vals[key][1] - SSD[key][0, 0]) / truth_vals[key][1])
+        
+        max_percent_error = np.maximum(lower_bound_violation_percent_error, upper_bound_violation_percent_error)
          
-         )
-     
+        if not violation:
+            if  truth_vals[key][1] > SSD[key][0, 0]:
+                max_percent_error =  lower_bound_violation_percent_error
+            if truth_vals[key][0] < SSD[key][0, 0]:
+                max_percent_error =  upper_bound_violation_percent_error
+                
+            print(key,round(SSD[key][0, 0],5) , ' outside range by ',  round(max_percent_error,2), ' % error')
+        else:
+            print(key,round(SSD[key][0, 0],5) , ' inside range')
+        
+        
+    print('Verification Test ') 
+    RCAIDE_vals =  Data(
+        Clift_alpha  =  6.180534774225939,
+        CY_beta      =  0.1815580424991302,
+        CL_beta      =  -0.07226962722226968,
+        CM_alpha     =  -0.6474726701320511,
+        CN_beta      =  0.10399793911861487,
+        CL_p         =  0.04355189807365825,
+        CL_r         =  0.008773695859778042,
+        CM_q         =  -12.180878426457774,
+        CN_p         =  0.008021527083953716,
+        CN_r         =  -0.008461489321611783,
+        CM_delta_e   =  -1.18251552533219,
+        CL_delta_a   =  0.12065059273497508,
+        CN_delta_a   =  -0.012218741928968197,
+        CN_delta_r   =  -0.026521497533587086,
+        )
+          
 
+    RCAIDE_error = Data()
+    for key ,val in list(RCAIDE_vals.items()):
+        RCAIDE_error[key] = abs((RCAIDE_vals[key] - SSD[key][0, 0]) / RCAIDE_vals[key])     
+    
+   
     print('Errors:')
-    print(error)
+    print(RCAIDE_error)
 
-    for k,v in list(error.items()):
+    for k,v in list(RCAIDE_error.items()):
         print(v)
-        #assert(np.abs(v)<1e-2)    
+        assert(np.abs(v)<1e-2)
+         
     
     return 
 
@@ -116,6 +149,8 @@ def base_analysis(vehicle):
   
     aerodynamics   = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
     aerodynamics.settings.use_surrogate = False 
+    aerodynamics.settings.number_of_spanwise_vortices    = 20
+    aerodynamics.settings.number_of_chordwise_vortices   = 5
     analyses.append(aerodynamics)
     
     return analyses 
