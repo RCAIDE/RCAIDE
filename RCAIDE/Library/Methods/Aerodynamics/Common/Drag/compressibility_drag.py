@@ -397,7 +397,7 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     #     print(CL_y.shape)
     #     a =0
     # else: 
-    CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise 
+    CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise *geometry.wings.main_wing.areas.projected/S_ref
 
     chords   = settings.vortex_distribution.chord_lengths
     delta    = settings.vortex_distribution.leading_edge_sweeps 
