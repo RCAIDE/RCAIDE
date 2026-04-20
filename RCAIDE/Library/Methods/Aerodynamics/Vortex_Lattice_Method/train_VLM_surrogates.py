@@ -22,7 +22,7 @@ def train_VLM_surrogates(aerodynamics, vehicle):
     
     Assumptions:
         CY_beta multiplied by -1,  
-        CN Rudder derivatives multiplied by -1, verified against literature
+        CN Rudder derivatives multiplied by -1, verified against literature (this is not multiplied here but is in the VLM.py)
         
     Source:
         None

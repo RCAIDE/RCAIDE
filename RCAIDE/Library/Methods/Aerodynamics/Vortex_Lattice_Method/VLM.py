@@ -446,8 +446,8 @@ def VLM(conditions,settings,geometry):
 
     # moment coefficients 
     CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_ref  
-    CL_mom   = - np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref*(-1)                             
-    CN_mom   = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref*(-1)                            
+    CL_mom   = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref                            
+    CN_mom   = -1 * np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref                         
    
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
