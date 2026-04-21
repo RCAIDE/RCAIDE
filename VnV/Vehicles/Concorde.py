@@ -417,8 +417,7 @@ def vehicle_setup():
     outer_right_turbojet                          = RCAIDE.Library.Components.Powertrain.Propulsors.Turbojet()  
     outer_right_turbojet.tag                      = 'outer_right_turbojet'     
     outer_right_turbojet.length                   = 4.039
-    outer_right_turbojet.nacelle_diameter         = 1.3
-    outer_right_turbojet.inlet_diameter           = 1.212 
+    outer_right_turbojet.diameter                 = 1.3
     outer_right_turbojet.areas.wetted             = 30
     outer_right_turbojet.design_altitude          = 60000.0*Units.ft
     outer_right_turbojet.design_mach_number       = 2.02
