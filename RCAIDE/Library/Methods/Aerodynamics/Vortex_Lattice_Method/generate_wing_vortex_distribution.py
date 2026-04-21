@@ -117,13 +117,14 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         zc_w   = np.zeros((n_sw,n_cw))
         x_w    = np.zeros((n_sw+1,n_cw+1)) # may have to change to make space for split if control surfaces are allowed to have more than two Segments
         y_w    = np.zeros((n_sw+1,n_cw+1)) 
-        z_w    = np.zeros((n_sw+1,n_cw+1))         
+        z_w    = np.zeros((n_sw+1,n_cw+1)) 
+        x_c    = np.zeros((n_sw+1,n_cw+1)) 
+        y_c    = np.zeros((n_sw+1,n_cw+1)) 
+        z_c    = np.zeros((n_sw+1,n_cw+1))
+        x_h    = np.zeros((n_sw+1,n_cw+1)) 
+        y_h    = np.zeros((n_sw+1,n_cw+1)) 
+        z_h    = np.zeros((n_sw+1,n_cw+1))           
         cs_ws  = np.zeros(n_sw+1) 
-        
-        # adjust origin for symmetry with special case for vertical symmetry 
-        wing_origin_x = wing_origin[0] * yz_sym_sign
-        wing_origin_y = wing_origin[1] * xz_sym_sign
-        wing_origin_z = wing_origin[2] * xy_sym_sign
              
         seg_idx       = 0
         wing_seg_tags = list(wing.segments.keys())
@@ -169,11 +170,24 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             delta_x  = inboard_segment.origin[0][0] +  np.tan(LE_sweep) * local_y_val 
              
             # Step 4. get points of airfoil
-            airfoil_x_pts_1 , airfoil_z_pts_1 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,n_cw+1,local_percent_y_val)  
+            airfoil_x_pts_0 , airfoil_z_pts_0 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,local_percent_y_val, ncpts=100)  
+            
+            airfoil_x_pts_1 =  np.linspace(0, 1, n_cw+1)
+            airfoil_z_pts_1 = np.interp(airfoil_x_pts_1, airfoil_x_pts_0, airfoil_z_pts_0)
+            delta_x         = np.diff(airfoil_x_pts_1) 
+            
+            airfoil_x_pts_1_h =  airfoil_x_pts_1[:-1] + delta_x*0.25
+            airfoil_z_pts_1_h =  np.interp(airfoil_x_pts_h, airfoil_x_pts_0, airfoil_z_pts_0)
+            airfoil_x_pts_1_c =   airfoil_x_pts_1[:-1] + delta_x*0.75
+            airfoil_z_pts_1_c =  np.interp(airfoil_x_pts_c, airfoil_x_pts_0, airfoil_z_pts_0)
             
             # Step 5 scale airfoil by local chord 
-            airfoil_x_pts_2 = airfoil_x_pts_1*local_chord
-            airfoil_z_pts_2 = airfoil_z_pts_1*local_chord
+            airfoil_x_pts_2   = airfoil_x_pts_1*local_chord
+            airfoil_z_pts_2   = airfoil_z_pts_1*local_chord
+            airfoil_x_pts_2_h = airfoil_x_pts_1_h*local_chord
+            airfoil_z_pts_2_h = airfoil_z_pts_1_h*local_chord
+            airfoil_x_pts_2_c = airfoil_x_pts_1_c*local_chord
+            airfoil_z_pts_2_c = airfoil_z_pts_1_c*local_chord
              
             # Step 6. get control surface deflection and modify airfoil 
             LE_angle          = 0.0
@@ -199,29 +213,59 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                         TE_chord_fraction = cs.chord_fraction 
                 
             airfoil_x_pts_3, airfoil_z_pts_3 = apply_control_surface_deflections(airfoil_x_pts_2, airfoil_z_pts_2,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
+            airfoil_x_pts_3_c, airfoil_z_pts_3_c = apply_control_surface_deflections(airfoil_x_pts_1_c, airfoil_z_pts_2_c,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
+            airfoil_x_pts_3_h, airfoil_z_pts_3_h = apply_control_surface_deflections(airfoil_x_pts_1_h, airfoil_z_pts_2_h,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
            
             # rotate airfoil by twist
             airfoil_x_pts_4 = np.cos(local_twist)*airfoil_x_pts_3 + np.sin(local_twist)*airfoil_z_pts_3
-            airfoil_z_pts_4 = - np.sin(local_twist)*airfoil_x_pts_3 + np.cos(local_twist)*airfoil_z_pts_3
+            airfoil_z_pts_4 = - np.sin(local_twist)*airfoil_x_pts_3 + np.cos(local_twist)*airfoil_z_pts_3 
+            airfoil_x_pts_4_h = np.cos(local_twist)*airfoil_x_pts_3_h + np.sin(local_twist)*airfoil_z_pts_3_h
+            airfoil_z_pts_4_h = - np.sin(local_twist)*airfoil_x_pts_3_h + np.cos(local_twist)*airfoil_z_pts_3_h 
+            airfoil_x_pts_4_c = np.cos(local_twist)*airfoil_x_pts_3_c + np.sin(local_twist)*airfoil_z_pts_3_c
+            airfoil_z_pts_4_c = - np.sin(local_twist)*airfoil_x_pts_3_c + np.cos(local_twist)*airfoil_z_pts_3_c            
             
             # shift sectional points from origin [0,0,0] to relative wing origin
             airfoil_x_pts_5 = airfoil_x_pts_4 + delta_x
             airfoil_z_pts_5 = airfoil_z_pts_4 + delta_z
+            airfoil_x_pts_5_c = airfoil_x_pts_4_c + delta_x
+            airfoil_z_pts_5_c = airfoil_z_pts_4_c + delta_z
+            airfoil_x_pts_5_h = airfoil_x_pts_4_h + delta_x
+            airfoil_z_pts_5_h = airfoil_z_pts_4_h + delta_z
             
             # store points
             x_wing_pts = airfoil_x_pts_5
             y_wing_pts = np.ones(len(x_wing_pts))*delta_y 
-            z_wing_pts = airfoil_z_pts_5 
+            z_wing_pts = airfoil_z_pts_5
+
+            x_wing_pts_c = airfoil_x_pts_5_c
+            y_wing_pts_c = np.ones(len(x_wing_pts_c))*delta_y 
+            z_wing_pts_c = airfoil_z_pts_5_c  
+            x_wing_pts_h = airfoil_x_pts_5_h
+            y_wing_pts_h = np.ones(len(x_wing_pts_h))*delta_y 
+            z_wing_pts_h = airfoil_z_pts_5_h             
              
             # store coordinates of panels, horseshoeces vortices and control points relative to wing root----------
             if wing.vertical:
                 x_w[y_i,:] = x_wing_pts
                 y_w[y_i,:] = z_wing_pts
                 z_w[y_i,:] = y_wing_pts 
+                x_c[y_i,:] = x_wing_pts_c
+                y_c[y_i,:] = z_wing_pts_c
+                z_c[y_i,:] = y_wing_pts_c
+                x_h[y_i,:] = x_wing_pts_h
+                y_h[y_i,:] = z_wing_pts_h
+                z_h[y_i,:] = y_wing_pts_h
+                
             else:
                 x_w[y_i,:] = x_wing_pts
                 y_w[y_i,:] = y_wing_pts
-                z_w[y_i,:] = z_wing_pts 
+                z_w[y_i,:] = z_wing_pts  
+                x_c[y_i,:] = x_wing_pts_c
+                y_c[y_i,:] = y_wing_pts_c
+                z_c[y_i,:] = z_wing_pts_c
+                x_h[y_i,:] = x_wing_pts_h
+                y_h[y_i,:] = y_wing_pts_h
+                z_h[y_i,:] = z_wing_pts_h
 
             # handle flips for symmetric wings 
             if side_idx == 1:
@@ -260,31 +304,33 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         zb1_w = z_w[1:,:-1]
         xb2_w = x_w[1:,1:]
         yb2_w = y_w[1:,1:]
-        zb2_w = z_w[1:,1:]
-
-        xac_w = xa1_w + 0.75*(xa2_w - xa1_w)
-        yac_w = ya1_w
-        zac_w = za1_w + 0.75*(za2_w - za1_w)
-        xbc_w = xb1_w + 0.75*(xb2_w - xb1_w)
-        ybc_w = yb1_w
-        zbc_w = zb1_w + 0.75*(zb2_w - zb1_w)
-
-        xah_w = xa1_w + 0.25*(xa2_w - xa1_w)
-        yah_w = ya1_w
-        zah_w = za1_w + 0.25*(za2_w - za1_w)
-        xbh_w = xb1_w + 0.25*(xb2_w - xb1_w)
-        ybh_w = yb1_w
-        zbh_w = zb1_w + 0.25*(zb2_w - zb1_w)
+        zb2_w = z_w[1:,1:] 
+        
+        xac_w = x_c[:-1]
+        yac_w = y_c[:-1]
+        zac_w = z_c[:-1]
+        xbc_w = x_c[1:]
+        ybc_w = y_c[1:]
+        zbc_w = z_c[1:] 
+        xah_w = x_h[:-1]
+        yah_w = y_h[:-1]
+        zah_w = z_h[:-1]
+        xbh_w = x_h[1:]
+        ybh_w = y_h[1:]
+        zbh_w = z_h[1:]
  
         xch_w = (xah_w + xbh_w)/2
         ych_w = (yah_w + ybh_w)/2
-        zch_w = (zah_w + zbh_w)/2
-        xc_w  = (xac_w + xbc_w)/2
-        yc_w  = (yac_w + ybc_w)/2
-        zc_w  = (zac_w + zbc_w)/2
-
+        zch_w = (zah_w + zbh_w)/2 
+        xc_w  = (xac_w + xbc_w)/2 
+        yc_w  = (yac_w + ybc_w)/2 
+        zc_w  = (zac_w + zbc_w)/2  
         
-                
+        # adjust origin for symmetry with special case for vertical symmetry 
+        wing_origin_x = wing_origin[0] * yz_sym_sign
+        wing_origin_y = wing_origin[1] * xz_sym_sign
+        wing_origin_z = wing_origin[2] * xy_sym_sign
+        
         # adjusting coordinate axis so reference point is at the nose of the aircraft------------------------------
         xah = xah_w.flatten() + wing_origin_x # x coordinate of left corner of bound vortex 
         yah = yah_w.flatten() + wing_origin_y # y coordinate of left corner of bound vortex 
@@ -404,7 +450,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     
     return VD
 
-def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,local_percent_y_val): 
+def generate_interplated_airfoil_points(inboard_segment,outboard_segment,local_percent_y_val,ncpts): 
         """ Takes in two airfoils, interpolates between their coordinates to generate new
         airfoil geometries and saves new airfoil files.
         
@@ -422,29 +468,29 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         # Get points of inboard segment airfoil 
         if inboard_segment.airfoil: 
             if type(inboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,n_cw*2-1)
+                a_geo_1 = compute_naca_4series(inboard_segment.airfoil.NACA_4_Series_code,ncpts*2-1)
             else:
-                a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,n_cw*2+1)   
+                a_geo_1 = import_airfoil_geometry(inboard_segment.airfoil.coordinate_file,ncpts*2+1)   
         else:
             a_geo_1 =  Data()
-            a_geo_1.camber_coordinates = np.zeros(n_cw)              
-            a_geo_1.x_upper_surface    = np.linspace(0,1,n_cw)
+            a_geo_1.camber_coordinates = np.zeros(ncpts)              
+            a_geo_1.x_upper_surface    = np.linspace(0,1,ncpts)
     
     
         # Get points of outboard segment airfoil     
         if outboard_segment.airfoil: 
             if type(outboard_segment.airfoil) == RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil: 
-                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,n_cw*2-1)
+                a_geo_2 = compute_naca_4series(outboard_segment.airfoil.NACA_4_Series_code,ncpts*2-1)
             else:
-                a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,n_cw*2+1)   
+                a_geo_2 = import_airfoil_geometry(outboard_segment.airfoil.coordinate_file,ncpts*2+1)   
         else:
             a_geo_2 =  Data()
-            a_geo_2.camber_coordinates = np.zeros(n_cw)              
-            a_geo_2.x_upper_surface    = np.linspace(0,1,n_cw)
+            a_geo_2.camber_coordinates = np.zeros(ncpts)              
+            a_geo_2.x_upper_surface    = np.linspace(0,1,ncpts)
                 
         
         # for each point around the airfoil, interpolate between the two given airfoil coordinates
-        z = np.linspace(0,1,n_cw)
+        z = np.linspace(0,1,ncpts)
         
         y_u_lb = a_geo_1.camber_coordinates 
         y_u_ub = a_geo_2.camber_coordinates  
@@ -455,7 +501,7 @@ def generate_interplated_airfoil_points(inboard_segment,outboard_segment,n_cw,lo
         cambers = (z[None,...] * (y_u_ub[...,None] - y_u_lb[...,None]) + (y_u_lb[...,None])).T 
         x_vals  = (z[None,...] * (x_u_ub[...,None] - x_u_lb[...,None]) + (x_u_lb[...,None])).T  
            
-        idx = int(local_percent_y_val *n_cw)
+        idx = int(local_percent_y_val *ncpts)
         
         if idx == len(cambers):
             idx -= 1
