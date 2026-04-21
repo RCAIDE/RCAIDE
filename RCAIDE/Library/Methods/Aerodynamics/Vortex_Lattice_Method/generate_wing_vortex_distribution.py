@@ -118,12 +118,12 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         x_w    = np.zeros((n_sw+1,n_cw+1)) # may have to change to make space for split if control surfaces are allowed to have more than two Segments
         y_w    = np.zeros((n_sw+1,n_cw+1)) 
         z_w    = np.zeros((n_sw+1,n_cw+1)) 
-        x_c    = np.zeros((n_sw+1,n_cw+1)) 
-        y_c    = np.zeros((n_sw+1,n_cw+1)) 
-        z_c    = np.zeros((n_sw+1,n_cw+1))
-        x_h    = np.zeros((n_sw+1,n_cw+1)) 
-        y_h    = np.zeros((n_sw+1,n_cw+1)) 
-        z_h    = np.zeros((n_sw+1,n_cw+1))           
+        x_c    = np.zeros((n_sw+1,n_cw)) 
+        y_c    = np.zeros((n_sw+1,n_cw)) 
+        z_c    = np.zeros((n_sw+1,n_cw))
+        x_h    = np.zeros((n_sw+1,n_cw)) 
+        y_h    = np.zeros((n_sw+1,n_cw)) 
+        z_h    = np.zeros((n_sw+1,n_cw))           
         cs_ws  = np.zeros(n_sw+1) 
              
         seg_idx       = 0
@@ -172,14 +172,14 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             # Step 4. get points of airfoil
             airfoil_x_pts_0 , airfoil_z_pts_0 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,local_percent_y_val, ncpts=100)  
             
-            airfoil_x_pts_1 =  np.linspace(0, 1, n_cw+1)
+            airfoil_x_pts_1 = np.linspace(0, 1, n_cw+1)
             airfoil_z_pts_1 = np.interp(airfoil_x_pts_1, airfoil_x_pts_0, airfoil_z_pts_0)
-            delta_x         = np.diff(airfoil_x_pts_1) 
+            de_x         = np.diff(airfoil_x_pts_1) 
             
-            airfoil_x_pts_1_h =  airfoil_x_pts_1[:-1] + delta_x*0.25
-            airfoil_z_pts_1_h =  np.interp(airfoil_x_pts_h, airfoil_x_pts_0, airfoil_z_pts_0)
-            airfoil_x_pts_1_c =   airfoil_x_pts_1[:-1] + delta_x*0.75
-            airfoil_z_pts_1_c =  np.interp(airfoil_x_pts_c, airfoil_x_pts_0, airfoil_z_pts_0)
+            airfoil_x_pts_1_h =  airfoil_x_pts_1[:-1] + de_x*0.25
+            airfoil_z_pts_1_h =  np.interp(airfoil_x_pts_1_h, airfoil_x_pts_0, airfoil_z_pts_0)
+            airfoil_x_pts_1_c =  airfoil_x_pts_1[:-1] + de_x*0.75
+            airfoil_z_pts_1_c =  np.interp(airfoil_x_pts_1_c, airfoil_x_pts_0, airfoil_z_pts_0)
             
             # Step 5 scale airfoil by local chord 
             airfoil_x_pts_2   = airfoil_x_pts_1*local_chord
@@ -213,8 +213,8 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                         TE_chord_fraction = cs.chord_fraction 
                 
             airfoil_x_pts_3, airfoil_z_pts_3 = apply_control_surface_deflections(airfoil_x_pts_2, airfoil_z_pts_2,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
-            airfoil_x_pts_3_c, airfoil_z_pts_3_c = apply_control_surface_deflections(airfoil_x_pts_1_c, airfoil_z_pts_2_c,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
-            airfoil_x_pts_3_h, airfoil_z_pts_3_h = apply_control_surface_deflections(airfoil_x_pts_1_h, airfoil_z_pts_2_h,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
+            airfoil_x_pts_3_c, airfoil_z_pts_3_c = apply_control_surface_deflections(airfoil_x_pts_2_c, airfoil_z_pts_2_c,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
+            airfoil_x_pts_3_h, airfoil_z_pts_3_h = apply_control_surface_deflections(airfoil_x_pts_2_h, airfoil_z_pts_2_h,LE_angle, LE_chord_fraction, TE_angle, TE_chord_fraction)
            
             # rotate airfoil by twist
             airfoil_x_pts_4 = np.cos(local_twist)*airfoil_x_pts_3 + np.sin(local_twist)*airfoil_z_pts_3
