@@ -290,30 +290,30 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         if side_idx == 1: 
 
 
-            xa1_w = x_w[:-1,:-1]
+            xa1_w = x_w[:-1,:-1]* yz_sym_sign
             ya1_w = y_w[:-1,:-1]* xz_sym_sign
-            za1_w = z_w[:-1,:-1]
-            xa2_w = x_w[:-1,1:]
+            za1_w = z_w[:-1,:-1]* xy_sym_sign
+            xa2_w = x_w[:-1,1:]* yz_sym_sign
             ya2_w = y_w[:-1,1:]* xz_sym_sign
-            za2_w = z_w[:-1,1:]
-            xb1_w = x_w[1:,:-1] 
+            za2_w = z_w[:-1,1:]* xy_sym_sign
+            xb1_w = x_w[1:,:-1]* yz_sym_sign
             yb1_w = y_w[1:,:-1]* xz_sym_sign
-            zb1_w = z_w[1:,:-1]
-            xb2_w = x_w[1:,1:]
+            zb1_w = z_w[1:,:-1]* xy_sym_sign
+            xb2_w = x_w[1:,1:]* yz_sym_sign
             yb2_w = y_w[1:,1:]* xz_sym_sign
-            zb2_w = z_w[1:,1:]  
-            xac_w = x_c[:-1] 
-            yac_w = y_c[:-1] * xz_sym_sign  
-            zac_w = z_c[:-1]
-            xbc_w = x_c[1:] 
-            ybc_w = y_c[1:] * xz_sym_sign 
-            zbc_w = z_c[1:] 
-            xah_w = x_h[:-1]
+            zb2_w = z_w[1:,1:]* xy_sym_sign
+            xac_w = x_c[:-1]* yz_sym_sign
+            yac_w = y_c[:-1]* xz_sym_sign  
+            zac_w = z_c[:-1]* xy_sym_sign
+            xbc_w = x_c[1:]* yz_sym_sign
+            ybc_w = y_c[1:]* xz_sym_sign 
+            zbc_w = z_c[1:]* xy_sym_sign
+            xah_w = x_h[:-1]* yz_sym_sign
             yah_w = y_h[:-1]* xz_sym_sign
-            zah_w = z_h[:-1]
-            xbh_w = x_h[1:] 
-            ybh_w = y_h[1:] * xz_sym_sign
-            zbh_w = z_h[1:] 
+            zah_w = z_h[:-1]* xy_sym_sign
+            xbh_w = x_h[1:]* yz_sym_sign
+            ybh_w = y_h[1:]* xz_sym_sign
+            zbh_w = z_h[1:]* xy_sym_sign
             xch_w = (xah_w + xbh_w)/2
             ych_w = (yah_w + ybh_w)/2
             zch_w = (zah_w + zbh_w)/2  
@@ -321,9 +321,9 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             yc_w  = (yac_w + ybc_w)/2  
             zc_w  = (zac_w + zbc_w)/2  
 
-            wing_origin_x = wing_origin[0]  
-            wing_origin_y = wing_origin[1] * xz_sym_sign
-            wing_origin_z = wing_origin[2] 
+            wing_origin_x = wing_origin[0]* yz_sym_sign
+            wing_origin_y = wing_origin[1]* xz_sym_sign
+            wing_origin_z = wing_origin[2]* xy_sym_sign
         else: 
 
             xa1_w = x_w[:-1,:-1]
