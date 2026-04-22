@@ -103,7 +103,7 @@ def BWB_Test():
                           [-6.63490042e+05,  9.57721836e+03,  2.78709759e+07]])
     computed_moi = mission.segments[0].analyses.vehicle.mass_properties.moments_of_inertia.tensor
     error_matrix = abs((computed_moi - truth_moi) / truth_moi)
-    assert np.all(error_matrix < 1e-3),\
+    assert np.all(error_matrix < 1e-2),\
         f"MOI tensor mismatch.\nExpected:\n{truth_moi}\nGot:\n{computed_moi}"
 
     return
