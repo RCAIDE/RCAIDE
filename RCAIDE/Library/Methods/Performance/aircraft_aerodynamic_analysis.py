@@ -200,6 +200,24 @@ def aircraft_aerodynamic_analysis(analyses                         = None,
     state.conditions.frames.inertial.velocity_vector[:,0]   = V[:,0]   
     
     _                 = state.analyses.aerodynamics.evaluate(state,state.analyses.vehicle)
+    results = Data(
+        Mach                             = mach_numbers, 
+        alpha                            = angle_of_attacks, 
+        lift_coefficient                 = state.conditions.aerodynamics.coefficients.lift.total, 
+        drag_coefficient                 = state.conditions.aerodynamics.coefficients.drag.total,
+        parasite_drag_coefficient        = state.conditions.aerodynamics.coefficients.drag.parasite.total,
+        form_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.form.total,
+        wave_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.wave.total,
+        induced_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.induced.total,
+        inviscid_induced_drag_coefficient= state.conditions.aerodynamics.coefficients.drag.induced.inviscid,
+        miscellaneous_drag_coefficient   = state.conditions.aerodynamics.coefficients.drag.miscellaneous.total,
+        compressibility_drag_coefficient = state.conditions.aerodynamics.coefficients.drag.compressible.total,
+        cooling_drag_coefficient         = state.conditions.aerodynamics.coefficients.drag.cooling.total,
+        trim_drag_coefficient            = state.conditions.aerodynamics.coefficients.drag.trim.total,
+        moment_coefficient               = state.conditions.static_stability.coefficients.M, 
+        state_conditions                 = state.conditions,
+        
+    )
     
-    return state.conditions  
+    return results
  
