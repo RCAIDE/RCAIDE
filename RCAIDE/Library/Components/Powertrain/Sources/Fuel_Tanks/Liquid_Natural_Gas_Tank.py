@@ -1,6 +1,6 @@
 # RCAIDE/Library/Components/Powertrain/Energy/Sources/Fuel_Tanks/Liquid_Natural_Gas_Tank.py
 # 
-# Created: April 2026, S. Shekar
+# Created: April 2026, S. Shekar, S. Sharma
 #
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -13,9 +13,8 @@ from RCAIDE.Framework.Core import Units
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Integral_Tank.compute_integral_tank_volume               import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Non_Integral_Tank.compute_non_integral_tank_volume       import *
 from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Cryogenic_Tank.compute_cryogenic_cylindrical_tank_volume import compute_cryogenic_cylindrical_tank_volume
-from RCAIDE.Library.Methods.Powertrain.Sources.Fuel_Tanks.Cryogenic_Tank.compute_liquid_hydrogen_conformal_tank_volume import compute_liquid_hydrogen_tank_conformal_volume
-from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity  import compute_cylinder_center_of_gravity
-from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia  import compute_rounded_end_cylinder_moment_of_inertia, compute_cuboid_moment_of_inertia
+from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity                                                      import compute_cylinder_center_of_gravity
+from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia                                                      import compute_rounded_end_cylinder_moment_of_inertia, compute_cuboid_moment_of_inertia
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Liquid Natural Gas Tank

@@ -1,7 +1,7 @@
 # RCAIDE/Library/Attributes/Propellants/Liquid_Natural_Gas.py
 # 
 #
-# Created:  Mar 2024, M. Clarke
+# Created:  April 2026, S. Shekar, S. Sharma
 
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Imports
@@ -192,7 +192,7 @@ class Liquid_Natural_Gas(Propellant):
 
 def load_lng_properties(): 
     """
-    Load hydrogen property data from the RES file.
+    Load liquid natural gas property data from the RES file.
 
     Parameters
     ----------
@@ -200,16 +200,16 @@ def load_lng_properties():
 
     Returns
     -------
-    hydrogen_data : dict
-        Raw hydrogen property data loaded from ``LNG_properties.res``.
+    lng_data : dict
+        Raw liquid natural gas property data loaded from ``LNG_properties.res``.
 
     Notes
     -----
-    Assumes hydrogen behaves as an ideal gas for the stored properties.  
+    Assumes liquid natural gas is pure Methane and behaves as an ideal fluid for the stored properties.  
 
     Source
     ------
-    Internal RCAIDE resource file: ``H2_properties.res``
+    Internal RCAIDE resource file: ``LNG_properties.res``
 
     See Also
     --------
