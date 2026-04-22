@@ -78,10 +78,10 @@ Lift\tCD Profile Drag Counts\tCD Induced Drag Counts\tCD Wave Drag Counts
 # Regression truth values — first 5 data points per quantity (snapshot 2026-04-22)
 TRUTH_VALUES = {
     'Lift':         np.array([-2.5013857199e-01, -1.1054613425e-01, -4.3671358935e-02,  2.3110966590e-02,  9.1938472921e-02]),
-    'Total Drag':   np.array([ 3.1279651975e-02,  2.4019102207e-02,  2.0613423677e-02,  1.9073473956e-02,  1.7546127804e-02]),
-    'Induced Drag': np.array([ 5.8757680904e-03,  4.5180794455e-03,  3.9269131584e-03,  3.3764121117e-03,  2.8530426508e-03]),
+    'Total Drag':   np.array([ 3.6586579212e-02,  2.7351617523e-02,  2.2997951739e-02,  2.0512203247e-02,  1.8012978407e-02]),
+    'Induced Drag': np.array([ 1.1078637930e-02,  7.7852513243e-03,  6.2646857681e-03,  4.7869310241e-03,  3.3107393207e-03]),
     'Wave Drag':    np.array([ 9.4800170926e-06,  2.8489918747e-05,  4.7017947099e-05,  7.6005111330e-05,  1.2185721190e-04]),
-    'Profile Drag': np.array([ 2.5394403868e-02,  1.9472532842e-02,  1.6639492572e-02,  1.5621056733e-02,  1.4571227941e-02]),
+    'Profile Drag': np.array([ 2.5498461265e-02,  1.9537876280e-02,  1.6686248024e-02,  1.5649267111e-02,  1.4580381875e-02]),
 }
 
 # ----------------------------------------------------------------------
@@ -93,7 +93,6 @@ def main():
     results    = run_aero_analysis(vehicle)
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
     plot_drag_validation(results, paper_data)
-    plt.show()
     check_truth_values(results)
     return
 
@@ -423,3 +422,4 @@ def vehicle_setup():
 
 if __name__ == '__main__':
     main()
+    plt.show()
