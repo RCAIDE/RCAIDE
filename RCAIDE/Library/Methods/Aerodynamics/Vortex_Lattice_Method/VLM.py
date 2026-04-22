@@ -737,8 +737,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     CDi_total         = np.zeros(n_cases)
     CDi_wing          = np.zeros((n_cases, len(VD.n_sw[0])))
     Cd_i_distribution = np.zeros_like(cl)
-    alpha_i           = np.zeros_like(cl) 
-
+    alpha_i           = np.zeros_like(cl)    
 
     for k in range(n_cases):
         alpha   = conditions.aerodynamics.angles.alpha [k]
@@ -785,7 +784,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         is_symmetric = np.array(VD.symmetric_wings[0], dtype=bool)
         is_vertical  = np.array(VD.vertical_wing[0],   dtype=bool)
         symmetric_wing_flags = np.concatenate([np.repeat(is_symmetric & ~is_vertical, 2), np.zeros(np.count_nonzero(~is_symmetric), dtype=bool)])[:n_wings]
-
+        wing_areas = (symmetric_wing_flags+1)*VD.wing_areas
         shed_vortices = np.zeros_like(y_control_points)
         for wing_number in range(n_wings):
             if symmetric_wing_flags[wing_number]: # symmetric
@@ -832,18 +831,17 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
         for i in range(n_wings):
             CDi_wing_sum = 0
             if np.sign(shed_vortices[i,-1]-shed_vortices[i,0])<0:
-                CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
-                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] / SREF, line_distance[i])
+                CDi += trapezoid(cd_induced_dist[i] * chord_split[i] / wing_areas[0][i], line_distance[i])
+                CDi_wing_sum += trapezoid(cd_induced_dist[i] * chord_split[i] /  wing_areas[0][i], line_distance[i])
             else:
-                CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
-                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) / SREF, np.flip(-line_distance[i]))
+                CDi += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) /  wing_areas[0][i], np.flip(-line_distance[i]))
+                CDi_wing_sum += trapezoid(np.flip(cd_induced_dist[i]) * np.flip(chord_split[i]) /  wing_areas[0][i], np.flip(-line_distance[i]))
             CDi_wing[k][i] = CDi_wing_sum
         
         CDi_total[k] = CDi
         Cd_i_distribution[k] = cd_induced_dist.ravel()
         alpha_i[k] = alpha_induced_dist.ravel()
 
-        
 
     # Package results
     results                          = Data()

@@ -92,9 +92,9 @@ def main():
     vehicle    = vehicle_setup()
     results    = run_aero_analysis(vehicle)
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
-    check_truth_values(results)
     plot_drag_validation(results, paper_data)
     plt.show()
+    check_truth_values(results)
     return
 
 

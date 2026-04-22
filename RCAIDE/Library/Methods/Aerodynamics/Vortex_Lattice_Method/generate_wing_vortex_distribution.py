@@ -469,7 +469,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     else:
         VD.vertical_wing =  np.append(VD.vertical_wing, int(0))
     
-    area = wing.areas.reference
+    area = wing.areas.projected
     VD.wing_areas.append(area/(sym+1))
     if sym:
         VD.wing_areas.append(area/(sym+1))
