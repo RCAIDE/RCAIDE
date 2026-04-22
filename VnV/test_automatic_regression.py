@@ -69,7 +69,9 @@ modules = [
     'Validation/converters/test_pmsm_motor_validation.py',
     'Validation/converters/test_rotor_validation.py',
     'Validation/propulsors/test_turbofan_validation.py',
-    'Validation/aircraft_performance/test_Boeing_787_payload_range.py'
+    'Validation/aerodynamic_and_stability/test_CRM_aerodynamics.py',
+    'Validation/aerodynamic_and_stability/test_navion_stability.py',
+    'Validation/aircraft_performance/test_Boeing_787_payload_range.py',
 ]
 
 def run_module_test(module_path):
