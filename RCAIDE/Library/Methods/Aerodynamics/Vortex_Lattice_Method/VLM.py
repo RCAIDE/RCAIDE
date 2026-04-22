@@ -447,7 +447,7 @@ def VLM(conditions,settings,geometry):
     # moment coefficients 
     CM_mom   = np.atleast_2d(np.sum(MOMENT,axis=1)/S_ref).T/c_ref  
     CL_mom   = np.atleast_2d(np.sum(RM,axis=1)/S_ref).T    /b_ref                            
-    CN_mom   = -1 * np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref                         
+    CN_mom   = np.atleast_2d(np.sum(YM,axis=1)/S_ref).T    /b_ref                         
    
     # ---------------------------------------------------------------------------------------
     # STEP 13: Pack outputs
@@ -456,9 +456,9 @@ def VLM(conditions,settings,geometry):
     results.CX                = CX_for 
     results.CY                = CY_for  
     results.CZ                = -CZ_for 
-    results.CL                = CL_mom 
+    results.CL                = -CL_mom 
     results.CM                = CM_mom  
-    results.CN                = CN_mom  
+    results.CN                = -CN_mom  
     results.spanwise_stations = Y 
     results.CLift_wing        = CL_wing   
     results.sectional_CLift   = Clift_y     

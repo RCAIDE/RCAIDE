@@ -249,7 +249,7 @@ def train_model(aerodynamics,Mach, vehicle):
     # -------------------------------------------------------               
     # Roll  Rate 
     # -------------------------------------------------------    
-    p_s           = np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
+    p_s           = -1 * np.atleast_2d(np.tile(roll_rate, len_Mach).T.flatten()).T 
     Machs         = np.atleast_2d(np.repeat(Mach,len_p)).T 
     conditions                                      = RCAIDE.Framework.Mission.Common.Results()  
     conditions.freestream.mach_number               = Machs  
