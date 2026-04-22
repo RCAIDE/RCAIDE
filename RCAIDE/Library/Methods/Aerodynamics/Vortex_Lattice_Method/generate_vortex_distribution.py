@@ -382,14 +382,14 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     for wing in geometry.wings:         
         VD = generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision)  
             
-    # ---------------------------------------------------------------------------------------
-    # Unpack aircraft fuselage geometry
-    # ---------------------------------------------------------------------------------------      
-    VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
-    VD.n_fus      = 0   
-    for fus in geometry.fuselages:
-        if show_prints: print('discretizing ' + fus.tag)
-        VD = generate_lofted_body_vortex_distribution(VD,fus,n_cw,n_sw,precision,model_fuselage) 
+    # # ---------------------------------------------------------------------------------------
+    # # Unpack aircraft fuselage geometry
+    # # ---------------------------------------------------------------------------------------      
+    # VD.wing_areas = np.array(VD.wing_areas, dtype=precision)
+    # VD.n_fus      = 0   
+    # for fus in geometry.fuselages:
+    #     if show_prints: print('discretizing ' + fus.tag)
+    #     VD = generate_lofted_body_vortex_distribution(VD,fus,n_cw,n_sw,precision,model_fuselage) 
             
     # ---------------------------------------------------------------------------------------
     # Postprocess VD information
