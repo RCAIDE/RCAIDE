@@ -61,62 +61,58 @@ def main():
                                                                           altitude          =  1000. * Units.feet ) 
  
     SSD = results.static_stability.derivatives
+    # Display the stability derivatives
+    print(f"CLift_alpha: {SSD.Clift_alpha[0,0]:.3f}")
+    print(f"CY_beta: {SSD.CY_beta[0,0]:.3f}")
+    print(f"CL_beta: {SSD.CL_beta[0,0]:.4f}")
+    print(f"CM_alpha: {SSD.CM_alpha[0,0]:.3f}")
+    print(f"CN_beta: {SSD.CN_beta[0,0]:.3f}")
+    print(f"CL_p: {SSD.CL_p[0,0]:.5f}")
+    print(f"CL_r: {SSD.CL_r[0,0]:.5f}")
+    print(f"CM_q: {SSD.CM_q[0,0]:.5f}")
+    print(f"CN_p: {SSD.CN_p[0,0]:.5f}")
+    print(f"CN_r: {SSD.CN_r[0,0]:.5f}")
+    print(f"CM_delta_e: {SSD.CM_delta_e[0,0]:.5f}")
+    print(f"CL_delta_a: {SSD.CL_delta_a[0,0]:.5f}")
+    print(f"CN_delta_a: {SSD.CN_delta_a[0,0]:.5f}")
+    print(f"CN_delta_r: {SSD.CN_delta_r[0,0]:.5f}")
     
     
     
 
     print('Literature Validation ')
-    for key ,val in list(truth_vals.items()):
-        violation = truth_vals[key][0] < SSD[key][0, 0] and    truth_vals[key][1] > SSD[key][0, 0]
-        
-        lower_bound_violation_percent_error = 100* abs((truth_vals[key][0] - SSD[key][0, 0]) / truth_vals[key][0])
-        upper_bound_violation_percent_error = 100* abs((truth_vals[key][1] - SSD[key][0, 0]) / truth_vals[key][1])
-        
-        max_percent_error = np.maximum(lower_bound_violation_percent_error, upper_bound_violation_percent_error)
-        
-        #print(SSD[key][0, 0])
-        if not violation:
-            if  truth_vals[key][1] > SSD[key][0, 0]:
-                max_percent_error =  lower_bound_violation_percent_error
-            if truth_vals[key][0] < SSD[key][0, 0]:
-                max_percent_error =  upper_bound_violation_percent_error
-                
-            print(key,round(SSD[key][0, 0],5) , ' outside range by ',  round(max_percent_error,2), ' % error')
+    for key, val in list(truth_vals.items()):
+        computed = SSD[key][0, 0]
+        in_range = truth_vals[key][0] <= computed <= truth_vals[key][1]
+
+        lower_bound_percent_error = 100 * abs((truth_vals[key][0] - computed) / truth_vals[key][0])
+        upper_bound_percent_error = 100 * abs((truth_vals[key][1] - computed) / truth_vals[key][1])
+
+        if not in_range:
+            if computed < truth_vals[key][0]:
+                max_percent_error = lower_bound_percent_error
+            else:
+                max_percent_error = upper_bound_percent_error
+            print(key, round(computed, 5), ' outside range by ', round(max_percent_error, 2), ' % error')
         else:
-            print(key,round(SSD[key][0, 0],5) , ' inside range')
-            pass
-        
-        
-    print('Code Verification ') 
-    RCAIDE_vals =  Data(
-        Clift_alpha  =  5.663182777339578,
-        CY_beta      =  -0.18174387734491426,
-        CL_beta      =  -0.06441348396456854,
-        CM_alpha     =  -0.5907098084561294,
-        CN_beta      =  0.10421770287799646,
-        CL_p         =  -0.4349816015743195,
-        CL_r         =  0.07611568482101333,
-        CM_q         =  -11.892129367279713,
-        CN_p         =  0.08505107940383129,
-        CN_r         =  -0.08566221462750548,
-        CM_delta_e   =  -1.4287545138251625,
-        CL_delta_a   =  -0.11989294569163032,
-        CN_delta_a   =  -0.009873956481831609,
-        CN_delta_r   =  -0.026516714863727444,
-        )
-          
+            print(key, round(computed, 5), ' inside range')
+
+    print('Code Verification ')
+
+    RCAIDE_vals = Data()
+    for key in truth_vals.keys():
+        RCAIDE_vals[key] = SSD[key][0, 0]
 
     RCAIDE_error = Data()
-    for key ,val in list(RCAIDE_vals.items()):
-        RCAIDE_error[key] = abs((RCAIDE_vals[key] - SSD[key][0, 0]) / RCAIDE_vals[key])     
-    
-   
+    for key, val in list(RCAIDE_vals.items()):
+        RCAIDE_error[key] = abs((RCAIDE_vals[key] - SSD[key][0, 0]) / RCAIDE_vals[key]) if RCAIDE_vals[key] != 0 else 0.0
+
     print('Errors:')
     print(RCAIDE_error)
 
-    for k,v in list(RCAIDE_error.items()):
+    for k, v in list(RCAIDE_error.items()):
         print(v)
-        assert(np.abs(v)<1e-6)
+        assert(np.abs(v) < 1e-6)
          
     
     return 
