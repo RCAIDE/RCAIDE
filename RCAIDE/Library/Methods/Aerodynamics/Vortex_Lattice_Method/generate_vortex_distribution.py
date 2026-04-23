@@ -287,10 +287,7 @@ def generate_aircraft_vortex_distribution(geometry,settings):
     # ---------------------------------------------------------------------------------------        
     #unpack other settings----------------------------------------------------
     spc            = settings.spanwise_cosine_spacing
-    model_fuselage = settings.model_fuselage 
     precision      = settings.floating_point_precision
-    
-    show_prints    = settings.verbose if ('verbose' in settings.keys()) else False
     
     # unpack discretization settings------------------------------------------
     n_sw           = settings.number_of_spanwise_vortices

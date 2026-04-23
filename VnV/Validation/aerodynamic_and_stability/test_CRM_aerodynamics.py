@@ -11,6 +11,7 @@ from RCAIDE.Framework.Core                                            import Uni
 from RCAIDE.Framework.External_Interfaces.OpenVSP.import_vsp_vehicle import import_vsp_vehicle
 from RCAIDE.Library.Methods.Performance                               import aircraft_aerodynamic_analysis
 from RCAIDE.Library.Methods.Powertrain.Propulsors.Turbofan            import design_turbofan
+from RCAIDE.Library.Plots   import plot_aircraft_aerodynamics
 
 from copy   import deepcopy
 from io     import StringIO
@@ -94,6 +95,7 @@ def main():
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
     plot_drag_validation(results, paper_data)
     check_truth_values(results)
+    plot_aircraft_aerodynamics(results)
     return
 
 
@@ -223,7 +225,6 @@ def run_aero_analysis(vehicle):
     aerodynamics.vehicle                             = vehicle
     aerodynamics.settings.number_of_spanwise_vortices  = 25
     aerodynamics.settings.number_of_chordwise_vortices = 4
-    aerodynamics.settings.model_fuselage             = True
     analyses.append(aerodynamics)
 
     # Parse wind tunnel conditions from embedded data
