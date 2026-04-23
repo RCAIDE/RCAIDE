@@ -164,7 +164,7 @@ def vehicle_setup():
     segment.percent_span_location = 0.480  
     segment.twist                 = wing.twists.root - (wing.twists.root - wing.twists.tip) * segment.percent_span_location
     segment.root_chord_percent    = 0.4082 
-    segment.dihedral_outboard     = 0.
+    segment.dihedral_outboard     = -5 * Units.deg
     segment.sweeps.quarter_chord  = 48. * Units.deg
     segment.thickness_to_chord    = 0.03
     wing_airfoil                  = RCAIDE.Library.Components.Airfoils.Airfoil()   
@@ -179,7 +179,7 @@ def vehicle_setup():
     segment.percent_span_location = 0.945 
     segment.twist                 = wing.twists.root - (wing.twists.root - wing.twists.tip) * segment.percent_span_location 
     segment.root_chord_percent    = 0.1301  
-    segment.dihedral_outboard     = 0.
+    segment.dihedral_outboard     = -5 * Units.deg
     segment.sweeps.quarter_chord  = 71. * Units.deg  
     wing_airfoil                  = RCAIDE.Library.Components.Airfoils.Airfoil()   
     wing_airfoil.coordinate_file  = airfoil_file_path + 'NACA65_203.txt' 
