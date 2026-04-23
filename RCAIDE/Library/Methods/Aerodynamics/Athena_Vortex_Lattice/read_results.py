@@ -126,11 +126,7 @@ def read_results(avl_object, vehicle):
             n_wings += 1
             if wing.xz_plane_symmetric:
                 n_wings += 1   
-        n_fus_sec = 0
-        for fuselage in vehicle.fuselages: 
-            if avl_object.settings.model_fuselage:          
-                n_fus_sec += 2
-        
+        n_fus_sec = 0  
         wing_area            = np.zeros(n_wings)
         wing_CL              = np.zeros(n_wings)
         wing_CD              = np.zeros(n_wings)  

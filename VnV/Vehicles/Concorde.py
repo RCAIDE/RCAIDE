@@ -31,9 +31,10 @@ def vehicle_setup():
     vehicle.mass_properties.max_takeoff     = 185000.   # kg
     vehicle.mass_properties.operating_empty = 78700.   # kg
     vehicle.mass_properties.takeoff         = 185000   # kg, adjusted due to significant fuel burn on runway
-    vehicle.mass_properties.cargo           = 1000.  * Units.kilogram   
+    vehicle.mass_properties.cargo           = 1000.   # kg
     vehicle.mass_properties.max_zero_fuel   = 92000.
     vehicle.mass_properties.max_fuel        = 95680
+    vehicle.mass_properties.max_payload     = 13380  # kg
         
     # envelope properties 
 
@@ -181,16 +182,7 @@ def vehicle_setup():
     segment.sweeps.quarter_chord  = 0.
     segment.thickness_to_chord    = 0.03
     segment.append_airfoil(wing_airfoil)
-    wing.append_segment(segment)      
-    
-    # control surfaces -------------------------------------------
-    slat                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Slat()
-    slat.tag                      = 'slat'
-    slat.span_fraction_start      = 0.2
-    slat.span_fraction_end        = 0.963
-    slat.deflection               = 0.0 * Units.degrees
-    slat.chord_fraction           = 0.075
-    wing.append_control_surface(slat)
+    wing.append_segment(segment)       
 
     flap                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Flap()
     flap.tag                      = 'flap'
@@ -215,8 +207,7 @@ def vehicle_setup():
     spoiler.span_fraction_end     = 0.24
     spoiler.deflection            = 0.0 * Units.degrees
     spoiler.chord_fraction        = 0.1
-    wing.append_control_surface(spoiler)       
-    
+    wing.append_control_surface(spoiler) 
     
     # add to vehicle
     vehicle.append_component(wing)
@@ -681,6 +672,17 @@ def configs_setup(vehicle):
     for propulsor in config.networks.fuel.propulsors:
         propulsor.afterburner_active = True 
     configs.append(config)
+
+ 
+    # ------------------------------------------------------------------
+    #   Descent Configuration
+    # ------------------------------------------------------------------
+
+    config                                = RCAIDE.Library.Components.Configs.Config(base_config)
+    config.tag                            = 'descent' 
+    config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg 
+    configs.append(config)
+    
  
     # ------------------------------------------------------------------
     #   Landing Configuration
@@ -689,8 +691,6 @@ def configs_setup(vehicle):
     config                                = RCAIDE.Library.Components.Configs.Config(base_config)
     config.tag                            = 'landing' 
     config.wings['main_wing'].control_surfaces.flap.deflection  = 30. * Units.deg
-    config.wings['main_wing'].control_surfaces.slat.deflection  = 25. * Units.deg 
-    
     configs.append(config)
     
     # done!

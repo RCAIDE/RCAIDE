@@ -363,48 +363,15 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     """
     Mach              = conditions.freestream.mach_number  
     S_ref             = geometry.reference_area 
-    CD_wave_transonic = np.zeros_like(Mach)
-    
-    # if settings.use_surrogate or (settings.vortex_distribution == None): 
-    #     Cl                   = conditions.aerodynamics.coefficients.lift.total
-    #     CD_wave_transonic    = np.array([-1.34E-03,2.35E-05,1.42E-03,1.95E-03,2.23E-03,2.56E-03,2.80E-03, 4.32E-03,4.89E-03,
-    #                                      7.11E-03,1.48E-02, 2.31E-02,2.83E-02,3.42E-02,3.96E-02,3.76E-02,2.71E-02]) 
-    #     CLs                  = np.array([-0.25836715,-0.05233014,0.08334449,0.21608904,0.35012533, 0.42120447,0.48458659,
-    #                                      0.55214519,0.62108179,0.69313687,0.75284432,0.81921256,0.95662739,1.07911642,1.19681914,1.33118394,1.47947542      ])    
-    #     CD_wave_transonic    = np.interp(Cl, CLs, CD_wave_transonic) 
-    #     CL_y_subsonic = conditions.aerodynamics.coefficients.lift.inviscid.spanwise.subsonic
-    #     CL_y_supersonic = conditions.aerodynamics.coefficients.lift.inviscid.spanwise.supersonic
-    #     CL_y_training = np.concatenate((CL_y_subsonic,CL_y_supersonic),axis=1)
-    #     training_aoa = conditions.aerodynamics.training_data.angles_of_attack_range
-    #     training_machs = conditions.aerodynamics.training_data.mach_range
-    #     Mach              = conditions.freestream.mach_number  
-    #     aoa = conditions.aerodynamics.angles.alpha
-    #     # Build interpolator (note: axes order must match data)
-    #     interp = RegularGridInterpolator(
-    #         (training_aoa, training_machs),
-    #         CL_y_training,
-    #         method='nearest',
-    #         bounds_error=False,
-    #         fill_value=None
-    #     )
-
-    #     # Prepare query points → shape (33, 2)
-    #     points = np.hstack((aoa, Mach))   # (33, 2)
-
-    #     # Interpolate
-    #     CL_y = interp(points)  # shape (33, 100)
-
-    #     print(CL_y.shape)
-    #     a =0
-    # else: 
-    CL_y          = conditions.aerodynamics.coefficients.lift.inviscid.spanwise *geometry.wings.main_wing.areas.projected/S_ref
+    CD_wave_transonic = np.zeros_like(Mach) 
+    CL_y              = conditions.aerodynamics.coefficients.lift.inviscid.spanwise *geometry.wings.main_wing.areas.projected/S_ref
 
     chords   = settings.vortex_distribution.chord_lengths
     delta    = settings.vortex_distribution.leading_edge_sweeps 
     dy       = settings.vortex_distribution.chord_widths
     
-    CD_wave_total = np.zeros_like(Mach)
-    c_kappa       = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
+    CD_wave_transonic = np.zeros_like(Mach)
+    c_kappa           = 0.23 # normalized curvature of the airfoil. This can eventually be calcualted using airfoil shape data. 
 
     # ------------------------------------------------------------------
     # Cp Data (as function of CL) from "The Prediciton of the Drag of Aerofoils and Wings at High Subsonic Speeds" by R.C. Lock, 1986, Aeronautical journal and NASA TP 2969, NASA Supercritical Airfoils by Charles D. Harris
@@ -425,11 +392,10 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     # Set the wave drag coefficient to 0 if there is no shock wave
     CD_wave_segment[Cp_shock > -0.6] = 0.0 # If the Cp > -0.6 then there is likely no shock wave
 
-    S_segment = chords[0]*dy[0]
-    CD_wave_total = np.sum(CD_wave_segment*S_segment/S_ref, axis=1, keepdims=True)
-
-    CD_wave_transonic = CD_wave_total
+    S_segment        = chords[0]*dy[0]
+    CD_wave_transonic = np.sum(CD_wave_segment*S_segment/S_ref, axis=1, keepdims=True) 
         
+    CD_wave_transonic[Mach>1] = 0.0
     return CD_wave_transonic 
  
 # ---------------------------------------------------------------------------------------------------------------------- 

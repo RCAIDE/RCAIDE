@@ -66,7 +66,7 @@ def main():
             print(val)
     
     # Truth values 
-    L_D_truth         = 7.247823909318594
+    L_D_truth         = 7.400217931197578
     
     # Store errors 
     error = Data() 
@@ -76,11 +76,11 @@ def main():
     save(error, 'turbojet_network_errors.res')
     old_errors = load('turbojet_network_errors.res')  
      
-    # print('Errors:')
-    # print(error)
+    print('Errors:')
+    print(error)
      
-    # for k,v in list(error.items()): 
-    #     assert(np.abs(v)<1e-6)
+    for k,v in list(error.items()): 
+        assert(np.abs(v)<1e-6)
         
     return 
 
@@ -377,10 +377,12 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------  
     segment     = Segments.Descent.Linear_Speed_Constant_Rate(base_segment)
     segment.tag = "descent_2" 
-    segment.analyses.extend( analyses.cruise )
+    segment.analyses.extend( analyses.descent )
+    segment.altitude_start    = 60000. * Units.ft
     segment.altitude_end      = 41000. * Units.ft
+    segment.air_speed_start   = 1165 *  Units.knots
     segment.air_speed_end     = 800 *  Units.mph
-    segment.descent_rate      = 1000. * Units['ft/min']  
+    segment.descent_rate      = 4000. * Units['ft/min']  
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
@@ -399,10 +401,10 @@ def mission_setup(analyses):
       
     segment = Segments.Descent.Linear_Mach_Constant_Rate(base_segment)
     segment.tag = "descent_3" 
-    segment.analyses.extend( analyses.cruise )
+    segment.analyses.extend( analyses.descent )
     segment.altitude_end      = 10000. * Units.ft
     segment.mach_number_end   = 0.4
-    segment.descent_rate      = 1000. * Units['ft/min']  
+    segment.descent_rate      = 2000. * Units['ft/min']  
     
     # define flight dynamics to model 
     segment.flight_dynamics.force_x                      = True  
