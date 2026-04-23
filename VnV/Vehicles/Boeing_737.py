@@ -162,7 +162,7 @@ def vehicle_setup():
     slat.span_fraction_end        = 0.963
     slat.deflection               = 0.0 * Units.degrees
     slat.chord_fraction           = 0.075
-    #wing.append_control_surface(slat)
+    wing.append_control_surface(slat)
 
     flap                          = RCAIDE.Library.Components.Wings.Control_Surfaces.Flap()
     flap.tag                      = 'flap'
@@ -171,7 +171,7 @@ def vehicle_setup():
     flap.deflection               = 5.0 * Units.degrees
     flap.configuration_type       = 'double_slotted'
     flap.chord_fraction           = 0.30
-    #wing.append_control_surface(flap)
+    wing.append_control_surface(flap)
 
     aileron                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron()
     aileron.tag                   = 'aileron'
@@ -179,7 +179,7 @@ def vehicle_setup():
     aileron.span_fraction_end     = 0.963
     aileron.deflection            = 0.0 * Units.degrees
     aileron.chord_fraction        = 0.16
-    #wing.append_control_surface(aileron)
+    wing.append_control_surface(aileron)
 
     spoiler                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Spoiler()
     spoiler.tag                   = 'spoiler'
@@ -187,7 +187,7 @@ def vehicle_setup():
     spoiler.span_fraction_end     = 0.7
     spoiler.deflection            = 0.0 * Units.degrees
     spoiler.chord_fraction        = 0.05
-    #wing.append_control_surface(spoiler)   
+    wing.append_control_surface(spoiler)   
 
     # add to vehicle
     vehicle.append_component(wing)
