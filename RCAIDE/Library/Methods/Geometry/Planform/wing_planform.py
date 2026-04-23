@@ -265,6 +265,7 @@ def wing_planform(wing):
         # calculate leading edge sweep
         if wing.sweeps.leading_edge == None:
             le_sweep = np.arctan( np.tan(sweep) - (4./ar)*(0.-0.25)*(1.-taper)/(1.+taper) )
+            wing.sweeps.leading_edge = le_sweep
         else:
             le_sweep = wing.sweeps.leading_edge
             wing.sweeps.quarter_chord = convert_sweep(wing,old_ref_chord_fraction = 0.0,new_ref_chord_fraction = 0.25)
@@ -307,6 +308,7 @@ def wing_planform(wing):
         segment.percent_span_location         = 0.0
         segment.root_chord_percent            = 1.0 
         segment.sweeps.leading_edge           = le_sweep
+        segment.sweeps.quarter_chord          = wing.sweeps.quarter_chord
         segment.dihedral_outboard             = dihedral
         segment.thickness_to_chord            = t_c_w
         wing.append_segment(segment)  
