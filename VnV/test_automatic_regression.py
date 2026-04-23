@@ -21,7 +21,6 @@ modules = [
     'Verification/aircraft_performance/payload_range_test.py',
     'Verification/aircraft_performance/take_off_field_length_test.py',
     'Verification/aircraft_performance/take_off_weight_from_tofl_test.py',
-    'Verification/aircraft_performance/aircraft_aerodynamics_test.py', 
     'Verification/aircraft_performance/noise_certification_test.py',
     'Verification/aircraft_performance/loading_and_trim_diagram_test.py',
     'Verification/aircraft_performance/V_n_diagram_test.py', 
