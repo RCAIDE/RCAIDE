@@ -1,7 +1,7 @@
-
-# VLM.py
+# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM.py
 # 
 # Created: Aug 2025, M. Clarke    
+#          Apr 2026, S. Shekar, A. Molloy, M. Clarke
 
 # ----------------------------------------------------------------------
 #  Imports

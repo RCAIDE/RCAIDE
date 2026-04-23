@@ -1,8 +1,7 @@
-# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_VD_helpers.py
+# RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/postprocess_vortex_distribution.py
 # 
 # Created:  Aug 2025, M. Clarke
-#           Apr 2026, M. Clarke
-        
+#           Apr 2026, M. Clarke 
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  Imports
@@ -12,9 +11,9 @@
 import numpy as np
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  postprocess_VD
+#  postprocess_vortex_distribution
 # ----------------------------------------------------------------------------------------------------------------------
-def postprocess_VD(VD, settings):
+def postprocess_vortex_distribution(VD, settings):
     """ 
     Recomputes data about the VD. Should be called any time VD panel 
     values (e.g. VD.XA1, VD.XCH, etc) are changed.
@@ -104,10 +103,7 @@ def postprocess_VD(VD, settings):
     VD.ZA_TE  = ZA_TE_wings
     VD.XB_TE  = XB_TE_wings
     VD.YB_TE  = YB_TE_wings
-    VD.ZB_TE  = ZB_TE_wings
-
-    VD.is_postprocessed = True
-    
+    VD.ZB_TE  = ZB_TE_wings 
     return VD 
 
 # ----------------------------------------------------------------------
