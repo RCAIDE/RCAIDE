@@ -95,7 +95,6 @@ def main():
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
     plot_drag_validation(results, paper_data)
     check_truth_values(results)
-    plot_aircraft_aerodynamics(results)
     return
 
 
@@ -244,6 +243,7 @@ def run_aero_analysis(vehicle):
         non_dimensional_reynolds_numbers = Non_Dim_Res,
         temperatures                     = Ts,
     )
+    plot_aircraft_aerodynamics(results)
 
     results_data = pd.DataFrame({
         'Mach':         results.Mach.flatten(),
