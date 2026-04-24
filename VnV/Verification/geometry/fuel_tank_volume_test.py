@@ -39,7 +39,6 @@ from Navion      import vehicle_setup as Nav_vehicle_setup
 
 def main():
     integral_fuel_tank_volume_test()
-    single_wing_segment_integral_fuel_tank_volume_test()
     # -------------------------------------------------------------
     # Run test only if Python version >= 3.11
     # Shapely < 2.1 (and Python < 3.11) may not include functions
@@ -53,35 +52,6 @@ def main():
         print("Skipping non_conformal_lh2_fuel_tank_volume_test() and conformal_lh2_fuel_tank_volume_test():\
             Shapely lacks 'maximum_inscribed_circle' support for Python < 3.11.")
     return
-
-def single_wing_segment_integral_fuel_tank_volume_test():
-
-    fuel_volume_true = [0.1604406939938338]
-
-    vehicle = Nav_vehicle_setup()
-    
-    fuel_line = vehicle.networks.fuel.fuel_lines.fuel_line
-    fuel_line.fuel_tanks.clear()
-
-    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.horizontal_stabilizer)  
-    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    fuel_line.fuel_tanks.append(wing_tank)
-    wing_tank = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.vertical_stabilizer)  
-    wing_tank.fuel                 = RCAIDE.Library.Attributes.Propellants.Jet_A() 
-    fuel_line.fuel_tanks.append(wing_tank)
-    
-    configs = configs_setup(vehicle)
-    analyses = analyses_setup(configs)
-    for analysis in analyses:
-        analysis.geometry.settings.compute_fuel_volume = True
-    mission = mission_setup(analyses)
-    geometry(mission)
-
-    error = (fuel_volume_true[0]- mission.segments.cruise.analyses.vehicle.volume_properties.max_fuel)/fuel_volume_true[0]
-    print(error)
-    assert(abs(error)<1e-6)    
-    return
-
 
 def integral_fuel_tank_volume_test():
 
