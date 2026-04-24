@@ -974,12 +974,12 @@ def create_conditions(n_cpts,altitude,g,V,MAC,energy_conditions):
     equilibrium_conditions.expand_rows(n_cpts,override=False)
     #equilibrium_conditions.energy                                      = deepcopy(energy_conditions)
     equilibrium_conditions.freestream.density[:,0]                     = atmo_data.density[:,0]
-    equilibrium_conditions.freestream.gravity[:,0]                     = g
+    equilibrium_conditions.freestream.gravity[:,0]                     = g[:,0]
     equilibrium_conditions.freestream.speed_of_sound[:,0]              = atmo_data.speed_of_sound[:,0]
     equilibrium_conditions.freestream.dynamic_viscosity[:,0]           = atmo_data.dynamic_viscosity[:,0]
     equilibrium_conditions.aerodynamics.angles.alpha[:,0]              = 1E-12
     equilibrium_conditions.freestream.temperature[:,0]                 = atmo_data.temperature[:,0]
-    equilibrium_conditions.freestream.velocity[:,0]                    = V        
+    equilibrium_conditions.freestream.velocity[:,0]                    = V[:,0]    
     equilibrium_conditions.frames.inertial.velocity_vector[:,0]        = equilibrium_conditions.freestream.velocity[:,0]
     equilibrium_conditions.freestream.mach_number                      = equilibrium_conditions.freestream.velocity/equilibrium_conditions.freestream.speed_of_sound
     equilibrium_conditions.freestream.dynamic_pressure                 = 0.5 * equilibrium_conditions.freestream.density *  (equilibrium_conditions.freestream.velocity ** 2)
