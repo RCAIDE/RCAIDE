@@ -12,8 +12,7 @@ sys.path.append(os.path.join(sys.path[0], 'Vehicles', 'Rotors'))
 
 modules = [ 
     'Verification/analysis_aerodynamics/airfoil_panel_method_test.py',    
-    'Verification/analysis_aerodynamics/airfoil_panel_method_convergence.py',
-    'Verification/analysis_aerodynamics/VLM_control_surface_test.py',    
+    'Verification/analysis_aerodynamics/airfoil_panel_method_convergence.py', 
     'Verification/analysis_aerodynamics/VLM_moving_surface_test.py',   
     'Verification/analysis_aerodynamics/AVL_test.py',  
     'Verification/analysis_aerodynamics/blended_wing_body_aerodynamics_test.py',
@@ -23,6 +22,7 @@ modules = [
     'Verification/aircraft_performance/take_off_weight_from_tofl_test.py',
     'Verification/aircraft_performance/noise_certification_test.py',
     'Verification/aircraft_performance/loading_and_trim_diagram_test.py',
+     'Verification/aircraft_performance/V_n_diagram_test.py', 
     'Verification/atmosphere/atmosphere.py',
     'Verification/atmosphere/constant_temperature.py',
     'Verification/analysis_emissions/emissions_test.py',  
