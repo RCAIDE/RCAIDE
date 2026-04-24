@@ -140,13 +140,13 @@ def get_array_of_deflection_configs():
     return deflection_configs
 
 def get_conditions():
-    machs      = np.array([0.4  ,0.4  ,0.4  ,0.4  ,1.4  ,])
-    altitudes  = np.array([5000 ,5000 ,5000 ,5000 ,5000 ,])  *Units.ft
-    aoas       = np.array([0.   ,6.   ,6.   ,0.   ,6    ,])  *Units.degrees #angle of attack in degrees
-    PSIs       = np.array([3.   ,5.   ,0.   ,0.   ,5.   ,])  *Units.degrees #sideslip angle  in degrees
-    PITCHQs    = np.array([3.   ,6.   ,0.   ,0.   ,6.   ,])  *Units.degrees #pitch rate      in degrees/s   
-    ROLLQs     = np.array([3.   ,6.   ,0.   ,0.   ,6.   ,])  *Units.degrees #roll  rate      in degrees/s
-    YAWQs      = np.array([3.   ,6.   ,0.   ,0.   ,6.   ,])  *Units.degrees #yaw   rate      in degrees/s       
+    machs      = np.array([0.4  ,0.4  ,0.4  ,1.4  ,])
+    altitudes  = np.array([5000 ,5000 ,5000 ,5000 ,])  *Units.ft
+    aoas       = np.array([0.   ,6.   ,6.   ,6    ,])  *Units.degrees #angle of attack in degrees
+    PSIs       = np.array([3.   ,5.   ,0.   ,5.   ,])  *Units.degrees #sideslip angle  in degrees
+    PITCHQs    = np.array([3.   ,6.   ,0.   ,6.   ,])  *Units.degrees #pitch rate      in degrees/s   
+    ROLLQs     = np.array([3.   ,6.   ,0.   ,6.   ,])  *Units.degrees #roll  rate      in degrees/s
+    YAWQs      = np.array([3.   ,6.   ,0.   ,6.   ,])  *Units.degrees #yaw   rate      in degrees/s       
     
     atmosphere                              = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     speeds_of_sound                         = atmosphere.compute_values(altitudes).speed_of_sound
@@ -163,22 +163,13 @@ def get_conditions():
     return conditions
 
 def get_settings():
-    settings = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method().settings
-    settings.number_of_spanwise_vortices        = None
-    settings.number_of_chordwise_vortices       = None  
-    settings.wing_spanwise_vortices          = 5
-    settings.wing_chordwise_vortices         = 4
-    settings.fuselage_spanwise_vortices      = 5
-    settings.fuselage_chordwise_vortices     = 4
-        
+    settings = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method().settings  
     settings.propeller_wake_model            = None
     settings.spanwise_cosine_spacing         = False
     settings.model_nacelle                   = True
     settings.leading_edge_suction_multiplier = 1. 
     settings.discretize_control_surfaces     = True
-    settings.use_VORLAX_matrix_calculation   = False    
-                
-    #misc settings
+    settings.use_VORLAX_matrix_calculation   = False     
     settings.show_prints = False
     
     return settings
