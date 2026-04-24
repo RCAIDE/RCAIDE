@@ -122,20 +122,15 @@ def generate_3d_wing_points(wing, n_points, dim):
                 sweep    = wing.segments[prev_seg].sweeps.leading_edge
                 dihedral = wing.segments[prev_seg].dihedral_outboard
             
-                segment_percent_span =  wing.segments[current_seg].percent_span_location  -  wing.segments[prev_seg].percent_span_location   
-                if wing.vertical:
-                    dy = semispan*segment_percent_span
-                    dz = dy/np.tan(dihedral) 
-                    l  = dz/np.cos(dihedral)
-                    dx = l*np.tan(sweep)
-                else:
-                    dy = semispan*segment_percent_span
-                    dz = dy*np.tan(dihedral)
-                    l  = dy/np.cos(dihedral)
-                    dx = l*np.tan(sweep)
+                segment_percent_span =  wing.segments[current_seg].percent_span_location  -  wing.segments[prev_seg].percent_span_location    
+                dy = semispan*segment_percent_span
+                dz = dy*np.tan(dihedral)
+                l  = dy/np.cos(dihedral)
+                dx = l*np.tan(sweep)
+                 
                 translation[i,:,0,:] = translation[i-1,:,0,:] + dx
-                translation[i,:,1,:] = translation[i-1,:,1,:] + dy
-                translation[i,:,2,:] = translation[i-1,:,2,:] + dz 
+                translation[i,:,1,:] = translation[i-1,:,1,:] + dz
+                translation[i,:,2,:] = translation[i-1,:,2,:] + dy
     else:
 
         pts              = np.zeros((dim,n_points, 3,1))  
@@ -171,14 +166,14 @@ def generate_3d_wing_points(wing, n_points, dim):
             pts[1,:,1,0]   = geometry.y_coordinates *  wing.chords.tip  
             pts[1,:,2,0]   = np.zeros_like(geometry.y_coordinates)    
             
-            dy = semispan 
-            dz = dy/np.tan(dihedral) 
-            l  = dz/np.cos(dihedral)
-            dx = l*np.tan(sweep)
             
-            translation[1, :, 0,:] += l*np.tan(sweep) 
-            translation[1, :, 1,:] += semispan 
-            translation[1, :, 2,:] += dy/np.tan(dihedral) 
+            dx =  semispan*np.tan(sweep)
+            dy =  semispan 
+            dz =  semispan*np.tan(dihedral)   
+            
+            translation[1, :, 0,:] += dx
+            translation[1, :, 1,:] += dy 
+            translation[1, :, 2,:] += dz
 
             section_twist[0,:,0,0] = np.cos(wing.twists.root) 
             section_twist[0,:,0,1] = -np.sin(wing.twists.root)  
@@ -199,11 +194,14 @@ def generate_3d_wing_points(wing, n_points, dim):
             pts[1,:,0,0]   = geometry.x_coordinates *  wing.chords.tip  
             pts[1,:,1,0]   = np.zeros_like(geometry.y_coordinates)  
             pts[1,:,2,0]   = geometry.y_coordinates *  wing.chords.tip  
-            
+
+            dx =  semispan*np.tan(sweep)
+            dy =  semispan 
+            dz =  semispan*np.tan(dihedral)               
     
-            translation[1, :, 0,:] += semispan*np.tan(sweep)
-            translation[1, :, 1,:] += semispan 
-            translation[1, :, 2,:] += semispan*np.tan(dihedral)     
+            translation[1, :, 0,:] += dx
+            translation[1, :, 1,:] += dy
+            translation[1, :, 2,:] += dz    
 
             section_twist[0,:,0,0] = np.cos(wing.twists.root) 
             section_twist[0,:,0,2] = np.sin(wing.twists.root)  
