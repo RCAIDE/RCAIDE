@@ -6,8 +6,7 @@
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------  
-from RCAIDE.Framework.Core import Units
-from RCAIDE.Library.Plots.Common import set_axes, plot_style
+from RCAIDE.Framework.Core import Units 
 import matplotlib.pyplot as plt 
 from matplotlib.colors import TwoSlopeNorm
 import numpy as np
@@ -95,7 +94,7 @@ def plot_pressure_coefficient_distribution(results,
     VD         = results.vortex_distribution
     n_cw       = VD.n_cw # number of panels chordwise (including control surfaces)
     n_sw       = VD.n_sw # number of panels spanwise  (including control surfaces)
-    CP         = results.differential_surface_pressure_coefficient  
+    CP         = results.aerodynamics.coefficients.differential_surface_pressure
     b_pts      = np.concatenate(([0],np.cumsum(VD.n_sw[0]*VD.n_cw[0]))) 
     
     for ti in range(len(CP)): 
@@ -109,10 +108,10 @@ def plot_pressure_coefficient_distribution(results,
         fig_w = 10.0
         fig_h = fig_w * (x_max / (2 * y_max)) if y_max > 0 else fig_w
         fig.set_size_inches(fig_w, fig_h)
-        
-        AoA = results.alpha[ti, 0]  
-        CL  = results.lift_coefficient[ti, 0]  
-        CD  = results.drag_coefficient[ti, 0]  
+           
+        AoA = results.aerodynamics.angles.alpha[ti, 0]  
+        CL  = results.aerodynamics.coefficients.lift.total[ti, 0]  
+        CD  = results.aerodynamics.coefficients.drag.total[ti, 0]  
         figure_title =  'AoA: ' +  str(round(AoA/Units.degree, 4)) +  ', CL: ' +  str(round(CL, 2)) +  ', CD: ' +  str(round(CD, 4))
         fig.suptitle(figure_title, fontsize=16)
         for i in range(VD.n_w[0][0]):

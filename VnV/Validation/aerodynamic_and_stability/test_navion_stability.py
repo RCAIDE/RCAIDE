@@ -60,7 +60,7 @@ def main():
                                                                           mach_numbers      = Mach_number_range, 
                                                                           altitude          =  1000. * Units.feet ) 
  
-    SSD = results.static_stability.derivatives
+    SSD = results.stability.static_stability.derivatives
     # Display the stability derivatives
     print(f"CLift_alpha: {SSD.Clift_alpha[0,0]:.3f}")
     print(f"CY_beta: {SSD.CY_beta[0,0]:.3f}")

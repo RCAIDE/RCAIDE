@@ -20,6 +20,7 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from RCAIDE.Library.Plots import *
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -221,7 +222,7 @@ def run_aero_analysis(vehicle):
     analyses.append(geometry)
 
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle                             = vehicle
+    aerodynamics.vehicle                               = vehicle
     aerodynamics.settings.number_of_spanwise_vortices  = 25
     aerodynamics.settings.number_of_chordwise_vortices = 4
     analyses.append(aerodynamics)
@@ -235,7 +236,7 @@ def run_aero_analysis(vehicle):
     Cref        = 275.80 * Units.inches
     Non_Dim_Res = RE_refs / Cref
 
-    # Run VLM
+    # Run VLM 
     results = aircraft_aerodynamic_analysis(
         analyses                         = analyses,
         angle_of_attacks                 = AoAs,
@@ -243,22 +244,37 @@ def run_aero_analysis(vehicle):
         non_dimensional_reynolds_numbers = Non_Dim_Res,
         temperatures                     = Ts,
     )
-    plot_aircraft_aerodynamics(results)
+    plot_aircraft_aerodynamics(results) 
 
     results_data = pd.DataFrame({
-        'Mach':         results.Mach.flatten(),
-        'Alpha':        results.alpha.flatten(),
-        'Lift':         results.lift_coefficient.flatten(),
-        'Total Drag':   results.drag_coefficient.flatten(),
-        'Parasite Drag':results.parasite_drag_coefficient.flatten(),
-        'Wave Drag':    results.compressibility_drag_coefficient.flatten(),
-        'Induced Drag': results.induced_drag_coefficient.flatten(),
-        'Form Drag':    results.form_drag_coefficient.flatten(),
+        'Mach':         results.freestream.mach_number.flatten(),
+        'Alpha':        results.aerodynamics.angles.alpha.flatten(),
+        'Lift':         results.aerodynamics.coefficients.lift.total.flatten(),
+        'Total Drag':   results.aerodynamics.coefficients.drag.total.flatten(),
+        'Parasite Drag':results.aerodynamics.coefficients.drag.parasite.total.flatten(),
+        'Wave Drag':    results.aerodynamics.coefficients.drag.compressible.total.flatten(),
+        'Induced Drag': results.aerodynamics.coefficients.drag.induced.total.flatten(),
+        'Form Drag':    results.aerodynamics.coefficients.drag.form.total.flatten(),
     })
+     
     results_data['Profile Drag'] = (results_data['Total Drag']
                                     - results_data['Induced Drag']
                                     - results_data['Wave Drag'])
 
+
+    # Run VLM - Non-Surrogate
+    analyses.aerodynamics.settings.use_surrogate =  False
+    results_non_surrogate = aircraft_aerodynamic_analysis(
+        analyses                         = analyses,
+        angle_of_attacks                 = AoAs,
+        mach_numbers                     = Machs,
+        non_dimensional_reynolds_numbers = Non_Dim_Res,
+        temperatures                     = Ts,
+    )
+    
+    # Plot surface pressure coefficient
+    plot_pressure_coefficient_distribution(results_non_surrogate)
+    
     return results_data
 
 

@@ -38,7 +38,8 @@ def evaluate_AVL_surrogate(state,settings,vehicle):
     aerodynamics        = state.analyses.aerodynamics  
     Mach                = conditions.freestream.mach_number
     AoA                 = conditions.aerodynamics.angles.alpha
-    lift_model          = aerodynamics.surrogates.lift_coefficient            
+    lift_model          = aerodynamics.surrogates.lift_coefficient  
+    lift_y_model        = aerodynamics.surrogates.Clift_spanwise           
     drag_model          = aerodynamics.surrogates.drag_coefficient            
     e_model             = aerodynamics.surrogates.span_efficiency_factor      
     moment_model        = aerodynamics.surrogates.moment_coefficient          
@@ -49,13 +50,15 @@ def evaluate_AVL_surrogate(state,settings,vehicle):
     MAC                 = vehicle.wings.main_wing.chords.mean_aerodynamic
   
     pts   = np.hstack((AoA,Mach))     
-    conditions.aerodynamics.coefficients.lift.inviscid.total          = np.atleast_2d(lift_model(pts)).T  
+    conditions.aerodynamics.coefficients.lift.total                   = np.atleast_2d(lift_model(pts)).T  
     conditions.aerodynamics.coefficients.drag.induced.inviscid        = np.atleast_2d(drag_model(pts)).T  
     conditions.aerodynamics.span_efficiency                           = np.atleast_2d(e_model(pts)).T  
     conditions.control_surfaces.slat.static_stability.coefficients.M  = np.atleast_2d(moment_model(pts)).T  
     conditions.static_stability.derivatives.CM_alpha                  = np.atleast_2d(Cm_alpha_model(pts)).T  
     conditions.static_stability.derivatives.CN_beta                   = np.atleast_2d(Cn_beta_model(pts)).T  
-    conditions.static_stability.neutral_point                         = np.atleast_2d(neutral_point_model(pts)).T    
+    conditions.static_stability.neutral_point                         = np.atleast_2d(neutral_point_model(pts)).T  
+    conditions.aerodynamics.coefficients.lift.spanwise                = np.atleast_2d(lift_y_model(pts))       
+    
     conditions.static_stability.static_margin                         = (conditions.static_stability.neutral_point - cg)/MAC     
     aerodynamics.settings.span_efficiency                             = conditions.aerodynamics.span_efficiency   
     return

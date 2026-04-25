@@ -294,7 +294,7 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
                 Freestream Mach number [unitless]
             - aerodynamics.coefficients.lift.total : float
                 Total lift coefficient [unitless]
-            - aerodynamics.coefficients.lift.inviscid.spanwise : float, optional
+            - aerodynamics.coefficients.lift.spanwise : float, optional
                 Spanwise lift distribution [unitless]
     settings : dict
         Analysis settings containing:
@@ -364,7 +364,7 @@ def transonic_lift_wave_drag(conditions, settings, geometry):
     Mach              = conditions.freestream.mach_number  
     S_ref             = geometry.reference_area 
     CD_wave_transonic = np.zeros_like(Mach) 
-    CL_y              = conditions.aerodynamics.coefficients.lift.inviscid.spanwise *geometry.wings.main_wing.areas.projected/S_ref
+    CL_y              = conditions.aerodynamics.coefficients.lift.spanwise *geometry.wings.main_wing.areas.projected/S_ref
 
     chords   = settings.vortex_distribution.chord_lengths
     delta    = settings.vortex_distribution.leading_edge_sweeps 

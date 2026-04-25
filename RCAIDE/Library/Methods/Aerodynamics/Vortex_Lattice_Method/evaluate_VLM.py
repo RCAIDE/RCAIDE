@@ -71,7 +71,7 @@ def evaluate_surrogate(state,settings,vehicle):
     conditions.static_stability.coefficients.M                  = results_alpha.CM
     
     conditions.static_stability.coefficients.M_0 = compute_stability_derivative(sub_sur.CM_0    ,trans_sur.CM_0    ,sup_sur.CM_0    ,h_sub,h_sup,Mach) 
-    conditions.aerodynamics.coefficients.lift.inviscid.spanwise =  results_alpha.Clift_spanwise     
+    conditions.aerodynamics.coefficients.lift.spanwise =  results_alpha.Clift_spanwise     
     
     # -----------------------------------------------------------------------------------------------------------------------
     # Query control surface surrogates if derivatives are not user defined
@@ -345,7 +345,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
  
     conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
     conditions.aerodynamics.coefficients.lift.inviscid.total          = Clift
-    conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
+    conditions.aerodynamics.coefficients.lift.spanwise       = VLM_results.sectional_CLift
     conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
     conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
     conditions.aerodynamics.coefficients.drag.induced.inviscid        = Cdrag
@@ -415,7 +415,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     # Dimensionalize the lift and drag for each wing   
     equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.wings          = VLM_results.CLift_wings 
     equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.total          = VLM_results.CLift
-    equilibrium_conditions.aerodynamics.coefficients.lift.inviscid.spanwise       = VLM_results.sectional_CLift
+    equilibrium_conditions.aerodynamics.coefficients.lift.spanwise       = VLM_results.sectional_CLift
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.wings           = VLM_results.CDrag_induced_wings
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.spanwise        = VLM_results.sectional_CDrag_induced
     equilibrium_conditions.aerodynamics.coefficients.drag.induced.inviscid        = VLM_results.CDrag_induced
@@ -472,7 +472,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
  
     pertubation_conditions.aerodynamics.coefficients.lift.inviscid.total     = Clift_i_alpha_prime     
     pertubation_conditions.aerodynamics.coefficients.lift.inviscid.wings     = VLM_results.CLift_wings  
-    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.spanwise  = VLM_results.sectional_CLift        
+    pertubation_conditions.aerodynamics.coefficients.lift.spanwise  = VLM_results.sectional_CLift        
     pertubation_conditions.aerodynamics.coefficients.drag.induced.wings      = VLM_results.CDrag_induced_wings 
     pertubation_conditions.aerodynamics.coefficients.drag.induced.total      = Cdrag_i_alpha_prime
      
@@ -566,7 +566,7 @@ def evaluate_no_surrogate(state,settings,vehicle):
     pertubation_conditions.aerodynamics.coefficients.lift.inviscid.total = Clift_i_u_prime
     pertubation_conditions.aerodynamics.coefficients.drag.induced.total  = Cdrag_i_u_prime
     pertubation_conditions.aerodynamics.coefficients.drag.induced.wings  = VLM_results.CDrag_induced_wings
-    pertubation_conditions.aerodynamics.coefficients.lift.inviscid.spanwise = VLM_results.sectional_CLift
+    pertubation_conditions.aerodynamics.coefficients.lift.spanwise       = VLM_results.sectional_CLift
 
     perturbation_state                  = RCAIDE.Framework.Mission.Common.State()
     perturbation_state.conditions       = pertubation_conditions  
@@ -972,7 +972,7 @@ def create_conditions(n_cpts,altitude,g,V,MAC,energy_conditions):
     atmo_data                                                          = atmosphere.compute_values(altitude =altitude)  
     equilibrium_conditions                                             = RCAIDE.Framework.Mission.Common.Results()
     equilibrium_conditions.expand_rows(n_cpts,override=False)
-    #equilibrium_conditions.energy                                      = deepcopy(energy_conditions)
+    equilibrium_conditions.energy                                      = deepcopy(energy_conditions)
     equilibrium_conditions.freestream.density[:,0]                     = atmo_data.density[:,0]
     equilibrium_conditions.freestream.gravity[:,0]                     = g[:,0]
     equilibrium_conditions.freestream.speed_of_sound[:,0]              = atmo_data.speed_of_sound[:,0]

@@ -31,21 +31,14 @@ def build_AVL_surrogates(aerodynamics):
     training    = aerodynamics.training  
     AoA_data    = training.angle_of_attack
     mach_data   = training.Mach 
-
-    CL_data       = training.coefficients[0,:,:]
-    CDi_data      = training.coefficients[1,:,:]
-    e_data        = training.coefficients[2,:,:]  
-    CM_data       = training.coefficients[3,:,:]
-    Cm_alpha_data = training.coefficients[4,:,:]
-    Cn_beta_data  = training.coefficients[5,:,:]
-    NP_data       = training.coefficients[6,:,:] 
-   
-    surrogates.lift_coefficient            = RegularGridInterpolator((AoA_data, mach_data), CL_data      ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.drag_coefficient            = RegularGridInterpolator((AoA_data, mach_data), CDi_data     ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.span_efficiency_factor      = RegularGridInterpolator((AoA_data, mach_data), e_data       ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.moment_coefficient          = RegularGridInterpolator((AoA_data, mach_data), CM_data      ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.Cm_alpha_moment_coefficient = RegularGridInterpolator((AoA_data, mach_data), Cm_alpha_data,method = 'linear',   bounds_error=False, fill_value=None)    
-    surrogates.Cn_beta_moment_coefficient  = RegularGridInterpolator((AoA_data, mach_data), Cn_beta_data ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.neutral_point               = RegularGridInterpolator((AoA_data, mach_data), NP_data      ,method = 'linear',   bounds_error=False, fill_value=None)     
+ 
+    surrogates.Clift_spanwise              = RegularGridInterpolator((AoA_data, mach_data), training.CL_y        ,method='linear',    bounds_error=False, fill_value=None)    
+    surrogates.lift_coefficient            = RegularGridInterpolator((AoA_data, mach_data), training.CL          ,method = 'linear',   bounds_error=False, fill_value=None)   
+    surrogates.drag_coefficient            = RegularGridInterpolator((AoA_data, mach_data), training.CDi         ,method = 'linear',   bounds_error=False, fill_value=None)   
+    surrogates.span_efficiency_factor      = RegularGridInterpolator((AoA_data, mach_data), training.CM          ,method = 'linear',   bounds_error=False, fill_value=None)   
+    surrogates.moment_coefficient          = RegularGridInterpolator((AoA_data, mach_data), training.e           ,method = 'linear',   bounds_error=False, fill_value=None)   
+    surrogates.Cm_alpha_moment_coefficient = RegularGridInterpolator((AoA_data, mach_data), training.Cm_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)    
+    surrogates.Cn_beta_moment_coefficient  = RegularGridInterpolator((AoA_data, mach_data), training.Cn_beta     ,method = 'linear',   bounds_error=False, fill_value=None)   
+    surrogates.neutral_point               = RegularGridInterpolator((AoA_data, mach_data), training.NP          ,method = 'linear',   bounds_error=False, fill_value=None)         
         
     return 

@@ -163,7 +163,8 @@ class Results(Conditions):
         self.aerodynamics.coefficients.lift                                    = Conditions()
         self.aerodynamics.coefficients.lift.total                              = ones_1col * 0   
         self.aerodynamics.coefficients.lift.inviscid                           = Conditions()
-        self.aerodynamics.coefficients.lift.inviscid.total                     = ones_1col * 0    
+        self.aerodynamics.coefficients.lift.inviscid.total                     = ones_1col * 0  
+        self.aerodynamics.coefficients.lift.spanwise                           = None
         self.aerodynamics.coefficients.drag                                    = Conditions()  
         self.aerodynamics.coefficients.drag.total                              = ones_1col * 0   
         self.aerodynamics.coefficients.drag.parasite                           = Conditions()
@@ -187,6 +188,7 @@ class Results(Conditions):
         self.aerodynamics.coefficients.drag.form.total                         = ones_1col * 0
         self.aerodynamics.coefficients.drag.trim                               = Conditions()
         self.aerodynamics.coefficients.drag.trim.total                         = ones_1col * 0
+        self.aerodynamics.spanwise_induced_angle                               = None
         self.aerodynamics.coefficients.drag.windmilling                        = Conditions()
         self.aerodynamics.coefficients.drag.windmilling.total                  = ones_1col * 0
         self.aerodynamics.coefficients.drag.asymmetry_trim                     = Conditions()
