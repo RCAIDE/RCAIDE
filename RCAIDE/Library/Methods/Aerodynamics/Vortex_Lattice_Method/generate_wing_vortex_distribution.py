@@ -136,13 +136,16 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
             inboard_segment  = wing.segments[wing_seg_tags[seg_idx]]
             outboard_segment = wing.segments[wing_seg_tags[seg_idx+1]]
             
-            if delta_y == outboard_segment.percent_span_location * span:
-                pass
-            else:
-                while delta_y >= outboard_segment.percent_span_location * span: 
-                    seg_idx += 1
-                    inboard_segment = wing.segments[wing_seg_tags[seg_idx]]
-                    outboard_segment = wing.segments[wing_seg_tags[seg_idx+1]]              
+            try: 
+                if delta_y == outboard_segment.percent_span_location * span:
+                    pass
+                else:
+                    while delta_y >= outboard_segment.percent_span_location * span: 
+                        seg_idx += 1
+                        inboard_segment = wing.segments[wing_seg_tags[seg_idx]]
+                        outboard_segment = wing.segments[wing_seg_tags[seg_idx+1]]
+            except:
+                raise AssertionError("Insufficient surface panelization discretization. Increase number of spanwise and chordwise vortices.")
                 
             # Step 2. get segment properties  
             segment_root_chord    = wing.chords.root*inboard_segment.root_chord_percent

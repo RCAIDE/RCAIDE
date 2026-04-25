@@ -120,11 +120,11 @@ def vehicle_setup():
     wing.vertical                = False
     wing.xz_plane_symmetric      = True       
     wing.high_lift               = True
-    wing.transition_x_upper    = 0.35
-    wing.transition_x_lower    = 0.35
+    wing.transition_x_upper      = 0.35
+    wing.transition_x_lower      = 0.35
     wing.areas.exposed           = 0.80 * wing.areas.wetted        
-    wing.twists.root             = 4.0 * Units.degrees
-    wing.twists.tip              = -3.0 * Units.degrees  
+    wing.twists.root             = 2.0 * Units.degrees
+    wing.twists.tip              = -1.0 * Units.degrees  
     wing.dynamic_pressure_ratio  = 1.0
      
     ospath                                = os.path.abspath(__file__)
@@ -230,7 +230,7 @@ def vehicle_setup():
     wing.aspect_ratio            = 5.5
     wing.spans.projected         = 12
     wing.sweeps.quarter_chord    = 34.5 * Units.deg
-    wing.thickness_to_chord      = 0.16
+    wing.thickness_to_chord      = 0.14
     wing.taper                   = 0.2
     wing.dihedral                = 8.4 * Units.degrees
     wing.origin                  = [[31,0,1.5]]
@@ -257,7 +257,7 @@ def vehicle_setup():
     wing.sweeps.quarter_chord    = 35. * Units.deg
     wing.chords.root             = 4.68
     wing.chords.tip              = 1.45
-    wing.thickness_to_chord      = 0.16
+    wing.thickness_to_chord      = 0.14
     wing.taper                   = 0.31
     wing.dihedral                = 0.00
     wing.origin                  = [[30.4,0,1.675]]
@@ -487,7 +487,7 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Fuel Distrubition Line 
     #------------------------------------------------------------------------------------------------------------------------------------  
-    fuel_line                                   = RCAIDE.Library.Components.Powertrain.Distributors.Fuel_Line()
+    fuel_line                                      = RCAIDE.Library.Components.Powertrain.Distributors.Fuel_Line()
     fuel_line.pipe.rigid_material                  = RCAIDE.Library.Attributes.Materials.Aluminum()
     fuel_line.pipe.flexible_material               = RCAIDE.Library.Attributes.Materials.Stainless_Steel_304()
     fuel_line.pipe.flexible_material_ratio         = 0.25

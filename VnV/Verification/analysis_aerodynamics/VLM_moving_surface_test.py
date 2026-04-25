@@ -121,16 +121,16 @@ def get_array_of_deflection_configs():
     deflection_configs = [Data() for i in range(n_configs)]
     
     for i, deflection_config in enumerate(deflection_configs):
-        deflection_config.  stabilator_sign_duplicate =   stabilator_sign_duplicates[i]  
+        deflection_config.stabilator_sign_duplicate =   stabilator_sign_duplicates[i]  
         deflection_config.v_tail_right_sign_duplicate = v_tail_right_sign_duplicates[i]
         
-        deflection_config.  stabilator_hinge_fraction =   stabilator_hinge_fractions[i] 
+        deflection_config.stabilator_hinge_fraction =   stabilator_hinge_fractions[i] 
         deflection_config.v_tail_right_hinge_fraction = v_tail_right_hinge_fractions[i]
         
-        deflection_config.  stabilator_use_constant_hinge_fraction =   stabilator_use_constant_hinge_fractions[i]
+        deflection_config.stabilator_use_constant_hinge_fraction =   stabilator_use_constant_hinge_fractions[i]
         deflection_config.v_tail_right_use_constant_hinge_fraction = v_tail_right_use_constant_hinge_fractions[i]
         
-        deflection_config.  stabilator_hinge_vector   =   stabilator_hinge_vectors[i]
+        deflection_config.stabilator_hinge_vector   =   stabilator_hinge_vectors[i]
         deflection_config.v_tail_right_hinge_vector   = v_tail_right_hinge_vectors[i]      
         
         deflection_config.deflection                  = deflections[i]                 
@@ -165,8 +165,7 @@ def get_conditions():
 def get_settings():
     settings = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method().settings  
     settings.propeller_wake_model            = None
-    settings.spanwise_cosine_spacing         = False
-    settings.model_nacelle                   = True
+    settings.spanwise_cosine_spacing         = False 
     settings.leading_edge_suction_multiplier = 1. 
     settings.discretize_control_surfaces     = True
     settings.use_VORLAX_matrix_calculation   = False     
