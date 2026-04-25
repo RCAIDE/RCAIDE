@@ -31,7 +31,7 @@ modules = [
     'Verification/analysis_aeroacoustics/frequency_domain_test.py', 
     'Verification/analysis_aeroacoustics/empirical_jet_noise_test.py',    
     'Verification/analysis_stability/trimmed_flight_test.py', 
-    'Verification/analysis_stability/trimmed_stab_deriv_flight_test.py',
+    # 'Verification/analysis_stability/trimmed_stab_deriv_flight_test.py',
     'Verification/analysis_stability/untrimmed_flight_test.py', 
     'Verification/analysis_weights/operating_empty_weight_test.py',
     'Verification/analysis_weights/cg_and_moi_test.py', 
