@@ -41,18 +41,26 @@ def train_AVL_surrogates(aerodynamics,vehicle):
     roll_rate_coefficient  = aerodynamics.settings.roll_rate_coefficient
     pitch_rate_coefficient = aerodynamics.settings.pitch_rate_coefficient
     lift_coefficient       = aerodynamics.settings.lift_coefficient
+    n_sw                   = aerodynamics.settings.number_of_spanwise_vortices 
     atmosphere             = RCAIDE.Framework.Analyses.Atmospheric.US_Standard_1976()
     atmo_data              = atmosphere.compute_values(altitude = 0.0)         
     
+    n_wings = 0  
+    for wing in vehicle.wings:         
+        n_wings += 1 
+        if wing.xz_plane_symmetric: 
+            n_wings += 1
+            
     len_AoA  = len(AoA)
     len_Mach = len(Mach)
-    CM       = np.zeros((len_AoA,len_Mach))
-    CL       = np.zeros_like(CM)
-    CD       = np.zeros_like(CM)
-    e        = np.zeros_like(CM)
-    Cm_alpha = np.zeros_like(CM)
-    Cn_beta  = np.zeros_like(CM)
-    NP       = np.zeros_like(CM)  
+    training.CL_y     = np.zeros((len_AoA,len_Mach,n_sw*n_wings))
+    training.CL       = np.zeros((len_AoA,len_Mach))
+    training.CDi      = np.zeros((len_AoA,len_Mach))
+    training.CM       = np.zeros((len_AoA,len_Mach))
+    training.e        = np.zeros((len_AoA,len_Mach))
+    training.Cm_alpha = np.zeros((len_AoA,len_Mach))
+    training.Cn_beta  = np.zeros((len_AoA,len_Mach))
+    training.NP       = np.zeros((len_AoA,len_Mach))
 
     # remove old files in run directory  
     if os.path.exists(aerodynamics.settings.filenames.run_folder):
@@ -78,61 +86,24 @@ def train_AVL_surrogates(aerodynamics,vehicle):
         run_conditions.static_stability.coefficients.pitch = np.ones_like(run_conditions.aerodynamics.angles.alpha)*pitch_rate_coefficient 
 
         # Run Analysis at AoA[i] and Mach[i]
-        run_AVL_analysis(aerodynamics,run_conditions, vehicle)
+        run_AVL_analysis(aerodynamics,run_conditions, vehicle) 
  
-        CL[:,i]       = run_conditions.aerodynamics.coefficients.lift.inviscid.total[:,0]
-        CD[:,i]       = run_conditions.aerodynamics.coefficients.drag.induced.total[:,0]      
-        e [:,i]       = run_conditions.aerodynamics.coefficients.drag.induced.efficiency_factor[:,0]   
-        CM[:,i]       = run_conditions.static_stability.coefficients.pitch[:,0]
-        Cm_alpha[:,i] = run_conditions.static_stability.derivatives.CM_alpha[:,0]
-        Cn_beta[:,i]  = run_conditions.static_stability.derivatives.CN_beta[:,0]
-        NP[:,i]       = run_conditions.static_stability.neutral_point[:,0]     
-
-    if aerodynamics.training_file:
-        # load data 
-        data_array   = np.loadtxt(aerodynamics.training_file) 
-        
-        # convert from 1D to 2D        
-        CL_1D         = np.atleast_2d(data_array[:,0]) 
-        CD_1D         = np.atleast_2d(data_array[:,1])            
-        e_1D          = np.atleast_2d(data_array[:,2])
-        CM_1D         = np.atleast_2d(data_array[:,3]) 
-        Cm_alpha_1D   = np.atleast_2d(data_array[:,4])            
-        Cn_beta_1D    = np.atleast_2d(data_array[:,5])
-        NP_1D         = np.atleast_2d(data_array[:,6])
-
-        # convert from 1D to 2D
-        CL        = np.reshape(CL_1D, (len_AoA,-1))
-        CD        = np.reshape(CD_1D, (len_AoA,-1))
-        e         = np.reshape(e_1D , (len_AoA,-1)) 
-        CM        = np.reshape(CM_1D, (len_AoA,-1))
-        Cm_alpha  = np.reshape(Cm_alpha_1D, (len_AoA,-1))
-        Cn_beta   = np.reshape(Cn_beta_1D , (len_AoA,-1))
-        NP        = np.reshape(NP_1D , (len_AoA,-1))
-
-    # Save the data for regression 
-    if aerodynamics.settings.new_regression_results:
-        # convert from 2D to 1D
-        CL_1D       = CL.reshape([len_AoA*len_Mach,1]) 
-        CD_1D       = CD.reshape([len_AoA*len_Mach,1])  
-        e_1D        = e.reshape([len_AoA*len_Mach,1]) 
-        CM_1D       = CM.reshape([len_AoA*len_Mach,1]) 
-        Cm_alpha_1D = Cm_alpha.reshape([len_AoA*len_Mach,1])  
-        Cn_beta_1D  = Cn_beta.reshape([len_AoA*len_Mach,1])         
-        NP_1D       = Cn_beta.reshape([len_AoA*len_Mach,1]) 
-        np.savetxt(vehicle.tag+'_stability_data.txt',np.hstack([CL_1D,CD_1D,e_1D,CM_1D,Cm_alpha_1D, Cn_beta_1D,NP_1D ]),fmt='%10.8f',header='   CM       Cm_alpha       Cn_beta       NP ')
-
-    # Store training data
-    # Save the data for regression
-    training_data = np.zeros((7,len_AoA,len_Mach))
-    training_data[0,:,:] = CL 
-    training_data[1,:,:] = CD 
-    training_data[2,:,:] = e  
-    training_data[3,:,:] = CM       
-    training_data[4,:,:] = Cm_alpha 
-    training_data[5,:,:] = Cn_beta  
-    training_data[6,:,:] = NP      
-
-    # Store training data
-    training.coefficients = training_data
-    
+        Clift_y_res  = run_conditions.aerodynamics.coefficients.lift.spanwise 
+        Clift_res    = run_conditions.aerodynamics.coefficients.lift.inviscid.total 
+        Cdrag_res    = run_conditions.aerodynamics.coefficients.drag.induced.total    
+        e_res        = run_conditions.aerodynamics.coefficients.drag.induced.efficiency_factor 
+        CM_res       = run_conditions.static_stability.coefficients.pitch 
+        Cm_alpha_res = run_conditions.static_stability.derivatives.CM_alpha 
+        Cn_beta_res  = run_conditions.static_stability.derivatives.CN_beta 
+        NP_res       = run_conditions.static_stability.neutral_point  
+         
+        training.CL_y[:,i]       =  Clift_y_res 
+        training.CL[:,i]         =  Clift_res[:,0]   
+        training.CDi[:,i]        =  Cdrag_res[:,0]   
+        training.CM[:,i]         =  CM_res[:,0]    
+        training.e[:,i]          =  e_res[:,0]         
+        training.Cm_alpha[:,i]   =  Cm_alpha_res[:,0]
+        training.Cn_beta[:,i]    =  Cn_beta_res[:,0] 
+        training.NP[:,i]         =  NP_res[:,0]   
+ 
+    return training
