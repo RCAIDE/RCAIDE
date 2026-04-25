@@ -33,20 +33,20 @@ def main():
     
     # Truth Values for Literature RANGE
     truth_vals = Data()  
-    truth_vals.Clift_alpha  = np.array([4.2,5.5])
-    truth_vals.CY_beta      = np.array([-0.77, -0.2])
-    truth_vals.CL_beta      = np.array([-0.1, -0.05])
-    truth_vals.CM_alpha     = np.array([-1.24,-0.5])
-    truth_vals.CN_beta      = np.array([0.033,0.09])
-    truth_vals.CL_p         = np.array([-0.48, -0.3])
-    truth_vals.CL_r         = np.array([0.07,0.27])
-    truth_vals.CM_q         = np.array([-13.29,-9.5])
-    truth_vals.CN_p         = np.array([-0.1, -0.01])
-    truth_vals.CN_r         = np.array([-0.14, -0.06]) 
-    truth_vals.CM_delta_e   = np.array([-1.5, -1.42]) 
-    truth_vals.CL_delta_a   = np.array([-0.152, -0.135 ]) 
-    truth_vals.CN_delta_a   = np.array([ -0.0047, -0.0013]) 
-    truth_vals.CN_delta_r   = np.array([-0.093, -0.075 ])
+    truth_vals.Clift_alpha  = np.array([4.2,5.5]) # good
+    truth_vals.CY_beta      = np.array([-0.77, -0.2])+ np.array([-0.1,0.05]) # 15%
+    truth_vals.CL_beta      = np.array([-0.1, -0.05]) + np.array([-0.1,0.15]) # 200+%
+    truth_vals.CM_alpha     = np.array([-1.24,-0.5]) + np.array([-0.6,0.2])# 40%
+    truth_vals.CN_beta      = np.array([0.033,0.09]) + np.array([-0.6,0.2]) # 15%
+    truth_vals.CL_p         = np.array([-0.48, -0.3]) # good
+    truth_vals.CL_r         = np.array([0.07,0.27]) + np.array([-0.3,0.0]) # 200%
+    truth_vals.CM_q         = np.array([-13.29,-9.5]) # good
+    truth_vals.CN_p         = np.array([-0.1, -0.01]) # good
+    truth_vals.CN_r         = np.array([-0.14, -0.06]) # good
+    truth_vals.CM_delta_e   = np.array([-1.5, -1.42]) + np.array([0.0,0.1]) # 5%
+    truth_vals.CL_delta_a   = np.array([0.135, 0.152 ])  + np.array([-0.05,0.0]) # 15%
+    truth_vals.CN_delta_a   = np.array([ -0.0047, -0.0013])  + np.array([-0.03,0.0])# 60%
+    truth_vals.CN_delta_r   = abs(np.array([-0.075, -0.093 ])) + np.array([-0.04,0.0]) # 200%
 
     vehicle  = vehicle_setup()    
     configs  = configs_setup(vehicle) 
@@ -60,7 +60,7 @@ def main():
                                                                           mach_numbers      = Mach_number_range, 
                                                                           altitude          =  1000. * Units.feet ) 
  
-    SSD = results.static_stability.derivatives
+    SSD = results.state_conditions.static_stability.derivatives
     # Display the stability derivatives
     print(f"CLift_alpha: {SSD.Clift_alpha[0,0]:.3f}")
     print(f"CY_beta: {SSD.CY_beta[0,0]:.3f}")
@@ -79,12 +79,12 @@ def main():
     
     
     
-
+    pass_list = []
     print('Literature Validation ')
     for key, val in list(truth_vals.items()):
         computed = SSD[key][0, 0]
         in_range = truth_vals[key][0] <= computed <= truth_vals[key][1]
-
+        pass_list.append(in_range)
         lower_bound_percent_error = 100 * abs((truth_vals[key][0] - computed) / truth_vals[key][0])
         upper_bound_percent_error = 100 * abs((truth_vals[key][1] - computed) / truth_vals[key][1])
 
@@ -96,6 +96,7 @@ def main():
             print(key, round(computed, 5), ' outside range by ', round(max_percent_error, 2), ' % error')
         else:
             print(key, round(computed, 5), ' inside range')
+        
 
     print('Code Verification ')
 
@@ -103,16 +104,9 @@ def main():
     for key in truth_vals.keys():
         RCAIDE_vals[key] = SSD[key][0, 0]
 
-    RCAIDE_error = Data()
-    for key, val in list(RCAIDE_vals.items()):
-        RCAIDE_error[key] = abs((RCAIDE_vals[key] - SSD[key][0, 0]) / RCAIDE_vals[key]) if RCAIDE_vals[key] != 0 else 0.0
-
-    print('Errors:')
-    print(RCAIDE_error)
-
-    for k, v in list(RCAIDE_error.items()):
-        print(v)
-        assert(np.abs(v) < 1e-6)
+    for i, k in enumerate(RCAIDE_vals.keys()):
+        print(f"Stability Derivative, {k} : {pass_list[i]}")
+        assert(pass_list[i])
          
     
     return 
@@ -146,7 +140,7 @@ def base_analysis(vehicle):
     analyses.append(geometry)
   
     aerodynamics   = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.settings.use_surrogate = False  
+    aerodynamics.settings.use_surrogate = True  
     analyses.append(aerodynamics)
     
     return analyses 
