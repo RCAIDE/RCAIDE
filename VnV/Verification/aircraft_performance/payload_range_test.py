@@ -60,12 +60,8 @@ def fuel_aircraft_payload_range():
     mission = fuel_aircraft_mission_setup(analyses)
     
     # create mission instances (for multiple types of missions)
-    missions = missions_setup(mission) 
-
-    # results = missions.base_mission.evaluate() 
-    # plot_aerodynamic_coefficients(results)
-    # plt.show()
-        
+    missions = missions_setup(mission)
+    
     # run payload range analysis 
     payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.08, delete_training_data = True)
                                 
@@ -193,9 +189,7 @@ def fuel_aircraft_base_analysis(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
-    aerodynamics.settings.number_of_spanwise_vortices   = 5
-    aerodynamics.settings.number_of_chordwise_vortices  = 2       
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()         
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------
@@ -250,9 +244,7 @@ def fuel_aircraft_base_analysis_weights(vehicle):
 
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis 
-    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
-    # aerodynamics.settings.number_of_spanwise_vortices   = 10
-    # aerodynamics.settings.number_of_chordwise_vortices  = 2       
+    aerodynamics          = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()    
     analyses.append(aerodynamics)   
 
     # ------------------------------------------------------------------

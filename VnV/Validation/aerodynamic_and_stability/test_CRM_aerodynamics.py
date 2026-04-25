@@ -222,9 +222,7 @@ def run_aero_analysis(vehicle):
     analyses.append(geometry)
 
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.vehicle                               = vehicle
-    aerodynamics.settings.number_of_spanwise_vortices  = 25
-    aerodynamics.settings.number_of_chordwise_vortices = 4
+    aerodynamics.vehicle                               = vehicle 
     analyses.append(aerodynamics)
 
     # Parse wind tunnel conditions from embedded data
