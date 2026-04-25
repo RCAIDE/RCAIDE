@@ -677,8 +677,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     # Propulsor: Propulsor 2 (Inner Port Side)
     #------------------------------------------------------------------------------------------------------------------------------------      
     # copy turbofan
-    turbofan2                                  = deepcopy(turbofan1)
-    turbofan2.active_fuel_tanks                = ['fuel_tank'] 
+    turbofan2                                  = deepcopy(turbofan1) 
     turbofan2.tag                              = 'propulsor_2' 
     turbofan2.origin                           = [[17.818, -10.000,-0.953]]
     turbofan2.nacelle.origin                   = [[17.818, -10.000,-0.953]]
