@@ -215,6 +215,25 @@ def vehicle_setup():
     wing.t_tail                           = False
     wing.winglet_fraction                 = 0.0  
     wing.dynamic_pressure_ratio           = 1.0  
+
+    segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
+    segment.tag                           = 'segment_1'
+    segment.percent_span_location         = 0.
+    segment.twist                         = 0. * Units.deg
+    segment.root_chord_percent            = 1.0
+    segment.sweeps.leading_edge              = 20 * Units.degrees  
+    segment.thickness_to_chord            = .1
+    wing.append_segment(segment)
+
+    segment                               = RCAIDE.Library.Components.Wings.Segments.Segment()
+    segment.tag                           = 'segment_2'
+    segment.percent_span_location         = 1.0
+    segment.twist                         = 0. * Units.deg
+    segment.root_chord_percent            = wing.taper
+    segment.dihedral_outboard             = 0.0 * Units.degrees
+    segment.sweeps.quarter_chord          = 0.0    
+    segment.thickness_to_chord            = .1  
+    wing.append_segment(segment)
     
     rudder                                = RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder()
     rudder.tag                            = 'rudder'
