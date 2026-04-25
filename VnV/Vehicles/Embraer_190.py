@@ -120,9 +120,11 @@ def vehicle_setup():
     wing.vertical                = False
     wing.xz_plane_symmetric      = True       
     wing.high_lift               = True
+    wing.transition_x_upper    = 0.35
+    wing.transition_x_lower    = 0.35
     wing.areas.exposed           = 0.80 * wing.areas.wetted        
-    wing.twists.root             = 2.0 * Units.degrees
-    wing.twists.tip              = 0.0 * Units.degrees    
+    wing.twists.root             = 4.0 * Units.degrees
+    wing.twists.tip              = -3.0 * Units.degrees  
     wing.dynamic_pressure_ratio  = 1.0
      
     ospath                                = os.path.abspath(__file__)
@@ -136,7 +138,7 @@ def vehicle_setup():
     segment.thickness_to_chord            = .11
     segment.dihedral_outboard             = 5. * Units.degrees
     segment.sweeps.quarter_chord          = 20.6 * Units.degrees 
-    segment.twist                        =  2. * Units.degrees 
+    segment.twist                         = wing.twists.root  -  (wing.twists.root - wing.twists.tip) * segment.percent_span_location
     root_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
     root_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'transonic_wing_root_section_airfoil.txt'
     segment.append_airfoil(root_airfoil)
@@ -148,6 +150,7 @@ def vehicle_setup():
     segment.root_chord_percent            = 0.60 
     segment.dihedral_outboard             = 4 * Units.degrees
     segment.sweeps.quarter_chord          = 24.1 * Units.degrees  
+    segment.twist                         = wing.twists.root  -  (wing.twists.root - wing.twists.tip) * segment.percent_span_location
     yehudi_airfoil                        = RCAIDE.Library.Components.Airfoils.Airfoil()
     yehudi_airfoil.coordinate_file        = rel_path+ 'Airfoils' + separator + 'transonic_wing_inboard_section_airfoil.txt' 
     segment.append_airfoil(yehudi_airfoil)
@@ -155,8 +158,9 @@ def vehicle_setup():
     
     segment = RCAIDE.Library.Components.Wings.Segments.Segment()
     segment.tag                          = 'section_2'
-    segment.percent_span_location        = 0.961
+    segment.percent_span_location        = 0.95
     segment.root_chord_percent           = 0.25 
+    segment.twist                         = wing.twists.root  -  (wing.twists.root - wing.twists.tip) * segment.percent_span_location
     segment.dihedral_outboard            = 70. * Units.degrees
     segment.sweeps.quarter_chord         = 40. * Units.degrees  
     mid_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
@@ -169,7 +173,7 @@ def vehicle_setup():
     segment.percent_span_location        = 1.
     segment.root_chord_percent           = 0.070 
     segment.dihedral_outboard            = 0.
-    segment.twist                        = -2. * Units.degrees
+    segment.twist                        = wing.twists.root  -  (wing.twists.root - wing.twists.tip) * segment.percent_span_location
     segment.sweeps.quarter_chord         = 0.  
     tip_airfoil                          =  RCAIDE.Library.Components.Airfoils.Airfoil()
     tip_airfoil.coordinate_file          = rel_path + 'Airfoils' + separator + 'transonic_wing_tip_section_airfoil.txt'
