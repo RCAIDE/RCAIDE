@@ -34,7 +34,7 @@ from Navion    import vehicle_setup, configs_setup
 
 def main():
     
-    new_regression_results = True  # Keep False, Only True when getting new results for regression 
+    new_regression_results = False  # Keep False, Only True when getting new results for regression 
 
     
     use_surrogate          = False  
@@ -72,7 +72,7 @@ def AVL_Surrogate_Mission(use_surrogate,trim_aircraft,keep_regression_files,new_
  
     # Extract sample values from computation   
     cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
-    cruise_CL_thruth = 0.4207404923969484
+    cruise_CL_thruth = 0.4210736644793703
     # Truth values  
     error = Data()  
     error.cruise_CL   = np.max(np.abs(cruise_CL - cruise_CL_thruth))   
@@ -106,7 +106,7 @@ def AVL_Single_Point_Trim_Mission(use_surrogate,trim_aircraft,keep_regression_fi
  
     # Extract sample values from computation   
     cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[0][0]
-    cruise_CL_thruth = 0.48
+    cruise_CL_thruth = 0.399996
     
     # Truth values  
     error = Data()  
@@ -248,7 +248,7 @@ def AVL_Single_Point_mission_setup(analyses):
     segment.analyses.extend(analyses.base) 
     segment.altitude                                                = 2500 * Units.feet
     segment.air_speed                                               = 120 * Units['mph']
-    segment.trim_lift_coefficient                                   = 0.4
+    segment.lift_coefficient                                        = 0.4
                 
     # define flight dynamics to model             
     segment.flight_dynamics.force_x                                 = True  

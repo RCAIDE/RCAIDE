@@ -49,10 +49,10 @@ def translate_conditions_to_cases(avl ,conditions, vehicle):
         case.conditions.freestream.gravitational_acceleration = conditions.freestream.gravity[i, 0]      
         case.conditions.aerodynamics.angles.alpha             = conditions.aerodynamics.angles.alpha[i, 0]/Units.deg
         case.conditions.aerodynamics.angles.beta              = conditions.aerodynamics.angles.beta[i, 0]/Units.deg 
-        if type(conditions.aerodynamics.coefficients.lift.total) == np.ndarray: 
-            case.conditions.aerodynamics.coefficients.lift.total= conditions.aerodynamics.coefficients.lift.total[i, 0]        
+        if type(conditions.aerodynamics.coefficients.lift.inviscid.total) == np.ndarray: 
+            case.conditions.aerodynamics.coefficients.lift.inviscid.total= conditions.aerodynamics.coefficients.lift.inviscid.total[i, 0]        
         else:      
-            case.conditions.aerodynamics.coefficients.lift.total = None
+            case.conditions.aerodynamics.coefficients.lift.inviscid.total = None
         case.conditions.static_stability.coefficients.roll    = conditions.static_stability.coefficients.roll[i, 0] 
         case.conditions.static_stability.coefficients.pitch   = conditions.static_stability.coefficients.pitch[i, 0] 
         
@@ -207,6 +207,36 @@ def translate_results_to_conditions(cases,res,results, settings):
         res.aerodynamics.spanwise_induced_angle[i][:]       = CD_y.reshape(CD_y.shape[:-2] + (-1,))
         res.aerodynamics.coefficients.drag.spanwise[i][:]   = AOAi.reshape(AOAi.shape[:-2] + (-1,))  
         res.static_stability.control_surfaces_cases[tag]    = case_res.stability.control_surfaces
+        
+        
+        for cs in  settings.control_surface_tags: 
+            cs_res =  case_res.stability.control_surfaces.control_surfaces[cs]
+            
+            if cs == 'flap':
+                letter = 'f' 
+            if cs == 'slat':
+                letter = 's'
+            if cs == 'rudder':
+                letter = 'r'
+            if cs == 'elevator':
+                letter = 'e' 
+            if cs == 'aileron':
+                letter = 'a'    
+                
+            lift_derivative = 'Clift_delta_' + letter 
+            drag_derivative = 'Cdrag_induced_delta_' + letter 
+            L_derivative    = 'CL_delta_' + letter 
+            M_derivative    = 'CM_delta_' + letter 
+            N_derivative    = 'CN_delta_' + letter 
+            Y_derivative    = 'CY_delta_' + letter   
+                
+            res.static_stability.derivatives[lift_derivative][i][0]   = cs_res.CLift_derivative
+            res.static_stability.derivatives[drag_derivative][i][0]   = cs_res.Cdrag_derivative
+            res.static_stability.derivatives[Y_derivative][i][0]      = cs_res.CY_derivative 
+            res.static_stability.derivatives[L_derivative][i][0]      = cs_res.Cl_derivative 
+            res.static_stability.derivatives[M_derivative][i][0]      = cs_res.CM_derivative 
+            res.static_stability.derivatives[N_derivative][i][0]      = cs_res.CN_derivative 
+                                                                       
         
     if len(res.static_stability.coefficients.X) > 1:
         res.static_stability.derivatives.CX_alpha[:, 0] =  np.gradient( res.static_stability.coefficients.X[:, 0],res.aerodynamics.angles.alpha[:, 0] )

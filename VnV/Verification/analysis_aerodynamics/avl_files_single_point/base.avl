@@ -18,7 +18,7 @@ base
 SURFACE
 main_wing
 #Nchordwise  Cspace   Nspanwise  Sspace
-10         1.0         30      1.0
+4         1.0         20      1.0
 
 YDUPLICATE
 0.0
@@ -73,7 +73,7 @@ NACA
 SURFACE
 horizontal_stabilizer
 #Nchordwise  Cspace   Nspanwise  Sspace
-10         1.0         30      1.0
+4         1.0         20      1.0
 
 YDUPLICATE
 0.0
@@ -104,24 +104,24 @@ SECTION
 SURFACE
 vertical_stabilizer
 #Nchordwise  Cspace   Nspanwise  Sspace
-10         1.0         30      -1.1 
+4         1.0         20      -1.1 
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace
-7.1274  0.0    0.3038    1.0594    0.0     
+7.1274  0.0    0.3038    1.2176    0.0     
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace
-7.1813  0.0    0.4519    1.0045    0.0     
+7.1813  0.0    0.4519    1.1545    0.0     
 CONTROL
 rudder    1.0   0.6   0. 0. 0.  +1
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace
-7.6127  0.0    1.6372    0.5655    0.0     
+7.6127  0.0    1.6372    0.65    0.0     
 CONTROL
 rudder    1.0   0.6   0. 0. 0.  +1
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace
-7.6666  0.0    1.7853    0.5106    0.0     
+7.6666  0.0    1.7854    0.5869    0.0     

@@ -30,15 +30,13 @@ def build_AVL_surrogates(aerodynamics):
     surrogates  = aerodynamics.surrogates
     training    = aerodynamics.training  
     AoA_data    = training.angle_of_attack
-    mach_data   = training.Mach 
- 
-    surrogates.Clift_spanwise              = RegularGridInterpolator((AoA_data, mach_data), training.CL_y        ,method='linear',    bounds_error=False, fill_value=None)    
-    surrogates.lift_coefficient            = RegularGridInterpolator((AoA_data, mach_data), training.CL          ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.drag_coefficient            = RegularGridInterpolator((AoA_data, mach_data), training.CDi         ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.span_efficiency_factor      = RegularGridInterpolator((AoA_data, mach_data), training.CM          ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.moment_coefficient          = RegularGridInterpolator((AoA_data, mach_data), training.e           ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.Cm_alpha_moment_coefficient = RegularGridInterpolator((AoA_data, mach_data), training.Cm_alpha    ,method = 'linear',   bounds_error=False, fill_value=None)    
-    surrogates.Cn_beta_moment_coefficient  = RegularGridInterpolator((AoA_data, mach_data), training.Cn_beta     ,method = 'linear',   bounds_error=False, fill_value=None)   
-    surrogates.neutral_point               = RegularGridInterpolator((AoA_data, mach_data), training.NP          ,method = 'linear',   bounds_error=False, fill_value=None)         
+    mach_data   = training.Mach
+    
+    skip_list = ['angle_of_attack', 'Mach']
+    for key in training.keys():
+        if key in skip_list : 
+            pass
+        else:
+            surrogates[key]  = RegularGridInterpolator((AoA_data, mach_data), training[key] ,method='linear',    bounds_error=False, fill_value=None)           
         
     return 

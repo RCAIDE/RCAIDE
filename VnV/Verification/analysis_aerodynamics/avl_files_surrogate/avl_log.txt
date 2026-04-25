@@ -24,7 +24,7 @@
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -34,23 +34,23 @@
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -83,23 +83,23 @@
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -475,11 +475,11 @@
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -489,15 +489,15 @@
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01299     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =   0.01458
-  CZtot =  -0.23917     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01459     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =   0.00000     Cmtot =   0.07459
+  CZtot =  -0.27720     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.23947
-  CDtot =   0.00464
-  CDvis =   0.00000     CDind =   0.00464
-  CLff  =   0.23867     CDff  =   0.00447    | Trefftz
-  CYff  =  -0.00000         e =    0.6709    | Plane  
+  CLtot =   0.27754
+  CDtot =   0.00491
+  CDvis =   0.00000     CDind =   0.00491
+  CLff  =   0.27542     CDff  =   0.00516    | Trefftz
+  CYff  =  -0.00000         e =    0.7779    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -977,11 +977,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -991,15 +991,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01006     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.02645
-  CZtot =  -0.41110     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01080     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =  -0.00000     Cmtot =   0.05894
+  CZtot =  -0.44891     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.41110
-  CDtot =   0.01006
-  CDvis =   0.00000     CDind =   0.01006
-  CLff  =   0.40957     CDff  =   0.00980    | Trefftz
-  CYff  =  -0.00000         e =    0.9025    | Plane  
+  CLtot =   0.44891
+  CDtot =   0.01080
+  CDvis =   0.00000     CDind =   0.01080
+  CLff  =   0.44567     CDff  =   0.01122    | Trefftz
+  CYff  =   0.00000         e =    0.9365    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -1479,11 +1479,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -1493,15 +1493,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.00165     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.06663
-  CZtot =  -0.58256     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.00176     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =   0.00000     Cmtot =   0.04402
+  CZtot =  -0.62010     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.58227
-  CDtot =   0.01868
-  CDvis =   0.00000     CDind =   0.01868
-  CLff  =   0.57998     CDff  =   0.01828    | Trefftz
-  CYff  =  -0.00000         e =    0.9697    | Plane  
+  CLtot =   0.61979
+  CDtot =   0.01988
+  CDvis =   0.00000     CDind =   0.01988
+  CLff  =   0.61537     CDff  =   0.02043    | Trefftz
+  CYff  =  -0.00000         e =    0.9806    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -1981,11 +1981,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -1995,15 +1995,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.03552     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12489
-  CZtot =  -0.83705     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.03692     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.02316
+  CZtot =  -0.87411     Cntot =  -0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.83696
-  CDtot =   0.03757
-  CDvis =   0.00000     CDind =   0.03757
-  CLff  =   0.83419     CDff  =   0.03685    | Trefftz
-  CYff  =  -0.00000         e =    0.9954    | Plane  
+  CLtot =   0.87400
+  CDtot =   0.03940
+  CDvis =   0.00000     CDind =   0.03940
+  CLff  =   0.86846     CDff  =   0.04005    | Trefftz
+  CYff  =  -0.00000         e =    0.9962    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -2483,11 +2483,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -2497,15 +2497,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.06881     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.16211
-  CZtot =  -1.00369     Cntot =  -0.00000     Cn'tot =   0.00000
+  CXtot =   0.07107     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.01036
+  CZtot =  -1.04038     Cntot =  -0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.00459
-  CDtot =   0.05402
-  CDvis =   0.00000     CDind =   0.05402
-  CLff  =   1.00244     CDff  =   0.05303    | Trefftz
-  CYff  =  -0.00000         e =    0.9988    | Plane  
+  CLtot =   1.04129
+  CDtot =   0.05625
+  CDvis =   0.00000     CDind =   0.05625
+  CLff  =   1.03591     CDff  =   0.05691    | Trefftz
+  CYff  =   0.00000         e =    0.9976    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -2985,11 +2985,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -2999,15 +2999,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.050     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.13441     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.21505
-  CZtot =  -1.24710     Cntot =  -0.00000     Cn'tot =   0.00000
+  CXtot =   0.13794     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =  -0.00701
+  CZtot =  -1.28318     Cntot =  -0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.25149
-  CDtot =   0.08419
-  CDvis =   0.00000     CDind =   0.08419
-  CLff  =   1.25245     CDff  =   0.08281    | Trefftz
-  CYff  =  -0.00000         e =    0.9984    | Plane  
+  CLtot =   1.28764
+  CDtot =   0.08697
+  CDvis =   0.00000     CDind =   0.08697
+  CLff  =   1.28465     CDff  =   0.08766    | Trefftz
+  CYff  =   0.00000         e =    0.9960    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -3236,7 +3236,7 @@ Enter filename, or <return> for screen output   s>
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -3246,23 +3246,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -3295,23 +3295,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -3687,11 +3687,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -3701,15 +3701,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01309     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =   0.01448
-  CZtot =  -0.24102     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01467     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.07502
+  CZtot =  -0.27932     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.24133
-  CDtot =   0.00467
-  CDvis =   0.00000     CDind =   0.00467
-  CLff  =   0.24050     CDff  =   0.00454    | Trefftz
-  CYff  =  -0.00000         e =    0.6715    | Plane  
+  CLtot =   0.27966
+  CDtot =   0.00492
+  CDvis =   0.00000     CDind =   0.00492
+  CLff  =   0.27746     CDff  =   0.00524    | Trefftz
+  CYff  =   0.00000         e =    0.7775    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -4189,11 +4189,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -4203,15 +4203,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01014     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.02658
-  CZtot =  -0.41404     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01088     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =  -0.00000     Cmtot =   0.05950
+  CZtot =  -0.45214     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.41404
-  CDtot =   0.01014
-  CDvis =   0.00000     CDind =   0.01014
-  CLff  =   0.41246     CDff  =   0.00994    | Trefftz
-  CYff  =  -0.00000         e =    0.9025    | Plane  
+  CLtot =   0.45214
+  CDtot =   0.01088
+  CDvis =   0.00000     CDind =   0.01088
+  CLff  =   0.44876     CDff  =   0.01138    | Trefftz
+  CYff  =  -0.00000         e =    0.9362    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -4691,11 +4691,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -4705,15 +4705,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.00164     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.06679
-  CZtot =  -0.58658     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.00173     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.04471
+  CZtot =  -0.62445     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.58628
-  CDtot =   0.01883
-  CDvis =   0.00000     CDind =   0.01883
-  CLff  =   0.58392     CDff  =   0.01853    | Trefftz
-  CYff  =  -0.00000         e =    0.9697    | Plane  
+  CLtot =   0.62413
+  CDtot =   0.02007
+  CDvis =   0.00000     CDind =   0.02007
+  CLff  =   0.61952     CDff  =   0.02071    | Trefftz
+  CYff  =  -0.00000         e =    0.9804    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -5193,11 +5193,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -5207,15 +5207,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.03571     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12508
-  CZtot =  -0.84263     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.03702     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.02406
+  CZtot =  -0.88012     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.84254
-  CDtot =   0.03787
-  CDvis =   0.00000     CDind =   0.03787
-  CLff  =   0.83971     CDff  =   0.03734    | Trefftz
-  CYff  =  -0.00000         e =    0.9954    | Plane  
+  CLtot =   0.87999
+  CDtot =   0.03983
+  CDvis =   0.00000     CDind =   0.03983
+  CLff  =   0.87418     CDff  =   0.04058    | Trefftz
+  CYff  =   0.00000         e =    0.9962    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -5695,11 +5695,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -5709,15 +5709,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.06919     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.16231
-  CZtot =  -1.01029     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.07129     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.01141
+  CZtot =  -1.04749     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.01119
-  CDtot =   0.05445
-  CDvis =   0.00000     CDind =   0.05445
-  CLff  =   1.00901     CDff  =   0.05372    | Trefftz
-  CYff  =  -0.00000         e =    0.9989    | Plane  
+  CLtot =   1.04837
+  CDtot =   0.05690
+  CDvis =   0.00000     CDind =   0.05690
+  CLff  =   1.04267     CDff  =   0.05765    | Trefftz
+  CYff  =   0.00000         e =    0.9976    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -6197,11 +6197,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -6211,15 +6211,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.150     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.13516     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.21527
-  CZtot =  -1.25515     Cntot =  -0.00000     Cn'tot =   0.00000
+  CXtot =   0.13841     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =  -0.00575
+  CZtot =  -1.29191     Cntot =  -0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.25955
-  CDtot =   0.08484
-  CDvis =   0.00000     CDind =   0.08484
-  CLff  =   1.26058     CDff  =   0.08387    | Trefftz
-  CYff  =  -0.00000         e =    0.9986    | Plane  
+  CLtot =   1.29631
+  CDtot =   0.08803
+  CDvis =   0.00000     CDind =   0.08803
+  CLff  =   1.29295     CDff  =   0.08879    | Trefftz
+  CYff  =  -0.00000         e =    0.9962    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -6448,7 +6448,7 @@ Enter filename, or <return> for screen output   s>
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -6458,23 +6458,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -6507,23 +6507,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -6899,11 +6899,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -6913,15 +6913,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01336     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =   0.01423
-  CZtot =  -0.24488     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01521     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.07579
+  CZtot =  -0.28361     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.24519
-  CDtot =   0.00480
-  CDvis =   0.00000     CDind =   0.00480
-  CLff  =   0.24429     CDff  =   0.00468    | Trefftz
-  CYff  =  -0.00000         e =    0.6726    | Plane  
+  CLtot =   0.28396
+  CDtot =   0.00531
+  CDvis =   0.00000     CDind =   0.00531
+  CLff  =   0.28169     CDff  =   0.00540    | Trefftz
+  CYff  =  -0.00000         e =    0.7768    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -7401,11 +7401,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -7415,15 +7415,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01041     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.02691
-  CZtot =  -0.42014     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01155     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.06051
+  CZtot =  -0.45861     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.42014
-  CDtot =   0.01041
-  CDvis =   0.00000     CDind =   0.01041
-  CLff  =   0.41845     CDff  =   0.01023    | Trefftz
-  CYff  =  -0.00000         e =    0.9024    | Plane  
+  CLtot =   0.45861
+  CDtot =   0.01155
+  CDvis =   0.00000     CDind =   0.01155
+  CLff  =   0.45518     CDff  =   0.01172    | Trefftz
+  CYff  =  -0.00000         e =    0.9354    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -7903,11 +7903,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -7917,15 +7917,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.00142     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.06719
-  CZtot =  -0.59491     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.00099     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.04597
+  CZtot =  -0.63311     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.59460
-  CDtot =   0.01934
-  CDvis =   0.00000     CDind =   0.01934
-  CLff  =   0.59210     CDff  =   0.01906    | Trefftz
-  CYff  =  -0.00000         e =    0.9696    | Plane  
+  CLtot =   0.63276
+  CDtot =   0.02110
+  CDvis =   0.00000     CDind =   0.02110
+  CLff  =   0.62812     CDff  =   0.02130    | Trefftz
+  CYff  =   0.00000         e =    0.9800    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -8405,11 +8405,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -8419,15 +8419,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.03572     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12555
-  CZtot =  -0.85431     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.03630     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.02571
+  CZtot =  -0.89208     Cntot =   0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.85417
-  CDtot =   0.03888
-  CDvis =   0.00000     CDind =   0.03888
-  CLff  =   0.85116     CDff  =   0.03836    | Trefftz
-  CYff  =  -0.00000         e =    0.9954    | Plane  
+  CLtot =   0.89184
+  CDtot =   0.04159
+  CDvis =   0.00000     CDind =   0.04159
+  CLff  =   0.88603     CDff  =   0.04169    | Trefftz
+  CYff  =   0.00000         e =    0.9962    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -8907,11 +8907,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -8921,15 +8921,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.06944     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.16282
-  CZtot =  -1.02417     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.07067     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.01334
+  CZtot =  -1.06163     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.02500
-  CDtot =   0.05589
-  CDvis =   0.00000     CDind =   0.05589
-  CLff  =   1.02261     CDff  =   0.05517    | Trefftz
-  CYff  =  -0.00000         e =    0.9990    | Plane  
+  CLtot =   1.06233
+  CDtot =   0.05923
+  CDvis =   0.00000     CDind =   0.05923
+  CLff  =   1.05666     CDff  =   0.05921    | Trefftz
+  CYff  =   0.00000         e =    0.9977    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -9409,11 +9409,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -9423,15 +9423,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.250     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.13592     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.21581
-  CZtot =  -1.27227     Cntot =  -0.00000     Cn'tot =   0.00000
+  CXtot =   0.13806     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =   0.00000     Cmtot =  -0.00339
+  CZtot =  -1.30925     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.27655
-  CDtot =   0.08708
-  CDvis =   0.00000     CDind =   0.08708
-  CLff  =   1.27739     CDff  =   0.08610    | Trefftz
-  CYff  =  -0.00000         e =    0.9989    | Plane  
+  CLtot =   1.31333
+  CDtot =   0.09138
+  CDvis =   0.00000     CDind =   0.09138
+  CLff  =   1.31014     CDff  =   0.09114    | Trefftz
+  CYff  =  -0.00000         e =    0.9964    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -9660,7 +9660,7 @@ Enter filename, or <return> for screen output   s>
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -9670,23 +9670,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -9719,23 +9719,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -10111,11 +10111,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -10125,15 +10125,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01450     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =   0.01310
-  CZtot =  -0.26005     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01641     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.07890
+  CZtot =  -0.30089     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.26040
-  CDtot =   0.00541
-  CDvis =   0.00000     CDind =   0.00541
-  CLff  =   0.25935     CDff  =   0.00524    | Trefftz
-  CYff  =  -0.00000         e =    0.6768    | Plane  
+  CLtot =   0.30128
+  CDtot =   0.00590
+  CDvis =   0.00000     CDind =   0.00590
+  CLff  =   0.29845     CDff  =   0.00609    | Trefftz
+  CYff  =  -0.00000         e =    0.7740    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -10613,11 +10613,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -10627,15 +10627,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01169     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.02815
-  CZtot =  -0.44402     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01282     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.06479
+  CZtot =  -0.48468     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.44402
-  CDtot =   0.01169
-  CDvis =   0.00000     CDind =   0.01169
-  CLff  =   0.44208     CDff  =   0.01142    | Trefftz
-  CYff  =  -0.00000         e =    0.9021    | Plane  
+  CLtot =   0.48468
+  CDtot =   0.01282
+  CDvis =   0.00000     CDind =   0.01282
+  CLff  =   0.48047     CDff  =   0.01310    | Trefftz
+  CYff  =  -0.00000         e =    0.9324    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -11115,11 +11115,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -11129,15 +11129,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.00028     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.06850
-  CZtot =  -0.62752     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.00008     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.05147
+  CZtot =  -0.66803     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.62714
-  CDtot =   0.02162
-  CDvis =   0.00000     CDind =   0.02162
-  CLff  =   0.62427     CDff  =   0.02120    | Trefftz
-  CYff  =  -0.00000         e =    0.9689    | Plane  
+  CLtot =   0.66762
+  CDtot =   0.02339
+  CDvis =   0.00000     CDind =   0.02339
+  CLff  =   0.66191     CDff  =   0.02370    | Trefftz
+  CYff  =  -0.00000         e =    0.9782    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -11617,11 +11617,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -11631,15 +11631,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.03526     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12688
-  CZtot =  -0.89992     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.03604     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =  -0.00000     Cmtot =   0.03315
+  CZtot =  -0.94027     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.89957
-  CDtot =   0.04331
-  CDvis =   0.00000     CDind =   0.04331
-  CLff  =   0.89605     CDff  =   0.04251    | Trefftz
-  CYff  =  -0.00000         e =    0.9955    | Plane  
+  CLtot =   0.93984
+  CDtot =   0.04605
+  CDvis =   0.00000     CDind =   0.04605
+  CLff  =   0.93248     CDff  =   0.04619    | Trefftz
+  CYff  =  -0.00000         e =    0.9959    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -12119,11 +12119,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -12133,15 +12133,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.06977     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.16410
-  CZtot =  -1.07834     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.07128     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.02211
+  CZtot =  -1.11863     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.07881
-  CDtot =   0.06217
-  CDvis =   0.00000     CDind =   0.06217
-  CLff  =   1.07593     CDff  =   0.06104    | Trefftz
-  CYff  =  -0.00000         e =    0.9995    | Plane  
+  CLtot =   1.11898
+  CDtot =   0.06558
+  CDvis =   0.00000     CDind =   0.06558
+  CLff  =   1.11149     CDff  =   0.06548    | Trefftz
+  CYff  =  -0.00000         e =    0.9981    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -12621,11 +12621,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -12635,15 +12635,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.450     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.13790     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.21694
-  CZtot =  -1.33903     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.14046     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =  -0.00000     Cmtot =   0.00747
+  CZtot =  -1.37928     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.34263
-  CDtot =   0.09672
-  CDvis =   0.00000     CDind =   0.09672
-  CLff  =   1.34321     CDff  =   0.09510    | Trefftz
-  CYff  =  -0.00000         e =    0.9999    | Plane  
+  CLtot =   1.38271
+  CDtot =   0.10118
+  CDvis =   0.00000     CDind =   0.10118
+  CLff  =   1.37739     CDff  =   0.10063    | Trefftz
+  CYff  =  -0.00000         e =    0.9974    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -12872,7 +12872,7 @@ Enter filename, or <return> for screen output   s>
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -12882,23 +12882,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -12931,23 +12931,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -13323,11 +13323,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -13337,15 +13337,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01688     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =   0.00951
-  CZtot =  -0.29237     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01904     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.08428
+  CZtot =  -0.33749     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.29279
-  CDtot =   0.00667
-  CDvis =   0.00000     CDind =   0.00667
-  CLff  =   0.29115     CDff  =   0.00653    | Trefftz
-  CYff  =  -0.00000         e =    0.6843    | Plane  
+  CLtot =   0.33795
+  CDtot =   0.00725
+  CDvis =   0.00000     CDind =   0.00725
+  CLff  =   0.33369     CDff  =   0.00766    | Trefftz
+  CYff  =   0.00000         e =    0.7686    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -13825,11 +13825,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -13839,15 +13839,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01437     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.03131
-  CZtot =  -0.49399     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01563     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.07323
+  CZtot =  -0.53904     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   0.49399
-  CDtot =   0.01437
-  CDvis =   0.00000     CDind =   0.01437
-  CLff  =   0.49114     CDff  =   0.01412    | Trefftz
-  CYff  =  -0.00000         e =    0.9004    | Plane  
+  CLtot =   0.53904
+  CDtot =   0.01563
+  CDvis =   0.00000     CDind =   0.01563
+  CLff  =   0.53288     CDff  =   0.01623    | Trefftz
+  CYff  =   0.00000         e =    0.9257    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -14327,11 +14327,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -14341,15 +14341,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.00219     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.07111
-  CZtot =  -0.69529     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.00253     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.06311
+  CZtot =  -0.74029     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.69479
-  CDtot =   0.02645
-  CDvis =   0.00000     CDind =   0.02645
-  CLff  =   0.69052     CDff  =   0.02599    | Trefftz
-  CYff  =  -0.00000         e =    0.9669    | Plane  
+  CLtot =   0.73975
+  CDtot =   0.02837
+  CDvis =   0.00000     CDind =   0.02837
+  CLff  =   0.73142     CDff  =   0.02906    | Trefftz
+  CYff  =  -0.00000         e =    0.9741    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -14829,11 +14829,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -14843,15 +14843,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.03408     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12847
-  CZtot =  -0.99448     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.03513     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.04978
+  CZtot =  -1.03948     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.99366
-  CDtot =   0.05272
-  CDvis =   0.00000     CDind =   0.05272
-  CLff  =   0.98795     CDff  =   0.05170    | Trefftz
-  CYff  =  -0.00000         e =    0.9950    | Plane  
+  CLtot =   1.03858
+  CDtot =   0.05560
+  CDvis =   0.00000     CDind =   0.05560
+  CLff  =   1.02750     CDff  =   0.05615    | Trefftz
+  CYff  =   0.00000         e =    0.9947    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -15331,11 +15331,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -15345,15 +15345,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.07008     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.16488
-  CZtot =  -1.19069     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.07207     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.04218
+  CZtot =  -1.23572     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.19036
-  CDtot =   0.07555
-  CDvis =   0.00000     CDind =   0.07555
-  CLff  =   1.18477     CDff  =   0.07398    | Trefftz
-  CYff  =  -0.00000         e =    1.0000    | Plane  
+  CLtot =   1.23529
+  CDtot =   0.07907
+  CDvis =   0.00000     CDind =   0.07907
+  CLff  =   1.22336     CDff  =   0.07933    | Trefftz
+  CYff  =  -0.00000         e =    0.9982    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -15833,11 +15833,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -15847,15 +15847,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.650     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.14139     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.21630
-  CZtot =  -1.47774     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.14477     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =  -0.00000     Cmtot =   0.03282
+  CZtot =  -1.52288     Cntot =   0.00000     Cn'tot =   0.00000
 
-  CLtot =   1.47984
-  CDtot =   0.11737
-  CDvis =   0.00000     CDind =   0.11737
-  CLff  =   1.47724     CDff  =   0.11485    | Trefftz
-  CYff  =  -0.00000         e =    1.0014    | Plane  
+  CLtot =   1.52489
+  CDtot =   0.12188
+  CDvis =   0.00000     CDind =   0.12188
+  CLff  =   1.51429     CDff  =   0.12146    | Trefftz
+  CYff  =   0.00000         e =    0.9988    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -16084,7 +16084,7 @@ Enter filename, or <return> for screen output   s>
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
+ Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -16094,23 +16094,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -16143,23 +16143,23 @@ Enter filename, or <return> for screen output   s>
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.240       0.000     -0.1312      m
+ Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.500       0.000     -0.1312      m
  
- Ixx -Ixy -Ixz   |   0.1646E+06   0.000       0.000      |
-      Iyy -Iyz = |               0.4713E+06   0.000      |  kg-m^2
-           Izz   |                           0.5545E+06  |
+ Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
+      Iyy -Iyz = |                4067.       0.000      |  kg-m^2
+           Izz   |                            4786.      |
  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.408     -0.9983E-08  |  kg
-           mzz   |                            32.37      |
+      myy  myz = |                1.688     -0.2202E-06  |  kg
+           mzz   |                            32.38      |
  
- Ixx -Ixy -Ixz   |    177.5      0.1830E-04  -25.78      |
-      Iyy -Iyz = |                398.7      0.3423E-08  |  kg-m^2
-           Izz   |                            57.11      |
+ Ixx -Ixy -Ixz   |    177.8      0.7369E-05  -27.86      |
+      Iyy -Iyz = |                401.6      0.2898E-06  |  kg-m^2
+           Izz   |                            76.60      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -16535,11 +16535,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -16549,15 +16549,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.02350     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.00725
-  CZtot =  -0.37457     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.02658     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.08931
+  CZtot =  -0.43138     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.37517
-  CDtot =   0.01042
-  CDvis =   0.00000     CDind =   0.01042
-  CLff  =   0.37125     CDff  =   0.01040    | Trefftz
-  CYff  =  -0.00000         e =    0.6983    | Plane  
+  CLtot =   0.43204
+  CDtot =   0.01151
+  CDvis =   0.00000     CDind =   0.01151
+  CLff  =   0.42152     CDff  =   0.01241    | Trefftz
+  CYff  =   0.00000         e =    0.7576    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -17037,11 +17037,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -17051,15 +17051,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.02211     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.04347
-  CZtot =  -0.61578     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.02433     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.08862
+  CZtot =  -0.67293     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.61578
-  CDtot =   0.02211
-  CDvis =   0.00000     CDind =   0.02211
-  CLff  =   0.60973     CDff  =   0.02193    | Trefftz
-  CYff  =  -0.00000         e =    0.8935    | Plane  
+  CLtot =   0.67293
+  CDtot =   0.02433
+  CDvis =   0.00000     CDind =   0.02433
+  CLff  =   0.65899     CDff  =   0.02527    | Trefftz
+  CYff  =   0.00000         e =    0.9091    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -17539,11 +17539,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -17553,15 +17553,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =  -0.01008     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.07839
-  CZtot =  -0.85715     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =  -0.01154     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.08921
+  CZtot =  -0.91485     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   0.85628
-  CDtot =   0.03999
-  CDvis =   0.00000     CDind =   0.03999
-  CLff  =   0.84746     CDff  =   0.03947    | Trefftz
-  CYff  =  -0.00000         e =    0.9590    | Plane  
+  CLtot =   0.91389
+  CDtot =   0.04346
+  CDvis =   0.00000     CDind =   0.04346
+  CLff  =   0.89566     CDff  =   0.04412    | Trefftz
+  CYff  =   0.00000         e =    0.9620    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -18041,11 +18041,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -18055,15 +18055,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.02776     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.12797
-  CZtot =  -1.21693     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.02728     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.09248
+  CZtot =  -1.27581     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.21472
-  CDtot =   0.07841
-  CDvis =   0.00000     CDind =   0.07841
-  CLff  =   1.20204     CDff  =   0.07686    | Trefftz
-  CYff  =  -0.00000         e =    0.9908    | Plane  
+  CLtot =   1.27333
+  CDtot =   0.08401
+  CDvis =   0.00000     CDind =   0.08401
+  CLff  =   1.24853     CDff  =   0.08340    | Trefftz
+  CYff  =   0.00000         e =    0.9889    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -18543,11 +18543,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -18557,15 +18557,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.06600     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.15891
-  CZtot =  -1.45357     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.06606     Cltot =   0.00000     Cl'tot =   0.00000
+  CYtot =   0.00000     Cmtot =   0.09623
+  CZtot =  -1.51347     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.45078
-  CDtot =   0.11163
-  CDvis =   0.00000     CDind =   0.11163
-  CLff  =   1.43665     CDff  =   0.10900    | Trefftz
-  CYff  =  -0.00000         e =    0.9980    | Plane  
+  CLtot =   1.51024
+  CDtot =   0.11887
+  CDvis =   0.00000     CDind =   0.11887
+  CLff  =   1.48194     CDff  =   0.11674    | Trefftz
+  CYff  =   0.00000         e =    0.9953    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
@@ -19045,11 +19045,11 @@ Enter filename, or <return> for screen output   s>
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 150
-     # Vortices =1500
+     # Strips   = 100
+     # Vortices = 400
 
-  Sref =  17.112       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.2397       Yref =  0.0000       Zref =-0.13119    
+  Sref =  17.177       Cref =  1.7399       Bref =  10.166    
+  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
@@ -19059,15 +19059,15 @@ Enter filename, or <return> for screen output   s>
   Beta  =   0.00000     qc/2V =   0.00000
   Mach  =     0.850     rb/2V =   0.00000     r'b/2V =   0.00000
 
-  CXtot =   0.14244     Cltot =  -0.00000     Cl'tot =  -0.00000
-  CYtot =  -0.00000     Cmtot =  -0.20179
-  CZtot =  -1.80082     Cntot =   0.00000     Cn'tot =   0.00000
+  CXtot =   0.14311     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CYtot =   0.00000     Cmtot =   0.10417
+  CZtot =  -1.86260     Cntot =  -0.00000     Cn'tot =  -0.00000
 
-  CLtot =   1.79820
-  CDtot =   0.17243
-  CDvis =   0.00000     CDind =   0.17243
-  CLff  =   1.78520     CDff  =   0.16762    | Trefftz
-  CYff  =  -0.00000         e =    1.0021    | Plane  
+  CLtot =   1.85915
+  CDtot =   0.18250
+  CDvis =   0.00000     CDind =   0.18250
+  CLff  =   1.82857     CDff  =   0.17707    | Trefftz
+  CYff  =   0.00000         e =    0.9990    | Plane  
  
    flap            =   0.00000
    aileron         =   0.00000
