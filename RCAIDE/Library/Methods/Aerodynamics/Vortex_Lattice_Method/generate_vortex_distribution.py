@@ -9,8 +9,7 @@
 # ----------------------------------------------------------------------
 import RCAIDE
 from RCAIDE.Framework.Core    import  Data 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.postprocess_vortex_distribution      import postprocess_vortex_distribution 
-from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_lofted_body_vortex_distribution  import generate_lofted_body_vortex_distribution
+from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.postprocess_vortex_distribution      import postprocess_vortex_distribution
 from RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_wing_vortex_distribution         import generate_wing_vortex_distribution  
   
 # package imports 
