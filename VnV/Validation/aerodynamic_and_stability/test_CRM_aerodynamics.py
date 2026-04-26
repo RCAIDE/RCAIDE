@@ -91,7 +91,8 @@ TRUTH_VALUES = {
 # ----------------------------------------------------------------------
 
 def main():
-    vehicle    = vehicle_setup()
+    update_regression = False
+    vehicle    = vehicle_setup(update_regression)
     results    = run_aero_analysis(vehicle)
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
     plot_drag_validation(results, paper_data)
@@ -280,16 +281,26 @@ def run_aero_analysis(vehicle):
 #   Vehicle Setup
 # ----------------------------------------------------------------------
 
-def vehicle_setup():
+def  vehicle_setup(update_regression):
     
     # Geometry — prefer live VSP import, fall back to saved pickle 
-    vehicle = import_vsp_vehicle(
-        os.path.join(base_dir, 'CRM-2_nac.vsp3'),
-        main_wing_tag  = 'main_wing',
-        network_type   = RCAIDE.Framework.Networks.Fuel(),
-        propulsor_type = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan(),
-        units_type     = 'inches',
-    ) 
+    if update_regression:
+        vehicle = import_vsp_vehicle(
+            os.path.join(base_dir, 'CRM-2_nac.vsp3'),
+            main_wing_tag  = 'main_wing',
+            network_type   = RCAIDE.Framework.Networks.Fuel(),
+            propulsor_type = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan(),
+            units_type     = 'inches',
+        ) 
+    else:
+        with open(os.path.join(base_dir, 'CRM.pkl'), 'rb') as f:
+            vehicle = pickle.load(f)
+        airfoil_dir = base_dir +os.sep + '..' +os.sep + '..' +os.sep + 'Vehicles' +os.sep+'Airfoils'
+        for index, segment in enumerate(vehicle.wings.main_wing.segments):
+            airfoil           = RCAIDE.Library.Components.Airfoils.Airfoil()
+            airfoil.coordinate_file = os.path.join(airfoil_dir, 'CRM_Airfoils',
+                                                f'main_wing_airfoil_XSec_{index}.dat')
+            segment.append_airfoil(airfoil)
 
     vehicle.wings.main_wing.chords.mean_aerodynamic  = 275.80 * Units.inches
     vehicle.reference_area                           = 4000.0 * Units['ft**2']
