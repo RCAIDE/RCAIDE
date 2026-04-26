@@ -151,6 +151,7 @@ class Vortex_Lattice_Method(Aerodynamics):
         if use_surrogate == True: 
             #  training data
             if not os.path.exists(self.filename):
+                print("\n Creating aerodynamic surrogate ...")
                 train_VLM_surrogates(self, vehicle)
     
                 if self.settings.store_training_data:

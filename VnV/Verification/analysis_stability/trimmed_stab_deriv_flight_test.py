@@ -52,21 +52,24 @@ def main():
     results = missions.base_mission.evaluate() 
 
     elevator_deflection        = results.segments.cruise.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = 0.34109984894190154
+    elevator_deflection_true   = 1.468247358073209
+    print('Elevator Defection',elevator_deflection)
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
-    print('Error1: ',elevator_deflection_diff)
+    print('Elevator Error 1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
 
     aileron_deflection        = results.segments.cruise.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg
-    aileron_deflection_true   = 9.650951256840067
+    print('Aileron Defection',aileron_deflection)
+    aileron_deflection_true   = 9.657481192852762
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
-    print('Error2: ',aileron_deflection_diff)
+    print('Aileron Error 2: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 5e-3
 
     rudder_deflection        = results.segments.cruise.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg
-    rudder_deflection_true   = -12.217841671123846
+    print('Rudder Defection',rudder_deflection)
+    rudder_deflection_true   = -12.223435394688964
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
-    print('Error3: ',rudder_deflection_diff)
+    print('Rudder Error 3: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 5e-3    
     
     return  
@@ -100,29 +103,29 @@ def base_analysis(vehicle, configs):
     
     aerodynamics                                    = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
     aerodynamics.stability_derivatives.CX_alpha     = 0.0001
-    aerodynamics.stability_derivatives.CX_u         =  0.0001
-    aerodynamics.stability_derivatives.CY_beta      = -0.195398
-    aerodynamics.stability_derivatives.CY_r         =  0.0001
     aerodynamics.stability_derivatives.CZ_alpha     = 4.837822
+    aerodynamics.stability_derivatives.CM_alpha     = -1.1509   
+    aerodynamics.stability_derivatives.CY_beta      = -0.195398 
+    aerodynamics.stability_derivatives.CL_beta      = -0.12228  
+    aerodynamics.stability_derivatives.CN_beta      = 0.074425  
+    aerodynamics.stability_derivatives.CX_u         =  0.0001
+    aerodynamics.stability_derivatives.CY_r         =  0.0001
     aerodynamics.stability_derivatives.CZ_u         =  0.0001
     aerodynamics.stability_derivatives.CZ_q         =  0.0001
-    aerodynamics.stability_derivatives.CL_beta      = -0.12228
     aerodynamics.stability_derivatives.CL_p         = 0.0001
     aerodynamics.stability_derivatives.CL_r         = 0.0001
-    aerodynamics.stability_derivatives.CM_alpha     = -1.1509 
     aerodynamics.stability_derivatives.CM_u         = 0.0001
     aerodynamics.stability_derivatives.CM_q         = 0.0001
-    aerodynamics.stability_derivatives.CN_beta      = 0.074425
     aerodynamics.stability_derivatives.CN_p         = 0.0001
     aerodynamics.stability_derivatives.CN_r         = 0.0001
-    aerodynamics.stability_derivatives.CY_delta_a   = 0.000623 * 180/np.pi
-    aerodynamics.stability_derivatives.CL_delta_a   = 0.001974 * 180/np.pi
-    aerodynamics.stability_derivatives.CLift_delta_e= 0.009275 * 180/np.pi
-    aerodynamics.stability_derivatives.CN_delta_a   = -0.000021 * 180/np.pi
-    aerodynamics.stability_derivatives.CM_delta_e   = -0.024291 * 180/np.pi
-    aerodynamics.stability_derivatives.CY_delta_r   = -0.001918 * 180/np.pi
-    aerodynamics.stability_derivatives.CL_delta_r   = -0.000195 * 180/np.pi
-    aerodynamics.stability_derivatives.CN_delta_r   = 0.001046 * 180/np.pi
+    aerodynamics.stability_derivatives.CY_delta_a   = 0.03569  
+    aerodynamics.stability_derivatives.CL_delta_a   = 0.11310  
+    aerodynamics.stability_derivatives.CLift_delta_e= 0.53141  
+    aerodynamics.stability_derivatives.CN_delta_a   = -0.0012  
+    aerodynamics.stability_derivatives.CM_delta_e   = -1.3917  
+    aerodynamics.stability_derivatives.CY_delta_r   = -0.1098  
+    aerodynamics.stability_derivatives.CL_delta_r   = -0.0111  
+    aerodynamics.stability_derivatives.CN_delta_r   = 0.05993  
     aerodynamics.stability_derivatives.CM_delta_f   =  0.0001  
     analyses.append(aerodynamics) 
      
@@ -176,6 +179,7 @@ def sideslip_cruise_mission_setup(analyses):
     Segments = RCAIDE.Framework.Mission.Segments
     
     base_segment = Segments.Segment() 
+    base_segment.state.numerics.number_of_control_points = 3
  
     # ------------------------------------------------------------------    
     #   Cruise Segment: Constant Speed Constant Altitude
@@ -198,18 +202,15 @@ def sideslip_cruise_mission_setup(analyses):
     # flight controls              
     segment.assigned_control_variables.throttle.active                          = True           
     segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
-    segment.assigned_control_variables.body_angle.active                        = True     
-    segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
+    segment.assigned_control_variables.body_angle.active                        = True      
     segment.assigned_control_variables.elevator_deflection.active               = True    
     segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']] 
     segment.assigned_control_variables.aileron_deflection.active                = True    
-    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
-    segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[-10. * Units.degrees]]
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']] 
     segment.assigned_control_variables.rudder_deflection.active                 = True    
-    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
-    segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[14 * Units.degrees]] 
-    segment.assigned_control_variables.bank_angle.active                        = True        
-    segment.assigned_control_variables.bank_angle.initial_guess_values          = [[12 * Units.degrees]] 
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']] 
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']] 
+    segment.assigned_control_variables.bank_angle.active                        = True          
     mission.append_segment(segment)
 
      # ------------------------------------------------------------------    
@@ -228,9 +229,8 @@ def sideslip_cruise_mission_setup(analyses):
     
     # flight controls              
     segment.assigned_control_variables.throttle.active                          = True           
-    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
-    segment.assigned_control_variables.body_angle.active                        = True     
-    segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
+    segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]      
+    segment.assigned_control_variables.body_angle.active                        = True      
     mission.append_segment(segment)
  
     # ------------------------------------------------------------------    

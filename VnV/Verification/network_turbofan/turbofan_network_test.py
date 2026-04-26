@@ -600,7 +600,7 @@ def mission_setup(analyses):
     segment.analyses.extend( analyses.base )
     segment.altitude_start                                               = 6.   * Units.km 
     segment.altitude_end                                                 = 5.   * Units.km
-    segment.air_speed                                  =  150 * Units.m / Units.s 
+    segment.air_speed                                                    =  150 * Units.m / Units.s 
     segment.throttle                                                     = 0.1
 
     # define flight dynamics to model

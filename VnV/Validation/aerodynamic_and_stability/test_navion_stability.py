@@ -75,9 +75,7 @@ def main():
     print(f"CM_delta_e: {SSD.CM_delta_e[0,0]:.5f}")
     print(f"CL_delta_a: {SSD.CL_delta_a[0,0]:.5f}")
     print(f"CN_delta_a: {SSD.CN_delta_a[0,0]:.5f}")
-    print(f"CN_delta_r: {SSD.CN_delta_r[0,0]:.5f}")
-    
-    
+    print(f"CN_delta_r: {SSD.CN_delta_r[0,0]:.5f}") 
     
 
     print('Literature Validation ')

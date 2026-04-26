@@ -49,30 +49,40 @@ def main():
     missions = missions_setup(mission) 
 
     # mission analysis 
-    results = missions.base_mission.evaluate() 
-
+    results = missions.base_mission.evaluate()  
+    
+    '''Values are different from trimmed stability derivative test because stability derivatives are different.'''
     elevator_deflection        = results.segments.cruise.conditions.control_surfaces.elevator.deflection[0,0] / Units.deg
-    elevator_deflection_true   = 1.4875321809361164
+    print('Elevator Defection',elevator_deflection)
+    elevator_deflection_true   = 1.4877866750722837
     elevator_deflection_diff   = np.abs(elevator_deflection - elevator_deflection_true)
-    print('Error1: ',elevator_deflection_diff)
+    print('Elevator Error 1: ',elevator_deflection_diff)
     assert np.abs(elevator_deflection_diff/elevator_deflection_true) < 5e-3
 
     aileron_deflection        = results.segments.cruise.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg
-    aileron_deflection_true   = -6.67275819520502
+    print('Aileron Defection',aileron_deflection)
+    aileron_deflection_true   = 3.043403012867304
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
-    print('Error2: ',aileron_deflection_diff)
+    print('Aileron Error 2: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 5e-3
 
+    rudder_deflection        = results.segments.cruise.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg
+    print('Rudder Defection',rudder_deflection)
+    rudder_deflection_true   = -23.62037548016846
+    rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
+    print('Rudder Error 3: ',rudder_deflection_diff)
+    assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 5e-3  
+
     throttle        = results.segments.cruise_2.conditions.energy.propulsors['ice_propeller'].throttle[0,0]
-    throttle_true   = 0.37537152332559887
+    throttle_true   = 0.37537152645136324
     throttle_diff   = np.abs(throttle - throttle_true)
-    print('Error3: ',throttle_diff)
+    print('Throttle Error 1: ',throttle_diff)
     assert np.abs(throttle_diff/throttle_true) < 5e-3    
 
     throttle3        = results.segments.cruise_3.conditions.energy.propulsors['ice_propeller'].throttle[0,0]
-    throttle3_true   = 0.48488117839123146
+    throttle3_true   = 0.4845433366671214
     throttle3_diff   = np.abs(throttle3 - throttle3_true)
-    print('Error4: ',throttle3_diff)
+    print('Throttle Error 2: ',throttle3_diff)
     assert np.abs(throttle3_diff/throttle3_true) < 5e-3   
 
     # plt results
@@ -175,6 +185,7 @@ def mission_setup(analyses):
     Segments = RCAIDE.Framework.Mission.Segments
     
     base_segment = Segments.Segment() 
+    base_segment.state.numerics.number_of_control_points = 3
  
     # ------------------------------------------------------------------    
     #   Cruise Segment: Constant Speed Constant Altitude
@@ -197,18 +208,14 @@ def mission_setup(analyses):
     # flight controls              
     segment.assigned_control_variables.throttle.active                          = True           
     segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
-    segment.assigned_control_variables.body_angle.active                        = True     
-    # segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
+    segment.assigned_control_variables.body_angle.active                        = True       
     segment.assigned_control_variables.elevator_deflection.active               = True    
     segment.assigned_control_variables.elevator_deflection.assigned_surfaces    = [['elevator']] 
     segment.assigned_control_variables.aileron_deflection.active                = True    
-    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']]
-    # segment.assigned_control_variables.aileron_deflection.initial_guess_values  = [[-10. * Units.degrees]]
+    segment.assigned_control_variables.aileron_deflection.assigned_surfaces     = [['aileron']] 
     segment.assigned_control_variables.rudder_deflection.active                 = True    
-    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']]
-    # segment.assigned_control_variables.rudder_deflection.initial_guess_values   = [[14 * Units.degrees]] 
-    segment.assigned_control_variables.bank_angle.active                        = True        
-    # segment.assigned_control_variables.bank_angle.initial_guess_values          = [[12 * Units.degrees]] 
+    segment.assigned_control_variables.rudder_deflection.assigned_surfaces      = [['rudder']] 
+    segment.assigned_control_variables.bank_angle.active                        = True         
     mission.append_segment(segment)
 
      # ------------------------------------------------------------------    
@@ -229,7 +236,6 @@ def mission_setup(analyses):
     segment.assigned_control_variables.throttle.active                          = True           
     segment.assigned_control_variables.throttle.assigned_propulsors             = [['ice_propeller']]   
     segment.assigned_control_variables.body_angle.active                        = True     
-    # segment.assigned_control_variables.body_angle.initial_guess_values          = [[5 * Units.degrees]]    
     mission.append_segment(segment)
  
     # ------------------------------------------------------------------    

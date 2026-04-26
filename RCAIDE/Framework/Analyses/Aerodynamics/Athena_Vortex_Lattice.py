@@ -147,6 +147,7 @@ class Athena_Vortex_Lattice(Aerodynamics):
 
         # If we are using the surrogate
         if use_surrogate == True: 
+            print("\n Creating aerodynamic surrogate ...")
             # sample training data
             train_AVL_surrogates(self, vehicle)
 

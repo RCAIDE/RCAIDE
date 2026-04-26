@@ -119,9 +119,7 @@ def vehicle_setup():
     wing.origin                  = [[13.3,0,-1.]]
     wing.vertical                = False
     wing.xz_plane_symmetric      = True       
-    wing.high_lift               = True
-    wing.transition_x_upper      = 0.35
-    wing.transition_x_lower      = 0.35
+    wing.high_lift               = True 
     wing.areas.exposed           = 0.80 * wing.areas.wetted        
     wing.twists.root             = 2.0 * Units.degrees
     wing.twists.tip              = -1.0 * Units.degrees  
