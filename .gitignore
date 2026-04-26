@@ -55,6 +55,7 @@ nosetests.xml
 *.zip
 *.tar
 *.pkl
+!**/CRM.pkl
 
 # Mac
 .DS_Store
