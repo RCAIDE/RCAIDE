@@ -54,18 +54,20 @@ nosetests.xml
 *.gz
 *.zip
 *.tar
-# *.pkl
+*.pkl
 
 # Mac
 .DS_Store
 
 
 *.dat
+*.csv
+*.xlsx
 
 # Geometry
 *.geo
 *.stl
-# *.vsp3
+*.vsp3
 *.cfg
 *.su2
 *.key
