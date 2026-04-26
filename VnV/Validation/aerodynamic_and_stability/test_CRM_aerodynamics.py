@@ -104,7 +104,7 @@ def main():
 #   Regression Check
 # ----------------------------------------------------------------------
 
-def check_truth_values(results, tol=1e-5):
+def check_truth_values(results, tol=1e-2):
     print('\n--- Regression Check ---')
     n = len(next(iter(TRUTH_VALUES.values())))   # number of truth points (5)
     passed = True

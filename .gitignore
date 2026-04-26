@@ -54,13 +54,13 @@ nosetests.xml
 *.gz
 *.zip
 *.tar
-# *.pkl
+*.pkl
 
 # Mac
 .DS_Store
 
 
-# *.dat
+*.dat
 
 # Geometry
 *.geo
