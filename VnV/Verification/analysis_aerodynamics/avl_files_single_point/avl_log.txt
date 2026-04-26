@@ -24,7 +24,7 @@
    Building surface: vertical_stabilizer                     
 
  Mach =    0.0000  (default)
- Nbody =   0      Nsurf =   5      Nstrp = 100      Nvor  = 400
+ Nbody =   0      Nsurf =   5      Nstrp = 150      Nvor  =1500
  
  ---------------------------------------------------------------
  Trying to read file: base.mass  ...
@@ -34,9 +34,9 @@
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.500       0.000     -0.1312      m
+ Ref. x,y,z  =    2.187       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.187       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.187       0.000     -0.1312      m
  
  Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
       Iyy -Iyz = |                4067.       0.000      |  kg-m^2
@@ -45,12 +45,12 @@
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.568     -0.2045E-06  |  kg
+      myy  myz = |                1.568     -0.9273E-08  |  kg
            mzz   |                            30.08      |
  
- Ixx -Ixy -Ixz   |    165.2      0.6845E-05  -25.88      |
-      Iyy -Iyz = |                373.1      0.2692E-06  |  kg-m^2
-           Izz   |                            71.15      |
+ Ixx -Ixy -Ixz   |    165.1      0.1538E-04  -25.88      |
+      Iyy -Iyz = |                373.1      0.3179E-08  |  kg-m^2
+           Izz   |                            71.16      |
  
  ---------------------------------------------------------------
  Trying to read file: base.run  ...
@@ -83,9 +83,9 @@
  Mass        =    1337.      Munit
  Mass        =    1337.      kg
  
- Ref. x,y,z  =    2.500       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.500       0.000     -0.1312      Lunit
- C.G. x,y,z  =    2.500       0.000     -0.1312      m
+ Ref. x,y,z  =    2.187       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.187       0.000     -0.1312      Lunit
+ C.G. x,y,z  =    2.187       0.000     -0.1312      m
  
  Ixx -Ixy -Ixz   |    1421.       0.000       0.000      |
       Iyy -Iyz = |                4067.       0.000      |  kg-m^2
@@ -94,12 +94,12 @@
  Apparent mass, inertia
  
  mxx  mxy  mxz   |    0.000       0.000       0.000      |
-      myy  myz = |                1.568     -0.2045E-06  |  kg
+      myy  myz = |                1.568     -0.9273E-08  |  kg
            mzz   |                            30.08      |
  
- Ixx -Ixy -Ixz   |    165.2      0.6845E-05  -25.88      |
-      Iyy -Iyz = |                373.1      0.2692E-06  |  kg-m^2
-           Izz   |                            71.15      |
+ Ixx -Ixy -Ixz   |    165.1      0.1538E-04  -25.88      |
+      Iyy -Iyz = |                373.1      0.3179E-08  |  kg-m^2
+           Izz   |                            71.16      |
  
  Use MSET to apply these mass,inertias to run cases
 
@@ -415,7 +415,7 @@
       G  grav.acc.  =  9.804      m/s^2
          turn rad.  =  0.000      m
          load fac.  = 1.0000       
-      X  X_cg       =  2.500      Lunit
+      X  X_cg       =  2.187      Lunit
       Y  Y_cg       =  0.000      Lunit
       Z  Z_cg       = -.1312      Lunit
 
@@ -435,7 +435,7 @@
       G  grav.acc.  =  9.804      m/s^2
          turn rad.  =  0.000      m
          load fac.  = 1.0000       
-      X  X_cg       =  2.500      Lunit
+      X  X_cg       =  2.187      Lunit
       Y  Y_cg       =  0.000      Lunit
       Z  Z_cg       = -.1312      Lunit
 
@@ -484,42 +484,42 @@
   Building bound-vortex velocity matrix...
  
  iter d(alpha)   d(beta)    d(pb/2V)   d(qc/2V)   d(rb/2V)   flap       aileron    elevator   rudder     
-   1 -0.173E+01  0.000E+00  0.000E+00  0.000E+00  0.142E-15  0.000E+00 -0.415E-05  0.269E+01  0.138E-06
-   2 -0.838E-04  0.000E+00  0.313E-16  0.000E+00  0.117E-15  0.000E+00  0.652E-07  0.173E-01 -0.298E-06
-   3  0.945E-07  0.000E+00 -0.408E-16  0.000E+00 -0.572E-15  0.000E+00 -0.644E-07  0.183E-04  0.476E-06
+   1 -0.131E+01  0.000E+00  0.383E-14  0.000E+00 -0.953E-15  0.000E+00  0.121E-04  0.844E-01 -0.256E-05
+   2  0.454E-03  0.000E+00 -0.384E-14  0.000E+00  0.103E-14  0.000E+00  0.845E-06  0.530E-02  0.106E-06
+   3 -0.925E-07  0.000E+00 -0.607E-15  0.000E+00  0.150E-14  0.000E+00  0.248E-05  0.328E-05  0.128E-05
  ---------------------------------------------------------------
  Vortex Lattice Output -- Total Forces
 
  Configuration: base                                                        
      # Surfaces =   5
-     # Strips   = 100
-     # Vortices = 400
+     # Strips   = 150
+     # Vortices =1500
 
   Sref =  17.177       Cref =  1.7399       Bref =  10.166    
-  Xref =  2.5000       Yref =  0.0000       Zref =-0.13119    
+  Xref =  2.1870       Yref =  0.0000       Zref =-0.13119    
 
  Standard axis orientation,  X fwd, Z down         
 
  Run case: case_0001_0001                          
 
-  Alpha =  -1.72542     pb/2V =   0.00000     p'b/2V =  -0.00000
+  Alpha =  -1.30857     pb/2V =   0.00000     p'b/2V =   0.00000
   Beta  =   0.00000     qc/2V =   0.00000
-  Mach  =     0.159     rb/2V =   0.00000     r'b/2V =   0.00000
+  Mach  =     0.159     rb/2V =  -0.00000     r'b/2V =  -0.00000
 
-  CXtot =  -0.01586     Cltot =  -0.00000     Cl'tot =  -0.00000
+  CXtot =  -0.01469     Cltot =   0.00000     Cl'tot =   0.00000
   CYtot =  -0.00000     Cmtot =  -0.00000
-  CZtot =  -0.33301     Cntot =   0.00000     Cn'tot =   0.00000
+  CZtot =  -0.33308     Cntot =   0.00000     Cn'tot =   0.00000
 
   CLtot =   0.33333
-  CDtot =   0.00582
-  CDvis =   0.00000     CDind =   0.00582
-  CLff  =   0.33101     CDff  =   0.00621    | Trefftz
-  CYff  =  -0.00000         e =    0.9328    | Plane  
+  CDtot =   0.00707
+  CDvis =   0.00000     CDind =   0.00707
+  CLff  =   0.33141     CDff  =   0.00676    | Trefftz
+  CYff  =   0.00000         e =    0.8601    | Plane  
  
    flap            =   0.00000
-   aileron         =  -0.00000
-   elevator        =   2.71184
-   rudder          =   0.00000
+   aileron         =   0.00002
+   elevator        =   0.08973
+   rudder          =  -0.00000
  
  ---------------------------------------------------------------
 

@@ -3,21 +3,21 @@
  Standard axis orientation,  X fwd, Z down         
 
      Sref =   17.18       Cref =    1.7399   Bref =   10.1660
-     Xref =      2.5000   Yref =    0.0000   Zref =   -0.1312
+     Xref =      2.1870   Yref =    0.0000   Zref =   -0.1312
 
  n      Area      CL      CD      Cm      CY      Cn      Cl     CDi     CDv
- 1     8.663  0.5281  0.0287  0.0028 -0.0728 -0.0033 -0.1070  0.0287  0.0000   main_wing
- 2     8.663  0.5281  0.0287  0.0028  0.0728  0.0033  0.1070  0.0287  0.0000   main_wing (YDUP)
- 3     2.000 -0.0088 -0.0009  0.0221  0.0001 -0.0001  0.0008 -0.0009  0.0000   horizontal_stabilizer
- 4     2.000 -0.0088 -0.0009  0.0221 -0.0001  0.0001 -0.0008 -0.0009  0.0000   horizontal_stabilizer (YDUP)
- 5     1.337  0.0000 -0.0000 -0.0000 -0.0000  0.0000 -0.0000 -0.0000  0.0000   vertical_stabilizer
+ 1     8.663  0.5224  0.0291 -0.0951 -0.0714 -0.0010 -0.1061  0.0291  0.0000   main_wing
+ 2     8.663  0.5224  0.0291 -0.0951  0.0714  0.0010  0.1061  0.0291  0.0000   main_wing (YDUP)
+ 3     2.000 -0.0085 -0.0009  0.0228  0.0001 -0.0001  0.0007 -0.0009  0.0000   horizontal_stabilizer
+ 4     2.000 -0.0085 -0.0009  0.0228 -0.0001  0.0001 -0.0007 -0.0009  0.0000   horizontal_stabilizer (YDUP)
+ 5     1.337  0.0000 -0.0000 -0.0000  0.0000 -0.0000  0.0000 -0.0000  0.0000   vertical_stabilizer
 
  Surface Forces (referred to Ssurf, Cave about root LE on hinge axis)
 
    n     Ssurf      Cave       cl       cd      cdv    cm_LE
-   1     8.663     1.690   1.0571   0.0569   0.0000   0.0000  main_wing
-   2     8.663     1.690   1.0571   0.0569   0.0000   0.0000  main_wing (YDUP)
-   3     2.000     1.000  -0.0755  -0.0076   0.0000   0.0000  horizontal_stabilizer
-   4     2.000     1.000  -0.0755  -0.0076   0.0000   0.0000  horizontal_stabilizer (YDUP)
-   5     1.337     0.902   0.0000  -0.0000   0.0000   0.0000  vertical_stabilizer
+   1     8.663     1.690   1.0455   0.0576   0.0000   0.0000  main_wing
+   2     8.663     1.690   1.0455   0.0576   0.0000   0.0000  main_wing (YDUP)
+   3     2.000     1.000  -0.0729  -0.0074   0.0000   0.0000  horizontal_stabilizer
+   4     2.000     1.000  -0.0729  -0.0074   0.0000   0.0000  horizontal_stabilizer (YDUP)
+   5     1.337     0.902  -0.0000  -0.0000   0.0000   0.0000  vertical_stabilizer
  ---------------------------------------------------------------

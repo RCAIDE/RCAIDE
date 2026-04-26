@@ -52,9 +52,6 @@ def main():
     results.CL     = np.empty(shape=[0,n_cases])
     results.CDi    = np.empty(shape=[0,n_cases])
     results.CM     = np.empty(shape=[0,n_cases])
-    results.CY     = np.empty(shape=[0,n_cases])
-    results.CL_mom = np.empty(shape=[0,n_cases])
-    results.CM     = np.empty(shape=[0,n_cases])
     
     # run VLM
     for i,deflection_config in enumerate(deflection_configs):
@@ -67,10 +64,7 @@ def main():
          
         results.CL         = np.vstack((results.CL     , data.CLift.flatten()    ))
         results.CDi        = np.vstack((results.CDi    , data.CDrag_induced.flatten()   ))
-        results.CM         = np.vstack((results.CM     , data.CM.flatten()    ))
-        results.CY         = np.vstack((results.CY     , data.CY.flatten() ))
-        results.CL_mom     = np.vstack((results.CL_mom , data.CL.flatten()))
-        results.CM         = np.vstack((results.CM     , data.CM.flatten()))      
+        results.CM         = np.vstack((results.CM     , data.CM.flatten()    )) 
         
     # save/load results
     if update_regression_values:

@@ -10,7 +10,7 @@ base
 17.177368208      1.7399407099567097     10.166
 
 #Xref    Yref    Zref   <meters>
-2.5      0     -0.131189711
+2.187      0     -0.131189711
 
 
 
@@ -18,7 +18,7 @@ base
 SURFACE
 main_wing
 #Nchordwise  Cspace   Nspanwise  Sspace
-4         1.0         20      1.0
+10         1.0         30      1.0
 
 YDUPLICATE
 0.0
@@ -73,7 +73,7 @@ NACA
 SURFACE
 horizontal_stabilizer
 #Nchordwise  Cspace   Nspanwise  Sspace
-4         1.0         20      1.0
+10         1.0         30      1.0
 
 YDUPLICATE
 0.0
@@ -104,7 +104,7 @@ SECTION
 SURFACE
 vertical_stabilizer
 #Nchordwise  Cspace   Nspanwise  Sspace
-4         1.0         20      -1.1 
+10         1.0         30      -1.1 
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace

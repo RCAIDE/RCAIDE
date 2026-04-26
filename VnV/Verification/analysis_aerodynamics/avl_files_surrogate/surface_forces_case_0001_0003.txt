@@ -3,21 +3,21 @@
  Standard axis orientation,  X fwd, Z down         
 
      Sref =   17.18       Cref =    1.7399   Bref =   10.1660
-     Xref =      2.5000   Yref =    0.0000   Zref =   -0.1312
+     Xref =      2.1870   Yref =    0.0000   Zref =   -0.1312
 
  n      Area      CL      CD      Cm      CY      Cn      Cl     CDi     CDv
- 1     8.663  0.3247  0.0108 -0.0152 -0.0428  0.0002 -0.0659  0.0108  0.0000   main_wing
- 2     8.663  0.3247  0.0108 -0.0152  0.0428 -0.0002  0.0659  0.0108  0.0000   main_wing (YDUP)
- 3     2.000 -0.0148 -0.0009  0.0372  0.0001 -0.0001  0.0013 -0.0009  0.0000   horizontal_stabilizer
- 4     2.000 -0.0148 -0.0009  0.0372 -0.0001  0.0001 -0.0013 -0.0009  0.0000   horizontal_stabilizer (YDUP)
+ 1     8.663  0.3206  0.0111 -0.0758 -0.0419  0.0016 -0.0652  0.0111  0.0000   main_wing
+ 2     8.663  0.3206  0.0111 -0.0758  0.0419 -0.0016  0.0652  0.0111  0.0000   main_wing (YDUP)
+ 3     2.000 -0.0146 -0.0009  0.0392  0.0001 -0.0001  0.0012 -0.0009  0.0000   horizontal_stabilizer
+ 4     2.000 -0.0146 -0.0009  0.0392 -0.0001  0.0001 -0.0012 -0.0009  0.0000   horizontal_stabilizer (YDUP)
  5     1.337  0.0000 -0.0000 -0.0000  0.0000 -0.0000  0.0000 -0.0000  0.0000   vertical_stabilizer
 
  Surface Forces (referred to Ssurf, Cave about root LE on hinge axis)
 
    n     Ssurf      Cave       cl       cd      cdv    cm_LE
-   1     8.663     1.690   0.6495   0.0215   0.0000   0.0000  main_wing
-   2     8.663     1.690   0.6495   0.0215   0.0000   0.0000  main_wing (YDUP)
-   3     2.000     1.000  -0.1275  -0.0077   0.0000   0.0000  horizontal_stabilizer
-   4     2.000     1.000  -0.1275  -0.0077   0.0000   0.0000  horizontal_stabilizer (YDUP)
+   1     8.663     1.690   0.6411   0.0221   0.0000   0.0000  main_wing
+   2     8.663     1.690   0.6411   0.0221   0.0000   0.0000  main_wing (YDUP)
+   3     2.000     1.000  -0.1252  -0.0076   0.0000   0.0000  horizontal_stabilizer
+   4     2.000     1.000  -0.1252  -0.0076   0.0000   0.0000  horizontal_stabilizer (YDUP)
    5     1.337     0.902  -0.0000  -0.0000   0.0000   0.0000  vertical_stabilizer
  ---------------------------------------------------------------
