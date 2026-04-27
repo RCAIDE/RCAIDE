@@ -92,7 +92,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 6.72 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_0.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+"CRM_Airfoils"+ separator + 'main_wing_airfoil_XSec_0.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -104,7 +104,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 2.3907593412849977 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_1.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_1.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -117,7 +117,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 3.158605874891446 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_2.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_2.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -129,7 +129,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 3.07 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_3.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_3.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -141,7 +141,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 2.23 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_4.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_4.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -153,7 +153,7 @@ def vehicle_setup() :
     segment.sweeps.quarter_chord          = 27.57 * Units.degrees
     segment.twist                         = 1.5 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_5.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_5.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -165,7 +165,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.25 * Units.degrees
     segment.twist                         = 0.898 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_6.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_6.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -177,7 +177,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.25 * Units.degrees
     segment.twist                         = 0.7182181454843295 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_7.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_7.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -189,7 +189,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = 0.3522 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_8.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_8.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -201,7 +201,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -0.36 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_9.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_9.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -213,7 +213,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -0.82 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_10.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_10.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -225,7 +225,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge          = 37.27 * Units.degrees
     segment.twist                         = -1.02 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_11.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_11.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -237,7 +237,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge          = 37.27 * Units.degrees
     segment.twist                         = -1.276 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_12.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_12.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -249,7 +249,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -1.54 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_13.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_13.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -261,7 +261,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -1.74 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_14.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_14.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -273,7 +273,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -1.88 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_15.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_15.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -285,7 +285,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -2.10 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_16.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_16.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -297,7 +297,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -2.35 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_17.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_17.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -309,7 +309,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -2.64 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_18.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_18.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -321,7 +321,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 37.27 * Units.degrees
     segment.twist                         = -3.16 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_19.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_19.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
@@ -333,7 +333,7 @@ def vehicle_setup() :
     segment.sweeps.leading_edge           = 0
     segment.twist                         = -3.75 * Units.degrees
     section_airfoil                          = RCAIDE.Library.Components.Airfoils.Airfoil()
-    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator + 'main_wing_airfoil_XSec_20.dat'
+    section_airfoil.coordinate_file          = rel_path  + 'Airfoils' + separator+ "CRM_Airfoils" + separator + 'main_wing_airfoil_XSec_20.dat'
     segment.append_airfoil(section_airfoil)
     wing.append_segment(segment)
 
