@@ -17,12 +17,15 @@ from copy   import deepcopy
 from io     import StringIO
 import pickle
 import os
+import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from RCAIDE.Library.Plots import *
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.abspath(os.path.join(os.path.join(sys.path[0]), "../../Vehicles"))) 
+from CRM import vehicle_setup as CRM_setup
 
 # ----------------------------------------------------------------------
 #   Experimental Reference Data (Mach ~0.85, Re ~5e7)
@@ -92,7 +95,7 @@ TRUTH_VALUES = {
 
 def main():
     update_regression = False
-    vehicle    = vehicle_setup(update_regression)
+    vehicle    = CRM_setup()
     results    = run_aero_analysis(vehicle)
     paper_data = pd.read_csv(StringIO(raw_data_paper), sep='\t')
     plot_drag_validation(results, paper_data)
@@ -276,169 +279,6 @@ def run_aero_analysis(vehicle):
     
     return results_data
 
-
-# ----------------------------------------------------------------------
-#   Vehicle Setup
-# ----------------------------------------------------------------------
-
-def  vehicle_setup(update_regression):
-    
-    # Geometry — prefer live VSP import, fall back to saved pickle 
-    if update_regression:
-
-        vehicle = import_vsp_vehicle(
-            os.path.join(base_dir, 'CRM-2_nac.vsp3'),
-            main_wing_tag  = 'main_wing',
-            network_type   = RCAIDE.Framework.Networks.Fuel(),
-            propulsor_type = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan(),
-            units_type     = 'inches',
-        )
-        
-        with open(os.path.join(base_dir, 'CRM.pkl'), 'wb') as f:
-            pickle.dump(vehicle, f)
-    else:
-
-        with open(os.path.join(base_dir, 'CRM.pkl'), 'rb') as f:
-            vehicle = pickle.load(f)
-        airfoil_dir = base_dir +os.sep + '..' +os.sep + '..' +os.sep + 'Vehicles' +os.sep+'Airfoils'
-
-        for index, segment in enumerate(vehicle.wings.main_wing.segments):
-            airfoil           = RCAIDE.Library.Components.Airfoils.Airfoil()
-            airfoil.coordinate_file = os.path.join(airfoil_dir, 'CRM_Airfoils',
-                                                f'main_wing_airfoil_XSec_{index}.dat')
-            segment.append_airfoil(airfoil)
-
-    vehicle.wings.main_wing.chords.mean_aerodynamic  = 275.80 * Units.inches
-    vehicle.reference_area                           = 4000.0 * Units['ft**2']
-    vehicle.mass_properties.center_of_gravity[0][0] = 1325.90 * Units.inches
-    vehicle.mass_properties.center_of_gravity[0][2] = 0
-
-    # ------------------------------------------------------------------
-    #   Turbofan Network
-    # ------------------------------------------------------------------
-    net       = RCAIDE.Framework.Networks.Fuel()
-    fuel_line = RCAIDE.Library.Components.Powertrain.Distributors.Fuel_Line()
-
-    # Propulsor 1 — Starboard
-    turbofan1                      = RCAIDE.Library.Components.Powertrain.Propulsors.Turbofan()
-    turbofan1.tag                  = 'propulsor_1'
-    turbofan1.origin               = [[17.818,  10.000, -0.953]]
-    turbofan1.length               = 4.928
-    turbofan1.diameter             = 2.822
-    turbofan1.bypass_ratio         = 9.1
-    turbofan1.design_altitude      = 36000 * Units.ft
-    turbofan1.design_mach_number   = 0.85
-    turbofan1.design_thrust        = 80000 * Units.N
-    turbofan1.working_fluid        = RCAIDE.Library.Attributes.Gases.Air()
-
-    ram     = RCAIDE.Library.Components.Powertrain.Converters.Ram()
-    ram.tag = 'ram'
-    turbofan1.ram = ram
-
-    inlet_nozzle                         = RCAIDE.Library.Components.Powertrain.Converters.Compression_Nozzle()
-    inlet_nozzle.tag                     = 'inlet nozzle'
-    inlet_nozzle.polytropic_efficiency   = 0.98
-    inlet_nozzle.pressure_ratio          = 1
-    inlet_nozzle.compressibility_effects = False
-    turbofan1.inlet_nozzle               = inlet_nozzle
-
-    fan                       = RCAIDE.Library.Components.Powertrain.Converters.Fan()
-    fan.tag                   = 'fan'
-    fan.polytropic_efficiency = 0.98
-    fan.pressure_ratio        = 1.4
-    turbofan1.fan             = fan
-
-    lpc                          = RCAIDE.Library.Components.Powertrain.Converters.Compressor()
-    lpc.tag                      = 'lpc'
-    lpc.polytropic_efficiency    = 0.98
-    lpc.pressure_ratio           = 1.3
-    turbofan1.low_pressure_compressor = lpc
-
-    hpc                          = RCAIDE.Library.Components.Powertrain.Converters.Compressor()
-    hpc.tag                      = 'hpc'
-    hpc.polytropic_efficiency    = 0.98
-    hpc.pressure_ratio           = 23.9
-    turbofan1.high_pressure_compressor = hpc
-
-    lpt                         = RCAIDE.Library.Components.Powertrain.Converters.Turbine()
-    lpt.tag                     = 'lpt'
-    lpt.mechanical_efficiency   = 0.99
-    lpt.polytropic_efficiency   = 0.98
-    turbofan1.low_pressure_turbine = lpt
-
-    hpt                         = RCAIDE.Library.Components.Powertrain.Converters.Turbine()
-    hpt.tag                     = 'hpt'
-    hpt.mechanical_efficiency   = 0.99
-    hpt.polytropic_efficiency   = 0.98
-    turbofan1.high_pressure_turbine = hpt
-
-    combustor                           = RCAIDE.Library.Components.Powertrain.Converters.Combustor()
-    combustor.tag                       = 'Comb'
-    combustor.efficiency                = 0.997
-    combustor.turbine_inlet_temperature = 1440
-    combustor.pressure_ratio            = 0.94
-    combustor.fuel_data                 = RCAIDE.Library.Attributes.Propellants.Jet_A()
-    turbofan1.combustor                 = combustor
-
-    core_nozzle                       = RCAIDE.Library.Components.Powertrain.Converters.Expansion_Nozzle()
-    core_nozzle.tag                   = 'core nozzle'
-    core_nozzle.polytropic_efficiency = 0.98
-    core_nozzle.pressure_ratio        = 0.995
-    core_nozzle.diameter              = 1.5
-    turbofan1.core_nozzle             = core_nozzle
-
-    fan_nozzle                       = RCAIDE.Library.Components.Powertrain.Converters.Expansion_Nozzle()
-    fan_nozzle.tag                   = 'fan nozzle'
-    fan_nozzle.polytropic_efficiency = 0.98
-    fan_nozzle.pressure_ratio        = 0.995
-    fan_nozzle.diameter              = 2.822
-    turbofan1.fan_nozzle             = fan_nozzle
-
-    design_turbofan(turbofan1)
-
-    nacelle                    = RCAIDE.Library.Components.Nacelles.Body_of_Revolution_Nacelle()
-    nacelle.tag                = 'nacelle_1'
-    nacelle.diameter           = 3.556
-    nacelle.length             = 4.9
-    nacelle.inlet_diameter     = 2.5
-    nacelle.origin             = [[17.818, 10.000, -0.953]]
-    nacelle.areas.wetted       = np.pi * nacelle.diameter * nacelle.length
-    nacelle_airfoil            = RCAIDE.Library.Components.Airfoils.NACA_4_Series_Airfoil()
-    nacelle_airfoil.NACA_4_Series_code = '0010'
-    nacelle.append_airfoil(nacelle_airfoil)
-    turbofan1.nacelle          = nacelle
-
-    net.propulsors.append(turbofan1)
-
-    # Propulsor 2 — Port (mirror of starboard)
-    turbofan2                = deepcopy(turbofan1)
-    turbofan2.tag            = 'propulsor_2'
-    turbofan2.origin         = [[17.818, -10.000, -0.953]]
-    turbofan2.nacelle.origin = [[17.818, -10.000, -0.953]]
-    net.propulsors.append(turbofan2)
-
-    # ------------------------------------------------------------------
-    #   Fuel Tanks
-    # ------------------------------------------------------------------
-    fuel_tank_1                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_1.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A1()
-    fuel_tank_1.segments_bounding_tank       = ['root', 'yehudi']
-    fuel_tank_1.segments_percent_chord_start = [0.1, 0.1]
-    fuel_tank_1.segments_percent_chord_end   = [0.7, 0.7]
-    fuel_line.fuel_tanks.append(fuel_tank_1)
-
-    fuel_tank_2                              = RCAIDE.Library.Components.Powertrain.Sources.Fuel_Tanks.Integral_Tank(vehicle.wings.main_wing)
-    fuel_tank_2.fuel                         = RCAIDE.Library.Attributes.Propellants.Jet_A1()
-    fuel_tank_2.segments_bounding_tank       = ['yehudi', 'tip']
-    fuel_tank_2.segments_percent_chord_start = [0.1, 0.1]
-    fuel_tank_2.segments_percent_chord_end   = [0.7, 0.7]
-    fuel_line.fuel_tanks.append(fuel_tank_2)
-
-    fuel_line.assigned_propulsors = [['propulsor_1', 'propulsor_2']]
-    net.fuel_lines.append(fuel_line)
-    vehicle.append_energy_network(net)
-
-    return vehicle
 
 
 # ----------------------------------------------------------------------
