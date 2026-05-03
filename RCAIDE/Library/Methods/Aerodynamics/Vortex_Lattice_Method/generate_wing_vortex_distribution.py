@@ -169,9 +169,14 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                 
             dihedral = inboard_segment.dihedral_outboard
             LE_sweep = inboard_segment.sweeps.leading_edge
-            delta_z  = inboard_segment.origin[0][2] +  np.tan(dihedral) * local_y_val
-            delta_x  = inboard_segment.origin[0][0] +  np.tan(LE_sweep) * local_y_val 
-             
+            
+            if wing.vertical:
+                delta_z  = inboard_segment.origin[0][1] +  np.tan(dihedral) * local_y_val
+                delta_x  = inboard_segment.origin[0][0] +  np.tan(LE_sweep) * local_y_val 
+            else:
+                delta_z  = inboard_segment.origin[0][2] +  np.tan(dihedral) * local_y_val
+                delta_x  = inboard_segment.origin[0][0] +  np.tan(LE_sweep) * local_y_val
+                
             # Step 4. get points of airfoil
             airfoil_x_pts_0 , airfoil_z_pts_0 = generate_interplated_airfoil_points(inboard_segment, outboard_segment,local_percent_y_val, ncpts=100)  
              
@@ -260,13 +265,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
                 z_c[y_i,:] = airfoil_z_pts_5_c 
                 x_h[y_i,:] = airfoil_x_pts_5_h 
                 y_h[y_i,:] = np.ones(len(airfoil_x_pts_5_h))*delta_y 
-                z_h[y_i,:] = airfoil_z_pts_5_h           
-
-            # # handle flips for symmetric wings 
-            # if side_idx == 1:
-            #     x_w[y_i,:] = x_w[y_i,:] * yz_sym_sign
-            #     y_w[y_i,:] = y_w[y_i,:] * xz_sym_sign
-            #     z_w[y_i,:] = z_w[y_i,:] * xy_sym_sign  
+                z_h[y_i,:] = airfoil_z_pts_5_h            
             
             cs_ws[y_i] = local_chord
             
