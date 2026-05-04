@@ -155,21 +155,25 @@ def plot_contrails_appleman_chart(results,
     axis.set_xlim(-60,-30)
     axis.invert_yaxis()
     
-    always_contrails_time_stamps = []
-    persistence_time_stamps = []
-    no_contrails_time_stamps = []
-
+    # start with 0 time in each region
+    always_contrails_time_sec  =0
+    persistence_time_sec = 0 
     # get line colors for plots 
     line_colors   = cm.inferno(np.linspace(0,0.9,len(results.segments)))     
 
     # loop through mission segments and plot conditions on Appleman chart
     for i in range(len(results.segments)): 
+
+        always_contrails_time_stamps = []
+        persistence_time_stamps = []
+        no_contrails_time_stamps = []
+
         T = results.segments[i].conditions.freestream.temperature[:,0] - 273.15
         P = results.segments[i].conditions.freestream.pressure[:,0]/100
         t = results.segments[i].conditions.frames.inertial.time[:,0] 
          
         # rediscretize temperature pressure and time to ensure points are captured within appleman chart
-        time        = np.linspace(t[0], t[-1], 100) 
+        time        = np.linspace(t[0], t[-1], 200) 
         temperature = np.interp(time, t, T)
         pressure    = np.interp(time, t, P)
 
@@ -182,15 +186,26 @@ def plot_contrails_appleman_chart(results,
             
             # compute time spent in each region based in temperature and pressure conditions
             for j in range(len(temperature)):
-                if pressure[j] > np.interp(temperature[j], always_contrails_line[:,0], always_contrails_line[:,1]): 
+                if temperature[j] < np.interp(pressure[j], always_contrails_line[:,1], always_contrails_line[:,0]):
                     always_contrails_time_stamps.append(time[j])
                     
-                if pressure[j] <= np.interp(temperature[j], no_contrails_line[:,0], no_contrails_line[:,1]): 
+                if temperature[j] > np.interp(pressure[j], no_contrails_line[:,1], no_contrails_line[:,0]):
                     no_contrails_time_stamps.append(time[j])
-                
+
                 # compute time spent between 0% relative humidity (always contrails) and maximum temperature for persistence on the Appleman chart
-                if pressure[j] <=  np.interp(temperature[j], maximum_T_for_persistence_line[:,0], maximum_T_for_persistence_line[:,1]) and pressure[j] <= np.interp(temperature[j], always_contrails_line[:,0], always_contrails_line[:,1]):
-                    persistence_time_stamps.append(time[j]) 
+                if temperature[j] > np.interp(pressure[j], always_contrails_line[:,1], always_contrails_line[:,0]) and temperature[j] < np.interp(pressure[j], maximum_T_for_persistence_line[:,1], maximum_T_for_persistence_line[:,0]):
+                    persistence_time_stamps.append(time[j])
+ 
+            # convert time stamps into numpy arrays and compute total time spent in each region
+            always_contrails_time_stamps = np.array(always_contrails_time_stamps)
+            persistence_time_stamps = np.array(persistence_time_stamps)
+            no_contrails_time_stamps = np.array(no_contrails_time_stamps) 
+
+            # use differences between time stamps to compute total time spent in each region
+            always_contrails_time_sec += np.sum(np.diff(always_contrails_time_stamps))
+            persistence_time_sec += np.sum(np.diff(persistence_time_stamps)) 
+
+
         else:
             print(segment_name + "Segment has pressure values outside the bounds of the Appleman chart. Time spent in each region may be inaccurate.")
 
@@ -202,22 +217,14 @@ def plot_contrails_appleman_chart(results,
     axis.text(-38, 150, 'No Contrails', fontsize = 12
                 , color = 'black')
 
-    # convert time stamps into numpy arrays and compute total time spent in each region
-    always_contrails_time_stamps = np.array(always_contrails_time_stamps)
-    persistence_time_stamps = np.array(persistence_time_stamps)
-    no_contrails_time_stamps = np.array(no_contrails_time_stamps) 
-
-    # use differences between time stamps to compute total time spent in each region
-    always_contrails_time_sec = np.sum(np.diff(always_contrails_time_stamps))
-    persistence_time_sec = np.sum(np.diff(persistence_time_stamps))
-    no_contrails_time_sec = np.sum(np.diff(no_contrails_time_stamps))
     
     t_fin = results.segments[-1].conditions.frames.inertial.time[-1,0]    
 
+    no_contrails_time_sec = t_fin - always_contrails_time_sec - persistence_time_sec        
     # percent of flight in each regine 
-    always_contrails_time_percent = always_contrails_time_sec/t_fin*100
-    persistence_time_percent = persistence_time_sec/t_fin*100
-    no_contrails_time_percent = no_contrails_time_sec/t_fin*100 
+    always_contrails_time_percent = (always_contrails_time_sec/t_fin)*100
+    persistence_time_percent = (persistence_time_sec/t_fin)*100
+    no_contrails_time_percent = (no_contrails_time_sec/t_fin)*100 
     print(f"Percent of flight in Always Contrails region: {always_contrails_time_percent:.2f}%")
     print(f"Percent of flight in Persistence region: {persistence_time_percent:.2f}%")
     print(f"Percent of flight in No Contrails region: {no_contrails_time_percent:.2f}%")
