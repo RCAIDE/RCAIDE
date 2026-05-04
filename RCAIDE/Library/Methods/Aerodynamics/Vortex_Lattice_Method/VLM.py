@@ -130,8 +130,6 @@ def VLM(conditions,settings,geometry):
     # Generate Panelization and Vortex Distribution
     # ------------------ -------------------------------------------------------------------- 
     VD                                                    = generate_vortex_distribution(conditions,settings,geometry)
-    #plot_3d_vehicle_vlm_panelization(VD)
-    # plt.show()
     settings.vortex_distribution.chord_lengths            = VD.chord_lengths[VD.leading_edge_indices].reshape(len(VD.n_sw),np.sum(VD.n_sw[0]))
     settings.vortex_distribution.n_sw                     = VD.n_sw 
     settings.vortex_distribution.n_cw                     = VD.n_cw 
