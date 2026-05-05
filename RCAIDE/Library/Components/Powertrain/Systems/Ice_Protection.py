@@ -1,40 +1,39 @@
-# RCAIDE/Library/Components/Powertrain/Systems/Flight_Controls.py
+# RCAIDE/Library/Components/Powertrain/Systems/Ice_Protection.py
 # 
-# Created:  Jan 2026, M. Clarke 
-# Modified: May 2026, S. Sharma
+# Created:  May 2026, M. Clarke, S. Sharma
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Methods.Powertrain.Systems.append_flight_controls_conditions import append_flight_controls_conditions
-
 from .Systems import Systems
+from RCAIDE.Library.Methods.Powertrain.Systems.append_ice_protection_conditions import append_ice_protection_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
-#  Flight_Controls
+#  Ice_Protection
 # ----------------------------------------------------------------------------------------------------------------------            
-class Flight_Controls(Systems):
+class Ice_Protection(Systems):
     """
-    A class representing flight control systems and their power requirements. 
+    A class representing ice protection systems and their power requirements. 
     """        
     def __defaults__(self):
         """
-        Sets default values for the flight controls system attributes.
+        Sets default values for the ice protection system attributes.
         """                  
-        self.tag        = 'flight_controls' 
+        self.tag        = 'ice_protection' 
         
     def append_operating_conditions(self, segment, bus): 
         """
-        Adds operating conditions for the flight controls system to a mission segment.
+        Adds operating conditions for the ice protection system to a mission segment.
 
         Parameters
         ----------
         segment : Data
             Mission segment to which conditions are being added
         bus : Data
-            Electrical bus supplying power to the flight controls
+            Electrical bus supplying power to the avionics
         """
-        append_flight_controls_conditions(self, segment, bus)
-        
+        append_ice_protection_conditions(self, segment, bus)
         return         
+    
+        
