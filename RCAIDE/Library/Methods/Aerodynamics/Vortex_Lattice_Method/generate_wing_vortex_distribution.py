@@ -53,9 +53,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
         span = span/2
         VD.vortex_lift.append(wing.vortex_lift)
         
-    VD.counter  +=1
-    wing.surface_ID = VD.counter*1
-
+    VD.counter  +=1 
     # ---------------------------------------------------------------------------------------
     # STEP 3: Get discretization control variables  
     # --------------------------------------------------------------------------------------- 
@@ -474,11 +472,7 @@ def generate_wing_vortex_distribution(VD,wing,n_cw,n_sw,spc,precision):
     area = wing.areas.projected
     VD.wing_areas.append(area/(sym+1))
     if sym:
-        VD.wing_areas.append(area/(sym+1))
-        
-    # Pack wing data
-    wing.n_sw = n_sw
-    wing.n_cw = n_cw    
+        VD.wing_areas.append(area/(sym+1)) 
     
     return VD
 
@@ -573,7 +567,7 @@ def apply_control_surface_deflections(airfoil_x_pts, airfoil_z_pts,LE_angle, LE_
     TE_z_deflection[airfoil_x_pts <TE_chord_loc] = 0
     
     Total_CS_z_deflection = LE_z_deflection + TE_z_deflection
-    Total_CS_x_deflection = LE_x_deflection - TE_x_deflection
+    Total_CS_x_deflection = LE_x_deflection + TE_x_deflection
 
     # shift points of airfoil by control surface deflection 
     airfoil_x_pts_defl = airfoil_x_pts + Total_CS_x_deflection

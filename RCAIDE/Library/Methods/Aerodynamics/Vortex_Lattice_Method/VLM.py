@@ -1,7 +1,8 @@
 # RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM.py
 # 
 # Created: Aug 2025, M. Clarke    
-#          Apr 2026, S. Shekar, A. Molloy, M. Clarke
+# Modified:Apr 2026, S. Shekar, A. Molloy, M. Clarke
+#          May 2026  M. Clarke
 
 # ----------------------------------------------------------------------
 #  Imports
@@ -14,10 +15,7 @@ from .generate_vortex_distribution       import generate_vortex_distribution
 from .compute_RHS_matrix                 import compute_RHS_matrix
 
 from scipy.integrate import trapezoid 
-import numpy as np
-
-from RCAIDE.Library.Plots.Geometry.plot_3d_vehicle_vlm_panelization import  plot_3d_vehicle_vlm_panelization
-import matplotlib.pyplot as  plt
+import numpy as np  
 # ----------------------------------------------------------------------
 #  Vortex Lattice
 # ----------------------------------------------------------------------
@@ -129,7 +127,7 @@ def VLM(conditions,settings,geometry):
     # ---------------------------------------------------------------------------------------
     # Generate Panelization and Vortex Distribution
     # ------------------ -------------------------------------------------------------------- 
-    VD                                                    = generate_vortex_distribution(conditions,settings,geometry)
+    VD                                                    = generate_vortex_distribution(conditions,settings,geometry) 
     settings.vortex_distribution.chord_lengths            = VD.chord_lengths[VD.leading_edge_indices].reshape(len(VD.n_sw),np.sum(VD.n_sw[0]))
     settings.vortex_distribution.n_sw                     = VD.n_sw 
     settings.vortex_distribution.n_cw                     = VD.n_cw 
@@ -745,14 +743,21 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
     for k in range(n_cases):
         alpha   = conditions.aerodynamics.angles.alpha [k]
         n_wings = len(VD.n_sw[k])
-        divisions_control_point = np.cumsum(VD.n_sw[k]+1)[:-1]
-        divisions               = np.cumsum(VD.n_sw[k])[:-1]
+        divisions = np.cumsum(VD.n_sw[k])[:-1]
 
         # Split into per-wing lists — no np.stack, wings may have different n_sw
-        cl_split         = np.split(cl[k], divisions)
-        chord_split      = np.split(chord_dist[k], divisions)
-        y_control_points = np.split(VD.Y[k][::(VD.n_cw[k][0]+1)], divisions_control_point)
-        z_control_points = np.split(VD.Z[k][::(VD.n_cw[k][0]+1)], divisions_control_point)
+        cl_split    = np.split(cl[k], divisions)
+        chord_split = np.split(chord_dist[k], divisions)
+
+        # VD.Y[k]/VD.Z[k] are flat node arrays: each wing w contributes (n_sw[w]+1)*(n_cw[w]+1)
+        # corner nodes stored row-major.  Striding by (n_cw[w]+1) picks one point per spanwise
+        # station.  Using the first wing's n_cw as a global stride is wrong when wings differ.
+        node_sizes       = (VD.n_sw[k] + 1) * (VD.n_cw[k] + 1)
+        node_splits      = np.cumsum(node_sizes)[:-1]
+        y_nodes_per_wing = np.split(VD.Y[k], node_splits)
+        z_nodes_per_wing = np.split(VD.Z[k], node_splits)
+        y_control_points = [seg[::(VD.n_cw[k][w] + 1)] for w, seg in enumerate(y_nodes_per_wing)]
+        z_control_points = [seg[::(VD.n_cw[k][w] + 1)] for w, seg in enumerate(z_nodes_per_wing)]
 
         is_symmetric = np.array(VD.symmetric_wings[0], dtype=bool)
         is_vertical  = np.array(VD.vertical_wing[0],   dtype=bool)
