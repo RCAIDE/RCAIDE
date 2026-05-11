@@ -149,7 +149,7 @@ class Vortex_Lattice_Method(Aerodynamics):
 
     def initialize(self, vehicle): 
          
-        use_surrogate         = self.settings.use_surrogate 
+        use_surrogate        = self.settings.use_surrogate 
         reuse_training_data  = self.settings.reuse_training_data   
 
         # If we are using the surrogate

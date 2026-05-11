@@ -457,7 +457,7 @@ def VLM(conditions,settings,geometry):
     results.CX                = CX_for 
     results.CY                = CY_for  
     results.CZ                = -CZ_for 
-    results.CL                = -CL_mom 
+    results.CL                = CL_mom 
     results.CM                = CM_mom  
     results.CN                = -CN_mom  
     results.spanwise_stations = Y 

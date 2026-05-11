@@ -63,8 +63,9 @@ def fuel_aircraft_payload_range():
     missions = missions_setup(mission)
     
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.05, delete_training_data = True)
-                                
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.05)
+    plot_payload_range_diagram(payload_range_results, save_figure = False)  
+                  
     fuel_r                 = payload_range_results.range[-1]  
     fuel_r_true            = 5630617.276393387 # Reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000.  
     
@@ -97,10 +98,10 @@ def fuel_aircraft_payload_range_mzfw():
     missions = missions_setup(mission)  
         
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.10, delete_training_data = True)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage=0.10)
                                 
     fuel_r                 = payload_range_results.range[-1]  
-    fuel_r_true            = 5662116.030995269
+    fuel_r_true            = 5664775.846939666
     # Correct value from reference ( https://www.embraercommercialaviation.com/wp-content/uploads/2017/06/APM_190.pdf) is 5556000. 
     # This value is high due to simplified single segment analysis i.e. only cruise. To compensate, reserve percentage is increased from 5 to 10%
     
@@ -129,8 +130,8 @@ def electric_aircraft_payload_range():
         # create mission instances (for multiple types of missions)
         missions = missions_setup(mission)   
     
-        payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, delete_training_data = True) 
-        electric_r         =  payload_range_results.range[-1]
+        payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission) 
+        electric_r            =  payload_range_results.range[-1]
         print('Electric Range: ' + str(electric_r ))
         electric_error =  abs(electric_r - electric_r_truth[i]) /electric_r_truth[i]
         assert(abs(electric_error)<1e-6)        
