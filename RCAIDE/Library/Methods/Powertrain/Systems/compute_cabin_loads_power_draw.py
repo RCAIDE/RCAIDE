@@ -6,7 +6,7 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports
-def compute_cabin_loads_power_draw(cabin_loads,state,bus,conditions):
+def compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state):
     """
     Computes the power draw of a cabin loads system.
     
@@ -41,16 +41,15 @@ def compute_cabin_loads_power_draw(cabin_loads,state,bus,conditions):
     --------
     RCAIDE.Library.Methods.Powertrain.Systems.append_cabin_loads_conditions
     """
-    vehicle            = state.analyses.vehicle
     N_pax              = vehicle.number_of_passengers
-    P_avionics         = 4000                           # Watts (Flat Rate for Avionics)
+    
     P_ife_per_pax      = 41                             # Watts
     P_galley_per_pax   = 320 * 0.5                      # Watts (For cruise segment, we can assume 50% usage factor for galley power)
     P_lighting_per_pax = 3.2 + 1.4 + 10                 # Watts (Reading Lights + Ambient Lighting + General Cabin Lighting, scales with pax)
     
-    P_cabin            = P_avionics + (N_pax * (P_ife_per_pax + P_galley_per_pax + P_lighting_per_pax))
+    P_cabin            = (N_pax * (P_ife_per_pax + P_galley_per_pax + P_lighting_per_pax))
             
-    bus_conditions                    = conditions.energy.busses[bus.tag]
+    bus_conditions                    = state.conditions.energy.busses[bus.tag]
     cabin_loads_conditions            = bus_conditions[cabin_loads.tag]    
     cabin_loads_conditions.power[:,0] = P_cabin
     bus_conditions.power_draw        += cabin_loads_conditions.power*bus.power_split_ratio /bus.efficiency    

@@ -1,6 +1,7 @@
 # all_electric_ATR_72.py
 
-# Created: 2025, M. Clarke, M. Guidotti
+# Created:  2025, M. Clarke, M. Guidotti
+# Modified: May 2026, S. Sharma
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
@@ -49,7 +50,7 @@ def vehicle_setup():
               
     # basic parameters              
     vehicle.reference_area                            = 61.0  
-    vehicle.number_of_passengers                                = 72
+    vehicle.number_of_passengers                      = 72
     vehicle.systems.control                           = "fully powered"
     vehicle.systems.accessories                       = "short range"  
 
@@ -637,11 +638,26 @@ def vehicle_setup():
     net.propulsors.append(port_propulsor) 
 
     #------------------------------------------------------------------------------------------------------------------------------------  
-    # Avionics
+    # Systems
     #------------------------------------------------------------------------------------------------------------------------------------  
-    avionics                     = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
-    avionics.power_draw          = 30. # Watts
-    bus.avionics                 = avionics
+    avionics                         = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
+    avionics.power_draw              = 4000 * Units.watt # Watts (Flat Rate for Avionics)
+    bus.avionics                     = avionics
+    
+    cabin_loads                      = RCAIDE.Library.Components.Powertrain.Systems.Cabin_Loads()
+    bus.cabin_loads                  = cabin_loads
+    
+    environmental_control_system     = RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls()
+    bus.environmental_control_system = environmental_control_system
+    
+    ice_protection_system            = RCAIDE.Library.Components.Powertrain.Systems.Ice_Protection()
+    bus.ice_protection_system        = ice_protection_system
+    
+    hydraulics                       = RCAIDE.Library.Components.Powertrain.Systems.Hydraulics()
+    bus.hydraulics                   = hydraulics
+    
+    flight_controls_system           = RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls()
+    bus.flight_controls_system       = flight_controls_system
     
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to bus       
@@ -649,7 +665,6 @@ def vehicle_setup():
 
     # append bus   
     net.busses.append(bus)
-    
     vehicle.append_energy_network(net)    
 
     return vehicle

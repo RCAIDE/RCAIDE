@@ -6,7 +6,9 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports
-def compute_ice_protection_power_draw(ice_protection,state,bus,conditions):
+import numpy as np
+
+def compute_ice_protection_power_draw(ice_protection,vehicle,bus,state):
     """
     Computes the power draw of an ice protection system.
     
@@ -55,25 +57,36 @@ def compute_ice_protection_power_draw(ice_protection,state,bus,conditions):
     E_pulse      = 500    # Joules per pulse
     f_pulse      = 0.2    # Pulses per second (12 per minute)
     eta_sys      = 0.8    # 80% efficiency
-    q_total_flux = 15000  # W/m², Total heat flux required to prevent ice accretion (convective + evaporative + sensible) (approx 15 kW/m^2)
+    q_total_flux = 6000   # W/m², Approximate heat flux required to prevent ice accretion (convective + evaporative + sensible)
     
     q_convective = 0
     q_evaporative = 0
     q_sensible  = 0
-    
-    vehicle   = state.analyses.vehicle    
+      
     for wing in vehicle.wings:
-        Area += wing.reference_area * percentage_ice 
+        Area += wing.areas.reference * percentage_ice 
  
     # P_anti_ice = Area * (q_convective + q_evaporative + q_sensible)
     P_anti_ice = Area * q_total_flux
     P_de_ice   = (E_pulse * f_pulse) / eta_sys     
     
-    P_ice      =  P_anti_ice + P_de_ice
+    P_ice_initial      =  P_anti_ice + P_de_ice
     
-    bus_conditions                       = conditions.energy.busses[bus.tag]
+    # Ice systems are only active during elevated humidity and an air temperature between 0°C and -30°C
+    # Ice Protection System (IPS) deactivates during "Climb 3" (40,000 ft), "Cruise" (40,000 ft), and "Descent 1" (30,000 ft)
+    
+    # Extract the freestream temperature (in Kelvin)
+    T_ambient = state.conditions.freestream.temperature
+    
+    # Create an activation array: 1.0 if temperature is between 0 C and -30 C, else 0.0
+    IPS_active = np.where((T_ambient <= 273.15) & (T_ambient >= 243.15), 1.0, 0.0)
+    
+    # Multiply the max power by the activation array
+    P_ice = P_ice_initial * IPS_active
+    
+    bus_conditions                       = state.conditions.energy.busses[bus.tag]
     ice_protection_conditions            = bus_conditions[ice_protection.tag]    
-    ice_protection_conditions.power[:,0] = P_ice
+    ice_protection_conditions.power[:,0] = P_ice[:,0]
     bus_conditions.power_draw           += ice_protection_conditions.power*bus.power_split_ratio /bus.efficiency    
     
     return 

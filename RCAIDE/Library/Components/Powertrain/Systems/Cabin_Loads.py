@@ -36,6 +36,7 @@ class Cabin_Loads(Systems):
             Electrical bus supplying power to the avionics
         """
         append_cabin_loads_conditions(self, segment, bus)
+        
         return         
     
     

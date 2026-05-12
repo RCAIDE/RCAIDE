@@ -7,8 +7,9 @@
 # ----------------------------------------------------------------------------------------------------------------------    
 # package imports
 import RCAIDE
+import numpy as np
 
-def compute_ecs_power_draw(environmental_controls,state,bus,conditions):
+def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     """
     Computes the power draw of an environmental control system.
     
@@ -44,9 +45,7 @@ def compute_ecs_power_draw(environmental_controls,state,bus,conditions):
     RCAIDE.Library.Methods.Powertrain.Systems.append_environmental_control_conditions
     """
     
-    vehicle    =  state.analyses.vehicle
-    N_pax      =  vehicle.number_of_passengers 
-    conditions = state.conditions 
+    N_pax      =  vehicle.number_of_passengers
 
     m_dot_per_pax = 0.00416 # kg/s (0.25 kg/min per passenger)
     Q_per_pax     = 70      # 70 W per passenger, 100 W per flight crew member, 200 W per cabin crew member
@@ -56,37 +55,45 @@ def compute_ecs_power_draw(environmental_controls,state,bus,conditions):
     A_window      = 0.08    # The paper assumes 0.08 m² per window
     N_windows     = 0       # Number of rows in cabin *2
     
-    # Step 1: Compute Cabin Compressor Power 
+    # Step 1: Compute Compressor Power
+    altitude = state.conditions.freestream.altitude
+    Mach     = state.conditions.freestream.mach_number        
+    Cp       = state.conditions.freestream.constant_pressure_specific_heat
+    T1       = state.conditions.freestream.temperature 
+    P1       = state.conditions.freestream.pressure
+    gamma    = state.conditions.freestream.specific_heat 
+    m_dot    = m_dot_per_pax * N_pax 
+    
+    # Retrieve compressor efficiency from the cabin component
     for fuselage in vehicle.fuselages: 
         for cabin in fuselage.cabins:
-            P2 = cabin.design_cabin_pressure # WE NEEED TO ADD THIS TERM ONTO THE FUSEALGE
-            
-            
-    for wing in vehicle.wings:
-        if type(wing) == RCAIDE.Library.Components.Wings.Blended_Wing_Body:
-            for cabin in wing.cabins:
-                P2 = cabin.design_cabin_pressure # WE NEEED TO ADD THIS TERM ONTO THE FUSEALGE
-            
-    Cp     = state.conditions.freestream.cp
-    T1     = state.conditions.freestream.temperature 
-    P1     = state.conditions.freestream.pressure
-    gamma  = state.conditions.freestream.specific_heat 
-    eta_c  = environmental_controls.cabin_compressor.efficiency
-    m_dot  = m_dot_per_pax * N_pax 
-    P_comp = (m_dot * Cp * T1 / eta_c) * ((P2/P1)**((gamma-1)/gamma) - 1)
+            eta_c = cabin.compressor.efficiency
+    
+    # Compute the ram pressure at the inlet of the compressor
+    P_ram    = P1 * (1 + ((gamma - 1) / 2) * Mach**2)
+    
+    # Determine Design Cabin Pressure based on altitude threshold
+    P_cabin = np.where(
+        altitude < 2438.4,       # If below 8,000 ft
+        P_ram + 20000,           # Ram pressure + 0.2 bar (in Pascals)
+        78000                    # Else: Constant 0.78 bar (in Pascals)
+    )
+    P2      = P_cabin
+    
+    P_comp  = (m_dot * Cp * T1 / eta_c) * ((P2/P1)**((gamma-1)/gamma) - 1)
     
     # Step 2: Compute Vapor Cycle Cooling   
-    Q_pax     = N_pax * Q_per_pax
-    Q_sys     = N_pax * Q_sys_per_pax
-    Q_solar   = Q_sun * A_window * N_windows
-    P_cool    = (Q_pax + Q_sys + Q_solar) / COP
+    Q_pax   = N_pax * Q_per_pax
+    Q_sys   = N_pax * Q_sys_per_pax
+    Q_solar = Q_sun * A_window * N_windows
+    P_cool  = (Q_pax + Q_sys + Q_solar) / COP
       
     # Step 4: Compute total power 
-    P_evs =  P_comp +  P_cool
+    P_evs   =  P_comp +  P_cool
   
-    bus_conditions                               = conditions.energy.busses[bus.tag]
+    bus_conditions                               = state.conditions.energy.busses[bus.tag]
     environmental_controls_conditions            = bus_conditions[environmental_controls.tag]    
-    environmental_controls_conditions.power[:,0] = P_evs
+    environmental_controls_conditions.power[:,0] = P_evs[:,0]
     bus_conditions.power_draw                   += environmental_controls_conditions.power*bus.power_split_ratio /bus.efficiency    
     
     return 

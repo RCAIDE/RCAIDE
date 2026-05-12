@@ -98,6 +98,11 @@ class Electrical_Bus(Component):
         self.assigned_converters                    = [] 
         self.avionics                               = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
         self.systems                                = RCAIDE.Library.Components.Powertrain.Systems.Systems()
+        self.environmental_controls                 = RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls()
+        self.ice_protection                         = RCAIDE.Library.Components.Powertrain.Systems.Ice_Protection()
+        self.flight_controls                        = RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls()
+        self.hydraulics                             = RCAIDE.Library.Components.Powertrain.Systems.Hydraulics()
+        self.cabin_loads                            = RCAIDE.Library.Components.Powertrain.Systems.Cabin_Loads()
         self.identical_battery_modules              = True      
         self.identical_fuel_cell_stacks             = True  
         self.active                                 = True

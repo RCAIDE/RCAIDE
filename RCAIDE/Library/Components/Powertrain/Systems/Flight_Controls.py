@@ -7,8 +7,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
-from RCAIDE.Library.Methods.Powertrain.Systems.append_flight_controls_conditions import append_flight_controls_conditions
-
 from .Systems import Systems
  
 # ----------------------------------------------------------------------------------------------------------------------
@@ -16,25 +14,10 @@ from .Systems import Systems
 # ----------------------------------------------------------------------------------------------------------------------            
 class Flight_Controls(Systems):
     """
-    A class representing flight control systems and their power requirements. 
+    A class representing flight controls and their power requirements. 
     """        
     def __defaults__(self):
         """
         Sets default values for the flight controls system attributes.
         """                  
         self.tag        = 'flight_controls' 
-        
-    def append_operating_conditions(self, segment, bus): 
-        """
-        Adds operating conditions for the flight controls system to a mission segment.
-
-        Parameters
-        ----------
-        segment : Data
-            Mission segment to which conditions are being added
-        bus : Data
-            Electrical bus supplying power to the flight controls
-        """
-        append_flight_controls_conditions(self, segment, bus)
-        
-        return         

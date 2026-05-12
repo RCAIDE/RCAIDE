@@ -15,7 +15,15 @@ RCAIDE.Library.Methods.Powertrain.Sources
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .append_avionics_conditions   import  append_avionics_conditions
-from .append_systems_conditions    import  append_systems_conditions
-from .compute_avionics_power_draw  import  compute_avionics_power_draw
-from .compute_systems_power_draw   import  compute_systems_power_draw
+from .append_avionics_conditions                import append_avionics_conditions
+from .append_systems_conditions                 import append_systems_conditions
+from .append_environmental_control_conditions   import append_environmental_control_conditions
+from .append_cabin_loads_conditions             import append_cabin_loads_conditions
+from .append_ice_protection_conditions          import append_ice_protection_conditions
+from. append_hydraulics_conditions              import append_hydraulics_conditions
+from .compute_avionics_power_draw               import compute_avionics_power_draw
+from .compute_systems_power_draw                import compute_systems_power_draw
+from .compute_ecs_power_draw                    import compute_ecs_power_draw
+from .compute_hydraulics_power_draw             import compute_hydraulics_power_draw
+from .compute_cabin_loads_power_draw            import compute_cabin_loads_power_draw
+from .compute_ice_protection_power_draw         import compute_ice_protection_power_draw

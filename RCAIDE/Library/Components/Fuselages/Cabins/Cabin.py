@@ -12,7 +12,7 @@ from RCAIDE.Library.Components.Component  import Container
 from RCAIDE.Library.Components            import Component 
 from RCAIDE.Library.Methods.Mass_Properties.Moment_of_Inertia.compute_cabin_moment_of_inertia import compute_cabin_moment_of_inertia
 from RCAIDE.Library.Methods.Mass_Properties.Center_of_Gravity.compute_cabin_center_of_gravity import compute_cabin_center_of_gravity 
-
+from RCAIDE.Library.Components.Powertrain.Converters.Compressor import Compressor
 # ---------------------------------------------------------------------------------------------------------------------- 
 #  Fuselage
 # ---------------------------------------------------------------------------------------------------------------------- 
@@ -40,6 +40,8 @@ class Cabin(Component):
         self.nose                      = Data() 
         self.nose.fineness_ratio       = 0
         self.classes                   = Container()
+        self.compressor                = Compressor()
+        self.compressor.efficiency     = 0.85 # Default compressor efficiency, can be updated based on specific design requirements
         
     def append_cabin_class(self,cabin_class): 
 
