@@ -135,7 +135,7 @@ class Network(Component):
             flight_controls      = bus.flight_controls
             cabin_loads          = bus.cabin_loads
     
-            # Avionics Power Consumtion 
+            # Avionics Power Consumption 
             compute_avionics_power_draw(avionics,vehicle,bus,state) 
             compute_systems_power_draw(systems,vehicle,bus,state) 
             compute_ecs_power_draw(ecs,vehicle,bus,state)
