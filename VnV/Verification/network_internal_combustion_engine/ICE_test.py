@@ -57,6 +57,11 @@ def main():
     P    = results.segments.cruise.state.conditions.energy.converters['internal_combustion_engine'].power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle.mass_rate[-1,0]
 
+    # Print the results
+    print('Power: ' + str(P))
+    print('Mass Flow Rate: ' + str(mdot))
+
+
     # Check the errors
     error = Data()
     error.P      = np.max(np.abs((P     - P_truth)/P_truth))
@@ -139,6 +144,8 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics  
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
+    aerodynamics.settings.number_of_spanwise_vortices    = 10 # reducing the number of vortices to speed up the test 
+    aerodynamics.settings.number_of_chordwise_vortices   = 5  # reducing the number of vortices to speed up the test 
     analyses.append(aerodynamics) 
 
     # ------------------------------------------------------------------

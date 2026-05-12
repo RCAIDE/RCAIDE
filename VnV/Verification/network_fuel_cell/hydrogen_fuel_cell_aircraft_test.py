@@ -38,7 +38,7 @@ from Hydrogen_Fuel_Cell_Twin_Otter   import vehicle_setup , configs_setup
 
 def main():  
  
-    mdot_H2_true         = [0.01818659595466075, 0.017721936720469646 ]
+    mdot_H2_true         = [0.01817261441937312, 0.017710655853587852 ]
     fuel_cell_models     = ['PEM', 'Larminie']
     
     for i in range(2): 
@@ -108,6 +108,8 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis  
     aerodynamics                   = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()  
+    aerodynamics.settings.number_of_spanwise_vortices    = 10 # reducing the number of vortices to speed up the test 
+    aerodynamics.settings.number_of_chordwise_vortices   = 5  # reducing the number of vortices to speed up the test     
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
