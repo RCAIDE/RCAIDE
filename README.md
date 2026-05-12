@@ -14,15 +14,32 @@
 
 </div>
 
-[RCAIDE: Research Community Aircraft Interdisciplinary Design Environment]([link](https://www.rcaide.leadsresearchgroup.com/))
+[RCAIDE: Research Community Aircraft Interdisciplinary Design Environment](https://www.rcaide.leadsresearchgroup.com/)
 =======
 
 The Research Community Aircraft Interdisciplinary Design Environment, or RCAIDE  (pronounced “arcade”) is a powerful open-source Python platform that revolutionizes aircraft design and analysis. From commercial airliners to UAVs and next-generation hybrid-electric aircraft, RCAIDE provides comprehensive multi-disciplinary analysis tools backed by validated engineering methods. Our streamlined workflow and modular architecture help aerospace engineers and researchers accelerate development cycles and explore innovative designs with confidence. RCAIDE-LEADS is a GitHub fork of RCAIDE, developed and maintained by the [Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)
  
-## Transitioning from SUAVE Legacy 
-RCAIDE was built to allow users to transition their work to smoothly from SUAVE to RCAIDE. RCAIDE's code is architected in such a way that a native SUAVE user can understand it but breaks free of some of the antiquated nomenclature. Shown below, the widespread adoption of SUAVE signifies the communities our codebase to provide validated and verified results. Notable users include: 
-* **Industry and Government:** NASA, Boeing,  AFRL, Embraer, Joby, Vahana, Argonne National Labs, Bombardier, Raytheon,  BAE, Google,
-* **Academia:**  MIT, Purdue, Embry Riddle, Carnegie Mellon,  Princeton, Virginia Tech, Georgia Tech, Michigan Stanford University,  Cranfield University, University of Sydney, TU Delft,  IIT,  University of Toronto, Concordia University, ISAE
+
+## Citing RCAIDE
+
+If you use RCAIDE in your research, please cite:
+
+> Clarke, Matthew A., et al. "RCAIDE: A Multidisciplinary Analysis Toolbox for Aircraft Design and Flight Simulation." *Aerospace Science and Technology* (2026): 112328.
+
+```bibtex
+@article{clarke2026rcaide,
+  title   = {RCAIDE: A Multidisciplinary Analysis Toolbox for Aircraft Design and Flight Simulation},
+  author  = {Clarke, Matthew A. and others},
+  journal = {Aerospace Science and Technology},
+  pages   = {112328},
+  year    = {2026}
+}
+```
+
+## Userbase
+Shown below, the widespread adoption of RCAIDE demonstrates the reach of our codebase, providing validated and verified results to communities worldwide. Notable users include: 
+* **Industry and Government:** NASA, Boeing, AFRL, Embraer, Joby, Vahana, Argonne National Labs, Bombardier, Raytheon, BAE, Google,
+* **Academia:** MIT, Purdue, Embry Riddle, Carnegie Mellon, Princeton, Virginia Tech, Georgia Tech, Michigan, Stanford University, Cranfield University, University of Sydney, TU Delft, IIT, University of Toronto, Concordia University, ISAE
 <p align="center">
   <img src="https://github.com/leadsgroup/RCAIDE_Website/blob/main/assets/img/SUAVE_Usage.png" width=50% height=50%> 
 </p> 
@@ -37,23 +54,23 @@ appears in one repository that is itself organized into two secondary-level repo
 %%{init: {'flowchart': {'curve': 'linear', 'nodeSpacing': 50, 'rankSpacing': 50}}}%%
 flowchart LR
     RCAIDE_LEADS[RCAIDE_LEADS]
-    RCADIE[RCADIE]
+    RCAIDE[RCAIDE]
     Regressions[Regressions]
     
-    RCAIDE_LEADS ---> RCADIE
+    RCAIDE_LEADS ---> RCAIDE
     RCAIDE_LEADS ---> Regressions
 
     style RCAIDE_LEADS fill:#0d6dc5,color:#fff
-    style RCADIE fill:#09d0d9,color:#fff
+    style RCAIDE fill:#09d0d9,color:#fff
     style Regressions fill:#09d0d9,color:#fff
 ```
-The RCAIDE subdirectory is arranged into frameworks and methods modules. Its predecessor, SUAVE, was written primarily as a superseding framework. Think of framework modules as the glue or roadmap that connects all the functions housed in the Library folder. The framework folder mainly comprises core data structures, classes instances of the various methods within the code, the mission and energy networks and the optimization framework. The Library module comprises five tertiary submodules: Attributes, Components,  Methods, Mission and Plots.
+The RCAIDE subdirectory is arranged into frameworks and methods modules. Its predecessor, SUAVE, was written primarily as a superseding framework. Think of framework modules as the glue or roadmap that connects all the functions housed in the Library folder. The framework folder mainly comprises core data structures, class instances of the various methods within the code, the mission and energy networks and the optimization framework. The Library module comprises five tertiary submodules: Attributes, Components, Methods, Mission and Plots.
 
 ```mermaid
 %%{init: {'flowchart': {'curve': 'linear', 'nodeSpacing': 50, 'rankSpacing': 50}}}%%
 flowchart TB
-    RCADIE[RCADIE] --> Framework
-    RCADIE --> Libraries
+    RCAIDE[RCAIDE] --> Framework
+    RCAIDE --> Libraries
     
     %% Framework components
     Framework --> Mission
@@ -71,7 +88,7 @@ flowchart TB
     Libraries --> Weights
     
     %% Styling
-    style RCADIE fill:#09d0d9,color:#fff
+    style RCAIDE fill:#09d0d9,color:#fff
     style Framework fill:#0fcf99,color:#fff
     style Libraries fill:#0fcf99,color:#fff
     
@@ -96,10 +113,36 @@ RCAIDE currently possesses the ability to perform various analyses at multiple f
 ### Aircraft Design & Analysis
 * **Geometry**
   * Advanced parameterization
-  * 3D visualization
-  <p align="center">
-    <img src="https://github.com/leadsgroup/RCAIDE_Website/blob/main/assets/img/Boeing_737.png" width=50% height=50%> 
-  </p>
+  * 3D visualization — click any model below to open an interactive viewer
+
+  <table align="center">
+    <tr>
+      <td align="center" width="25%">
+        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Boeing_737_Max_8/Boeing_737_Max_8.gltf">
+          <img src="Digital_Hangar/Boeing_737_Max_8/Boeing_737_Max_8.png" width="100%" alt="Boeing 737 MAX 8"/><br/>
+          <b>Boeing 737 MAX 8</b>
+        </a>
+      </td>
+      <td align="center" width="25%">
+        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.gltf">
+          <img src="Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.png" width="100%" alt="Blended Wing Body (LH2)"/><br/>
+          <b>Blended Wing Body (LH2)</b>
+        </a>
+      </td>
+      <td align="center" width="25%">
+        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/ATR_72_All_Electric/ATR_72_all_electric.gltf">
+          <img src="Digital_Hangar/ATR_72_All_Electric/ATR_72_all_electric.png" width="100%" alt="ATR 72 All-Electric"/><br/>
+          <b>ATR 72 All-Electric</b>
+        </a>
+      </td>
+      <td align="center" width="25%">
+        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Concorde/Concorde.gltf">
+          <img src="Digital_Hangar/Concorde/Concorde.png" width="100%" alt="Concorde"/><br/>
+          <b>Concorde</b>
+        </a>
+      </td>
+    </tr>
+  </table>
 
 * **Mission Analysis**
   * Complete flight vehicle simulation
@@ -149,22 +192,12 @@ RCAIDE is available on GNU/Linux, MacOS and Windows. We strongly recommend insta
 ## Tutorials
 [See Tutorials here](https://docs.rcaide.leadsresearchgroup.com/tutorials.html)
 
-## Citing RCAIDE
-(coming soon) 
-
 ## Contributing to RCAIDE
-**Contributing Institutions** 
-* Aerospace Research Community, LLC
-* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)
-* [Stanford University Aerospace Design Lab](http://adl.stanford.edu)
+**Contributing Institutions**  
+* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/) 
   
-**Contributing Developers**  
-* Matthew Clarke 
-* Emilio Botero 
-* Jordan Smart 
-* Racheal Erhard
-* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)) 
-* [Stanford University Aerospace Design Lab](http://adl.stanford.edu)
+**Contributing Developers**   
+* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)  
 
 **Getting Involved**   
 
@@ -174,8 +207,8 @@ Submit improvements or new features with a [pull request](https://github.com/lea
 
 ## Get in touch
 
-Share feedback, report issues, and request features via or [Github Issues](https://github.com/leadsgroup/RCAIDE_LEADS/issues)
+Share feedback, report issues, and request features via [GitHub Issues](https://github.com/leadsgroup/RCAIDE_LEADS/issues)
 
-Engage with peers and maintainers in [Discussions](https://github.com/leadsgroup/RCAIDE_LEADS/discussions)
+Engage with peers and maintainers in [GitHub Discussions](https://github.com/leadsgroup/RCAIDE_LEADS/discussions)
 
 
