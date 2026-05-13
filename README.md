@@ -120,33 +120,25 @@ RCAIDE currently possesses the ability to perform various analyses at multiple f
 ### Aircraft Design & Analysis
 * **Geometry**
   * Advanced parameterization
-  * 3D visualization — click any model below to open an interactive viewer
+  * 3D visualization
 
   <table align="center">
     <tr>
       <td align="center" width="25%">
-        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Boeing_737_Max_8/Boeing_737_Max_8.gltf">
-          <img src="Digital_Hangar/Boeing_737_Max_8/Boeing_737_Max_8.png" width="100%" alt="Boeing 737 MAX 8"/><br/>
-          <b>Boeing 737 MAX 8</b>
-        </a>
+        <img src="Digital_Hangar/Boeing_737_Max_8/Boeing_737_Max_8.png" width="100%" alt="Boeing 737 MAX 8"/><br/>
+        <b>Boeing 737 MAX 8</b>
       </td>
       <td align="center" width="25%">
-        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.gltf">
-          <img src="Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.png" width="100%" alt="Blended Wing Body (LH2)"/><br/>
-          <b>Hydrogen BWB</b>
-        </a>
+        <img src="Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.png" width="100%" alt="Hydrogen BWB"/><br/>
+        <b>Hydrogen BWB</b>
       </td>
       <td align="center" width="25%">
-        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/ATR_72_All_Electric/ATR_72_all_electric.gltf">
-          <img src="Digital_Hangar/ATR_72_All_Electric/ATR_72_all_electric.png" width="100%" alt="ATR 72 All-Electric"/><br/>
-          <b>ATR 72 All-Electric</b>
-        </a>
+        <img src="Digital_Hangar/ATR_72_All_Electric/ATR_72_all_electric.png" width="100%" alt="ATR 72 All-Electric"/><br/>
+        <b>ATR 72 All-Electric</b>
       </td>
       <td align="center" width="25%">
-        <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Concorde/Concorde.gltf">
-          <img src="Digital_Hangar/Concorde/Concorde.png" width="100%" alt="Concorde"/><br/>
-          <b>Concorde</b>
-        </a>
+        <img src="Digital_Hangar/Concorde/Concorde.png" width="100%" alt="Concorde"/><br/>
+        <b>Concorde</b>
       </td>
     </tr>
   </table>
