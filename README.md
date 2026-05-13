@@ -120,7 +120,7 @@ RCAIDE currently possesses the ability to perform various analyses at multiple f
 ### Aircraft Design & Analysis
 * **Geometry**
   * Advanced parameterization
-  * 3D visualization
+  * 3D visualization — click any model below to open an interactive viewer
 
   <table align="center">
     <tr>
