@@ -2,7 +2,6 @@
   <img src="https://github.com/leadsgroup/RCAIDE_Website/blob/main/assets/img/RCAIDE_Logo_No_Background.png" width=25% height=25%> 
 </p> 
 
-# 
 <div align="center">
 
 [![CI](https://github.com/leadsgroup/RCAIDE_LEADS/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/leadsgroup/RCAIDE_LEADS/actions/workflows/CI.yml)
@@ -10,15 +9,23 @@
 [![codecov](https://codecov.io/gh/leadsgroup/RCAIDE_LEADS/graph/badge.svg?token=WZOFW5EKWJ)](https://codecov.io/gh/leadsgroup/RCAIDE_LEADS)
 [![PyPI Downloads](https://static.pepy.tech/badge/rcaide-leads)](https://pepy.tech/projects/rcaide-leads)
 
-
-
 </div>
 
 [RCAIDE: Research Community Aircraft Interdisciplinary Design Environment](https://www.rcaide.leadsresearchgroup.com/)
 =======
 
-The Research Community Aircraft Interdisciplinary Design Environment, or RCAIDE  (pronounced “arcade”) is a powerful open-source Python platform that revolutionizes aircraft design and analysis. From commercial airliners to UAVs and next-generation hybrid-electric aircraft, RCAIDE provides comprehensive multi-disciplinary analysis tools backed by validated engineering methods. Our streamlined workflow and modular architecture help aerospace engineers and researchers accelerate development cycles and explore innovative designs with confidence. RCAIDE-LEADS is a GitHub fork of RCAIDE, developed and maintained by the [Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)
- 
+The Research Community Aircraft Interdisciplinary Design Environment, or RCAIDE (pronounced “arcade”) is a powerful open-source Python platform for aircraft design and analysis. From commercial airliners to UAVs and next-generation hybrid-electric aircraft, RCAIDE provides comprehensive multi-disciplinary analysis tools backed by validated engineering methods. Its streamlined workflow and modular architecture help aerospace engineers and researchers accelerate development cycles and explore innovative designs with confidence. RCAIDE-LEADS is a GitHub fork of RCAIDE, developed and maintained by the [Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/).
+
+## Table of Contents
+- [Citing RCAIDE](#citing-rcaide)
+- [Userbase](#userbase)
+- [Code Architecture](#code-architecture)
+- [Capabilities](#capabilities-of-rcaide)
+- [External Interfaces](#external-interfaces)
+- [Installing RCAIDE](#installing-rcaide)
+- [Tutorials](#tutorials)
+- [Contributing](#contributing-to-rcaide)
+- [Get in Touch](#get-in-touch)
 
 ## Citing RCAIDE
 
@@ -38,7 +45,7 @@ If you use RCAIDE in your research, please cite:
 
 ## Userbase
 Shown below, the widespread adoption of RCAIDE demonstrates the reach of our codebase, providing validated and verified results to communities worldwide. Notable users include: 
-* **Industry and Government:** NASA, Boeing, AFRL, Embraer, Joby, Vahana, Argonne National Labs, Bombardier, Raytheon, BAE, Google,
+* **Industry and Government:** NASA, Boeing, AFRL, Embraer, Joby, Vahana, Argonne National Labs, Bombardier, Raytheon, BAE, Google
 * **Academia:** MIT, Purdue, Embry Riddle, Carnegie Mellon, Princeton, Virginia Tech, Georgia Tech, Michigan, Stanford University, Cranfield University, University of Sydney, TU Delft, IIT, University of Toronto, Concordia University, ISAE
 <p align="center">
   <img src="https://github.com/leadsgroup/RCAIDE_Website/blob/main/assets/img/SUAVE_Usage.png" width=50% height=50%> 
@@ -47,7 +54,7 @@ Shown below, the widespread adoption of RCAIDE demonstrates the reach of our cod
 ## Code Architecture 
 The code is arranged into repositories that house native data structures, functions, components, and subroutines for discipline analyses and support number-crunching operations. This allows developers or avid users seeking to modify the source code to navigate intuitively. Solely written in Python, an RCAIDE installation
 appears in one repository that is itself organized into two secondary-level repositories: 
-* **RCAIDE** sub-directory, where their source code resides
+* **RCAIDE** sub-directory, where its source code resides
 * **Regressions** sub-directory, where unit tests for verification and validation are performed.
 
 ```mermaid
@@ -126,7 +133,7 @@ RCAIDE currently possesses the ability to perform various analyses at multiple f
       <td align="center" width="25%">
         <a href="https://github.com/leadsgroup/RCAIDE_LEADS/blob/master/Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.gltf">
           <img src="Digital_Hangar/Blended_Wing_Body_Hydrogen/BWB_LH2.png" width="100%" alt="Blended Wing Body (LH2)"/><br/>
-          <b>Blended Wing Body (LH2)</b>
+          <b>Hydrogen BWB</b>
         </a>
       </td>
       <td align="center" width="25%">
@@ -161,9 +168,6 @@ RCAIDE currently possesses the ability to perform various analyses at multiple f
   * Component-level weight breakdown
   * Center of gravity analysis
   * Moment of inertia calculations
-  <p align="center">
-    <img src="https://github.com/leadsgroup/RCAIDE_Website/blob/main/assets/img/Boeing_737_Weight_Breakdown.png" width=50% height=50%> 
-  </p>
 
 ### Advanced Capabilities
 * **Optimization**
@@ -193,17 +197,15 @@ RCAIDE is available on GNU/Linux, MacOS and Windows. We strongly recommend insta
 [See Tutorials here](https://docs.rcaide.leadsresearchgroup.com/tutorials.html)
 
 ## Contributing to RCAIDE
-**Contributing Institutions**  
-* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/) 
-  
-**Contributing Developers**   
-* [University of Illinois Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)  
 
-**Getting Involved**   
+**Contributing Institutions**
+* [University of Illinois — Lab for Electric Aircraft Design and Sustainability](https://www.leadsresearchgroup.com/)
 
-If you'd like to help us develop RCAIDE by adding new methods, writing documentation, or fixing embarrassing bugs, please look at these [guidelines](https://www.docs.rcaide.leadsresearchgroup.com/contributing.html) first.
+**Getting Involved**
 
-Submit improvements or new features with a [pull request](https://github.com/leadsgroup/RCAIDE_LEADS/pulls)
+If you'd like to help develop RCAIDE by adding new methods, writing documentation, or fixing bugs, please read the [contributing guidelines](https://www.docs.rcaide.leadsresearchgroup.com/contributing.html) first.
+
+Submit improvements or new features via a [pull request](https://github.com/leadsgroup/RCAIDE_LEADS/pulls).
 
 ## Get in touch
 
