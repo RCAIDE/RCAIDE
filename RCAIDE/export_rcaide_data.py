@@ -12,6 +12,8 @@ import json
 import pickle
 from collections import OrderedDict
 
+GUI_DEFAULT_UNIT_INDEX = 0
+
 # ----------------------------------------------------------------------------------------------------------------------
 #  export_rcaide_data
 # ----------------------------------------------------------------------------------------------------------------------       
@@ -143,19 +145,20 @@ def build_dict_r(v):
     if tv == type:
         return None
     
-    # Transform to basic python data type as appropriate
+    # Transform values to the RCAIDE GUI JSON format:
+    # [value, unit_index]. The default unit index is 0.
     if (tv == np.ndarray) or (tv == np.float64):
-        ret = v.tolist()
+        ret = [v.tolist(), GUI_DEFAULT_UNIT_INDEX]
     elif (tv == str) or (tv == bool):
-        ret = v
+        ret = [v, GUI_DEFAULT_UNIT_INDEX]
     elif tv == type(None):
-        ret = None
+        ret = [None, GUI_DEFAULT_UNIT_INDEX]
     elif (tv == float) or (tv == int):
-        ret = v
+        ret = [v, GUI_DEFAULT_UNIT_INDEX]
     elif tv == types.FunctionType: # Functions cannot be stored
         ret = None        
     elif tv == list:
-        ret = v    
+        ret = [v, GUI_DEFAULT_UNIT_INDEX]
 
     else:
         # Assume other data types are RCAIDE data types and check
