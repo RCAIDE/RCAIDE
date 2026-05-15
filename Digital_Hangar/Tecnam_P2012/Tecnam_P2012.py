@@ -524,7 +524,7 @@ def vehicle_setup():
     propeller.hub_radius                             = 10.     * Units.inches 
     propeller.cruise.design_freestream_velocity      = 175.*Units['mph']   
     propeller.cruise.design_angular_velocity         = 2700. * Units.rpm 
-    propeller.cruise.design_Cl                       = 0.7 
+    propeller.cruise.design_lift_coefficient         = 0.7 
     propeller.cruise.design_altitude                 = 2500. * Units.feet 
     propeller.cruise.design_thrust                   = 5000   
     propeller.clockwise_rotation                     = False

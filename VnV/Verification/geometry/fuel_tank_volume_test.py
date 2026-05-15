@@ -125,7 +125,7 @@ def integral_fuel_tank_volume_test():
 
 def non_conformal_lh2_fuel_tank_volume_test():
 
-    fuel_volume_true = 436.7662354258231
+    fuel_volume_true = 227.06932353855078
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -262,7 +262,7 @@ def non_conformal_lh2_fuel_tank_volume_test():
 
 def conformal_lh2_fuel_tank_volume_test():
 
-    fuel_volume_true = 152.4271916826183
+    fuel_volume_true = 96.88870966975597
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()
@@ -314,7 +314,7 @@ def conformal_lh2_fuel_tank_volume_test():
 
 def non_conformal_lng_fuel_tank_volume_test():
 
-    fuel_volume_true = 289.5878436558366
+    fuel_volume_true = 150.1861624339994
     vehicle          = BWB_vehicle_setup() 
     fuel_line        = vehicle.networks.fuel.fuel_lines.fuel_line
     fuel_line.fuel_tanks.clear()

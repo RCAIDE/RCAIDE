@@ -31,11 +31,15 @@ def vehicle_setup():
     #   Initialize the Vehicle
     # ------------------------------------------------------------------      
     vehicle                                           = RCAIDE.Vehicle()    
-    vehicle.tag                                       = 'BWB150' 
+    vehicle.tag                                       = 'BWB'   
     vehicle.mass_properties.max_takeoff               = 90535.0202
     vehicle.mass_properties.takeoff                   = 90535.0202
     vehicle.mass_properties.max_payload               = 52920.  * Units.lb    
-    vehicle.mass_properties.min_payload               = 33880.  * Units.lb     
+    vehicle.mass_properties.min_payload               = 33880.  * Units.lb 
+    vehicle.mass_properties.payload                   = 67000. * Units.lbs 
+    vehicle.mass_properties.fuel                      = 55000  
+    vehicle.mass_properties.max_fuel                  = 100000   
+    vehicle.mass_properties.max_zero_fuel             = 206000 * Units.lbs   
     vehicle.mass_properties.center_of_gravity         = [[27.0, 0, 0]]  
     vehicle.flight_envelope.ultimate_load             = 3.75 
     vehicle.flight_envelope.positive_limit_load       = 2.5  
@@ -51,7 +55,6 @@ def vehicle_setup():
     # Cargo Bays 
     # ------------------------------------------------------------------ 
     center_cargo_bay = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-
     center_cargo_bay.origin                      = [[6, 0, -22.5  * Units.inches]]  
     center_cargo_bay.length                      = 60.4 *  Units.inches *  9
     center_cargo_bay.width                       = 96   *  Units.inches
@@ -59,7 +62,6 @@ def vehicle_setup():
     vehicle.cargo_bays.append(center_cargo_bay) 
  
     left_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-
     left_cargo_bay.origin                      = [[10, 100   *  Units.inches, -22.5* Units.inches]] 
     left_cargo_bay.length                      =  60.4 *  Units.inches *  5
     left_cargo_bay.width                       =  96   *  Units.inches
@@ -67,8 +69,7 @@ def vehicle_setup():
     vehicle.cargo_bays.append(left_cargo_bay) 
 
  
-    right_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay()
-
+    right_cargo_bay  = RCAIDE.Library.Components.Cargo_Bays.Cargo_Bay() 
     right_cargo_bay.origin                      = [[10 ,  -100   *  Units.inches, -22.5* Units.inches]]  
     right_cargo_bay.length                      = 60.4 *  Units.inches  *  5
     right_cargo_bay.width                       = 96   *  Units.inches

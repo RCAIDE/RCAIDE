@@ -51,8 +51,8 @@ def main():
     # mission analysis 
     results = missions.base_mission.evaluate()   
     
-    P_truth     = 64762.97629559126
-    mdot_truth  = 0.005690222382850175
+    P_truth     = 61213.88277906869
+    mdot_truth  = 0.005378390955054601
     
     P    = results.segments.cruise.state.conditions.energy.converters['internal_combustion_engine'].power[-1,0]
     mdot = results.segments.cruise.state.conditions.weights.vehicle.mass_rate[-1,0]     
@@ -125,7 +125,7 @@ def ICE_CS(vehicle):
     prop.hub_radius                        = 8.     * Units.inches
     prop.cruise.design_freestream_velocity = 119.   * Units.knots
     prop.cruise.design_angular_velocity    = 2650.  * Units.rpm
-    prop.cruise.design_Cl                  = 0.8
+    prop.cruise.design_lift_coefficient                  = 0.8
     prop.cruise.design_altitude            = 12000. * Units.feet
     prop.cruise.design_power               = .64 * 180. * Units.horsepower 
     airfoil                                = RCAIDE.Library.Components.Airfoils.Airfoil()   

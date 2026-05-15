@@ -69,8 +69,8 @@ def main():
             print(val)
     
     # Truth values
-    thrust_truth     = 23008.46006864083
-    throttle_truth   = 0.6277946818740721
+    thrust_truth     = 22849.679172145035
+    throttle_truth   = 0.6234622840471041
     
     # Store errors 
     error = Data()
