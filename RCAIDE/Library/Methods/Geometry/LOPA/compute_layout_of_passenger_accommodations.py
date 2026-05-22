@@ -72,15 +72,14 @@ def compute_layout_of_passenger_accommodations(fuselage):
         # determine offset of LOPA from reference point on aircraft (nose)
         for cabin in fuselage.cabins: 
             for cabin_class in cabin.classes:
-                cabin_class.percentage = cabin_class.length/cabin.length
-                 
-        fuselage.number_of_seats  = np.sum(LOPA[:,10])
-
-    fuselage.layout_of_passenger_accommodations                     = Data()
-    fuselage.layout_of_passenger_accommodations.object_coordinates  = LOPA        
-    fuselage.layout_of_passenger_accommodations.origin              = [[min(lopa_origin_x),min(lopa_origin_y), min(lopa_origin_z)]]
+                cabin_class.percentage = cabin_class.length/cabin.length 
+      
 
     if LOPA.size > 0 :
+        fuselage.number_of_seats  = np.sum(LOPA[:,10])
+        fuselage.layout_of_passenger_accommodations                     = Data() 
+        fuselage.layout_of_passenger_accommodations.object_coordinates  = LOPA 
+        fuselage.layout_of_passenger_accommodations.origin              = [[min(lopa_origin_x),min(lopa_origin_y), min(lopa_origin_z)]]
         compute_lopa_properties(fuselage, LOPA)    
         
     return 

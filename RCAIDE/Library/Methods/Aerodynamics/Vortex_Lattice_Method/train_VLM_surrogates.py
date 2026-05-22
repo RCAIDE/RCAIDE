@@ -259,13 +259,13 @@ def train_model(aerodynamics,Mach, vehicle):
     conditions.static_stability.pitch_rate          = np.zeros_like(Machs) 
     conditions.static_stability.roll_rate           = np.ones_like(Machs)*p_s     
     conditions.static_stability.yaw_rate            = np.zeros_like(Machs)         
-    VLM_results = call_VLM(conditions,settings,clean_wing_vehicle)
-    CL_res      = VLM_results.CL
-    CN_res      = VLM_results.CN
-    CY_res      = VLM_results.CY
-    CL_p        = np.reshape(CL_res,(len_Mach,len_p)).T    - CL_alpha_0    
-    CN_p        = np.reshape(CN_res,(len_Mach,len_p)).T    - CN_alpha_0    
-    CY_p        = np.reshape(CY_res,(len_Mach,len_p)).T    - CY_alpha_0    
+    VLM_results =  call_VLM(conditions,settings,clean_wing_vehicle)
+    CL_res      =  VLM_results.CL
+    CN_res      =  VLM_results.CN
+    CY_res      =  VLM_results.CY
+    CL_p        =  np.reshape(CL_res,(len_Mach,len_p)).T    - CL_alpha_0    
+    CN_p        = -(np.reshape(CN_res,(len_Mach,len_p)).T    - CN_alpha_0)    
+    CY_p        =  np.reshape(CY_res,(len_Mach,len_p)).T    - CY_alpha_0    
 
     # -------------------------------------------------------               
     # Yaw Rate 

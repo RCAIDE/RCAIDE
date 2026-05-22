@@ -686,14 +686,14 @@ def evaluate_no_surrogate(state,settings,vehicle):
     CM_p_prime    = VLM_results.CM
     CN_p_prime    = VLM_results.CN
     
-    conditions.static_stability.derivatives.Clift_p  = (Clift_p_prime   - Clift_0) / (p_hat)
-    conditions.static_stability.derivatives.Cdrag_p  = (Cdrag_p_prime   - Cdrag_0) / (p_hat) 
-    conditions.static_stability.derivatives.CX_p     = (CX_p_prime      - CX_0)    / (p_hat)  
-    conditions.static_stability.derivatives.CY_p     = (CY_p_prime      - CY_0)    / (p_hat) 
-    conditions.static_stability.derivatives.CZ_p     = (CZ_p_prime      - CZ_0)    / (p_hat) 
-    conditions.static_stability.derivatives.CL_p     = (CL_p_prime      - CL_0)    / (p_hat)  
-    conditions.static_stability.derivatives.CM_p     = (CM_p_prime      - CM_0)    / (p_hat)  
-    conditions.static_stability.derivatives.CN_p     = (CN_p_prime      - CN_0)    / (p_hat)
+    conditions.static_stability.derivatives.Clift_p  =  (Clift_p_prime   - Clift_0) / (p_hat)
+    conditions.static_stability.derivatives.Cdrag_p  =  (Cdrag_p_prime   - Cdrag_0) / (p_hat) 
+    conditions.static_stability.derivatives.CX_p     =  (CX_p_prime      - CX_0)    / (p_hat)  
+    conditions.static_stability.derivatives.CY_p     =  (CY_p_prime      - CY_0)    / (p_hat) 
+    conditions.static_stability.derivatives.CZ_p     =  (CZ_p_prime      - CZ_0)    / (p_hat) 
+    conditions.static_stability.derivatives.CL_p     =  (CL_p_prime      - CL_0)    / (p_hat)  
+    conditions.static_stability.derivatives.CM_p     =  (CM_p_prime      - CM_0)    / (p_hat)  
+    conditions.static_stability.derivatives.CN_p     = -(CN_p_prime      - CN_0)    / (p_hat)
 
     # ---------------------------------------------------------------------------------------------------      
     # Pitch Rate (q) Purtubation
