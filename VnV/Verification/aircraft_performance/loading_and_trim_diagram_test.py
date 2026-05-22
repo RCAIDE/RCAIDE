@@ -68,7 +68,7 @@ def tube_and_wing_load_trim_test():
                                           [-0.25572757,  0.67208385,  1.59989527]])
     plot_load_diagram(load_data,save_filename  = "TW_Aircraft_Loading_Trim_Dragram") 
 
-    LEMAC_error = np.max(abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)/CG_Percent_of_LEMAC_truth))
+    LEMAC_error = np.max(np.abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)/np.abs(CG_Percent_of_LEMAC_truth)))
     print(f"LEMAC error: {LEMAC_error}")
     assert LEMAC_error < 1e-2, f"LEMAC error too large: {LEMAC_error}"
         
@@ -93,13 +93,14 @@ def blended_wing_body_load_trim_test():
  
     load_data =  compute_load_and_trim_diagram( mission, cruise_segment_tag= 'cruise', discretization=  3) 
  
-    CG_Percent_of_LEMAC_truth = np.array([[-0.81944   , -0.13382154,  0.55179691],
-                                          [-0.81944   , -0.13382154,  0.55179691],
-                                          [-0.81944   , -0.13382154,  0.55179691]])
+    CG_Percent_of_LEMAC_truth = np.array([[-0.85637934, -0.17999572,  0.4963879 ],
+                                           [-0.85637934, -0.17999572,  0.4963879 ],
+                                           [-0.85637934, -0.17999572,  0.4963879 ]])
+
     
     plot_load_diagram(load_data,save_filename  = "BWB_Aircraft_Loading_Trim_Dragram") 
 
-    LEMAC_error = np.max(abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)))
+    LEMAC_error = np.max(np.abs((load_data.trim_results.CG_percent_of_LEMAC_location - CG_Percent_of_LEMAC_truth)/np.abs(CG_Percent_of_LEMAC_truth)))
     print(f"LEMAC error: {LEMAC_error}")
     assert LEMAC_error < 5e-3, f"LEMAC error too large: {LEMAC_error}"
         

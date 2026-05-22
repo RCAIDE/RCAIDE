@@ -47,7 +47,7 @@ def vehicle_setup():
     vehicle.flight_envelope.design_cruise_altitude    = 40000.0*Units.feet 
     vehicle.flight_envelope.design_range              = 2500.0 * Units.nmi
     vehicle.reference_area                            = 515.36 # original setting 296  
-    vehicle.number_of_passengers                      = 150 
+    vehicle.number_of_passengers                      = 156
     vehicle.systems.control                           = "fully powered" 
     vehicle.systems.accessories                       = "medium range"    
     
@@ -105,8 +105,7 @@ def vehicle_setup():
     wing.t_tail                  = False 
     wing.dynamic_pressure_ratio  = 1.0
      
-    cabin                                                  = RCAIDE.Library.Components.Fuselages.Cabins.Cabin()
-    cabin.offset_x                                         = 2.54
+    cabin                                                  = RCAIDE.Library.Components.Fuselages.Cabins.Cabin() 
     cabin.origin                                           = [[2.54, 0, 0]]
     
     business_class                                         = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business() 
@@ -115,34 +114,35 @@ def vehicle_setup():
     business_class.galley_lavatory_percent_x_locations     = [0] 
     business_class.seat_arm_rest_width                     = 4 *  Units.inches 
     business_class.seat_width                              = 25 *  Units.inches
-    business_class.aisle_width                              = 15  *  Units.inches 
+    business_class.aisle_width                             = 15  *  Units.inches 
     business_class.type_A_exit_percent_x_locations         = [0,0]
     cabin.append_cabin_class(business_class)  
 
     economy_class                                          = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     economy_class.number_of_seats_abrest                   = 6
-    economy_class.number_of_rows                           = 11
+    economy_class.number_of_rows                           = 10
     economy_class.galley_lavatory_percent_x_locations      = [0,1.0]       
     economy_class.type_A_exit_percent_x_locations          = [0, 1.0]
     cabin.append_cabin_class(economy_class)
     wing.append_cabin(cabin)  
 
     side_cabin                                             = RCAIDE.Library.Components.Fuselages.Cabins.Side_Cabin()
-    side_cabin.nose.fineness_ratio                         = 1.75
-   
+    side_cabin.nose.fineness_ratio                         = 1.75 
+    side_cabin.origin                                      = [[2.54, 0, 0]]
+    
     business_class                                         = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Business() 
     business_class.number_of_seats_abrest                  = 2
     business_class.number_of_rows                          = 3
     business_class.galley_lavatory_percent_x_locations     = [0] 
     business_class.seat_arm_rest_width                     = 4 *  Units.inches 
     business_class.seat_width                              = 30 *  Units.inches
-    business_class.aisle_width                              = 15  *  Units.inches  
+    business_class.aisle_width                             = 15  *  Units.inches  
     business_class.type_A_exit_percent_x_locations         = [0,0]
     side_cabin.append_cabin_class(business_class)
     
     side_economy_class                                     = RCAIDE.Library.Components.Fuselages.Cabins.Classes.Economy() 
     side_economy_class.number_of_seats_abrest              = 4
-    side_economy_class.number_of_rows                      = 11
+    side_economy_class.number_of_rows                      = 10
     side_economy_class.galley_lavatory_percent_x_locations = [0,1.0] 
     side_economy_class.type_A_exit_percent_x_locations     = [0, 1.0]
     side_economy_class.offset_y                            = 1
