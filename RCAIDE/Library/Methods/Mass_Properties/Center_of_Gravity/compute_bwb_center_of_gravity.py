@@ -131,7 +131,7 @@ def compute_bwb_wing_center_of_gravity(bwb_wing,seg_keys):
 def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
     mass          = bwb_wing.aft_center_body.mass_properties.mass 
     LOPA          = bwb_wing.layout_of_passenger_accommodations 
-    cabin_length  =  max(LOPA.object_coordinates[:, 2]) # + LOPA.origin[0][0] 
+    cabin_length  =  max(LOPA.object_coordinates[:, 2]) + LOPA.origin[0][0] 
 
     segment_meshes = [] 
     for i in range(len(seg_keys)-1):
@@ -209,7 +209,7 @@ def compute_aft_center_body_center_of_gravity(bwb_wing,seg_keys):
 def compute_center_body_center_of_gravity(bwb_wing,seg_keys): 
     mass          = bwb_wing.center_body.mass_properties.mass
     LOPA          = bwb_wing.layout_of_passenger_accommodations 
-    cabin_length  = max(LOPA.object_coordinates[:, 2]) #  + LOPA.origin[0][0]
+    cabin_length  = max(LOPA.object_coordinates[:, 2]) + LOPA.origin[0][0]
 
     segment_meshes = [] 
     for i in range(len(seg_keys)-1):
