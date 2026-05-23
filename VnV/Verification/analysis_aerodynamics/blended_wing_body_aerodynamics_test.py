@@ -79,10 +79,10 @@ def main():
     # thruth values 
     coordinate_1_x_thruth  = 7.5184
     coordinate_1_y_thruth  = 0.6858
-    coordinate_2_x_thruth  = 8.7376
+    coordinate_2_x_thruth  = 9.5504
     coordinate_2_y_thruth  = 1.1938
     coordinate_3_x_thruth  = 0.4572
-    coordinate_3_y_thruth  = -0.6858
+    coordinate_3_y_thruth  = 4.2926
     
     # Truth values  
     error = Data()  
