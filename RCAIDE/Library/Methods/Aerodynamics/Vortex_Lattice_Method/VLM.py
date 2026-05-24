@@ -761,7 +761,7 @@ def compute_trefftz_plane_induced_drag(conditions, VD, cl, x_dist, y_dist, z_dis
 
         is_symmetric = np.array(VD.symmetric_wings[0], dtype=bool)
         is_vertical  = np.array(VD.vertical_wing[0],   dtype=bool)
-        symmetric_wing_flags = np.concatenate([np.repeat(is_symmetric & ~is_vertical, 2), np.zeros(np.count_nonzero(~is_symmetric), dtype=bool)])[:n_wings] # BUG!!!
+        symmetric_wing_flags = np.concatenate([np.repeat(is_symmetric & ~is_vertical, 2), np.zeros(np.count_nonzero(~is_symmetric), dtype=bool)])[:n_wings]  
         wing_areas = (symmetric_wing_flags+1)*VD.wing_areas
 
         # ------------------------------------------------------------------------------------------
