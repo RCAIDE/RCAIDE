@@ -152,7 +152,7 @@ def vehicle_setup():
 
     aileron                       = RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron()
     aileron.tag                   = 'aileron'
-    aileron.span_fraction_start   = 0.75
+    aileron.span_fraction_start   = 0.7
     aileron.span_fraction_end     = 0.9 
     aileron.deflection            = 0.0 * Units.degrees
     aileron.chord_fraction        = 0.15

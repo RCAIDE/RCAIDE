@@ -61,26 +61,26 @@ def main():
 
     aileron_deflection        = results.segments.cruise.conditions.control_surfaces.aileron.deflection[0,0] / Units.deg
     print('Aileron Defection',aileron_deflection)
-    aileron_deflection_true   = -11.844688096933405
+    aileron_deflection_true   = -7.799351008039411
     aileron_deflection_diff   = np.abs(aileron_deflection - aileron_deflection_true)
     print('Aileron Error 2: ',aileron_deflection_diff)
     assert np.abs(aileron_deflection_diff/aileron_deflection_true) < 5e-3
 
     rudder_deflection        = results.segments.cruise.conditions.control_surfaces.rudder.deflection[0,0] / Units.deg
     print('Rudder Defection',rudder_deflection)
-    rudder_deflection_true   = 14.121107424128542
+    rudder_deflection_true   = 14.017583131023938
     rudder_deflection_diff   = np.abs(rudder_deflection - rudder_deflection_true)
     print('Rudder Error 3: ',rudder_deflection_diff)
     assert np.abs(rudder_deflection_diff/rudder_deflection_true) < 5e-3  
 
     throttle        = results.segments.cruise_2.conditions.energy.propulsors['ice_propeller'].throttle[0,0]
-    throttle_true   = 0.48137502884268635
+    throttle_true   = 0.48137503331478093
     throttle_diff   = np.abs(throttle - throttle_true)
     print('Throttle Error 1: ',throttle_diff)
     assert np.abs(throttle_diff/throttle_true) < 5e-3    
 
     throttle3        = results.segments.cruise_3.conditions.energy.propulsors['ice_propeller'].throttle[0,0]
-    throttle3_true   = 0.37745315611562347
+    throttle3_true   = 0.3771964497239476
     throttle3_diff   = np.abs(throttle3 - throttle3_true)
     print('Throttle Error 2: ',throttle3_diff)
     assert np.abs(throttle3_diff/throttle3_true) < 5e-3   

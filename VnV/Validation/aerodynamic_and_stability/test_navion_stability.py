@@ -107,8 +107,8 @@ def main():
     RCAIDE_vals.CN_p = -0.07239626725266779
     RCAIDE_vals.CN_r = -0.09868917917133957
     RCAIDE_vals.CM_delta_e = -1.6100758451817097
-    RCAIDE_vals.CL_delta_a = -0.07624602457767131
-    RCAIDE_vals.CN_delta_a = -0.006044304446878202
+    RCAIDE_vals.CL_delta_a = -0.11580752428597008
+    RCAIDE_vals.CN_delta_a = -0.008238547197219613
     RCAIDE_vals.CN_delta_r = -0.07718356528882132
  
 
