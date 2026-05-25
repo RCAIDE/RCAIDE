@@ -63,7 +63,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     wing.chords.mean_aerodynamic          = 5.75 * Units.meter 
     wing.areas.reference                  = 392.27 * Units['meters**2']
     wing.areas.wetted                     = 825.0 * Units['meters**2']
-    wing.twists.root                      = 3.5 * Units.degrees 
+    wing.twists.root                      = 3.2 * Units.degrees 
     wing.twists.tip                       = -2.0 * Units.degrees 
     wing.origin                           = [[16.59,0,-0.492]]
     wing.aerodynamic_center               = [0,0,0] 
@@ -576,7 +576,7 @@ def vehicle_setup(vehicle_name = 'Boeing_787-8', number_of_passengers = 248) :
     turbofan1.bypass_ratio                       = 9.1                        
     turbofan1.design_altitude                    = 36000*Units.ft             
     turbofan1.design_mach_number                 = 0.85                     
-    turbofan1.design_thrust                      = 65000* Units.N
+    turbofan1.design_thrust                      = 80000* Units.N
     
     # working fluid                   
     turbofan1.working_fluid                      = RCAIDE.Library.Attributes.Gases.Air() 
