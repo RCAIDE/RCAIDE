@@ -32,7 +32,7 @@ def main():
     missions = missions_setup(mission)
      
     # run payload range analysis 
-    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.1)
+    payload_range_results =  compute_payload_range_diagram(mission = missions.base_mission, fuel_reserve_percentage = 0.09)
 
     apm = {
         "range":            np.array([0., 5500., 9500., 10000.]) * Units.nmi,
@@ -474,7 +474,6 @@ def base_analysis(vehicle):
     # ------------------------------------------------------------------
     #  Aerodynamics Analysis
     aerodynamics = RCAIDE.Framework.Analyses.Aerodynamics.Vortex_Lattice_Method()
-    aerodynamics.settings.number_of_chordwise_vortices                  = 10
     analyses.append(aerodynamics)
 
     # ------------------------------------------------------------------
