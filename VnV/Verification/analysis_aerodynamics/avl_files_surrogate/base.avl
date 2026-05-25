@@ -46,7 +46,7 @@ flap    1.0   0.8   0. 0. 0.  +1
 
 SECTION
 #Xle    Yle      Zle      Chord     Ainc  Nspanwise  Sspace
-1.8545  3.8122    -0.0988    1.4373    0.0     
+1.8411  3.5581    -0.1322    1.4878    0.0     
 NACA
 6410
 CONTROL

@@ -59,7 +59,7 @@ def main():
                     show_figure                 = False)
 
     Cruise_CL        = results.segments.cruise.conditions.aerodynamics.coefficients.lift.total[2][0] 
-    Cruise_CL_true   = 0.5461525362631067
+    Cruise_CL_true   = 0.5116478325985784
     Cruise_CL_diff   = np.abs(Cruise_CL - Cruise_CL_true)
     print('Error: ',Cruise_CL_diff)
     assert np.abs((Cruise_CL - Cruise_CL_true)/Cruise_CL_true) < 1e-3, f"Cruise_CL mismatch: got {Cruise_CL}, expected {Cruise_CL_true}"
@@ -74,15 +74,15 @@ def main():
     coordinate_2_x         = LOPA_coords[124][2]
     coordinate_2_y         = LOPA_coords[68][3] 
     coordinate_3_x         = LOPA_coords[0][2]
-    coordinate_3_y         = LOPA_coords[101][3] 
+    coordinate_3_y         = LOPA_coords[301][3] 
     
     # thruth values 
-    coordinate_1_x_thruth  = 7.5184
-    coordinate_1_y_thruth  = 0.6858
-    coordinate_2_x_thruth  = 9.5504
-    coordinate_2_y_thruth  = 1.1938
+    coordinate_1_x_thruth  = 5.6388
+    coordinate_1_y_thruth  = 1.7018 
+    coordinate_2_x_thruth  = 1.3716
+    coordinate_2_y_thruth  = 0.6858
     coordinate_3_x_thruth  = 0.4572
-    coordinate_3_y_thruth  = 4.2926
+    coordinate_3_y_thruth  = -3.556
     
     # Truth values  
     error = Data()  

@@ -121,10 +121,8 @@ def compute_payload_range_diagram(mission = None, cruise_segment_tag = "cruise",
             payload_range  =  electric_payload_range_diagram(vehicle,mission,cruise_segment_tag)
     
     # delete aerodynamic surrogates 
-    file_name = [(seg.analyses.aerodynamics.tag) for seg in mission.segments][0]     
-    for fname in os.listdir(os.path.dirname(os.path.abspath(sys.argv[0]))):
-        if fname.endswith(".pkl") and "payload_range_mission" in fname and file_name in fname:
-            os.remove(os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), fname))
+    file_name = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), segment.analyses.vehicle.tag +"_aero_training_data.pkl")
+    os.remove(file_name) 
 
     print("\n============== Payload Range Report ==============\n")            
     try:

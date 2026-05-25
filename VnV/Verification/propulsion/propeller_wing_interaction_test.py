@@ -71,8 +71,8 @@ def Propeller_Slipstream(wake_fidelity,identical_props):
     print('CL difference')
     print(diff_CL)
 
-    diff_Cl_y   = np.max(np.abs(sectional_lift_coeff - sectional_lift_coeff_true) / np.abs(sectional_lift_coeff_true))
-    print('Cl-y difference')
+    diff_Cl_y   = np.max(np.abs((sectional_lift_coeff - sectional_lift_coeff_true) /sectional_lift_coeff_true))
+    print('Sectional Cl difference')
     print(diff_Cl_y)
     
     assert diff_CL< 1e-6
