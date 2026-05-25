@@ -40,8 +40,6 @@ class Cabin(Component):
         self.nose                      = Data() 
         self.nose.fineness_ratio       = 0
         self.classes                   = Container()
-        self.compressor                = Compressor()
-        self.compressor.efficiency     = 0.85 # Default compressor efficiency, can be updated based on specific design requirements
         
     def append_cabin_class(self,cabin_class): 
 

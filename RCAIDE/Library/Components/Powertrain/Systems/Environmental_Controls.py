@@ -22,6 +22,7 @@ class Environmental_Controls(Systems):
         Sets default values for the environmental control system attributes.
         """                  
         self.tag        = 'environmental_controls' 
+        self.cabin_compressor_efficiency   = 0.85 
         
     def append_operating_conditions(self, segment, bus): 
         """

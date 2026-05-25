@@ -22,6 +22,7 @@ from .append_cabin_loads_conditions             import append_cabin_loads_condit
 from .append_ice_protection_conditions          import append_ice_protection_conditions
 from. append_hydraulics_conditions              import append_hydraulics_conditions
 from .compute_avionics_power_draw               import compute_avionics_power_draw
+from .compute_flight_controls_power_draw        import compute_flight_controls_power_draw
 from .compute_systems_power_draw                import compute_systems_power_draw
 from .compute_ecs_power_draw                    import compute_ecs_power_draw
 from .compute_hydraulics_power_draw             import compute_hydraulics_power_draw

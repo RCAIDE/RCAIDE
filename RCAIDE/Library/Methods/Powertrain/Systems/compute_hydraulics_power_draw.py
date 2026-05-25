@@ -46,37 +46,29 @@ def compute_hydraulics_power_draw(hydraulics,vehicle,bus,state):
     # 1. Define The Baseline (A320-200 parameters from MDPI Paper)
     MTOW_baseline = 75166.0 # kg
     P_res         = 3.52    # Reservoir pressure (bar)
-    eta_pump      = 0.855   # 85.5% pump efficiency
-    
-    # Triple Hydraulics Systems (flow rates in L/min, System Pressures in bar)
-    systems = {
-        'Left':   {'n_pumps': 1, 'V_flow_base': 140.0, 'P_sys': 204.0},
-        'Right':  {'n_pumps': 1, 'V_flow_base': 140.0, 'P_sys': 204.0},
-        'Center': {'n_pumps': 1, 'V_flow_base': 23.0,  'P_sys': 196.0}
-    }
-    
-    P_hydraulic = 0
+    eta_pump      = 0.855   # 85.5% pump efficiency  
     
     # 2. Extract current aircraft MTOW and compute scaling factor
     MTOW = vehicle.mass_properties.max_takeoff
     scaling_factor = MTOW / MTOW_baseline
     
-    # 5. Compute power
-    for name, sys in systems.items():
-        
-        # Scale the volumetric flow rate based on aircraft size
-        V_flow = (sys['V_flow_base'] * scaling_factor) / 60000.0 # m^3/s
-        
-        # Pressure difference (System P - Reservoir P)
-        delta_p = (sys['P_sys'] - P_res) * 100000.0 # Pa
-        
-        # Calculate mechanical pump power: P = (V_flow * Delta_P) / eta
-        P_sys = sys['n_pumps'] * ((V_flow * delta_p) / eta_pump)
-        
-        P_hydraulic += P_sys
+    # 5. Compute power     
+    # Scale the volumetric flow rate based on aircraft size
+    V_flow_left    = (hydraulics.left_system.flowspeed * scaling_factor) / 60000.0 # m^3/s
+    V_flow_right   = (hydraulics.right_system.flowspeed         * scaling_factor) / 60000.0 # m^3/s
+    V_flow_central = (hydraulics.central_system.flowspeed  * scaling_factor) / 60000.0 # m^3/s
     
-    P_act                            = P_hydraulic
-          
+    # Pressure difference (System P - Reservoir P)
+    delta_p_left    = ( hydraulics.left_system.system_power- P_res) * 100000.0 # Pa
+    delta_p_right   = ( hydraulics.right_system.system_power - P_res) * 100000.0 # Pa
+    delta_p_central = (hydraulics.central_system.system_power  - P_res) * 100000.0 # Pa
+    
+    # Calculate mechanical pump power: P = (V_flow * Delta_P) / eta
+    P_sys_left    = hydraulics.left_system.number_of_pumps    * ((V_flow_left   * delta_p_left   ) / eta_pump)
+    P_sys_right   = hydraulics.right_system.number_of_pumps   * ((V_flow_right   *delta_p_right  ) / eta_pump)
+    P_sys_central = hydraulics.central_system.number_of_pumps * ((V_flow_central *delta_p_central) / eta_pump)
+         
+    P_act                            = P_sys_left + P_sys_right  + P_sys_central  
     bus_conditions                   = state.conditions.energy.busses[bus.tag]
     hydraulics_conditions            = bus_conditions[hydraulics.tag]
     hydraulics_conditions.power[:,0] = P_act

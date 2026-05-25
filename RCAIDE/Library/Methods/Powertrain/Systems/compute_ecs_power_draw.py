@@ -62,12 +62,8 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     T1       = state.conditions.freestream.temperature 
     P1       = state.conditions.freestream.pressure
     gamma    = state.conditions.freestream.specific_heat 
-    m_dot    = m_dot_per_pax * N_pax 
-    
-    # Retrieve compressor efficiency from the cabin component
-    for fuselage in vehicle.fuselages: 
-        for cabin in fuselage.cabins:
-            eta_c = cabin.compressor.efficiency
+    m_dot    = m_dot_per_pax * N_pax
+    eta_c    = environmental_controls.cabin_compressor_efficiency 
     
     # Compute the ram pressure at the inlet of the compressor
     P_ram    = P1 * (1 + ((gamma - 1) / 2) * Mach**2)

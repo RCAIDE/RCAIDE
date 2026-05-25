@@ -640,24 +640,14 @@ def vehicle_setup():
     #------------------------------------------------------------------------------------------------------------------------------------  
     # Systems
     #------------------------------------------------------------------------------------------------------------------------------------  
-    avionics                         = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
-    avionics.power_draw              = 4000 * Units.watt # Watts (Flat Rate for Avionics)
-    bus.avionics                     = avionics
+    bus.avionics                     = RCAIDE.Library.Components.Powertrain.Systems.Avionics()
+    bus.avionics.power_draw          = 4000 * Units.watt # Watts (Flat Rate for Avionics) 
     
-    cabin_loads                      = RCAIDE.Library.Components.Powertrain.Systems.Cabin_Loads()
-    bus.cabin_loads                  = cabin_loads
-    
-    environmental_control_system     = RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls()
-    bus.environmental_control_system = environmental_control_system
-    
-    ice_protection_system            = RCAIDE.Library.Components.Powertrain.Systems.Ice_Protection()
-    bus.ice_protection_system        = ice_protection_system
-    
-    hydraulics                       = RCAIDE.Library.Components.Powertrain.Systems.Hydraulics()
-    bus.hydraulics                   = hydraulics
-    
-    flight_controls_system           = RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls()
-    bus.flight_controls_system       = flight_controls_system
+    bus.cabin_loads                  = RCAIDE.Library.Components.Powertrain.Systems.Cabin_Loads()
+    bus.environmental_controls       = RCAIDE.Library.Components.Powertrain.Systems.Environmental_Controls() 
+    bus.ice_protection               = RCAIDE.Library.Components.Powertrain.Systems.Ice_Protection() 
+    bus.hydraulics                   = RCAIDE.Library.Components.Powertrain.Systems.Hydraulics() 
+    bus.flight_controls              = RCAIDE.Library.Components.Powertrain.Systems.Flight_Controls()
     
     #------------------------------------------------------------------------------------------------------------------------------------   
     # Assign propulsors to bus       

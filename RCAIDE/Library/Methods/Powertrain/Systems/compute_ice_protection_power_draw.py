@@ -58,10 +58,6 @@ def compute_ice_protection_power_draw(ice_protection,vehicle,bus,state):
     f_pulse      = 0.2    # Pulses per second (12 per minute)
     eta_sys      = 0.8    # 80% efficiency
     q_total_flux = 6000   # W/m², Approximate heat flux required to prevent ice accretion (convective + evaporative + sensible)
-    
-    q_convective = 0
-    q_evaporative = 0
-    q_sensible  = 0
       
     for wing in vehicle.wings:
         Area += wing.areas.reference * percentage_ice 

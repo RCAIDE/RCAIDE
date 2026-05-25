@@ -135,13 +135,20 @@ class Network(Component):
             flight_controls      = bus.flight_controls
             cabin_loads          = bus.cabin_loads
     
-            # Avionics Power Consumption 
-            compute_avionics_power_draw(avionics,vehicle,bus,state) 
-            compute_systems_power_draw(systems,vehicle,bus,state) 
-            compute_ecs_power_draw(ecs,vehicle,bus,state)
-            compute_ice_protection_power_draw(ice_protection,vehicle,bus,state)
-            compute_hydraulics_power_draw(hydraulics,vehicle,bus,state)
-            compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state)
+            if avionics != None:
+                compute_avionics_power_draw(avionics,vehicle,bus,state)
+            if flight_controls != None:
+                compute_flight_controls_power_draw(flight_controls,vehicle,bus,state)
+            if systems != None: 
+                compute_systems_power_draw(systems,vehicle,bus,state)
+            if ecs != None:
+                compute_ecs_power_draw(ecs,vehicle,bus,state)
+            if ice_protection != None:
+                compute_ice_protection_power_draw(ice_protection,vehicle,bus,state)
+            if hydraulics != None:
+                compute_hydraulics_power_draw(hydraulics,vehicle,bus,state)
+            if cabin_loads != None:
+                compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state)
     
             # Bus Voltage 
             bus_voltage = bus.voltage * state.ones_row(1)       
