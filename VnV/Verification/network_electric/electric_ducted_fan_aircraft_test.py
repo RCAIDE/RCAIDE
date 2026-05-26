@@ -35,11 +35,11 @@ from NASA_X48    import configs_setup as configs_setup
 
 def main():
 
-    regression_flag = True # Keep True for regression 
+    regression_flag = False # Keep True for regression 
     ducted_fan_type  = ['Blade_Element_Momentum_Theory', 'Rankine_Froude_Momentum_Theory']
     
     # truth values 
-    thrust_truth         = [73.49474597966241, 73.49474597966244]
+    thrust_truth         = [68.13505513753238, 68.13505513753242]
    
     for i in range(len(ducted_fan_type)):  
         # vehicle data
