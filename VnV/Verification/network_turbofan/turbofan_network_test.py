@@ -69,6 +69,7 @@ def main():
     climb_throttle_7   = results.segments.climb_7.conditions.energy.propulsors['propulsor_1'].throttle[3][0] 
     climb_throttle_8   = results.segments.climb_8.conditions.energy.propulsors['propulsor_1'].throttle[3][0] 
     climb_throttle_9   = results.segments.climb_9.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
+    climb_throttle_10   = results.segments.climb_10.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
     cruise_CL_1        = results.segments.cruise_1.conditions.aerodynamics.coefficients.lift.total[2][0]
     cruise_CL_2        = results.segments.cruise_2.conditions.aerodynamics.coefficients.lift.total[2][0] 
     descent_throttle_1 = results.segments.descent_1.conditions.energy.propulsors['propulsor_1'].throttle[3][0]
@@ -89,7 +90,7 @@ def main():
     show_vals = True
     if show_vals:
         data = [takeoff_thrust, ICA_climb_CL, climb_throttle_1,   climb_throttle_2,   climb_throttle_3,   climb_throttle_4,   climb_throttle_5,  
-                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9,
+                climb_throttle_6,   climb_throttle_7,   climb_throttle_8,   climb_throttle_9, climb_throttle_10,
                 cruise_CL_1,  cruise_CL_2,   descent_throttle_1, descent_2_CL, curved_cruise_CL, descent_throttle_3,
                 single_pt_CL_1,     single_pt_CL_2,     cruise_4_CL,   cruise_5_CL, cruise_6_CL,cruise_7_CL,cruise_8_CL, 
                 descent_throttle_4,  landing_thrust]
@@ -108,6 +109,7 @@ def main():
     climb_throttle_7_truth   = 1.2290110136958332
     climb_throttle_8_truth   = 0.4976344939643507
     climb_throttle_9_truth   = 0.6666116047760398
+    climb_throttle_10_truth  = 0.8518275849805589
     cruise_CL_1_truth        = 0.6741618428308541
     cruise_CL_2_truth        = 0.5222491838692555
     descent_throttle_1_truth = 0.02337822265674594
@@ -137,6 +139,7 @@ def main():
     error.climb_throttle_7   = np.max((np.abs(climb_throttle_7     - climb_throttle_7_truth))/climb_throttle_7_truth)   
     error.climb_throttle_8   = np.max((np.abs(climb_throttle_8     - climb_throttle_8_truth))/climb_throttle_8_truth)  
     error.climb_throttle_9   = np.max((np.abs(climb_throttle_9     - climb_throttle_9_truth))/climb_throttle_9_truth) 
+    error.climb_throttle_10  = np.max((np.abs(climb_throttle_10    - climb_throttle_10_truth))/climb_throttle_10_truth) 
     error.cruise_CL_1        = np.max((np.abs(cruise_CL_1          - cruise_CL_1_truth ))/cruise_CL_1_truth)      
     error.cruise_CL_2        = np.max((np.abs(cruise_CL_2         - cruise_CL_2_truth ))/cruise_CL_2_truth)     
     error.descent_throttle_1 = np.max((np.abs(descent_throttle_1   - descent_throttle_1_truth))/descent_throttle_1_truth) 
@@ -165,6 +168,7 @@ def main():
         ('climb_throttle_7',   climb_throttle_7,   climb_throttle_7_truth),
         ('climb_throttle_8',   climb_throttle_8,   climb_throttle_8_truth),
         ('climb_throttle_9',   climb_throttle_9,   climb_throttle_9_truth),
+        ('climb_throttle_10',  climb_throttle_10,  climb_throttle_10_truth),
         ('cruise_CL_1',        cruise_CL_1,        cruise_CL_1_truth),
         ('cruise_CL_2',        cruise_CL_2,        cruise_CL_2_truth),
         ('descent_throttle_1', descent_throttle_1, descent_throttle_1_truth),
