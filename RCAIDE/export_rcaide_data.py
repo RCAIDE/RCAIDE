@@ -1,177 +1,281 @@
-# export_rcaide_data.py 
-# 
-# Created:  Mar 2026, M. Clarke 
+# export_rcaide_data.py
+#
+# Created:  Mar 2026, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  IMPORT
-# ----------------------------------------------------------------------------------------------------------------------      
+# ----------------------------------------------------------------------------------------------------------------------
 
 import numpy as np
 import types
 import json
 import pickle
+import os
+import shutil
 from collections import OrderedDict
 
 GUI_DEFAULT_UNIT_INDEX = 0
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  export_rcaide_data
-# ----------------------------------------------------------------------------------------------------------------------       
-def export_rcaide_data(vehicle=None, configurations = None, missions=None,analyses=None, filename='RCAIDE_data', pickle_format=False):
+# ----------------------------------------------------------------------------------------------------------------------
+def export_rcaide_data(vehicle=None, configurations=None,  analyses=None, missions=None,
+                       filename='RCAIDE_data', pickle_format=False):
     """
-    Converts a RCAIDE data structure to a JSON or Pickle file for storage.
-    
+    Converts a RCAIDE data structure to a JSON file readable by the RCAIDE GUI
+    and by import_rcaide_data.
+
+    The output JSON format matches the structure expected by the RCAIDE GUI's
+    values.py read_from_json function. Every RCAIDE Data container in the output
+    carries a '__type__' field that records its fully-qualified Python class path,
+    e.g.::
+
+        "fan": {
+            "__type__": "RCAIDE.Library.Components.Powertrain.Converters.Fan.Fan",
+            ...
+        }
+        "networks": {
+            "fuel_network": {
+                "__type__": "RCAIDE.Framework.Networks.Fuel.Fuel",
+                "fuel_lines": {
+                    "fuel_line_1": {
+                        "__type__": "RCAIDE.Library.Components.Powertrain.Distributors.Fuel_Line.Fuel_Line",
+                        ...
+                    }
+                }
+            }
+        }
+
+    This metadata allows import_rcaide_data (and the GUI's read_from_json) to
+    reconstruct exact RCAIDE classes—including nested sub-components such as
+    Fan, Compressor, Turbine, Combustor, Fuel_Line, etc.—rather than falling
+    back to generic DataOrdered containers.
+
+    Scalar and array leaf values are stored as [value, unit_index] pairs where
+    unit_index 0 means SI units.  Strings are stored plain.
+
+    Airfoil coordinate files referenced by coordinate_file fields are copied
+    into the same directory as the JSON so the GUI can locate them on any machine.
+
     Parameters
     ----------
-    data : RCAIDE.Framework.Core.Data
-        RCAIDE data structure to be saved
+    vehicle : RCAIDE.Vehicle, optional
+        Vehicle object to export.
+    configurations : optional
+        Vehicle configurations (stored as empty list; GUI manages configs separately).
+    missions : optional
+        Mission objects (stored as empty list; GUI manages missions separately).
+    analyses : optional
+        Analysis objects (stored as empty list; GUI manages analyses separately).
     filename : str
-        Path where the file will be saved, without extension for pickle files
+        Output file path without extension.
     pickle_format : bool, optional
-        Flag indicating whether to save as a pickle file (True) or JSON file (False)
-        Default is False (JSON format)
-        
+        If True, saves as a pickle file instead of JSON. Default is False.
+
     Returns
     -------
     None
-    
-    Notes
-    -----
-    This function supports two file formats:
-    
-    1. JSON format (default): Converts the RCAIDE data structure to a JSON string
-       using the build_dict_base and build_dict_r helper functions, then writes it to a file.
-       
-    2. Pickle format: Serializes the Python object directly to a binary file.
-       The .pkl extension is automatically added to the filename.
-    
-    JSON format is human-readable and more portable across different Python versions,
-    while pickle format is more efficient for large data structures but less portable.
-    
+
     See Also
     --------
-    RCAIDE.load
-    RCAIDE.build_dict_base
-    RCAIDE.build_dict_r
+    RCAIDE.import_rcaide_data
+        Complementary function that reads the JSON and reconstructs the vehicle.
     """
 
     # STEP 1: Check Input
-    if (vehicle == None) and (configurations == None) and  (missions== None) and (analyses ==  None):
-        raise  AssertionError('No data to be saved!') 
-    
-    # STEP 2: Compile data 
-    RCAIDE_DATA = {} 
-    
-    if vehicle != None:
-        RCAIDE_DATA['rcaide_vehicle'] = vehicle 
-        
-    if configurations != None:
-        RCAIDE_DATA['rcaide_configurations'] = configurations
-    
-    if analyses != None:
-        RCAIDE_DATA['rcaide_analyses'] = analyses
-            
-    if missions != None:
-        RCAIDE_DATA['rcaide_missions'] = missions 
-    
-    # STEP 3: Save data  
+    if vehicle is None and configurations is None and missions is None and analyses is None:
+        raise AssertionError('No data to be saved!')
+
+    # STEP 2: Save data
     if pickle_format:
-        pickle_file  =  filename + '.pkl'
-        with open(pickle_file, 'wb') as file:
-            pickle.dump(RCAIDE_DATA, file) 
-    else: 
-        # Create a dictionary structure with the results 
-        keys = RCAIDE_DATA.keys()  
-        rcaide_dict = {}  
-        for k in keys:  
-            v = RCAIDE_DATA[k]
-            rcaide_dict[k] = build_dict_base(v) # recursive function 
-         
-        #res_dict = build_dict_base(RCAIDE_DATA) 
+        RCAIDE_DATA = {}
+        if vehicle       is not None: RCAIDE_DATA['rcaide_vehicle']        = vehicle
+        if configurations is not None: RCAIDE_DATA['rcaide_configurations'] = configurations
+        if analyses      is not None: RCAIDE_DATA['rcaide_analyses']       = analyses
+        if missions      is not None: RCAIDE_DATA['rcaide_missions']       = missions
+        with open(filename + '.pkl', 'wb') as file:
+            pickle.dump(RCAIDE_DATA, file)
+        return
 
-        with open( filename + '.json', 'w') as f:
-            json.dump(rcaide_dict, f, indent=4) 
-    return  
-        
-def build_dict_base(base):
-    """Builds a dictionary based on a RCAIDE data structure. This is initial case.
+    # STEP 3: Build GUI-compatible JSON
+    output_path = os.path.abspath(filename + '.json')
+    output_dir  = os.path.dirname(output_path)
+    os.makedirs(output_dir, exist_ok=True)
 
-    Assumptions:
-        Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-        Functions are ignored and all other data raises an error.
-
-    Source:
-        None
-
-    Args:
-        base  :     RCAIDE data structure [unitless]
-
-    Returns:
-        base_dict :  Dictionary built on the data structure   [unitless]
-    """      
-    
-    keys = base.keys() # keys from top level
-    base_dict = {} # initialize dictionary
-    # Ordered is used because some post processing currently
-    # relies on the segments being in order
-    
-    # Assign all values
-    for k in keys: 
-        if k == '_component_root_map': 
-            pass
-        else:
-            v = base[k]
-            base_dict[k] = build_dict_r(v) # recursive function 
-    return base_dict
-     
-def build_dict_r(v):
-    """Builds a dictionary based on a RCAIDE data structure. This the recursive step.
-
-    Assumptions:
-        Data must be numpy arrays, strings, booleans, floats, ints, or lists.
-        Functions are ignored and all other data raises an error.
-
-    Source:
-        None
-
-    Args:
-        v     :  value in a data structure [unitless]
-
-    Returns:
-        ret   : value based on type of v [unitless]
-    """      
-    tv = type(v) # Get value type
-    
-    if tv == type:
-        return None
-    
-    # Transform values to the RCAIDE GUI JSON format:
-    # [value, unit_index]. The default unit index is 0.
-    if (tv == np.ndarray) or (tv == np.float64):
-        ret = [v.tolist(), GUI_DEFAULT_UNIT_INDEX]
-    elif (tv == str) or (tv == bool):
-        ret = [v, GUI_DEFAULT_UNIT_INDEX]
-    elif tv == type(None):
-        ret = [None, GUI_DEFAULT_UNIT_INDEX]
-    elif (tv == float) or (tv == int):
-        ret = [v, GUI_DEFAULT_UNIT_INDEX]
-    elif tv == types.FunctionType: # Functions cannot be stored
-        ret = None        
-    elif tv == list:
-        ret = [v, GUI_DEFAULT_UNIT_INDEX]
-
+    # Serialise vehicle using the GUI [value, unit_index] format
+    if vehicle is not None:
+        vehicle_dict = build_dict_base(vehicle)
+        # Copy any referenced airfoil coordinate files into the output directory
+        # and replace paths with just the basename so the GUI can find them.
+        _relocate_coordinate_files(vehicle_dict, output_dir)
     else:
-        # Assume other data types are RCAIDE data types and check
-        try:
-            keys = v.keys()
-        except:
-            if callable(tv):
-                return None
+        vehicle_dict = {}
+
+    # Build the top-level structure that read_from_json expects.
+    # config_data / analysis_data / mission_data are GUI-managed slots that store
+    # GUI-specific state (CS deflections, segment UI parameters, etc.) and are kept
+    # as empty lists here so the GUI can open the file without confusion.
+    # RCAIDE-native objects are stored under their own keys for import_rcaide_data.
+    rcaide_data = {
+        "rcaide_vehicle":        vehicle_dict,
+        "config_data":           [],
+        "analysis_data":         [],
+        "mission_data":          [],
+        "propulsor_names":       _extract_propulsor_names(vehicle),
+        "rcaide_configurations": build_dict_r(configurations) if configurations is not None else None,
+        "rcaide_analyses":       build_dict_r(analyses)       if analyses       is not None else None,
+        "rcaide_missions":       build_dict_r(missions)        if missions       is not None else None,
+    }
+
+    with open(output_path, 'w') as f:
+        json.dump(rcaide_data, f, indent=4) 
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  _extract_propulsor_names
+# ----------------------------------------------------------------------------------------------------------------------
+def _extract_propulsor_names(vehicle):
+    """
+    Build the propulsor_names list expected by the GUI from the vehicle's networks.
+
+    Each fuel line and electrical bus stores an assigned_propulsors list whose
+    entries are propulsor-tag groups (lists of strings).  This function collects
+    all unique groups across every network so the GUI can populate propulsor
+    checkboxes in the Mission tab without additional user input.
+
+    Returns
+    -------
+    list of list of str
+        e.g. [['starboard_propulsor', 'port_propulsor']] for a symmetric twin-
+        engine aircraft.  Returns [[]] when no assignments are found.
+    """
+    if vehicle is None:
+        return [[]]
+
+    groups = []
+    try:
+        for network in vehicle.networks:
+            for distributor in list(network.fuel_lines) + list(network.busses):
+                for group in getattr(distributor, 'assigned_propulsors', []):
+                    if isinstance(group, list) and group and group not in groups:
+                        groups.append(group)
+    except Exception:
+        pass
+
+    return groups if groups else [[]]
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  _relocate_coordinate_files
+# ----------------------------------------------------------------------------------------------------------------------
+def _relocate_coordinate_files(obj, output_dir):
+    """
+    Walk the serialised dict, copy any existing coordinate files into
+    output_dir, and replace the stored path with just the basename.
+    If the file cannot be found the field is left unchanged so the
+    GUI's own repair_airfoil_path logic can attempt a fallback lookup.
+    """
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            if key == 'coordinate_file':
+                obj[key] = _copy_airfoil_file(value, output_dir)
             else:
-                raise TypeError('Unexpected data type in RCAIDE data structure')
-        # Recursively assign values
-        ret = {} # OrderedDict()
-        for k in keys:
-            ret[k] = build_dict_r(v[k])        
-    
+                _relocate_coordinate_files(value, output_dir)
+    elif isinstance(obj, list):
+        for item in obj:
+            _relocate_coordinate_files(item, output_dir)
+
+
+def _copy_airfoil_file(value, output_dir):
+    """
+    Given a raw or [path, 0]-wrapped coordinate_file value, copy the
+    referenced file to output_dir and return just the basename as a
+    plain string (or the original value if the file cannot be found).
+    """
+    # Unwrap [path, unit_index] if needed
+    if isinstance(value, list) and len(value) == 2 and isinstance(value[1], int):
+        path = value[0]
+        wrapped = True
+    else:
+        path = value
+        wrapped = False
+
+    if not path or not isinstance(path, str):
+        return value  # nothing to do (None or non-string)
+
+    basename = os.path.basename(path)
+
+    if os.path.isfile(path):
+        dest = os.path.join(output_dir, basename)
+        if os.path.abspath(path) != os.path.abspath(dest):
+            shutil.copy2(path, dest)
+        result = basename
+    else:
+        # File not found — keep basename only so the GUI can try to resolve it
+        result = basename if basename else path
+
+    return [result, GUI_DEFAULT_UNIT_INDEX] if wrapped else result
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  build_dict_base / build_dict_r   (GUI [value, unit_index] serialisation)
+# ----------------------------------------------------------------------------------------------------------------------
+def build_dict_base(base):
+    """Serialise a RCAIDE Data object to a plain dict using GUI [value, unit_index] format."""
+    keys = base.keys()
+    base_dict = {}
+    for k in keys:
+        if k in ('_component_root_map', '_energy_network_root_map'):
+            continue
+        base_dict[k] = build_dict_r(base[k])
+    return base_dict
+
+
+def build_dict_r(v):
+    """Recursive serialisation step.  Leaf values become [value, 0] pairs."""
+    tv = type(v)
+
+    if tv is type:
+        return None
+
+    if tv is str:
+        # Store tag/label strings as plain strings — the GUI reads them either way.
+        return v
+
+    if tv in (np.ndarray, np.float64):
+        return [v.tolist(), GUI_DEFAULT_UNIT_INDEX]
+
+    if tv is bool:
+        return [v, GUI_DEFAULT_UNIT_INDEX]
+
+    if tv in (float, int):
+        return [v, GUI_DEFAULT_UNIT_INDEX]
+
+    if tv is type(None):
+        return [None, GUI_DEFAULT_UNIT_INDEX]
+
+    if tv is types.FunctionType:
+        return None
+
+    if tv is list:
+        return [v, GUI_DEFAULT_UNIT_INDEX]
+
+    # Assume RCAIDE Data container — recurse
+    try:
+        keys = v.keys()
+    except AttributeError:
+        if callable(tv):
+            return None
+        raise TypeError(f'Unexpected type in RCAIDE data structure: {tv}')
+
+    ret = {}
+    # Record the fully-qualified class name so the GUI can reconstruct the right type.
+    module   = getattr(tv, '__module__', '') or ''
+    qualname = getattr(tv, '__qualname__', '') or ''
+    if module and qualname and not qualname.startswith('<'):
+        ret['__type__'] = f"{module}.{qualname}"
+
+    for k in keys:
+        if isinstance(k, type) or k in ('_component_root_map', '_energy_network_root_map'):
+            continue
+        ret[k] = build_dict_r(v[k])
     return ret

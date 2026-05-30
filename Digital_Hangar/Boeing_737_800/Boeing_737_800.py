@@ -23,13 +23,13 @@ def main():
 
     try:
         import vsp as vsp
-        from RCAIDE.Framework.External_Interfaces.OpenVSP import export_vsp_vehicle 
+        from RCAIDE.Framework.External_Interfaces.OpenVSP import export_vsp_vehicle
         export_vsp_vehicle(vehicle, 'Boeing_737_800')
     except ImportError:
         pass
-       
-    
-    # Step 2: plot vehicle 
+
+
+    # Step 2: plot vehicle
     plot_3d_vehicle(vehicle,export_gltf=True)  
     
     return 
@@ -812,5 +812,5 @@ def configs_setup(vehicle):
     return configs
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     main()
