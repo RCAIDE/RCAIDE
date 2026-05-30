@@ -2,8 +2,7 @@
 #
 # Created: Oct 2025, S Shekar
 import numpy as np
-import vtk
-import matplotlib.colors as mcolors
+import pyvista as pv
 from RCAIDE.Framework.Core import Data
 def generate_3d_lopa_points(structure):
     """
@@ -43,15 +42,12 @@ def generate_3d_lopa_points(structure):
         # Galley/Lav blocks
         if GalLav == 1.0:
             galley_lav_count += 1
-            cube = vtk.vtkCubeSource()
-            # Center at half-height above the local z
-            cube.SetCenter(float(x), float(y), float(z + 0.5 * seat_height))
-            cube.SetXLength(float(length))
-            cube.SetYLength(float(width))
-            cube.SetZLength(float(seat_height))
-            cube.Update()
-            pd = vtk.vtkPolyData()
-            pd.ShallowCopy(cube.GetOutput())
+            pd = pv.Cube(
+                center=(float(x), float(y), float(z + 0.5 * seat_height)),
+                x_length=float(length),
+                y_length=float(width),
+                z_length=float(seat_height),
+            )
             seats.append({
                 "polydata": pd,
                 "class": "galley_lav",
@@ -74,15 +70,12 @@ def generate_3d_lopa_points(structure):
         elif E_c == 1.0:
             seat_class = "economy"
             economy_count += 1
-        # Build the cube
-        cube = vtk.vtkCubeSource()
-        cube.SetCenter(float(x), float(y), float(z + 0.5 * seat_height))
-        cube.SetXLength(float(length))
-        cube.SetYLength(float(width))
-        cube.SetZLength(float(seat_height))
-        cube.Update()
-        pd = vtk.vtkPolyData()
-        pd.ShallowCopy(cube.GetOutput())
+        pd = pv.Cube(
+            center=(float(x), float(y), float(z + 0.5 * seat_height)),
+            x_length=float(length),
+            y_length=float(width),
+            z_length=float(seat_height),
+        )
         seats.append({
             "polydata": pd,
             "class": seat_class,

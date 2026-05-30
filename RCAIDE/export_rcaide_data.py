@@ -9,6 +9,7 @@
 import numpy as np
 import types
 import json
+import re
 import pickle
 import os
 import shutil
@@ -111,14 +112,22 @@ def export_rcaide_data(vehicle=None, configurations=None,  analyses=None, missio
     else:
         vehicle_dict = {}
 
+    # Generate minimal config_data entries (name only) so the GUI Aircraft Configs
+    # tab shows the configuration list on load. CS deflections and propulsor
+    # settings default to empty and can be filled in the GUI.
+    if configurations is not None:
+        gui_config_data = [
+            {"config name": name, "cs deflections": {}, "propulsors": {}, "gear down": False}
+            for name in configurations
+        ]
+    else:
+        gui_config_data = []
+
     # Build the top-level structure that read_from_json expects.
-    # config_data / analysis_data / mission_data are GUI-managed slots that store
-    # GUI-specific state (CS deflections, segment UI parameters, etc.) and are kept
-    # as empty lists here so the GUI can open the file without confusion.
     # RCAIDE-native objects are stored under their own keys for import_rcaide_data.
     rcaide_data = {
         "rcaide_vehicle":        vehicle_dict,
-        "config_data":           [],
+        "config_data":           gui_config_data,
         "analysis_data":         [],
         "mission_data":          [],
         "propulsor_names":       _extract_propulsor_names(vehicle),
@@ -128,7 +137,29 @@ def export_rcaide_data(vehicle=None, configurations=None,  analyses=None, missio
     }
 
     with open(output_path, 'w') as f:
-        json.dump(rcaide_data, f, indent=4) 
+        f.write(_dumps_compact(rcaide_data))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  _dumps_compact
+# ----------------------------------------------------------------------------------------------------------------------
+def _dumps_compact(data, indent=4):
+    """
+    Like json.dumps(indent=indent) but collapses [scalar, unit_index] pairs onto
+    a single line so the file remains human-navigable in editors that support
+    JSON folding.  Multi-element arrays (e.g. numpy arrays stored as lists) are
+    left in their expanded form.
+    """
+    raw = json.dumps(data, indent=indent)
+    # Match arrays whose only content is a single scalar (number, bool, null)
+    # followed by a single non-negative integer — i.e. [value, 0] unit pairs.
+    raw = re.sub(
+        r'\[\s*\n\s*([^\[\]\{\}\n]+?),\s*\n\s*(\d+)\s*\n\s*\]',
+        lambda m: f'[{m.group(1).strip()}, {m.group(2)}]',
+        raw,
+    )
+    return raw
+
 
 # ----------------------------------------------------------------------------------------------------------------------
 #  _extract_propulsor_names
