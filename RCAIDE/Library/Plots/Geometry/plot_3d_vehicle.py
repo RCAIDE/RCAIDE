@@ -313,24 +313,34 @@ def plot_3d_vehicle(vehicle,
     return plotter
 
 def add_lopa_seats(plotter, lopa_geometry, opacity):
-    seats = getattr(lopa_geometry, "_lopa_seats", [])
-    if not seats:
-        return
-
     color_map = {
         "first":      mcolors.to_rgb("indianred"),
         "business":   mcolors.to_rgb("seagreen"),
         "economy":    mcolors.to_rgb("steelblue"),
         "galley_lav": mcolors.to_rgb("sandybrown"),
-        "other":      mcolors.to_rgb("gray"),
     }
 
+    # Fast path: batched merged meshes (one add_mesh call per class/emergency group).
+    batches = getattr(lopa_geometry, "_lopa_batches", {})
+    if batches:
+        for (seat_class, is_em), merged_mesh in batches.items():
+            rgb = color_map.get(seat_class, mcolors.to_rgb("gray"))
+            actor = plotter.add_mesh(merged_mesh, color=rgb, opacity=float(opacity),
+                                     show_scalar_bar=False)
+            if is_em:
+                actor.GetProperty().EdgeVisibilityOn()
+                actor.GetProperty().SetEdgeColor(*rgb)
+                actor.GetProperty().SetLineWidth(1.0)
+        return
+
+    # Legacy path: individual seat dicts produced by older generate_3d_lopa_points.
+    seats = getattr(lopa_geometry, "_lopa_seats", [])
     for seat in seats:
         poly = seat.get("polydata", None)
         if poly is None:
             continue
         seat_class = seat.get("class", "economy")
-        rgb = color_map.get(seat_class, color_map["economy"])
+        rgb = color_map.get(seat_class, mcolors.to_rgb("gray"))
         mesh = pv.wrap(poly)
         actor = plotter.add_mesh(mesh, color=rgb, opacity=float(opacity), show_scalar_bar=False)
         if seat.get("emergency_row", False):

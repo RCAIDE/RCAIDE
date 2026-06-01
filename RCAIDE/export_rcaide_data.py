@@ -1,312 +1,363 @@
 # export_rcaide_data.py
 #
-# Created:  Mar 2026, M. Clarke
+# Created: May 2026, M. Clarke
 
 # ----------------------------------------------------------------------------------------------------------------------
-#  IMPORT
+#  IMPORTS
 # ----------------------------------------------------------------------------------------------------------------------
 
-import numpy as np
-import types
 import json
-import re
-import pickle
-import os
-import shutil
+import numpy as np
+import types as _types_module
 from collections import OrderedDict
 
-GUI_DEFAULT_UNIT_INDEX = 0
-
 # ----------------------------------------------------------------------------------------------------------------------
-#  export_rcaide_data
+#  Serialisation helpers  (same style as rcaide_io.write_to_json)
 # ----------------------------------------------------------------------------------------------------------------------
-def export_rcaide_data(vehicle=None, configurations=None,  analyses=None, missions=None,
-                       filename='RCAIDE_data', pickle_format=False):
-    """
-    Converts a RCAIDE data structure to a JSON file readable by the RCAIDE GUI
-    and by import_rcaide_data.
 
-    The output JSON format matches the structure expected by the RCAIDE GUI's
-    values.py read_from_json function. Every RCAIDE Data container in the output
-    carries a '__type__' field that records its fully-qualified Python class path,
-    e.g.::
-
-        "fan": {
-            "__type__": "RCAIDE.Library.Components.Powertrain.Converters.Fan.Fan",
-            ...
-        }
-        "networks": {
-            "fuel_network": {
-                "__type__": "RCAIDE.Framework.Networks.Fuel.Fuel",
-                "fuel_lines": {
-                    "fuel_line_1": {
-                        "__type__": "RCAIDE.Library.Components.Powertrain.Distributors.Fuel_Line.Fuel_Line",
-                        ...
-                    }
-                }
-            }
-        }
-
-    This metadata allows import_rcaide_data (and the GUI's read_from_json) to
-    reconstruct exact RCAIDE classes—including nested sub-components such as
-    Fan, Compressor, Turbine, Combustor, Fuel_Line, etc.—rather than falling
-    back to generic DataOrdered containers.
-
-    Scalar and array leaf values are stored as [value, unit_index] pairs where
-    unit_index 0 means SI units.  Strings are stored plain.
-
-    Airfoil coordinate files referenced by coordinate_file fields are copied
-    into the same directory as the JSON so the GUI can locate them on any machine.
-
-    Parameters
-    ----------
-    vehicle : RCAIDE.Vehicle, optional
-        Vehicle object to export.
-    configurations : optional
-        Vehicle configurations (stored as empty list; GUI manages configs separately).
-    missions : optional
-        Mission objects (stored as empty list; GUI manages missions separately).
-    analyses : optional
-        Analysis objects (stored as empty list; GUI manages analyses separately).
-    filename : str
-        Output file path without extension.
-    pickle_format : bool, optional
-        If True, saves as a pickle file instead of JSON. Default is False.
-
-    Returns
-    -------
-    None
-
-    See Also
-    --------
-    RCAIDE.import_rcaide_data
-        Complementary function that reads the JSON and reconstructs the vehicle.
-    """
-
-    # STEP 1: Check Input
-    if vehicle is None and configurations is None and missions is None and analyses is None:
-        raise AssertionError('No data to be saved!')
-
-    # STEP 2: Save data
-    if pickle_format:
-        RCAIDE_DATA = {}
-        if vehicle       is not None: RCAIDE_DATA['rcaide_vehicle']        = vehicle
-        if configurations is not None: RCAIDE_DATA['rcaide_configurations'] = configurations
-        if analyses      is not None: RCAIDE_DATA['rcaide_analyses']       = analyses
-        if missions      is not None: RCAIDE_DATA['rcaide_missions']       = missions
-        with open(filename + '.pkl', 'wb') as file:
-            pickle.dump(RCAIDE_DATA, file)
-        return
-
-    # STEP 3: Build GUI-compatible JSON
-    output_path = os.path.abspath(filename + '.json')
-    output_dir  = os.path.dirname(output_path)
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Serialise vehicle using the GUI [value, unit_index] format
-    if vehicle is not None:
-        vehicle_dict = build_dict_base(vehicle)
-        # Copy any referenced airfoil coordinate files into the output directory
-        # and replace paths with just the basename so the GUI can find them.
-        _relocate_coordinate_files(vehicle_dict, output_dir)
-    else:
-        vehicle_dict = {}
-
-    # Generate minimal config_data entries (name only) so the GUI Aircraft Configs
-    # tab shows the configuration list on load. CS deflections and propulsor
-    # settings default to empty and can be filled in the GUI.
-    if configurations is not None:
-        gui_config_data = [
-            {"config name": name, "cs deflections": {}, "propulsors": {}, "gear down": False}
-            for name in configurations
-        ]
-    else:
-        gui_config_data = []
-
-    # Build the top-level structure that read_from_json expects.
-    # RCAIDE-native objects are stored under their own keys for import_rcaide_data.
-    rcaide_data = {
-        "rcaide_vehicle":        vehicle_dict,
-        "config_data":           gui_config_data,
-        "analysis_data":         [],
-        "mission_data":          [],
-        "propulsor_names":       _extract_propulsor_names(vehicle),
-        "rcaide_configurations": build_dict_r(configurations) if configurations is not None else None,
-        "rcaide_analyses":       build_dict_r(analyses)       if analyses       is not None else None,
-        "rcaide_missions":       build_dict_r(missions)        if missions       is not None else None,
-    }
-
-    with open(output_path, 'w') as f:
-        f.write(_dumps_compact(rcaide_data))
+_SKIP_KEYS = frozenset({
+    '_component_root_map',
+    '_energy_network_root_map',
+    '_base',
+    '_diff',
+    'vehicle',          # never serialise back-references to the vehicle
+})
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  _dumps_compact
-# ----------------------------------------------------------------------------------------------------------------------
-def _dumps_compact(data, indent=4):
-    """
-    Like json.dumps(indent=indent) but collapses [scalar, unit_index] pairs onto
-    a single line so the file remains human-navigable in editors that support
-    JSON folding.  Multi-element arrays (e.g. numpy arrays stored as lists) are
-    left in their expanded form.
-    """
-    raw = json.dumps(data, indent=indent)
-    # Match arrays whose only content is a single scalar (number, bool, null)
-    # followed by a single non-negative integer — i.e. [value, 0] unit pairs.
-    raw = re.sub(
-        r'\[\s*\n\s*([^\[\]\{\}\n]+?),\s*\n\s*(\d+)\s*\n\s*\]',
-        lambda m: f'[{m.group(1).strip()}, {m.group(2)}]',
-        raw,
+def _is_unit_argument_pair(value):
+    return (
+        isinstance(value, list)
+        and len(value) == 2
+        and isinstance(value[1], int)
+        and not isinstance(value[1], bool)
     )
-    return raw
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  _extract_propulsor_names
-# ----------------------------------------------------------------------------------------------------------------------
-def _extract_propulsor_names(vehicle):
-    """
-    Build the propulsor_names list expected by the GUI from the vehicle's networks.
-
-    Each fuel line and electrical bus stores an assigned_propulsors list whose
-    entries are propulsor-tag groups (lists of strings).  This function collects
-    all unique groups across every network so the GUI can populate propulsor
-    checkboxes in the Mission tab without additional user input.
-
-    Returns
-    -------
-    list of list of str
-        e.g. [['starboard_propulsor', 'port_propulsor']] for a symmetric twin-
-        engine aircraft.  Returns [[]] when no assignments are found.
-    """
-    if vehicle is None:
-        return [[]]
-
-    groups = []
-    try:
-        for network in vehicle.networks:
-            for distributor in list(network.fuel_lines) + list(network.busses):
-                for group in getattr(distributor, 'assigned_propulsors', []):
-                    if isinstance(group, list) and group and group not in groups:
-                        groups.append(group)
-    except Exception:
-        pass
-
-    return groups if groups else [[]]
+def _make_json_safe(value):
+    if isinstance(value, dict) and hasattr(value, 'items'):
+        safe = OrderedDict()
+        for key, item in value.items():
+            if isinstance(key, type):
+                key = key.__name__
+            safe[str(key)] = _make_json_safe(item)
+        return safe
+    if isinstance(value, list):
+        return [_make_json_safe(item) for item in value]
+    if isinstance(value, tuple):
+        return [_make_json_safe(item) for item in value]
+    return value
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  _relocate_coordinate_files
-# ----------------------------------------------------------------------------------------------------------------------
-def _relocate_coordinate_files(obj, output_dir):
-    """
-    Walk the serialised dict, copy any existing coordinate files into
-    output_dir, and replace the stored path with just the basename.
-    If the file cannot be found the field is left unchanged so the
-    GUI's own repair_airfoil_path logic can attempt a fallback lookup.
-    """
-    if isinstance(obj, dict):
-        for key, value in obj.items():
-            if key == 'coordinate_file':
-                obj[key] = _copy_airfoil_file(value, output_dir)
-            else:
-                _relocate_coordinate_files(value, output_dir)
-    elif isinstance(obj, list):
-        for item in obj:
-            _relocate_coordinate_files(item, output_dir)
+def _add_unit_arguments(value):
+    """Wrap every scalar/array in [value, 0]; dicts are processed recursively."""
+    if isinstance(value, dict) and hasattr(value, 'items'):
+        wrapped = OrderedDict()
+        for key, item in value.items():
+            wrapped[key] = _add_unit_arguments(item)
+        return wrapped
+    if _is_unit_argument_pair(value):
+        return value
+    if isinstance(value, str):
+        return value
+    if isinstance(value, list):
+        safe_items = [_make_json_safe(item) for item in value]
+        if all(isinstance(item, dict) and hasattr(item, 'items') for item in safe_items):
+            return [_add_unit_arguments(item) for item in safe_items]
+        return [safe_items, 0]
+    if isinstance(value, tuple):
+        return [_make_json_safe(value), 0]
+    return [value, 0]
 
 
-def _copy_airfoil_file(value, output_dir):
-    """
-    Given a raw or [path, 0]-wrapped coordinate_file value, copy the
-    referenced file to output_dir and return just the basename as a
-    plain string (or the original value if the file cannot be found).
-    """
-    # Unwrap [path, unit_index] if needed
-    if isinstance(value, list) and len(value) == 2 and isinstance(value[1], int):
-        path = value[0]
-        wrapped = True
-    else:
-        path = value
-        wrapped = False
-
-    if not path or not isinstance(path, str):
-        return value  # nothing to do (None or non-string)
-
-    basename = os.path.basename(path)
-
-    if os.path.isfile(path):
-        dest = os.path.join(output_dir, basename)
-        if os.path.abspath(path) != os.path.abspath(dest):
-            shutil.copy2(path, dest)
-        result = basename
-    else:
-        # File not found — keep basename only so the GUI can try to resolve it
-        result = basename if basename else path
-
-    return [result, GUI_DEFAULT_UNIT_INDEX] if wrapped else result
-
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  build_dict_base / build_dict_r   (GUI [value, unit_index] serialisation)
-# ----------------------------------------------------------------------------------------------------------------------
-def build_dict_base(base):
-    """Serialise a RCAIDE Data object to a plain dict using GUI [value, unit_index] format."""
-    keys = base.keys()
-    base_dict = {}
-    for k in keys:
-        if k in ('_component_root_map', '_energy_network_root_map'):
-            continue
-        base_dict[k] = build_dict_r(base[k])
-    return base_dict
-
-
-def build_dict_r(v):
-    """Recursive serialisation step.  Leaf values become [value, 0] pairs."""
+def _build_dict_r(v):
+    """Recursively serialise a RCAIDE value, embedding __type__ for every mapping."""
     tv = type(v)
-
-    if tv is type:
+    if tv is type or tv is _types_module.FunctionType:
         return None
-
-    if tv is str:
-        # Store tag/label strings as plain strings — the GUI reads them either way.
+    if tv in (str, bool) or tv is type(None):
         return v
-
-    if tv in (np.ndarray, np.float64):
-        return [v.tolist(), GUI_DEFAULT_UNIT_INDEX]
-
-    if tv is bool:
-        return [v, GUI_DEFAULT_UNIT_INDEX]
-
     if tv in (float, int):
-        return [v, GUI_DEFAULT_UNIT_INDEX]
-
-    if tv is type(None):
-        return [None, GUI_DEFAULT_UNIT_INDEX]
-
-    if tv is types.FunctionType:
-        return None
-
+        return v
+    if tv is np.ndarray or tv is np.float64:
+        return v.tolist()
     if tv is list:
-        return [v, GUI_DEFAULT_UNIT_INDEX]
+        return v  # lists are left as-is (same as rcaide_io)
 
-    # Assume RCAIDE Data container — recurse
     try:
         keys = v.keys()
     except AttributeError:
-        if callable(tv):
-            return None
-        raise TypeError(f'Unexpected type in RCAIDE data structure: {tv}')
+        return None if callable(tv) else None
 
     ret = {}
-    # Record the fully-qualified class name so the GUI can reconstruct the right type.
+    module   = getattr(tv, '__module__',  '') or ''
+    qualname = getattr(tv, '__qualname__', '') or ''
+    if module and qualname and not qualname.startswith('<'):
+        ret['__type__'] = f"{module}.{qualname}"
+
+    for k in keys:
+        if k in _SKIP_KEYS:
+            continue
+        ret[k] = _build_dict_r(v[k])
+    return ret
+
+
+def _serialise(obj):
+    """Full pipeline: typed dict → JSON-safe → unit-argument wrapped."""
+    d = {}
+    for k in obj.keys():
+        if k in _SKIP_KEYS:
+            continue
+        d[k] = _build_dict_r(obj[k])
+    return _add_unit_arguments(_make_json_safe(d))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Config diff extraction
+# ----------------------------------------------------------------------------------------------------------------------
+
+def _serialise_config_entry(config):
+    """
+    Return a compact JSON-safe dict for one configuration.
+
+    Calls store_diff() so that _diff holds only what changed from the base
+    vehicle.  The diff is then serialised with the same __type__ + unit-arg
+    style used for the base vehicle, giving a tree like:
+
+        configs → wings → wing → control_surfaces → cs → deflection
+    """
+    config.store_diff()
+    diff = config._diff
+
+    diff_raw = {}
+    for k in diff.keys():
+        if k in _SKIP_KEYS:
+            continue
+        diff_raw[k] = _build_dict_r(diff[k])
+
+    diff_serialised = _add_unit_arguments(_make_json_safe(diff_raw))
+
+    tv = type(config)
+    module   = getattr(tv, '__module__',  '') or ''
+    qualname = getattr(tv, '__qualname__', '') or ''
+
+    return {
+        "__type__": f"{module}.{qualname}",
+        "tag":      config.tag,
+        "diff":     diff_serialised,
+    }
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Analysis / mission helpers
+# ----------------------------------------------------------------------------------------------------------------------
+
+# Attributes to omit when serialising mission segments.
+# 'analyses'   — references the full analysis hierarchy (kept separately)
+# 'state'      — runtime numerics / integrator state
+# 'conditions' — runtime flight-condition arrays
+# 'process'    — callable process tree; functions serialise to None and corrupt the reconstructed segment
+_SEGMENT_SKIP_KEYS = frozenset(_SKIP_KEYS | {'analyses', 'state', 'conditions', 'process'})
+
+
+def _build_dict_r_segment(v):
+    """Like _build_dict_r but also omits analyses, state, and conditions."""
+    tv = type(v)
+    if tv is type or tv is _types_module.FunctionType:
+        return None
+    if tv in (str, bool) or tv is type(None):
+        return v
+    if tv in (float, int):
+        return v
+    if tv is np.ndarray or tv is np.float64:
+        return v.tolist()
+    if tv is list:
+        return v
+
+    try:
+        keys = v.keys()
+    except AttributeError:
+        return None if callable(tv) else None
+
+    ret = {}
     module   = getattr(tv, '__module__', '') or ''
     qualname = getattr(tv, '__qualname__', '') or ''
     if module and qualname and not qualname.startswith('<'):
         ret['__type__'] = f"{module}.{qualname}"
 
     for k in keys:
-        if isinstance(k, type) or k in ('_component_root_map', '_energy_network_root_map'):
+        if k in _SEGMENT_SKIP_KEYS:
             continue
-        ret[k] = build_dict_r(v[k])
-    return ret
+        ret[k] = _build_dict_r_segment(v[k])
+    return ret 
+
+_ANALYSIS_DIFF_SKIP = frozenset(_SKIP_KEYS | {'process', 'tag'})
+
+
+def _analysis_settings_diff(actual, default):
+    """
+    Recursively compare actual sub-analysis settings against class defaults.
+    Returns a nested dict containing only the keys whose values differ.
+    Callables, process trees, and bookkeeping keys are ignored.
+    """
+    result = {}
+    if not hasattr(actual, 'keys') or not hasattr(default, 'keys'):
+        return result
+
+    for k in actual.keys():
+        if k in _ANALYSIS_DIFF_SKIP:
+            continue
+        v_act = actual[k]
+        if callable(v_act) or isinstance(v_act, type):
+            continue
+
+        try:
+            v_def = default[k]
+        except (KeyError, AttributeError):
+            serialized = _build_dict_r(v_act)
+            if serialized is not None:
+                result[k] = serialized
+            continue
+
+        if callable(v_def) or isinstance(v_def, type):
+            continue
+
+        if hasattr(v_act, 'keys') and hasattr(v_def, 'keys'):
+            sub_diff = _analysis_settings_diff(v_act, v_def)
+            if sub_diff:
+                result[k] = sub_diff
+        else:
+            try:
+                equal = bool(np.array_equal(np.asarray(v_act), np.asarray(v_def)))
+            except Exception:
+                try:
+                    equal = (v_act == v_def)
+                except Exception:
+                    equal = False
+            if not equal:
+                result[k] = _build_dict_r(v_act)
+
+    return result
+
+
+def _build_analysis_data(analyses):
+    """
+    Serialize every RCAIDE.Framework.Analyses.Vehicle() in the container.
+
+    For each sub-analysis the __type__ is saved so base_analysis() can
+    re-instantiate the class (restoring all defaults via __init__).  Any
+    settings that differ from the class defaults are stored as a diff tree
+    in the same unit-argument format used for the vehicle and configs.
+    """
+    result = []
+    for tag, analysis_vehicle in analyses.items():
+        sub_analyses = []
+        try:
+            for k in analysis_vehicle.keys():
+                if k in _SKIP_KEYS or k == 'tag':
+                    continue
+                sub = analysis_vehicle[k]
+                tv       = type(sub)
+                module   = getattr(tv, '__module__',  '') or ''
+                qualname = getattr(tv, '__qualname__', '') or ''
+                if not (module and qualname and not qualname.startswith('<')):
+                    continue
+                type_str = f"{module}.{qualname}"
+                entry = {'__type__': type_str}
+
+                try:
+                    default_sub = tv()
+                    diff = _analysis_settings_diff(sub, default_sub)
+                    if diff:
+                        entry['diff'] = _add_unit_arguments(_make_json_safe(diff))
+                except Exception:
+                    pass
+
+                sub_analyses.append(entry)
+        except Exception:
+            pass
+
+        result.append({'tag': str(tag), 'sub_analyses': sub_analyses})
+    return result
+
+
+def _build_mission_data(missions):
+    """
+    Serialize each mission with full segment detail.
+
+    Every segment is stored with its __type__, all numerical parameters,
+    flight_dynamics flags, and assigned_control_variables.  A 'config_tag'
+    string records which configuration's analyses were attached so they can be
+    re-extended on import.  The heavy 'analyses', 'state', and 'conditions'
+    attributes are omitted via _SEGMENT_SKIP_KEYS.
+    """
+    result = []
+    for mission_tag, mission in missions.items():
+        if isinstance(mission, str):
+            continue
+
+        tv = type(mission)
+        module   = getattr(tv, '__module__', '') or ''
+        qualname = getattr(tv, '__qualname__', '') or ''
+
+        segs = []
+        if hasattr(mission, 'segments'):
+            for seg_tag, seg in mission.segments.items():
+                seg_dict = _build_dict_r_segment(seg) or {}
+                seg_dict['tag'] = str(seg_tag)  # use container key as authoritative tag
+
+                # Infer which config's analyses are attached to this segment
+                config_tag = ''
+                try:
+                    av  = seg.analyses
+                    veh = getattr(av, 'vehicle', None)
+                    config_tag = (getattr(veh, 'tag', '') or
+                                  getattr(av,  'tag', '') or '')
+                except Exception:
+                    pass
+                if config_tag:
+                    seg_dict['config_tag'] = config_tag
+
+                segs.append(seg_dict)
+
+        entry = {
+            "__type__":    f"{module}.{qualname}",
+            "mission_tag": str(mission_tag),
+            "segments":    segs,
+        }
+        result.append(_add_unit_arguments(_make_json_safe(entry)))
+    return result
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+#  Public API
+# ----------------------------------------------------------------------------------------------------------------------
+
+def export_rcaide_data(vehicle, configurations, analyses, missions, filename):
+    """
+    Export a RCAIDE study to a compact JSON file.
+
+    The base vehicle is serialised once with full __type__ + unit-argument
+    notation.  Each configuration stores only its diff from the base (not a
+    full vehicle copy), structured as a native RCAIDE attribute tree:
+
+        configs → wings → wing → control_surfaces → cs → deflection
+
+    Parameters
+    ----------
+    vehicle        : RCAIDE.Vehicle
+    configurations : RCAIDE.Library.Components.Configs.Config.Container
+    analyses       : RCAIDE.Framework.Analyses.Analysis.Container
+    missions       : RCAIDE.Framework.Mission.Missions
+    filename       : str  (written to  filename + '.json')
+    """
+    config_data = [_serialise_config_entry(cfg) for _, cfg in configurations.items()]
+
+    data = {
+        "rcaide_vehicle":  _serialise(vehicle),
+        "config_data":     config_data,
+        "analysis_data":   _build_analysis_data(analyses),
+        "mission_data":    _build_mission_data(missions), 
+    }
+
+    with open(filename + '.json', 'w') as f:
+        json.dump(data, f, indent=4)
