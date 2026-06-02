@@ -13,15 +13,15 @@ def compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state):
     Parameters
     ----------
     cabin_loads : Cabin_Loads
-        The cabin loads component with the following attributes:
+        The cabin loads component object
             - power_draw : float
-                Power consumption of the cabin loads component [W]
-    cabin_loads_conditions : Conditions
-        Object to store cabin loads power conditions with the following attributes:
-            - power : numpy.ndarray
-                Array to store the computed power draw values [W]
-    conditions : Conditions
-        Object containing mission conditions (not directly used in this function)
+                Power consumption of the hydraulic systems component [W]
+    vehicle : Vehicle()
+        The vehicle object
+    bus : Electrical_Bus
+        The electrical bus that powers the cabin system
+    state : State
+        Object containing the current state of the aircraft
     
     Returns
     -------
@@ -30,9 +30,9 @@ def compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state):
     
     Notes
     -----
-    This function assigns the constant power draw value from the cabin loads component
-    to the power array in the cabin_loads_conditions object. The power draw is assumed
-    to be constant throughout the mission segment.
+    This function calculates the continuous steady-state electrical load of the 
+    cabin by scaling In-Flight Entertainment (IFE), commercial galley usage, and 
+    lighting linearly with the aircraft's passenger capacity.
     
     For more complex cabin loads models, this function could be extended to calculate
     power draw based on operating mode, altitude, or other mission parameters.
@@ -43,6 +43,7 @@ def compute_cabin_loads_power_draw(cabin_loads,vehicle,bus,state):
     """
     N_pax              = vehicle.number_of_passengers
     
+    # In-flight entertainment (IFE) power per passenger, galley power per passenger, and lighting power per passenger
     P_ife_per_pax      = 41                             # Watts
     P_galley_per_pax   = 320 * 0.5                      # Watts (For cruise segment, we can assume 50% usage factor for galley power)
     P_lighting_per_pax = 3.2 + 1.4 + 10                 # Watts (Reading Lights + Ambient Lighting + General Cabin Lighting, scales with pax)

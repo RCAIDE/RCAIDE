@@ -18,33 +18,34 @@ def compute_ice_protection_power_draw(ice_protection,vehicle,bus,state):
         The ice protection component with the following attributes:
             - power_draw : float
                 Power consumption of the ice protection component [W]
-    bus : ElectricalBus
-        The electrical bus that powers the ice protection system.
-    conditions : Conditions
-        Object containing mission conditions (not directly used in this function)
+    vehicle : Vehicle()
+        The vehicle object, used to extract wing reference areas for heat flux scaling
+    bus : Electrical_Bus
+        The electrical bus that powers the avionics system
+    state : State
+        Object containing the dynamic mission state arrays (specifically freestream temperature)
 
     Returns
     -------
     None
         This function modifies the ice_protection_conditions.power array in-place.
 
-                Array to store the computed power draw values [W]
-    conditions : Conditions
-        Object containing mission conditions (not directly used in this function)
-    
-    Returns
-    -------
-    None
-        This function modifies the ice_protection_conditions.power array in-place.
-    
     Notes
     -----
-    This function assigns the constant power draw value from the ice protection component
-    to the power array in the ice_protection_conditions object. The power draw is assumed
-    to be constant throughout the mission segment.
+    This function calculates the IPS power draw as a combination of:
+    1. Electro-thermal anti-icing for the wing leading edges (scaled by reference area).
+    2. Electro-mechanical expulsive de-icing (EMEDI) for engine cowls.
     
-    For more complex ice protection models, this function could be extended to calculate
-    power draw based on operating mode, altitude, or other mission parameters.
+    To reflect real-world flight operations, the IPS power draw is dynamically coupled 
+    to the freestream temperature. It activates strictly when the aircraft traverses 
+    atmospheric layers between 0°C and -30°C (conditions conducive to supercooled 
+    liquid water droplets) and deactivates during other phases to prevent the 
+    overestimation of energy consumption.
+    
+    For more accurate analytsis of ice protection systems, this function could be extended to calculate
+    the total_flux based on dynamic atmospheric conditions (temperature, humidity, liquid water content) 
+    and aircraft speed to capture the convective, evaporative, and sensible heat flux components more accurately. 
+    Additionally, the model could be expanded to include other ice protection technologies such as bleed air systems.
     
     See Also
     --------

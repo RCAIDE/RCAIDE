@@ -16,15 +16,15 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     Parameters
     ----------
     environmental_controls : Environmental_Controls
-        The environmental control component with the following attributes:
+        The ECS component object containing efficiency and thermal attributes
             - power_draw : float
                 Power consumption of the environmental control component [W]
-    environmental_controls_conditions : Conditions
-        Object to store environmental control power conditions with the following attributes:
-            - power : numpy.ndarray
-                Array to store the computed power draw values [W]
-    conditions : Conditions
-        Object containing mission conditions (not directly used in this function)
+    vehicle : Vehicle()
+        The vehicle object, used to extract the total passenger capacity
+    bus : Electrical_Bus
+        The electrical bus that powers the cabin system
+    state : State
+        Object containing the dynamic mission state arrays (altitude, Mach, pressure, temperature)
     
     Returns
     -------
@@ -33,9 +33,12 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     
     Notes
     -----
-    This function assigns the constant power draw value from the environmental controls component
-    to the power array in the environmental_controls_conditions object. The power draw is assumed
-    to be constant throughout the mission segment.
+    This function dynamically calculates the ECS power draw in two parts:
+    1. Electric Cabin Air Compressors: Evaluated dynamically across the mission profile 
+       based on the pressure differential between the freestream ram air and the 
+       required cabin pressurization schedule.
+    2. Vapor Cycle Cooling: Evaluated as a steady-state load based on the coefficient 
+       of performance (COP) required to dissipate passenger, system, and solar heat.
     
     For more complex environmental controls models, this function could be extended to calculate
     power draw based on operating mode, altitude, or other mission parameters.
@@ -48,12 +51,12 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     N_pax      =  vehicle.number_of_passengers
 
     m_dot_per_pax = 0.00416 # kg/s (0.25 kg/min per passenger)
-    Q_per_pax     = 70      # 70 W per passenger, 100 W per flight crew member, 200 W per cabin crew member
-    Q_sys_per_pax = 40      # Watts (IFE/Avionics/Galley heat)
+    Q_per_pax     = 70      # W (70 W per passenger, 100 W per flight crew member, 200 W per cabin crew member)
+    Q_sys_per_pax = 40      # W (IFE/Avionics/Galley heat)
     COP           = 2.5     # Coefficient of Performance for the cooling system, MEA Vapor Cycle Systems typically have a COP between 2.0 and 3.0
-    Q_sun         = 1367    # The paper uses a solar constant of 1367 W/m²
-    A_window      = 0.08    # The paper assumes 0.08 m² per window
-    N_windows     = 0       # Number of rows in cabin *2
+    Q_sun         = 1367    # W/m² (The paper uses a solar constant of 1367 W/m²)
+    A_window      = 0.08    # m² (The paper assumes 0.08 m² per window)
+    N_windows     = 0       # Number of Windows (Number of rows in cabin * 2)
     
     # Step 1: Compute Compressor Power
     altitude = state.conditions.freestream.altitude
@@ -76,6 +79,7 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     )
     P2      = P_cabin
     
+    # Calculate isentropic compressor power
     P_comp  = (m_dot * Cp * T1 / eta_c) * ((P2/P1)**((gamma-1)/gamma) - 1)
     
     # Step 2: Compute Vapor Cycle Cooling   
@@ -84,7 +88,7 @@ def compute_ecs_power_draw(environmental_controls,vehicle,bus,state):
     Q_solar = Q_sun * A_window * N_windows
     P_cool  = (Q_pax + Q_sys + Q_solar) / COP
       
-    # Step 4: Compute total power 
+    # Step 3: Compute total power 
     P_evs   =  P_comp +  P_cool
   
     bus_conditions                               = state.conditions.energy.busses[bus.tag]
