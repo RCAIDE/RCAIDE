@@ -79,7 +79,7 @@ class Network(Component):
         self.system_voltage               = None  
         
     # linking the different network components
-    def evaluate(network,state, vehicle):
+    def evaluate(network,state,vehicle):
         """ Computes the performance of the network
         """  
         # unpack   
