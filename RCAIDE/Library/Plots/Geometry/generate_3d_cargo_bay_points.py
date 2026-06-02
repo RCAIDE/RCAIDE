@@ -36,7 +36,7 @@ def generate_3d_cargo_bay_points(cargo_bay):
     oy = cargo_bay.origin[0][1]
     oz = cargo_bay.origin[0][2]
 
-    # Chamfer size — ~18 % of the smaller of width/height gives a realistic LD shape.
+    # Chamfer size — ~25 % of the smaller of width/height gives a realistic LD shape.
     chamfer = min(w, h) * 0.25
 
     # 6-point hexagonal cross-section in the y-z plane (centred at origin y/z).
