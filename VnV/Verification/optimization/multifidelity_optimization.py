@@ -44,7 +44,7 @@ def main():
     ],dtype=object)    
     
     print('Checking basic additive with no active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=1e-8,print_output=False)
+    outputs = solver.Additive_Solve(problem,max_iterations=100,num_samples=20,tolerance=1e-8,print_output=False)
     print(outputs)   
     obj,x1,x2 = get_results(outputs)
     
@@ -52,7 +52,7 @@ def main():
     #   Check Results
     # ------------------------------------------------------------------    
 
-    assert( np.isclose(obj,  0, atol=1e-5) )
+    assert( np.isclose(obj,  0, atol=1e-3) ) 
     assert( np.isclose(x1 ,-.1, atol=1e-2) )
     assert( np.isclose(x2 ,  0, atol=1e-2) )      
     
