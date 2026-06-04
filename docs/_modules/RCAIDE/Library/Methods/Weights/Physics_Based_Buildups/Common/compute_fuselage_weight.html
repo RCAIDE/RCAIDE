@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common.compute_fuselage_weight &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common.compute_fuselage_weight</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common.compute_fuselage_weight</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Weights-Buildups-Common </span>
+<span class="c1"># RCAIDE/Library/Methods/Weights/Buildups/Common/compute_fuselage_weight.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+ 
+<span class="c1"># RCAIDE imports   </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Attributes.Solids</span> <span class="kn">import</span> <span class="n">Bidirectional_Carbon_Fiber</span><span class="p">,</span> <span class="n">Carbon_Fiber_Honeycomb</span><span class="p">,</span> <span class="n">Paint</span><span class="p">,</span> <span class="n">Unidirectional_Carbon_Fiber</span><span class="p">,</span> <span class="n">Acrylic</span><span class="p">,</span> <span class="n">Steel</span>
+
+<span class="c1"># package imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Compute boom weight</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Weights-Buildups-Common </span>
+<div class="viewcode-block" id="compute_fuselage_weight">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common.html#RCAIDE.Library.Methods.Weights.Physics_Based_Buildups.Common.compute_fuselage_weight.compute_fuselage_weight">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_fuselage_weight</span><span class="p">(</span><span class="n">config</span><span class="p">,</span>
+             <span class="n">maximum_g_load</span> <span class="o">=</span> <span class="mf">3.8</span><span class="p">,</span>
+             <span class="n">landing_impact_factor</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">,</span>
+             <span class="n">safety_factor</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculates the structural mass of a fuselage for an eVTOL vehicle,</span>
+<span class="sd">        assuming a structural keel taking bending an torsional loads.</span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:  </span>
+<span class="sd">        If vehicle model does not have material properties assigned, appropriate</span>
+<span class="sd">        assumptions are made based on RCAIDE&#39;s Solids Attributes library.</span>
+<span class="sd">        </span>
+<span class="sd">        Sources:</span>
+<span class="sd">        Project Vahana Conceptual Trade Study</span>
+
+<span class="sd">        Inputs:</span>
+
+<span class="sd">            config                      RCAIDE Vehicle Configuration</span>
+<span class="sd">            max_g_load                  Max Accelerative Load During Flight [Unitless]</span>
+<span class="sd">            landing_impact_factor       Maximum Load Multiplier on Landing  [Unitless]</span>
+
+<span class="sd">        Outputs:</span>
+
+<span class="sd">            weight:                 Estimated Fuselage Mass             [kg]</span>
+<span class="sd">        </span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        Material Properties of Imported RCAIDE Solids</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Unpack Inputs</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+ 
+    <span class="n">fuse</span>    <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">fuselages</span><span class="o">.</span><span class="n">fuselage</span> 
+    <span class="n">fLength</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">lengths</span><span class="o">.</span><span class="n">total</span>
+    <span class="n">fWidth</span>  <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">width</span>
+    <span class="n">fHeight</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">heights</span><span class="o">.</span><span class="n">maximum</span>
+    <span class="n">maxSpan</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">wings</span><span class="p">[</span><span class="s2">&quot;main_wing&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span> 
+    <span class="n">MTOW</span>    <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">mass_properties</span><span class="o">.</span><span class="n">max_takeoff</span>
+    <span class="n">G_max</span>   <span class="o">=</span> <span class="n">maximum_g_load</span>
+    <span class="n">LIF</span>     <span class="o">=</span> <span class="n">landing_impact_factor</span>
+    <span class="n">SF</span>      <span class="o">=</span> <span class="n">safety_factor</span>
+
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+    <span class="c1"># Unpack Material Properties</span>
+    <span class="c1">#-------------------------------------------------------------------------------</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rbmMat</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">keel_materials</span><span class="o">.</span><span class="n">root_bending_moment_carrier</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">rbmMat</span> <span class="o">=</span> <span class="n">Unidirectional_Carbon_Fiber</span><span class="p">()</span>
+    <span class="n">rbmDen</span> <span class="o">=</span> <span class="n">rbmMat</span><span class="o">.</span><span class="n">density</span>
+    <span class="n">rbmUTS</span> <span class="o">=</span> <span class="n">rbmMat</span><span class="o">.</span><span class="n">ultimate_tensile_strength</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shearMat</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">keel_materials</span><span class="o">.</span><span class="n">shear_carrier</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">shearMat</span> <span class="o">=</span> <span class="n">Bidirectional_Carbon_Fiber</span><span class="p">()</span>
+    <span class="n">shearDen</span> <span class="o">=</span> <span class="n">shearMat</span><span class="o">.</span><span class="n">density</span>
+    <span class="n">shearUSS</span> <span class="o">=</span> <span class="n">shearMat</span><span class="o">.</span><span class="n">ultimate_shear_strength</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">bearingMat</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">keel_materials</span><span class="o">.</span><span class="n">bearing_carrier</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">bearingMat</span> <span class="o">=</span> <span class="n">Bidirectional_Carbon_Fiber</span><span class="p">()</span>
+    <span class="n">bearingDen</span> <span class="o">=</span> <span class="n">bearingMat</span><span class="o">.</span><span class="n">density</span>
+    <span class="n">bearingUBS</span> <span class="o">=</span> <span class="n">bearingMat</span><span class="o">.</span><span class="n">ultimate_bearing_strength</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">boltMat</span> <span class="o">=</span> <span class="n">fuse</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">bolt_materials</span><span class="o">.</span><span class="n">landing_pad_bolt</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">boltMat</span> <span class="o">=</span> <span class="n">Steel</span><span class="p">()</span>
+    <span class="n">boltUSS</span> <span class="o">=</span> <span class="n">boltMat</span><span class="o">.</span><span class="n">ultimate_shear_strength</span>
+
+
+    <span class="c1"># Calculate Skin &amp; Canopy Weight Per Unit Area (arealWeight) based on material</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">skinArealWeight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="n">mat</span><span class="o">.</span><span class="n">minimum_gage_thickness</span> <span class="o">*</span> <span class="n">mat</span><span class="o">.</span><span class="n">density</span><span class="p">)</span> <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">fuse</span><span class="o">.</span><span class="n">skin_materials</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">skinArealWeight</span> <span class="o">=</span> <span class="mf">1.2995</span> <span class="c1"># Stack of bidirectional CFRP, Honeycomb Core, Paint</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">canopyArealWeight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([(</span><span class="n">mat</span><span class="o">.</span><span class="n">minimum_gage_thickness</span> <span class="o">*</span> <span class="n">mat</span><span class="o">.</span><span class="n">density</span><span class="p">)</span> <span class="k">for</span> <span class="n">mat</span> <span class="ow">in</span> <span class="n">fuse</span><span class="o">.</span><span class="n">canopy_materials</span><span class="p">])</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="n">canopyArealWeight</span> <span class="o">=</span> <span class="mf">3.7465</span> <span class="c1"># Acrylic</span>
+
+    <span class="c1"># Calculate fuselage area (using assumption of ellipsoid), and weight:</span>
+
+    <span class="n">S_wet</span> <span class="o">=</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(((</span><span class="n">fLength</span> <span class="o">*</span> <span class="n">fWidth</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">**</span><span class="mf">1.6</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">fLength</span> <span class="o">*</span> <span class="n">fHeight</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">**</span><span class="mf">1.6</span>
+        <span class="o">+</span> <span class="p">(</span><span class="n">fWidth</span> <span class="o">*</span> <span class="n">fHeight</span><span class="o">/</span><span class="mi">4</span><span class="p">)</span><span class="o">**</span><span class="mf">1.6</span><span class="p">)</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mf">1.6</span><span class="p">)</span>
+    <span class="n">skinMass</span> <span class="o">=</span> <span class="n">S_wet</span> <span class="o">*</span> <span class="n">skinArealWeight</span>
+
+    <span class="c1"># Calculate the mass of a structural bulkhead</span>
+
+    <span class="n">bulkheadMass</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">fHeight</span> <span class="o">*</span> <span class="n">fWidth</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="n">skinArealWeight</span>
+
+    <span class="c1"># Calculate the mass of a canopy</span>
+
+    <span class="n">canopyMass</span> <span class="o">=</span> <span class="n">S_wet</span><span class="o">/</span><span class="mi">8</span> <span class="o">*</span> <span class="n">canopyArealWeight</span>
+
+    <span class="c1"># Calculate keel mass needed to carry lifting moment</span>
+
+    <span class="n">L_max</span>       <span class="o">=</span> <span class="n">G_max</span> <span class="o">*</span> <span class="n">MTOW</span> <span class="o">*</span> <span class="mf">9.8</span> <span class="o">*</span> <span class="n">SF</span>  <span class="c1"># Max Lifting Load</span>
+    <span class="n">M_lift</span>      <span class="o">=</span> <span class="n">L_max</span> <span class="o">*</span> <span class="n">fLength</span><span class="o">/</span><span class="mf">2.</span>       <span class="c1"># Max Moment Due to Lift</span>
+    <span class="n">beamWidth</span>   <span class="o">=</span> <span class="n">fWidth</span><span class="o">/</span><span class="mf">3.</span>                <span class="c1"># Allowable Keel Width</span>
+    <span class="n">beamHeight</span>  <span class="o">=</span> <span class="n">fHeight</span><span class="o">/</span><span class="mf">10.</span>              <span class="c1"># Allowable Keel Height</span>
+
+    <span class="n">beamArea</span>    <span class="o">=</span> <span class="n">M_lift</span> <span class="o">*</span> <span class="n">beamHeight</span><span class="o">/</span><span class="p">(</span><span class="mi">4</span><span class="o">*</span><span class="n">rbmUTS</span><span class="o">*</span><span class="p">(</span><span class="n">beamHeight</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">massKeel</span>    <span class="o">=</span> <span class="n">beamArea</span> <span class="o">*</span> <span class="n">fLength</span> <span class="o">*</span> <span class="n">rbmDen</span>
+
+    <span class="c1"># Calculate keel mass needed to carry wing bending moment shear</span>
+
+    <span class="n">M_bend</span>      <span class="o">=</span> <span class="n">L_max</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">maxSpan</span><span class="o">/</span><span class="mi">2</span>                           <span class="c1"># Max Bending Moment</span>
+    <span class="n">beamArea</span>    <span class="o">=</span> <span class="n">beamHeight</span> <span class="o">*</span> <span class="n">beamWidth</span>                        <span class="c1"># Enclosed Beam Area</span>
+    <span class="n">beamThk</span>     <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">M_bend</span><span class="o">/</span><span class="p">(</span><span class="n">shearUSS</span> <span class="o">*</span> <span class="n">beamArea</span><span class="p">)</span>            <span class="c1"># Beam Thickness</span>
+    <span class="n">massKeel</span>   <span class="o">+=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">beamHeight</span> <span class="o">+</span> <span class="n">beamWidth</span><span class="p">)</span><span class="o">*</span><span class="n">beamThk</span><span class="o">*</span><span class="n">shearDen</span>
+
+    <span class="c1"># Calculate keel mass needed to carry landing impact load assuming</span>
+
+    <span class="n">F_landing</span>   <span class="o">=</span> <span class="n">SF</span> <span class="o">*</span> <span class="n">MTOW</span> <span class="o">*</span> <span class="mf">9.8</span> <span class="o">*</span> <span class="n">LIF</span> <span class="o">*</span> <span class="mf">0.6403</span>        <span class="c1"># Side Landing Force</span>
+    <span class="n">boltArea</span>    <span class="o">=</span> <span class="n">F_landing</span><span class="o">/</span><span class="n">boltUSS</span>                     <span class="c1"># Required Bolt Area</span>
+    <span class="n">boltDiam</span>    <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">boltArea</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>           <span class="c1"># Bolt Diameter</span>
+    <span class="n">lamThk</span>      <span class="o">=</span> <span class="n">F_landing</span><span class="o">/</span><span class="p">(</span><span class="n">boltDiam</span><span class="o">*</span><span class="n">bearingUBS</span><span class="p">)</span>       <span class="c1"># Laminate Thickness</span>
+    <span class="n">lamVol</span>      <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="mi">20</span><span class="o">*</span><span class="n">lamThk</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">lamThk</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>     <span class="c1"># Laminate Pad volume</span>
+    <span class="n">massKeel</span>   <span class="o">+=</span> <span class="mi">4</span><span class="o">*</span><span class="n">lamVol</span><span class="o">*</span><span class="n">bearingDen</span>                   <span class="c1"># Mass of 4 Pads</span>
+
+    <span class="c1"># Calculate total mass as the sum of skin mass, bulkhead mass, canopy pass,</span>
+    <span class="c1"># and keel mass. Called weight by RCAIDE convention</span>
+
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">skinMass</span> <span class="o">+</span> <span class="n">bulkheadMass</span> <span class="o">+</span> <span class="n">canopyMass</span> <span class="o">+</span> <span class="n">massKeel</span>
+
+    <span class="k">return</span> <span class="n">weight</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_fuselage_weight</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_fuselage_weight.</span>
+<span class="sd">	Wraps compute_fuselage_weight with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_fuselage_weight documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: config                = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: maximum_g_load        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: landing_impact_factor = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: safety_factor         = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_fuselage_weight</span><span class="p">(</span><span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;maximum_g_load&#39;</span><span class="p">,</span> <span class="s1">&#39;landing_impact_factor&#39;</span><span class="p">,</span> <span class="s1">&#39;safety_factor&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

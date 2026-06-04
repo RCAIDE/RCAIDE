@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Methods.Costs package" href="RCAIDE.Library.Methods.Costs.html" />
+    <link rel="prev" title="RCAIDE.Library.Methods.Aerodynamics.OpenVSP_Wave_Drag package" href="RCAIDE.Library.Methods.Aerodynamics.OpenVSP_Wave_Drag.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.html">RCAIDE.Library.Methods package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.Aerodynamics.html">RCAIDE.Library.Methods.Aerodynamics package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-methods-aerodynamics-vortex-lattice-method-package">
+<h1>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method package<a class="headerlink" href="#rcaide-library-methods-aerodynamics-vortex-lattice-method-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM">
+<span id="rcaide-library-methods-aerodynamics-vortex-lattice-method-vlm-module"></span><h2>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.VLM">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.</span></span><span class="sig-name descname"><span class="pre">VLM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM.html#VLM"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.VLM" title="Link to this definition"></a></dt>
+<dd><p>Uses the vortex lattice method to compute the lift, induced drag and moment coefficients.</p>
+<p>The user has the option to discretize control surfaces using the boolean settings.discretize_control_surfaces.
+The user should be forwarned that this will cause very slight differences in results for 0 deflection due to
+the slightly different discretization.</p>
+<p>The user has the option to use the boundary conditions and induced velocities from either SUAVE
+or VORLAX. See build_RHS in compute_RHS_matrix.py for more details.</p>
+<p>By default in Vortex_Lattice, VLM performs calculations based on panel coordinates with float32 precision. 
+The user may also choose to use float16 or float64, but be warned that the latter can be memory intensive.</p>
+<p>The user should note that fully capitalized variables correspond to a VORLAX variable of the same name</p>
+<p>Assumptions:
+The user provides either global discretezation (number_spanwise/chordwise_vortices) or
+separate discretization (wing/fuselage_spanwise/chordwise_vortices) in settings, not both.
+The set of settings not being used should be set to None.</p>
+<p>The VLM requires that the user provide a non-zero velocity that matches mach number. For
+surrogate training cases at mach 0, VLM uses a velocity of 1e-6 m/s</p>
+<p>Source:
+1. Miranda, Luis R., Robert D. Elliot, and William M. Baker. “A generalized vortex 
+lattice method for subsonic and supersonic flow applications.” (1977). (NASA CR)</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs:
+geometry.</p>
+<blockquote>
+<div><p>reference_area                          [m^2]
+wing.</p>
+<blockquote>
+<div><p>spans.projected                       [m]
+chords.root                           [m]
+chords.tip                            [m]
+sweeps.quarter_chord                  [radians]
+taper                                 [Unitless]
+twists.root                           [radians]
+twists.tip                            [radians]
+symmetric                             [Boolean]
+aspect_ratio                          [Unitless]
+areas.reference                       [m^2]
+vertical                              [Boolean]
+origin                                [m]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>fuselage.</dt><dd><p>origin                                 [m]
+width                                  [m]
+heights.maximum                        [m]      
+lengths.nose                           [m]    
+lengths.tail                           [m]     
+lengths.total                          [m]     
+lengths.cabin                          [m]     
+fineness.nose                          [Unitless]
+fineness.tail                          [Unitless]</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>settings.number_spanwise_vortices          [Unitless]  &lt;—|
+settings.number_chordwise_vortices         [Unitless]  &lt;—|</p>
+<blockquote>
+<div><p><a href="#id1"><span class="problematic" id="id2">|</span></a>–Either/or; see generate_vortex_distribution() for more details</p>
+</div></blockquote>
+<p>settings.wing_spanwise_vortices            [Unitless]  &lt;—|
+settings.wing_chordwise_vortices           [Unitless]  &lt;—|
+settings.fuselage_spanwise_vortices        [Unitless]  &lt;—|
+settings.fuselage_chordwise_vortices       [Unitless]  &lt;—|</p>
+<p>settings.use_surrogate                     [Unitless]
+settings.propeller_wake_model              [Unitless]
+settings.discretize_control_surfaces       [Boolean], set to True to generate control surface panels
+settings.use_VORLAX_matrix_calculation     [boolean]
+settings.floating_point_precision          [np.float16/32/64]</p>
+<p>conditions.aerodynamics.angles.alpha    [radians]
+conditions.aerodynamics.angles.beta   [radians]
+conditions.freestream.mach_number          [Unitless]
+conditions.freestream.velocity             [m/s]
+conditions.stability.dynamic.pitch_rate    [radians/s]
+conditions.stability.dynamic.roll_rate     [radians/s]
+conditions.stability.dynamic.yaw_rate      [radians/s]</p>
+<p>Outputs:    
+results.</p>
+<blockquote>
+<div><p>CL                                     [Unitless], CLTOT in VORLAX
+CDi                                    [Unitless], CDTOT in VORLAX
+CM                                     [Unitless], CMTOT in VORLAX
+CYTOT                                  [Unitless], Total y force coeff
+CRTOT                                  [Unitless], Rolling moment coeff (unscaled)
+CRMTOT                                 [Unitless], Rolling moment coeff (scaled by w_span)
+CNTOT                                  [Unitless], Yawing  moment coeff (unscaled)
+CYMTOT                                 [Unitless], Yawing  moment coeff (scaled by w_span)
+CL_wing                                [Unitless], CL  of each wing
+CDi_wing                               [Unitless], CDi of each wing
+cl_y                                   [Unitless], CL  of each strip
+cdi_y                                  [Unitless], CDi of each strip
+alpha_i                                [radians] , Induced angle of each strip in each wing (array of numpy arrays)
+CP                                     [Unitless], Pressure coefficient of each panel
+gamma                                  [Unitless], Vortex strengths of each panel</p>
+</div></blockquote>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.compute_rotation_effects">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.</span></span><span class="sig-name descname"><span class="pre">compute_rotation_effects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">EW_small</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GAMMA</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">len_mach</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CHORD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XLE</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XBAR</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rhs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">COSINP</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">SINALF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PITCH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ROLL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">YAW</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">STB</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RNMAX</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM.html#compute_rotation_effects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.compute_rotation_effects" title="Link to this definition"></a></dt>
+<dd><p>This computes the effects of the freestream and aircraft rotation rate on 
+CLE, the induced flow at the leading edge</p>
+<p>Assumptions:
+Several of the values needed in this calculation have been computed earlier and stored in VD</p>
+<p>Normally, VORLAX skips the calculation implemented in this function for linear 
+chordwise spacing (the if statement below). However, since the trends are correct, 
+albeit underestimated, this calculation is being forced here.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.strip_cumsum">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.</span></span><span class="sig-name descname"><span class="pre">strip_cumsum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chord_breaks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strip_lengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/VLM.html#strip_cumsum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.VLM.strip_cumsum" title="Link to this definition"></a></dt>
+<dd><p>Uses numpy to to compute a cumsum that resets along
+the leading edge of every strip.</p>
+<p>Assumptions:
+chordwise_breaks always starts at 0</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix">
+<span id="rcaide-library-methods-aerodynamics-vortex-lattice-method-compute-rhs-matrix-module"></span><h2>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.build_RHS">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.</span></span><span class="sig-name descname"><span class="pre">build_RHS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aoa_distribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">PSI_distribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vx_ind_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vy_ind_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Vz_ind_total</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">V_distribution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_RHS_matrix.html#build_RHS"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.build_RHS" title="Link to this definition"></a></dt>
+<dd><p>This uses freestream conditions, induced wake velocities, and rotation
+rates (pitch, roll, yaw) to find the boundary conditions (RHS) needed to
+compute gamma. The function defaults to a classical boundary condition
+equation, RHS = V dot N, where V is the unit velocity vector only the panel
+and N is the panel unit normal. However, the user may also define
+settings.use_VORLAX_matrix_calculation to use the boundary condition equation
+from VORLAX, the code on which this VLM is based. This is useful for future
+developers who need to compare numbers 1:1 with VORLAX.</p>
+<p>Note if using VORLAX boundary conditions:
+VORLAX does not take induced wake velocity into account. Additionally,
+VORLAX uses the camber, twist, and dihedral values of a strip’s leading
+edge panel for every panel in that strip when calculating panel normals.</p>
+<p>Source:
+1. Low-Speed Aerodynamics, Second Edition by Joseph Katz, Allen Plotkin Pgs. 331-338</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs:
+settings.use_VORLAX_matrix_calculation  - RHS equation switch               [boolean]
+conditions.stability.dynamic.pitch_rate -                                   [radians/s]
+conditions.stability.dynamic.roll_rate  -                                   [radians/s]
+conditions.stability.dynamic.yaw_rate   -                                   [radians/s]
+aoa_distribution                        - angle of attack                   [radians]
+PSI_distribution                        - sideslip angle                    [radians]
+V[]_ind_total                           - component induced wake velocities [m/s]
+V_distribution                          - freestream velocity magnitude     [m/s]
+delta, phi                              - flow tangency angles              [radians]</p>
+<p>Outputs:
+rhs  -  a Data object used to hold several values including RHS</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.compute_RHS_matrix">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.</span></span><span class="sig-name descname"><span class="pre">compute_RHS_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conditions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">propeller_wake_model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_RHS_matrix.html#compute_RHS_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_RHS_matrix.compute_RHS_matrix" title="Link to this definition"></a></dt>
+<dd><p>This computes the right hand side matrix for the VLM. In this
+function, induced velocites from propeller wake are also included
+when relevent and where specified</p>
+<p>Source:
+1. Low-Speed Aerodynamics, Second Edition by Joseph Katz, Allen Plotkin
+Pgs. 331-338</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs:
+geometry</p>
+<blockquote>
+<div><p>networks                                 [Unitless]
+vehicle vortex distribution              [Unitless]</p>
+</div></blockquote>
+<p>conditions.aerodynamics.angles.alpha      [radians]
+conditions.aerodynamics.angles.beta     [radians]
+conditions.freestream.velocity               [m/s]
+conditions.stability.dynamic.pitch_rate      [radians/s]
+conditions.stability.dynamic.roll_rate       [radians/s]
+conditions.stability.dynamic.yaw_rate        [radians/s]</p>
+<p>sur_flag    - use_surrogate flag             [Unitless]
+slipstream  - propeller_wake_model flag      [Unitless]
+delta, phi  - flow tangency angles           [radians]</p>
+<p>Outputs:
+rhs.</p>
+<blockquote>
+<div><p>RHS
+ONSET
+Vx_ind_total
+Vz_ind_total
+V_distribution
+dt
+YGIRO
+ZGIRO
+VX
+SCNTL
+CCNTL
+COD
+SID</p>
+</div></blockquote>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity">
+<span id="rcaide-library-methods-aerodynamics-vortex-lattice-method-compute-wing-induced-velocity-module"></span><h2>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.compute_wing_induced_velocity">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.</span></span><span class="sig-name descname"><span class="pre">compute_wing_induced_velocity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mach</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_EW</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.html#compute_wing_induced_velocity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.compute_wing_induced_velocity" title="Link to this definition"></a></dt>
+<dd><p>This computes the induced velocities at each control point of the vehicle vortex lattice</p>
+<p>Assumptions: 
+Trailing vortex legs infinity are alligned to freestream</p>
+<p>Outside of a call to the VLM() function itself, EW does not need to be computed, as C_mn 
+provides the same information in the body-frame.</p>
+<p>Source:  
+1. Miranda, Luis R., Robert D. Elliot, and William M. Baker. “A generalized vortex 
+lattice method for subsonic and supersonic flow applications.” (1977). (NASA CR)</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs: 
+VD       - vehicle vortex distribution                    [Unitless] 
+mach                                                      [Unitless]</p>
+<p>Outputs:                                
+C_mn     - total induced velocity matrix                  [Unitless] 
+s        - semispan of the horshoe vortex                 [m] 
+t        - tangent of the horshoe vortex                  [-] 
+CHORD    - chord length for a panel                       [m] 
+RFLAG    - sonic vortex flag                              [boolean] 
+ZETA     - tangent incidence angle of the chordwise strip [-]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.subsonic">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.</span></span><span class="sig-name descname"><span class="pre">subsonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XSQ1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RO1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XSQ2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RO2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XTY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZSQ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOLSQ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RTV1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RTV2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.html#subsonic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.subsonic" title="Link to this definition"></a></dt>
+<dd><p>This computes the induced velocities at each control point 
+of the vehicle vortex lattice for subsonic mach numbers</p>
+<p>Assumptions: 
+Trailing vortex legs infinity are alligned to freestream</p>
+<p>Source:  
+1. Miranda, Luis R., Robert D. Elliot, and William M. Baker. “A generalized vortex 
+lattice method for subsonic and supersonic flow applications.” (1977). (NASA CR)</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs: 
+Z       Z relative location of the vortices          [m]
+XSQ1    X1 squared                                   [m^2]
+RO1     coefficient                                  [-]
+XSQ2    X2 squared                                   [m^2]
+RO2     coefficient                                  [-]
+XTY     AXIAL DISTANCE BETWEEN PROJECTION OF RECEIVING POINT ONTO HORSESHOE PLANE AND EXTENSION OF SKEWED LEG [m]
+T       tangent of the horshoe vortex                [-] 
+B2      mach^2-1 (-beta2)                            [-] 
+ZSQ     Z squared                                    [m^2] 
+TOLSQ   coefficient                                  [-]
+X1      X coordinate of the left side of the vortex  [m]
+Y1      Y coordinate of the left side of the vortex  [m]
+X2      X coordinate of the right side of the vortex [m]
+Y2      Y coordinate of the right side of the vortex [m]
+RTV1    coefficient                                  [-]
+RTV2    coefficient                                  [-]</p>
+<p>Outputs:           
+U       X velocity       [unitless]
+V       Y velocity       [unitless]
+W       Z velocity       [unitless]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.supersonic">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.</span></span><span class="sig-name descname"><span class="pre">supersonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XSQ1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RO1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XSQ2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RO2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XTY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">B2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ZSQ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOLSQ</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOLSQ2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RTV1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RTV2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CUTOFF</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CHORD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RNMAX</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TE_ind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">LE_ind</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.html#supersonic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.supersonic" title="Link to this definition"></a></dt>
+<dd><p>This computes the induced velocities at each control point 
+of the vehicle vortex lattice for supersonic mach numbers</p>
+<p>Assumptions: 
+Trailing vortex legs infinity are alligned to freestream</p>
+<p>Source:  
+1. Miranda, Luis R., Robert D. Elliot, and William M. Baker. “A generalized vortex 
+lattice method for subsonic and supersonic flow applications.” (1977). (NASA CR)</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs: 
+Z            Z relative location of the vortices          [m]
+XSQ1         X1 squared                                   [m^2]
+RO1          coefficient                                  [-]
+XSQ2         X2 squared                                   [m^2]
+RO2          coefficient                                  [-]
+XTY          AXIAL DISTANCE BETWEEN PROJECTION OF RECEIVING POINT ONTO HORSESHOE PLANE AND EXTENSION OF SKEWED LEG [m]
+T            tangent of the horshoe vortex                [-] 
+B2           mach^2-1 (-beta2)                            [-] 
+ZSQ          Z squared                                    [m^2] 
+TOLSQ        coefficient                                  [-]
+X1           X coordinate of the left side of the vortex  [m]
+Y1           Y coordinate of the left side of the vortex  [m]
+X2           X coordinate of the right side of the vortex [m]
+Y2           Y coordinate of the right side of the vortex [m]
+RTV1         coefficient                                  [-]
+RTV2         coefficient                                  [-]
+CUTOFF       coefficient                                  [-]
+CHORD        chord length for a panel                     [m] 
+RNMAX        number of chordwise panels                   [-]
+n_cp         number of control points                     [-]
+TE_ind       indices of the trailing edge                 [-]
+LE_ind       indices of the leading edge                  [-]</p>
+<p>Outputs:           
+U       X velocity        [unitless]
+V       Y velocity        [unitless]
+W       Z velocity        [unitless]
+RFLAG   sonic vortex flag [boolean]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.supersonic_in_plane">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.</span></span><span class="sig-name descname"><span class="pre">supersonic_in_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">RAD1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RAD2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Y2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">TOL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">XTY</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPI</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/compute_wing_induced_velocity.html#supersonic_in_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.compute_wing_induced_velocity.supersonic_in_plane" title="Link to this definition"></a></dt>
+<dd><p>This computes the induced velocities at each control point 
+in the special case where the vortices lie in the same plane</p>
+<p>Assumptions: 
+Trailing vortex legs infinity are alligned to freestream
+In plane vortices only produce W velocity</p>
+<p>Source:  
+1. Miranda, Luis R., Robert D. Elliot, and William M. Baker. “A generalized vortex 
+lattice method for subsonic and supersonic flow applications.” (1977). (NASA CR)</p>
+<ol class="arabic simple" start="2">
+<li><p>VORLAX Source Code</p></li>
+</ol>
+<p>Inputs: 
+RAD1    array of zeros                               [-]
+RAD2    array of zeros                               [-]
+Y1      Y coordinate of the left side of the vortex  [m]
+Y2      Y coordinate of the right side of the vortex [m]
+TOL     coefficient                                  [-]
+XTY     AXIAL DISTANCE BETWEEN PROJECTION OF RECEIVING POINT ONTO HORSESHOE PLANE AND EXTENSION OF SKEWED LEG [m]
+CPI     2 Pi                                         [radians]</p>
+<p>Outputs:           
+W       Z velocity       [unitless]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution">
+<span id="rcaide-library-methods-aerodynamics-vortex-lattice-method-generate-vortex-distribution-module"></span><h2>RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_fuselage_and_nacelle_vortex_distribution">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.</span></span><span class="sig-name descname"><span class="pre">generate_fuselage_and_nacelle_vortex_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fus</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_geometry</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_vortex_distribution.html#generate_fuselage_and_nacelle_vortex_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_fuselage_and_nacelle_vortex_distribution" title="Link to this definition"></a></dt>
+<dd><p>This generates the vortex distribution points on a fuselage or nacelle component
+Assumptions: 
+If nacelle has segments defined, the mean width and height of the nacelle is used
+Source:   
+None</p>
+<p>Inputs:   
+VD                   - vortex distribution</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_vortex_distribution">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.</span></span><span class="sig-name descname"><span class="pre">generate_vortex_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">geometry</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">settings</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_vortex_distribution.html#generate_vortex_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_vortex_distribution" title="Link to this definition"></a></dt>
+<dd><dl>
+<dt>Compute the coordinates of panels, vortices , control points</dt><dd><p>and geometry used to build the influence coefficient matrix. A 
+different discretization (n_sw and n_cw) may be defined for each type
+of major section (wings and fuselages).</p>
+<p>Control surfaces are modelled as wings, but adapt their panel density 
+to that of the area in which they reside on their own wing.</p>
+<p>Assumptions: 
+Below is a schematic of the coordinates of an arbitrary panel</p>
+<dl>
+<dt>XA1 ____________________________ XB1    </dt><dd><div class="line-block">
+<div class="line-block">
+<div class="line"><a href="#id3"><span class="problematic" id="id4">|</span></a></div>
+</div>
+<div class="line">bound vortex        |</div>
+</div>
+</dd>
+<dt>XAH|  ________________________  <a href="#id5"><span class="problematic" id="id6">|</span></a>XBH</dt><dd><div class="line-block">
+<div class="line">|           XCH          | |</div>
+<div class="line">|                        | |</div>
+<div class="line">|                        | |     </div>
+<div class="line">|                        | |</div>
+<div class="line">|                        | |</div>
+<div class="line">|           0 &lt;–control | |       </div>
+<div class="line">|          XC     point  | |  </div>
+<div class="line">|                        | |</div>
+</div>
+</dd>
+</dl>
+</dd>
+<dt>XA2 <a href="#id7"><span class="problematic" id="id8">|</span></a>_|________________________|_|XB2</dt><dd><blockquote>
+<div><div class="line-block">
+<div class="line-block">
+<div class="line-block">
+<div class="line">|     </div>
+</div>
+<div class="line">trailing         |  </div>
+</div>
+<div class="line">&lt;–  vortex   –&gt;    |  </div>
+<div class="line-block">
+<div class="line">legs           | </div>
+</div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt>In addition, all control surfaces should be appended directly</dt><dd><p>to the wing, not the wing segments</p>
+</dd>
+</dl>
+<p>For control surfaces, “positve” deflection corresponds to the RH rule where the axis of rotation is the OUTBOARD-pointing hinge vector
+symmetry: the LH rule is applied to the reflected surface for non-ailerons. Ailerons follow a RH rule for both sides</p>
+<p>Source:  
+None</p>
+<p>Inputs:
+geometry.wings                                [Unitless]  
+settings.floating_point_precision             [np.dtype]</p>
+<p>Of the following settings, the user should define either the <a href="#id9"><span class="problematic" id="id10">number_</span></a> atrributes or the <a href="#id11"><span class="problematic" id="id12">wing_</span></a> and <a href="#id13"><span class="problematic" id="id14">fuse_</span></a> attributes.
+settings.number_spanwise_vortices             - a base number of vortices to be applied to both wings and fuselages
+settings.number_chordwise_vortices            - a base number of vortices to be applied to both wings and fuselages
+settings.wing_spanwise_vortices               - the number of vortices to be applied to only the wings
+settings.wing_chordwise_vortices              - the number of vortices to be applied to only the wings
+settings.fuselage_spanwise_vortices           - the number of vortices to be applied to only the fuslages
+settings.fuselage_chordwise_vortices          - the number of vortices to be applied to only the fuselages</p>
+<p>Outputs:                                   
+VD - vehicle vortex distribution              [Unitless]</p>
+<p>Properties Used:
+N/A</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_wing_vortex_distribution">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.</span></span><span class="sig-name descname"><span class="pre">generate_wing_vortex_distribution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">VD</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spc</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Aerodynamics/Vortex_Lattice_Method/generate_vortex_distribution.html#generate_wing_vortex_distribution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method.generate_vortex_distribution.generate_wing_vortex_distribution" title="Link to this definition"></a></dt>
+<dd><p>This generates vortex distribution points for the given wing</p>
+<p>Assumptions: 
+The wing is segmented and was made or modified by make_VLM_wings()</p>
+<p>For control surfaces, “positve” deflection corresponds to the RH rule where the axis of rotation is the OUTBOARD-pointing hinge vector
+symmetry: the LH rule is applied to the reflected surface for non-ailerons. Ailerons follow a RH rule for both sides</p>
+<p>The hinge_vector will only ever be calcualted on the first strip of any control/all-moving surface. It is assumed that all control
+surfaces are trapezoids, thus needing only one hinge, and that all all-moving surfaces have exactly one point of rotation.</p>
+<p>Source:   
+None</p>
+<p>Inputs:   
+VD                   - vortex distribution
+wing                 - a Data object made or modified by make_VLM_wings() to mimick a Wing object</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Methods.Aerodynamics.OpenVSP_Wave_Drag.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Methods.Aerodynamics.OpenVSP_Wave_Drag package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Methods.Costs.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Methods.Costs package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

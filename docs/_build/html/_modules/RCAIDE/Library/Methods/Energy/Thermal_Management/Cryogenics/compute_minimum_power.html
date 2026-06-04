@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Cryogenics-Leads</span>
+<span class="c1"># lead-calculations.py</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Feb 2020, K. Hamilton - Through New Zealand Ministry of Business Innovation and Employment Research Contract RTVU2004 </span>
+<span class="c1"># Modified: Nov 2021, S. Claridge</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE imports </span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">integrate</span> 
+<span class="kn">from</span> <span class="nn">scipy.misc</span> <span class="kn">import</span> <span class="n">derivative</span> 
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Compute Minimum Power </span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Thermal_Management-Cryogenics</span>
+<div class="viewcode-block" id="compute_minimum_power">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power.compute_minimum_power">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_minimum_power</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate minimum electrical power</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        material</span>
+<span class="sd">        cold_temp    [K]</span>
+<span class="sd">        hot_temp     [K]</span>
+<span class="sd">        current      [A]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">        power        [W]    </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+
+    <span class="c1"># Estimate the area under the thermal:electrical conductivity vs temperature plot for the temperature range of the current lead.</span>
+    <span class="n">integral</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">T</span><span class="p">:</span> <span class="n">material</span><span class="o">.</span><span class="n">thermal_conductivity</span><span class="p">(</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="n">material</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="p">(</span><span class="n">T</span><span class="p">),</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">)</span>
+
+    <span class="c1"># Estimate the average thermal:electrical conductivity for the lead.</span>
+    <span class="n">average_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">hot_temp</span><span class="o">-</span><span class="n">cold_temp</span><span class="p">))</span> <span class="o">*</span> <span class="n">integral</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># Solve the heat flux at the cold end. This is both the load on the cryocooler and the power loss in the current lead.</span>
+    <span class="n">minimum_Q</span> <span class="o">=</span> <span class="n">current</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">average_ratio</span><span class="o">*</span><span class="p">(</span><span class="n">hot_temp</span><span class="o">-</span><span class="n">cold_temp</span><span class="p">))</span><span class="o">**</span><span class="mf">0.5</span>
+
+    <span class="c1"># This represents the special case where all the electrical power is delivered to the cryogenic environment as this optimised the lead for reduced cryogenic load. Q = electrical power</span>
+    <span class="n">power</span> <span class="o">=</span> <span class="n">minimum_Q</span>
+
+    <span class="k">return</span> <span class="n">power</span></div>
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  compute_optimal_ratio</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Thermal_Management-Cryogenics</span>
+<div class="viewcode-block" id="compute_optimal_ratio">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power.compute_optimal_ratio">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_optimal_ratio</span><span class="p">(</span> <span class="n">material</span><span class="p">,</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">minimum_Q</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the optimum length to cross-sectional area ratio</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">        material</span>
+<span class="sd">        cold_temp    [K]</span>
+<span class="sd">        hot_temp     [K]</span>
+<span class="sd">        current      [A]</span>
+<span class="sd">        minimum_Q    [W]</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">        la_ratio</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    <span class="c1"># Calculate the optimum length to cross-sectional area ratio</span>
+    <span class="c1"># Taken directly from McFee</span>
+    <span class="n">sigTL</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="p">(</span><span class="n">cold_temp</span><span class="p">)</span>
+    <span class="n">inte</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">T</span><span class="p">:</span> <span class="n">compute_minimum_power</span><span class="p">(</span><span class="n">material</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="n">hot_temp</span><span class="p">,</span><span class="n">current</span><span class="p">)</span><span class="o">*</span><span class="n">derivative</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">electrical_conductivity</span><span class="p">,</span><span class="n">T</span><span class="p">),</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">la_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">sigTL</span> <span class="o">*</span> <span class="n">minimum_Q</span> <span class="o">+</span> <span class="n">inte</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">current</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">la_ratio</span></div>
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  calc_current</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Library-Methods-Thermal_Management-Cryogenics</span>
+<div class="viewcode-block" id="calc_current">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_minimum_power.calc_current">[docs]</a>
+<span class="k">def</span> <span class="nf">calc_current</span><span class="p">(</span><span class="n">Cryogenic_Lead</span><span class="p">,</span> <span class="n">current</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Estimates the heat flow into the cryogenic environment when a current other than the current the lead was optimised for is flowing. Assumes the temperature difference remains constant.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    Cryogenic_Lead. </span>
+<span class="sd">        outputs.optimum_current     [A]</span>
+<span class="sd">        outputs.minimum_Q           [W]</span>
+<span class="sd">        outputs.unpowered_Q         [W]</span>
+<span class="sd">        cold_temp                   [K]</span>
+<span class="sd">        hot_temp                    [K]</span>
+<span class="sd">        outputs.cross_section       [m2]</span>
+<span class="sd">        length                      [m]</span>
+<span class="sd">        material</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">        [lead cooling power, cryogenic loading due to lead]     [w,w]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+
+    <span class="n">c_l</span> <span class="o">=</span> <span class="n">Cryogenic_Lead</span>
+
+    <span class="n">design_current</span>      <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">optimum_current</span>
+    <span class="n">design_Q</span>            <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">minimum_Q</span>
+    <span class="n">zero_Q</span>              <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">unpowered_Q</span>
+    <span class="n">cold_temp</span>           <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">cold_temp</span>
+    <span class="n">hot_temp</span>            <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">hot_temp</span>
+    <span class="n">cs_area</span>             <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">cross_section</span>
+    <span class="n">length</span>              <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">length</span>
+    <span class="n">material</span>            <span class="o">=</span> <span class="n">c_l</span><span class="o">.</span><span class="n">material</span>
+
+    <span class="c1"># The thermal gradient along the lead is assumed to remain constant for all currents below the design current. The resistance remains constant if the temperature remains constant. The estimated heat flow is reduced in proportion with the carried current.</span>
+    <span class="k">if</span> <span class="n">current</span> <span class="o">&lt;=</span> <span class="n">design_current</span><span class="p">:</span>
+        <span class="n">proportion</span>      <span class="o">=</span> <span class="n">current</span><span class="o">/</span><span class="n">design_current</span>
+        <span class="n">R</span>               <span class="o">=</span> <span class="n">design_Q</span><span class="o">/</span><span class="p">(</span><span class="n">design_current</span><span class="o">**</span><span class="mf">2.0</span><span class="p">)</span>
+        <span class="n">power</span>           <span class="o">=</span> <span class="n">R</span><span class="o">*</span><span class="n">current</span><span class="o">**</span><span class="mf">2.0</span>
+        <span class="n">Q</span>               <span class="o">=</span> <span class="n">zero_Q</span> <span class="o">+</span> <span class="n">proportion</span> <span class="o">*</span> <span class="p">(</span><span class="n">design_Q</span> <span class="o">-</span> <span class="n">zero_Q</span><span class="p">)</span>
+
+    <span class="c1"># If the supplied current is higher than the design current the maximum temperature in the lead will be higher than ambient. Solve by dividing the lead at the maximum temperature point.</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Initial guess at max temp in lead</span>
+        <span class="n">max_temp</span>        <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">hot_temp</span>
+        <span class="c1"># Find actual maximum temperature by bisection, accept result within 1% of correct.</span>
+        <span class="n">error</span>           <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">guess_over</span>      <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">guess_diff</span>      <span class="o">=</span> <span class="n">hot_temp</span>
+
+        <span class="k">while</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="mf">0.01</span><span class="p">:</span>
+            <span class="c1"># Find length of warmer part of lead</span>
+            <span class="n">warm_Q</span>          <span class="o">=</span> <span class="n">compute_minimum_power</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">,</span> <span class="n">max_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
+
+            <span class="n">warm_la</span>         <span class="o">=</span> <span class="n">compute_optimal_ratio</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">hot_temp</span><span class="p">,</span> <span class="n">max_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">warm_Q</span><span class="p">)</span>
+            <span class="n">warm_length</span>     <span class="o">=</span> <span class="n">cs_area</span> <span class="o">*</span> <span class="n">warm_la</span>
+            <span class="c1"># Find length of cooler part of lead</span>
+            <span class="n">cool_Q</span>          <span class="o">=</span> <span class="n">compute_minimum_power</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">max_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">)</span>
+            <span class="n">cool_la</span>         <span class="o">=</span> <span class="n">compute_optimal_ratio</span><span class="p">(</span><span class="n">material</span><span class="p">,</span> <span class="n">cold_temp</span><span class="p">,</span> <span class="n">max_temp</span><span class="p">,</span> <span class="n">current</span><span class="p">,</span> <span class="n">cool_Q</span><span class="p">)</span>
+            <span class="n">cool_length</span>     <span class="o">=</span> <span class="n">cs_area</span> <span class="o">*</span> <span class="n">cool_la</span>
+            <span class="c1"># compare lead length with known lead length as test of the max temp guess</span>
+            <span class="n">test_length</span>     <span class="o">=</span> <span class="n">warm_length</span> <span class="o">+</span> <span class="n">cool_length</span>
+            <span class="n">error</span>           <span class="o">=</span> <span class="nb">abs</span><span class="p">((</span><span class="n">test_length</span><span class="o">-</span><span class="n">length</span><span class="p">)</span><span class="o">/</span><span class="n">length</span><span class="p">)</span>
+            <span class="c1"># change the guessed max_temp</span>
+            <span class="c1"># A max_temp too low will result in the test length being too long</span>
+            <span class="k">if</span> <span class="n">test_length</span> <span class="o">&gt;</span> <span class="n">length</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">guess_over</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>             <span class="c1"># query whether solving by bisection yet</span>
+                    <span class="n">guess_diff</span>  <span class="o">=</span> <span class="n">max_temp</span>      <span class="c1"># if not, continue to double guess</span>
+                    <span class="n">max_temp</span>    <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">max_temp</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">max_temp</span>    <span class="o">=</span> <span class="n">max_temp</span> <span class="o">+</span> <span class="n">guess_diff</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">guess_over</span>  <span class="o">=</span> <span class="mi">1</span>              <span class="c1"># set flag that bisection range found</span>
+                <span class="n">max_temp</span>    <span class="o">=</span> <span class="n">max_temp</span> <span class="o">-</span> <span class="n">guess_diff</span>
+            <span class="c1"># Prepare guess difference for next iteration</span>
+            <span class="n">guess_diff</span>  <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">guess_diff</span>
+            <span class="c1"># The cool_Q is the cryogenic heat load as warm_Q is sunk to ambient</span>
+            <span class="n">Q</span>           <span class="o">=</span> <span class="n">cool_Q</span>
+            <span class="c1"># All Q is out of the lead, so the electrical power use in the lead is the sum of the Qs</span>
+            <span class="n">power</span>       <span class="o">=</span> <span class="n">warm_Q</span> <span class="o">+</span> <span class="n">cool_Q</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">Q</span><span class="p">,</span><span class="n">power</span><span class="p">]</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_minimum_power</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_minimum_power.</span>
+<span class="sd">	Wraps compute_minimum_power with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_minimum_power documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: material  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: cold_temp = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: hot_temp  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: current   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_minimum_power</span><span class="p">(</span><span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;cold_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;hot_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_compute_optimal_ratio</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_optimal_ratio.</span>
+<span class="sd">	Wraps compute_optimal_ratio with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_optimal_ratio documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: material  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: cold_temp = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: hot_temp  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: current   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: minimum_Q = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_optimal_ratio</span><span class="p">(</span><span class="s1">&#39;material&#39;</span><span class="p">,</span> <span class="s1">&#39;cold_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;hot_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">,</span> <span class="s1">&#39;minimum_Q&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_current</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of calc_current.</span>
+<span class="sd">	Wraps calc_current with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see calc_current documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: Cryogenic_Lead = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: current        = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">calc_current</span><span class="p">(</span><span class="s1">&#39;Cryogenic_Lead&#39;</span><span class="p">,</span> <span class="s1">&#39;current&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

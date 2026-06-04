@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Common.compute_noise_source_coordinates &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Common.compute_noise_source_coordinates</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Common.compute_noise_source_coordinates</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Common </span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Common/compute_rotor_point_source_coordinates.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># RCAIDE imports </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Data</span>
+
+<span class="c1"># Python package imports   </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>  
+    
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  Source Coordinates </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------      </span>
+<span class="c1">## @ingroup Library-Methods-Noise-Common </span>
+<div class="viewcode-block" id="compute_rotor_point_source_coordinates">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Methods.Noise.Common.html#RCAIDE.Library.Methods.Noise.Common.compute_noise_source_coordinates.compute_rotor_point_source_coordinates">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_rotor_point_source_coordinates</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span><span class="n">rotor</span><span class="p">,</span><span class="n">mls</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This calculated the position vector from a point source to the observer </span>
+<span class="sd">            </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">        N/A </span>
+<span class="sd">        </span>
+<span class="sd">    Inputs:  </span>
+<span class="sd">        conditions        - flight conditions            [None]  </span>
+<span class="sd">        mls               - microphone locations         [m] </span>
+<span class="sd">        rotors            - rotors on network            [None]  </span>
+<span class="sd">        settings          - noise calculation settings   [None]</span>
+<span class="sd">        </span>
+<span class="sd">    Outputs: </span>
+<span class="sd">        position vector   - position vector of points    [m]</span>
+<span class="sd">        </span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A       </span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    
+    <span class="c1"># aquire dimension of matrix</span>
+    <span class="n">num_cpt</span>     <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">_size</span>
+    <span class="n">num_mic</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mls</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">])</span>  
+    <span class="n">num_rot</span>     <span class="o">=</span> <span class="mi">1</span> 
+    <span class="n">rot_origins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>  
+    <span class="n">num_blades</span>  <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">number_of_blades</span>  
+    <span class="n">num_sec</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">rotor</span><span class="o">.</span><span class="n">radius_distribution</span><span class="p">)</span>    
+    
+    <span class="c1"># Get the rotation matrix</span>
+    <span class="n">prop2body</span>   <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">prop_vel_to_body</span><span class="p">()</span>  
+    <span class="n">phi</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">num_blades</span><span class="o">+</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="n">num_blades</span><span class="p">]</span>  
+    <span class="n">c</span>           <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">chord_distribution</span> 
+    <span class="n">r</span>           <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">radius_distribution</span>  
+    <span class="n">beta</span>        <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">flap_angle</span>
+    <span class="n">theta</span>       <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">twist_distribution</span>   <span class="c1"># blade pitch </span>
+    <span class="n">theta_0</span>     <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">pitch_command</span> <span class="c1"># collective</span>
+    <span class="n">MCA</span>         <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">mid_chord_alignment</span>
+ 
+    <span class="c1"># dimension of matrices [control point, microphone , rotor, number of blades, number of sections , x,y,z coords]    </span>
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># translation matrix of rotor blade</span>
+    <span class="c1"># ----------------------------------------------------------------------------------------------------------------------------- </span>
+    <span class="n">I</span>                                             <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> 
+    <span class="n">Tranlation_blade_trailing_edge</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Tranlation_blade_trailing_edge</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">MCA</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">c</span>  
+    <span class="n">Tranlation_blade_trailing_edge</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> 
+    <span class="n">rev_Tranlation_blade_trailing_edge</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Tranlation_blade_trailing_edge</span><span class="p">)</span>       
+    
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># translation to blade quarter chord location </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">I</span>                               <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> 
+    <span class="n">Tranlation_blade_quarter_chord</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Tranlation_blade_quarter_chord</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">MCA</span> <span class="o">-</span> <span class="mf">0.25</span><span class="o">*</span><span class="n">c</span>  
+    <span class="n">Tranlation_blade_quarter_chord</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">r</span> 
+    <span class="n">rev_Tranlation_blade_quarter_chord</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Tranlation_blade_quarter_chord</span><span class="p">)</span>         
+     
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># rotation matrix of rotor blade twist</span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------     </span>
+    <span class="n">theta_tot</span>             <span class="o">=</span> <span class="n">theta</span> <span class="o">+</span> <span class="n">theta_0</span>    
+    <span class="n">theta_total</span>           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">theta_tot</span><span class="p">[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Rotation_blade_twist</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>     
+    <span class="n">Rotation_blade_twist</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_total</span><span class="p">)</span>
+    <span class="n">Rotation_blade_twist</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_total</span><span class="p">)</span>
+    <span class="n">Rotation_blade_twist</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_total</span><span class="p">)</span>
+    <span class="n">Rotation_blade_twist</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_total</span><span class="p">)</span> 
+    <span class="n">rev_Rotation_blade_twist</span>            <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Rotation_blade_twist</span><span class="p">)</span> 
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># rotation matrix of rotor blade flap</span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------    </span>
+    <span class="c1"># mine </span>
+    <span class="n">Rotation_blade_flap</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>     
+    <span class="n">Rotation_blade_flap</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">Rotation_blade_flap</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">Rotation_blade_flap</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span>
+    <span class="n">Rotation_blade_flap</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">beta</span><span class="p">)</span> 
+    <span class="n">rev_Rotation_blade_flap</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Rotation_blade_flap</span><span class="p">)</span>    
+    
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># rotation matrix of rotor blade about azimuth</span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------    </span>
+    <span class="c1"># mine </span>
+    <span class="n">Rotation_blade_azi</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>     
+    <span class="n">Rotation_blade_azi</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>  
+    <span class="n">Rotation_blade_azi</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span> 
+    <span class="n">Rotation_blade_azi</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">phi</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>  
+    <span class="n">Rotation_blade_azi</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)[:,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>  
+    <span class="n">rev_Rotation_blade_azi</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Rotation_blade_azi</span><span class="p">)</span>   
+    
+    
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># rotation matrix of rotor about y axis by thrust angle (one extra dimension for translations)</span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">Rotation_thrust_vector_angle</span>                    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">prop2body</span>                                       <span class="o">=</span> <span class="n">rotor</span><span class="o">.</span><span class="n">prop_vel_to_body</span><span class="p">()</span>      
+    <span class="n">thrust_vector</span>                                   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">prop2body</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span> 
+    <span class="n">Rotation_thrust_vector_angle</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">thrust_vector</span><span class="p">)</span>
+    <span class="n">Rotation_thrust_vector_angle</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">thrust_vector</span><span class="p">)</span>
+    <span class="n">Rotation_thrust_vector_angle</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>     <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">thrust_vector</span><span class="p">)</span> 
+    <span class="n">Rotation_thrust_vector_angle</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">thrust_vector</span><span class="p">)</span>  
+    <span class="n">rev_Rotation_thrust_vector_angle</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Rotation_thrust_vector_angle</span><span class="p">)</span>   
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------    </span>
+    <span class="c1"># translation matrix of rotor to the relative location on the vehicle</span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">Translation_origin_to_rel_loc</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Translation_origin_to_rel_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rot_origins</span><span class="p">[:,</span><span class="mi">0</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>
+    <span class="n">Translation_origin_to_rel_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rot_origins</span><span class="p">[:,</span><span class="mi">1</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>     
+    <span class="n">Translation_origin_to_rel_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">rot_origins</span><span class="p">[:,</span><span class="mi">2</span><span class="p">][</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>  
+    <span class="n">rev_Translation_origin_to_rel_loc</span>             <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Translation_origin_to_rel_loc</span><span class="p">)</span> 
+    
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># rotation of vehicle about y axis by AoA </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">Rotation_AoA</span>                        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">Rotation_AoA</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>     <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">transform_to_inertial</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:,:]</span>  
+    <span class="n">rev_Rotation_AoA</span>                    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Rotation_AoA</span><span class="p">)</span> 
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># translation of vehicle to air  </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">Translation_XYZ</span>                  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Translation_XYZ</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">mls</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">][:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span> 
+    <span class="n">Translation_XYZ</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">mls</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">][:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span> 
+    <span class="n">Translation_XYZ</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">mls</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">][:,:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>    
+ 
+    <span class="n">Rotation_RPY</span>                     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">V_vec_pitch</span>                      <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">wind</span><span class="o">.</span><span class="n">transform_to_inertial</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:,:]</span>  <span class="c1"># np.linalg.inv(conditions.frames.wind.transform_to_inertial[:,np.newaxis,np.newaxis,np.newaxis,np.newaxis,:,:])</span>
+    <span class="n">V_vec_true_course</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">planet</span><span class="o">.</span><span class="n">true_course_angle</span><span class="p">[:,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,:,:])</span> 
+    <span class="n">Rotation_RPY</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">V_vec_true_course</span><span class="p">,</span><span class="n">V_vec_pitch</span><span class="p">)</span>  
+ 
+    <span class="n">Rotated_Translation</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_RPY</span><span class="p">,</span><span class="n">Translation_XYZ</span><span class="p">)</span> 
+    <span class="n">Translation_mic_loc</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span> 
+    <span class="n">Translation_mic_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rotated_Translation</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">Translation_mic_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rotated_Translation</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">Translation_mic_loc</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">Rotated_Translation</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>  
+    <span class="n">rev_Translation_mic_loc</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Translation_mic_loc</span><span class="p">)</span>    
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># vehicle velocit vector </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------    </span>
+    <span class="n">M_vec</span>                        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>     
+    <span class="n">M_vec</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">((</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span> 
+    <span class="n">M_vec</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">((</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>   
+    <span class="n">M_vec</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">((</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">velocity_vector</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span><span class="o">/</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">speed_of_sound</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])[:,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">],(</span><span class="mi">1</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">))</span>     
+    
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># identity transformation </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="n">I0</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_3d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="n">I0</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">I0</span><span class="p">)</span>  
+    <span class="n">mat_0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">I0</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,</span><span class="kc">None</span><span class="p">,:,:,:],(</span><span class="n">num_cpt</span><span class="p">,</span><span class="n">num_mic</span><span class="p">,</span><span class="n">num_rot</span><span class="p">,</span><span class="n">num_blades</span><span class="p">,</span><span class="n">num_sec</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># execute operations to compute matrices for aircraft location in present frame </span>
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># for trailing edge   </span>
+    <span class="c1"># we need to do an initial rotation to allign vector in the direction of the vehicle motion </span>
+    <span class="n">mat_0_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Translation_mic_loc</span><span class="p">,</span><span class="n">mat_0</span><span class="p">)</span>    
+    <span class="n">mat_1_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Rotation_AoA</span><span class="p">,</span><span class="n">mat_0_te</span><span class="p">)</span> 
+    <span class="n">mat_2_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Translation_origin_to_rel_loc</span><span class="p">,</span><span class="n">mat_1_te</span><span class="p">)</span> 
+    <span class="n">mat_3_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Rotation_thrust_vector_angle</span><span class="p">,</span><span class="n">mat_2_te</span><span class="p">)</span> 
+    <span class="n">mat_4_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Rotation_blade_azi</span><span class="p">,</span><span class="n">mat_3_te</span><span class="p">)</span> 
+    <span class="n">mat_5_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Rotation_blade_flap</span><span class="p">,</span><span class="n">mat_4_te</span><span class="p">)</span>
+    <span class="n">mat_6_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Rotation_blade_twist</span><span class="p">,</span><span class="n">mat_5_te</span><span class="p">)</span>   
+    <span class="n">mat_7_te</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Tranlation_blade_trailing_edge</span><span class="p">,</span><span class="n">mat_6_te</span><span class="p">)</span>   
+          
+    <span class="c1"># for points on quarter chord of untwisted blade </span>
+    <span class="n">mat_6_qc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rev_Tranlation_blade_quarter_chord</span><span class="p">,</span><span class="n">mat_5_te</span><span class="p">)</span>
+    
+    <span class="c1"># for position vector from rotor point to obverver </span>
+    <span class="n">mat_0_p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_thrust_vector_angle</span><span class="p">,</span><span class="n">mat_0</span><span class="p">)</span>
+    <span class="n">mat_1_p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Translation_origin_to_rel_loc</span><span class="p">,</span><span class="n">mat_0_p</span><span class="p">)</span>
+    <span class="n">mat_2_p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_AoA</span><span class="p">,</span><span class="n">mat_1_p</span><span class="p">)</span> 
+    <span class="n">mat_3_p</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Translation_mic_loc</span><span class="p">,</span><span class="n">mat_2_p</span><span class="p">)</span> 
+    
+    <span class="c1"># for position vector from rotor blade section to obverver (alligned with wind frame)</span>
+    <span class="n">mat_0_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Tranlation_blade_quarter_chord</span><span class="p">,</span><span class="n">mat_0</span><span class="p">)</span>
+    <span class="n">mat_1_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_blade_twist</span><span class="p">,</span><span class="n">mat_0_bs</span><span class="p">)</span>
+    <span class="n">mat_2_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_blade_flap</span><span class="p">,</span><span class="n">mat_1_bs</span><span class="p">)</span>
+    <span class="n">mat_3_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_blade_azi</span><span class="p">,</span><span class="n">mat_2_bs</span><span class="p">)</span>
+    <span class="n">mat_4_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_thrust_vector_angle</span><span class="p">,</span><span class="n">mat_3_bs</span><span class="p">)</span>
+    <span class="n">mat_5_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Translation_origin_to_rel_loc</span><span class="p">,</span><span class="n">mat_4_bs</span><span class="p">)</span>
+    <span class="n">mat_6_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Rotation_AoA</span><span class="p">,</span><span class="n">mat_5_bs</span><span class="p">)</span>
+    <span class="n">mat_7_bs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">Translation_mic_loc</span><span class="p">,</span><span class="n">mat_6_bs</span><span class="p">)</span>   
+    
+    <span class="n">X_prime</span>  <span class="o">=</span> <span class="o">-</span><span class="n">mat_7_bs</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">X_e</span>      <span class="o">=</span> <span class="n">mat_7_te</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">X</span>        <span class="o">=</span> <span class="n">mat_6_qc</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">X_hub</span>    <span class="o">=</span> <span class="o">-</span><span class="n">mat_3_p</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> 
+      
+    <span class="c1"># -----------------------------------------------------------------------------------------------------------------------------</span>
+    <span class="c1"># execute operations to compute matrices for aircraft location in retarded frame</span>
+    <span class="c1"># ----------------------------------------------------------------------------------------------------------------------------- </span>
+    <span class="n">S</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span>     
+    <span class="n">S_prime</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_prime</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span>    
+    <span class="n">S_e</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_e</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span>    
+    <span class="n">S_hub</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X_hub</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span>   
+    
+    <span class="n">theta</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">S</span><span class="p">)</span>  
+    <span class="n">theta_prime</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X_prime</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">S_prime</span><span class="p">)</span>  
+    <span class="n">theta_e</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">S_e</span><span class="p">)</span>  
+    <span class="n">theta_hub</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">S_hub</span><span class="p">)</span>  
+     
+    <span class="n">M_x</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">M_vec</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span> <span class="n">axis</span> <span class="o">=</span><span class="mi">5</span><span class="p">)</span>      
+    
+    <span class="n">theta_r</span>        <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">M_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">))</span> <span class="o">+</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">theta_prime_r</span>  <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_prime</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">M_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_prime</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">))</span> <span class="o">+</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_prime</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">theta_e_r</span>      <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_e</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">M_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_e</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">))</span> <span class="o">+</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_e</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">theta_hub_r</span>    <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta_hub</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">M_x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_hub</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="p">))</span> <span class="o">+</span> <span class="n">M_x</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta_hub</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">Y</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">X</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>     
+    <span class="n">Y_prime</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X_prime</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">X_prime</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>          
+    <span class="n">Y_e</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>            
+    <span class="n">Y_hub</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>    
+    
+    <span class="n">x_r</span>            <span class="o">=</span> <span class="n">Y</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta_r</span><span class="p">))</span>                             
+    <span class="n">x_prime_r</span>      <span class="o">=</span> <span class="n">Y_prime</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta_prime_r</span><span class="p">))</span>                             
+    <span class="n">x_e_r</span>          <span class="o">=</span> <span class="n">Y_e</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta_e_r</span><span class="p">))</span>                             
+    <span class="n">x_hub_r</span>        <span class="o">=</span> <span class="n">Y_hub</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">theta_hub_r</span><span class="p">))</span>    
+    
+    <span class="n">phi_e</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Y_e</span><span class="p">)</span> 
+    <span class="n">phi_hub</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">Y_hub</span><span class="p">)</span>
+
+    <span class="n">X_prime_r</span>      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X_prime</span><span class="p">)</span>  
+    <span class="n">X_e_r</span>          <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X_e</span><span class="p">)</span>   
+    <span class="n">X_r</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>   
+    <span class="n">X_hub_r</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">X_hub</span><span class="p">)</span>
+     
+    <span class="c1"># update x coordiates of matrics </span>
+    <span class="n">X_prime_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="n">x_prime_r</span> 
+    <span class="n">X_prime_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">X_prime</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="n">X_prime_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>  <span class="o">=</span> <span class="n">X_prime</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span> 
+    <span class="n">X_e_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span>      <span class="o">=</span> <span class="n">x_e_r</span>  
+    <span class="n">X_e_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>      <span class="o">=</span> <span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">X_e_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>      <span class="o">=</span> <span class="n">X_e</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">X_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span>        <span class="o">=</span> <span class="n">x_r</span> 
+    <span class="n">X_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>        <span class="o">=</span> <span class="n">X</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>  
+    <span class="n">X_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>        <span class="o">=</span> <span class="n">X</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>  
+    <span class="n">X_hub_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">0</span><span class="p">]</span>    <span class="o">=</span> <span class="n">x_hub_r</span>   
+    <span class="n">X_hub_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span>    <span class="o">=</span> <span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">1</span><span class="p">]</span> 
+    <span class="n">X_hub_r</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>    <span class="o">=</span> <span class="n">X_hub</span><span class="p">[:,:,:,:,:,</span><span class="mi">2</span><span class="p">]</span>
+    
+    <span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">noise_hemisphere</span><span class="p">:</span> 
+        <span class="n">coordinates</span>       <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+            <span class="n">X_prime</span>       <span class="o">=</span> <span class="n">X_prime</span><span class="p">,</span>
+            <span class="n">X_e</span>           <span class="o">=</span> <span class="n">X_e</span><span class="p">,</span>
+            <span class="n">X</span>             <span class="o">=</span> <span class="n">X</span><span class="p">,</span>
+            <span class="n">X_hub</span>         <span class="o">=</span> <span class="n">X_hub</span><span class="p">,</span>
+            <span class="n">X_prime_r</span>     <span class="o">=</span> <span class="n">X_prime</span><span class="p">,</span>
+            <span class="n">X_e_r</span>         <span class="o">=</span> <span class="n">X_e</span><span class="p">,</span>
+            <span class="n">X_r</span>           <span class="o">=</span> <span class="n">X</span><span class="p">,</span>
+            <span class="n">X_hub_r</span>       <span class="o">=</span> <span class="n">X_hub</span><span class="p">,</span> 
+            <span class="n">theta_r</span>       <span class="o">=</span> <span class="n">theta</span><span class="p">,</span>    
+            <span class="n">theta_prime_r</span> <span class="o">=</span> <span class="n">theta_prime</span><span class="p">,</span>
+            <span class="n">theta_e</span>       <span class="o">=</span> <span class="n">theta_e</span><span class="p">,</span> 
+            <span class="n">theta_e_r</span>     <span class="o">=</span> <span class="n">theta_e</span><span class="p">,</span>
+            <span class="n">phi_e_r</span>       <span class="o">=</span> <span class="n">phi_e</span><span class="p">,</span>
+            <span class="n">phi_hub_r</span>     <span class="o">=</span> <span class="n">phi_hub</span><span class="p">,</span>
+            <span class="n">theta_hub</span>     <span class="o">=</span> <span class="n">theta_hub</span><span class="p">,</span>
+            <span class="n">theta_hub_r</span>   <span class="o">=</span> <span class="n">theta_hub</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">coordinates</span>      <span class="o">=</span> <span class="n">Data</span><span class="p">(</span>
+            <span class="n">X_prime</span>      <span class="o">=</span> <span class="n">X_prime</span><span class="p">,</span>
+            <span class="n">X_e</span>          <span class="o">=</span> <span class="n">X_e</span><span class="p">,</span>
+            <span class="n">X</span>            <span class="o">=</span> <span class="n">X</span><span class="p">,</span>
+            <span class="n">X_hub</span>        <span class="o">=</span> <span class="n">X_hub</span><span class="p">,</span>
+            <span class="n">X_prime_r</span>    <span class="o">=</span> <span class="n">X_prime_r</span><span class="p">,</span>
+            <span class="n">X_e_r</span>        <span class="o">=</span> <span class="n">X_e_r</span><span class="p">,</span>
+            <span class="n">X_r</span>          <span class="o">=</span> <span class="n">X_r</span><span class="p">,</span>
+            <span class="n">X_hub_r</span>      <span class="o">=</span> <span class="n">X_hub_r</span><span class="p">,</span> 
+            <span class="n">theta_r</span>      <span class="o">=</span> <span class="n">theta_r</span><span class="p">,</span>    
+            <span class="n">theta_prime_r</span><span class="o">=</span> <span class="n">theta_prime_r</span><span class="p">,</span>
+            <span class="n">theta_e</span>      <span class="o">=</span> <span class="n">theta_e</span><span class="p">,</span> 
+            <span class="n">theta_e_r</span>    <span class="o">=</span> <span class="n">theta_e_r</span><span class="p">,</span>
+            <span class="n">phi_e_r</span>      <span class="o">=</span> <span class="n">phi_e</span><span class="p">,</span>
+            <span class="n">phi_hub_r</span>    <span class="o">=</span> <span class="n">phi_hub</span><span class="p">,</span>
+            <span class="n">theta_hub</span>    <span class="o">=</span> <span class="n">theta_hub</span><span class="p">,</span>
+            <span class="n">theta_hub_r</span>  <span class="o">=</span> <span class="n">theta_hub_r</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">coordinates</span> </div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_rotor_point_source_coordinates</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_rotor_point_source_coordinates.</span>
+<span class="sd">	Wraps compute_rotor_point_source_coordinates with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_rotor_point_source_coordinates documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: conditions = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: rotor      = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: mls        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: settings   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_rotor_point_source_coordinates</span><span class="p">(</span><span class="s1">&#39;conditions&#39;</span><span class="p">,</span> <span class="s1">&#39;rotor&#39;</span><span class="p">,</span> <span class="s1">&#39;mls&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

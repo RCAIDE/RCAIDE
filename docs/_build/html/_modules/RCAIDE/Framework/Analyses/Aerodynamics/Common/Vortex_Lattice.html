@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Analyses-Aerodynamics</span>
+<span class="c1"># RCAIDE/Analyses/Aerodynamics/Vortex_Lattice.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE imports  </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>                                       <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Units</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method</span> <span class="kn">import</span> <span class="n">VLM</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Utilities</span>                          <span class="kn">import</span> <span class="n">Cubic_Spline_Blender</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Analyses.Aerodynamics</span>           <span class="kn">import</span> <span class="n">Aerodynamics</span>
+
+<span class="c1"># package imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="kn">import</span> <span class="n">RectBivariateSpline</span><span class="p">,</span> <span class="n">RegularGridInterpolator</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Vortex_Lattice</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">## @ingroup Analyses-Aerodynamics</span>
+<div class="viewcode-block" id="Vortex_Lattice">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice">[docs]</a>
+<span class="k">class</span> <span class="nc">Vortex_Lattice</span><span class="p">(</span><span class="n">Aerodynamics</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This builds a surrogate and computes lift using a basic vortex lattice.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    None</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values and methods for the analysis.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                                      <span class="o">=</span> <span class="s1">&#39;Vortex_Lattice&#39;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>                                 <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>                                 <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">number_spanwise_vortices</span>        <span class="o">=</span> <span class="mi">15</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">number_chordwise_vortices</span>       <span class="o">=</span> <span class="mi">5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">wing_spanwise_vortices</span>          <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">wing_chordwise_vortices</span>         <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fuselage_spanwise_vortices</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">fuselage_chordwise_vortices</span>     <span class="o">=</span> <span class="kc">None</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">spanwise_cosine_spacing</span>         <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">vortex_distribution</span>             <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">model_fuselage</span>                  <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">model_nacelle</span>                   <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">leading_edge_suction_multiplier</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">propeller_wake_model</span>            <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">discretize_control_surfaces</span>     <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">use_VORLAX_matrix_calculation</span>   <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">floating_point_precision</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">use_surrogate</span>                   <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="c1"># conditions table, used for surrogate model training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span>                                <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">angle_of_attack</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">5.</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.</span> <span class="p">,</span> <span class="mf">0.0</span> <span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">10.0</span> <span class="p">,</span> <span class="mf">12.</span><span class="p">,</span> <span class="mf">45.</span><span class="p">,</span> <span class="mf">75.</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">deg</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">Mach</span>                           <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.1</span>  <span class="p">,</span> <span class="mf">0.2</span> <span class="p">,</span> <span class="mf">0.3</span><span class="p">,</span>  <span class="mf">0.5</span><span class="p">,</span>  <span class="mf">0.75</span> <span class="p">,</span> <span class="mf">0.85</span> <span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span>\
+                                                                  <span class="mf">1.3</span><span class="p">,</span> <span class="mf">1.35</span> <span class="p">,</span> <span class="mf">1.5</span> <span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">2.25</span> <span class="p">,</span> <span class="mf">2.5</span>  <span class="p">,</span> <span class="mf">3.0</span>  <span class="p">,</span> <span class="mf">3.5</span><span class="p">]])</span><span class="o">.</span><span class="n">T</span>       
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>           <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>           <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>           <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sup</span>           <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>      <span class="o">=</span> <span class="kc">None</span>
+        
+        <span class="c1"># blending function </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hsub_min</span>                                <span class="o">=</span> <span class="mf">0.85</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hsub_max</span>                                <span class="o">=</span> <span class="mf">0.95</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hsup_min</span>                                <span class="o">=</span> <span class="mf">1.05</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hsup_max</span>                                <span class="o">=</span> <span class="mf">1.25</span> 
+
+        <span class="c1"># surrogoate models</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span>                              <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>         <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>         <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_trans</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_trans</span>  <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>         <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sup</span>         <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_trans</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_trans</span>  <span class="o">=</span> <span class="kc">None</span> 
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span>                                <span class="o">=</span> <span class="kc">None</span>  
+            
+<div class="viewcode-block" id="Vortex_Lattice.initialize">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    
+    
+        <span class="n">settings</span>                  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>  
+        <span class="n">use_surrogate</span>             <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">use_surrogate</span>
+        <span class="n">propeller_wake_model</span>      <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">propeller_wake_model</span> 
+        <span class="n">n_sw</span>                      <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">number_spanwise_vortices</span>
+        <span class="n">n_cw</span>                      <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">number_chordwise_vortices</span>
+        <span class="n">mf</span>                        <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">model_fuselage</span>
+        <span class="n">mn</span>                        <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">model_nacelle</span>
+        <span class="n">dcs</span>                       <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">discretize_control_surfaces</span> 
+             
+        <span class="c1"># Unpack:</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>      
+        
+        <span class="k">if</span> <span class="n">n_sw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">number_spanwise_vortices</span>  <span class="o">=</span> <span class="n">n_sw</span>
+        
+        <span class="k">if</span> <span class="n">n_cw</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">settings</span><span class="o">.</span><span class="n">number_chordwise_vortices</span> <span class="o">=</span> <span class="n">n_cw</span> 
+            
+        <span class="n">settings</span><span class="o">.</span><span class="n">use_surrogate</span>              <span class="o">=</span> <span class="n">use_surrogate</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">propeller_wake_model</span>       <span class="o">=</span> <span class="n">propeller_wake_model</span> 
+        <span class="n">settings</span><span class="o">.</span><span class="n">discretize_control_surfaces</span><span class="o">=</span> <span class="n">dcs</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">model_fuselage</span>             <span class="o">=</span> <span class="n">mf</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">model_nacelle</span>              <span class="o">=</span> <span class="n">mn</span>
+        
+        <span class="c1"># If we are using the surrogate</span>
+        <span class="k">if</span> <span class="n">use_surrogate</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span> 
+            <span class="c1"># sample training data</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sample_training</span><span class="p">()</span>
+                        
+            <span class="c1"># build surrogate</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">build_surrogate</span><span class="p">()</span>        
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_surrogate</span>
+               
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_no_surrogate</span></div>
+
+
+
+<div class="viewcode-block" id="Vortex_Lattice.evaluate_surrogate">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice.evaluate_surrogate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate_surrogate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluates lift and drag using available surrogates.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.conditions.</span>
+<span class="sd">          freestream.dynamics_pressure       [-]</span>
+<span class="sd">          angle_of_attack                    [radians]</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        conditions.aerodynamics.lift_breakdown.</span>
+<span class="sd">          inviscid_wings[wings.*.tag]             [-] CL (wing specific)</span>
+<span class="sd">          inviscid_wings_lift.total               [-] CL</span>
+<span class="sd">          compressible_wing                       [-] CL (wing specific)</span>
+<span class="sd">        conditions.aerodynamics.coefficients.lift  [-] CL</span>
+<span class="sd">        conditions.aerodynamics.drag_breakdown.induced.</span>
+<span class="sd">          total                                   [-] CDi </span>
+<span class="sd">          inviscid                                [-] CDi </span>
+<span class="sd">          wings_sectional_drag                    [-] CDiy (wing specific)</span>
+<span class="sd">          inviscid_wings                          [-] CDi (wing specific)</span>
+<span class="sd">          </span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        self.surrogates.</span>
+<span class="sd">          lift_coefficient                        [-] CL</span>
+<span class="sd">          wing_lift_coefficient[wings.*.tag]      [-] CL (wing specific)</span>
+<span class="sd">        &quot;&quot;&quot;</span>          
+        
+        <span class="c1"># unpack        </span>
+        <span class="n">conditions</span>  <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">conditions</span>
+        <span class="n">settings</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">geometry</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="n">surrogates</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span>
+        <span class="n">hsub_min</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsub_min</span>
+        <span class="n">hsub_max</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsub_max</span>
+        <span class="n">hsup_min</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsup_min</span>
+        <span class="n">hsup_max</span>    <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hsup_max</span> 
+
+        <span class="n">AoA</span>         <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">angles</span><span class="o">.</span><span class="n">alpha</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">Mach</span>        <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">mach_number</span><span class="o">.</span><span class="n">T</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        
+        
+        <span class="c1"># Unapck the surrogates</span>
+        <span class="n">CL_surrogate_sub</span>          <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>  
+        <span class="n">CL_surrogate_sup</span>          <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>  
+        <span class="n">CL_surrogate_trans</span>        <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_trans</span>
+        <span class="n">CDi_surrogate_sub</span>         <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>  
+        <span class="n">CDi_surrogate_sup</span>         <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sup</span>  
+        <span class="n">CDi_surrogate_trans</span>       <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_trans</span>
+        <span class="n">wing_CL_surrogates_sub</span>    <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>  
+        <span class="n">wing_CL_surrogates_sup</span>    <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>  
+        <span class="n">wing_CL_surrogates_trans</span>  <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_trans</span>
+        <span class="n">wing_CDi_surrogates_sub</span>   <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>  
+        <span class="n">wing_CDi_surrogates_sup</span>   <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>  
+        <span class="n">wing_CDi_surrogates_trans</span> <span class="o">=</span> <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_trans</span>
+        
+        <span class="c1"># Create Result Data Structures         </span>
+        <span class="n">data_len</span>                                                           <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">AoA</span><span class="p">)</span>
+        <span class="n">inviscid_lift</span>                                                      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">data_len</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span> 
+        <span class="n">inviscid_drag</span>                                                      <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="n">data_len</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>  
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span>                     <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid_wings</span>      <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span>                             <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">inviscid_wings</span>              <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">compressible_wings</span>          <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">compressible</span>                <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        
+        <span class="c1"># 3 Cases for surrogates, subsonic only, supersonic only, and both</span>
+        <span class="k">if</span> <span class="n">CL_surrogate_sup</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">inviscid_lift</span> <span class="o">=</span> <span class="n">CL_surrogate_sub</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">inviscid_drag</span> <span class="o">=</span> <span class="n">CDi_surrogate_sub</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">CL_surrogate_sub</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">inviscid_lift</span> <span class="o">=</span> <span class="n">CL_surrogate_sup</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">inviscid_drag</span> <span class="o">=</span> <span class="n">CDi_surrogate_sup</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>     
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Spline for Subsonic-to-Transonic-to-Supersonic Regimes</span>
+            <span class="n">sub_trans_spline</span> <span class="o">=</span> <span class="n">Cubic_Spline_Blender</span><span class="p">(</span><span class="n">hsub_min</span><span class="p">,</span><span class="n">hsub_max</span><span class="p">)</span>
+            <span class="n">h_sub</span>            <span class="o">=</span> <span class="k">lambda</span> <span class="n">M</span><span class="p">:</span><span class="n">sub_trans_spline</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>          
+            <span class="n">sup_trans_spline</span> <span class="o">=</span> <span class="n">Cubic_Spline_Blender</span><span class="p">(</span><span class="n">hsup_min</span><span class="p">,</span><span class="n">hsup_max</span><span class="p">)</span> 
+            <span class="n">h_sup</span>            <span class="o">=</span> <span class="k">lambda</span> <span class="n">M</span><span class="p">:</span><span class="n">sup_trans_spline</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>          
+        
+            <span class="n">inviscid_lift</span> <span class="o">=</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span><span class="o">*</span><span class="n">CL_surrogate_sub</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>    <span class="o">+</span>\
+                              <span class="p">(</span><span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span> <span class="o">-</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">CL_surrogate_trans</span><span class="p">((</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">))</span><span class="o">+</span> \
+                              <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">CL_surrogate_sup</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+            <span class="n">inviscid_drag</span> <span class="o">=</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span><span class="o">*</span><span class="n">CDi_surrogate_sub</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   <span class="o">+</span>\
+                              <span class="p">(</span><span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span> <span class="o">-</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">CDi_surrogate_trans</span><span class="p">((</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">))</span><span class="o">+</span> \
+                              <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">CDi_surrogate_sup</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+        <span class="c1"># Pack</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_lift</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">total</span>            <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_lift</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_drag</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> 
+            
+            <span class="k">if</span> <span class="n">CL_surrogate_sup</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">inviscid_wing_lifts</span> <span class="o">=</span> <span class="n">wing_CL_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">inviscid_wing_drags</span> <span class="o">=</span> <span class="n">wing_CDi_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>            
+                
+            <span class="k">elif</span> <span class="n">CL_surrogate_sub</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">inviscid_wing_lifts</span> <span class="o">=</span> <span class="n">wing_CL_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">inviscid_wing_drags</span> <span class="o">=</span> <span class="n">wing_CDi_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>                
+            
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">inviscid_wing_lifts</span> <span class="o">=</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span><span class="o">*</span><span class="n">wing_CL_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>    <span class="o">+</span> \
+                                        <span class="p">(</span><span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span> <span class="o">-</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">wing_CL_surrogates_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]((</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">))</span><span class="o">+</span> \
+                                        <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">wing_CL_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                
+                <span class="n">inviscid_wing_drags</span> <span class="o">=</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span><span class="o">*</span><span class="n">wing_CDi_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="o">+</span> \
+                                        <span class="p">(</span><span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span> <span class="o">-</span> <span class="n">h_sub</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">wing_CDi_surrogates_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]((</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">))</span><span class="o">+</span> \
+                                        <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="n">h_sup</span><span class="p">(</span><span class="n">Mach</span><span class="p">))</span><span class="o">*</span><span class="n">wing_CDi_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">](</span><span class="n">AoA</span><span class="p">,</span><span class="n">Mach</span><span class="p">,</span><span class="n">grid</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+             
+            <span class="c1"># Pack </span>
+            <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">inviscid_wings</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_wing_lifts</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">compressible_wings</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_wing_lifts</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid_wings</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">inviscid_wing_drags</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+         
+        <span class="k">return</span>     </div>
+
+    
+<div class="viewcode-block" id="Vortex_Lattice.evaluate_no_surrogate">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice.evaluate_no_surrogate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate_no_surrogate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluates lift and drag directly using VLM</span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        no changes to initial geometry or settings</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        state.conditions.</span>
+<span class="sd">          angle_of_attack                         [radians]</span>
+<span class="sd">          </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        conditions.aerodynamics.lift_breakdown.</span>
+<span class="sd">          inviscid_wings_lift[wings.*.tag]        [-] CL (wing specific)</span>
+<span class="sd">          inviscid_wings_lift.total               [-] CL</span>
+<span class="sd">          inviscid_wings_sectional                [-] Cly  </span>
+<span class="sd">          compressible_wing                       [-] CL (wing specific)</span>
+<span class="sd">        conditions.aerodynamics.drag_breakdown.induced.</span>
+<span class="sd">          total                                   [-] CDi </span>
+<span class="sd">          inviscid                                [-] CDi </span>
+<span class="sd">          wings_sectional_drag                    [-] CDiy (wing specific)</span>
+<span class="sd">          induced.inviscid_wings                  [-] CDi  (wing specific)        </span>
+<span class="sd">    </span>
+<span class="sd">        conditions.aerodynamics.</span>
+<span class="sd">          pressure_coefficient                    [-] CP</span>
+<span class="sd">         </span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        self.surrogates.</span>
+<span class="sd">          lift_coefficient                        [-] CL</span>
+<span class="sd">          wing_lift_coefficient[wings.*.tag]      [-] CL (wing specific)</span>
+<span class="sd">        &quot;&quot;&quot;</span>          
+        
+        <span class="c1"># unpack        </span>
+        <span class="n">conditions</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">conditions</span>
+        <span class="n">settings</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">geometry</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>     
+        
+        <span class="c1"># Evaluate the VLM</span>
+        <span class="c1"># if in transonic regime, use surrogate</span>
+        <span class="n">inviscid_lift</span><span class="p">,</span> <span class="n">inviscid_drag</span><span class="p">,</span> <span class="n">inviscid_side</span><span class="p">,</span> <span class="n">wing_lifts</span><span class="p">,</span> <span class="n">wing_drags</span><span class="p">,</span> <span class="n">wing_lift_distribution</span><span class="p">,</span> \
+        <span class="n">wing_drag_distribution</span><span class="p">,</span> <span class="n">induced_angle_distribution</span><span class="p">,</span> <span class="n">pressure_coefficient</span><span class="p">,</span> <span class="n">CYMTOT</span><span class="p">,</span><span class="n">CRMTOT</span><span class="p">,</span><span class="n">CM</span> <span class="o">=</span> \
+            <span class="n">calculate_VLM</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">)</span>
+        
+        <span class="c1"># Lift </span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span>                        <span class="o">=</span> <span class="n">inviscid_lift</span>  
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">total</span>                    <span class="o">=</span> <span class="n">inviscid_lift</span>        
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">compressible_wings</span>       <span class="o">=</span> <span class="n">wing_lifts</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">inviscid_wings</span>           <span class="o">=</span> <span class="n">wing_lifts</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">inviscid_wings_sectional</span> <span class="o">=</span> <span class="n">wing_lift_distribution</span>
+        
+        <span class="c1"># Drag        </span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span>                 <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">total</span>           <span class="o">=</span> <span class="n">inviscid_drag</span>     
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid</span>        <span class="o">=</span> <span class="n">inviscid_drag</span>     
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid_wings</span>  <span class="o">=</span> <span class="n">wing_drags</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">wings_sectional</span> <span class="o">=</span> <span class="n">wing_drag_distribution</span> 
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">angle</span>           <span class="o">=</span> <span class="n">induced_angle_distribution</span>
+        
+        <span class="c1">#Side</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">side_force_coefficient</span>                 <span class="o">=</span> <span class="n">inviscid_side</span>
+        
+        <span class="c1"># Pressure and moment coefficients</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">pressure_coefficient</span> <span class="o">=</span> <span class="n">pressure_coefficient</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">moment_coefficient</span>   <span class="o">=</span> <span class="n">CM</span>
+        
+        <span class="c1"># Stability</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">stability</span><span class="o">.</span><span class="n">static</span><span class="o">.</span><span class="n">yawing_moment_coefficient</span> <span class="o">=</span> <span class="n">CYMTOT</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">stability</span><span class="o">.</span><span class="n">static</span><span class="o">.</span><span class="n">rolling_moment_coefficient</span> <span class="o">=</span> <span class="n">CRMTOT</span>
+        
+        <span class="k">return</span>  </div>
+
+    
+    
+<div class="viewcode-block" id="Vortex_Lattice.sample_training">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice.sample_training">[docs]</a>
+    <span class="k">def</span> <span class="nf">sample_training</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Call methods to run vortex lattice for sample point evaluation.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        see properties used</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        self.training.</span>
+<span class="sd">          lift_coefficient            [-] </span>
+<span class="sd">          wing_lift_coefficient       [-] (wing specific)</span>
+<span class="sd">          drag_coefficient            [-]          </span>
+
+<span class="sd">          wing_drag_coefficient       [-] (wing specific)</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        self.geometry.wings.*.tag</span>
+<span class="sd">        self.settings                 (passed to calculate vortex lattice)</span>
+<span class="sd">        self.training.angle_of_attack [radians]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># unpack</span>
+        <span class="n">geometry</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="n">settings</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span>
+        <span class="n">training</span>      <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span>
+        <span class="n">AoA</span>           <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">angle_of_attack</span> 
+        <span class="n">Mach</span>          <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">Mach</span>
+        <span class="n">lenAoA</span>        <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">AoA</span><span class="p">)</span>
+        <span class="n">sub_len</span>       <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">Mach</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">))</span>
+        <span class="n">sup_len</span>       <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span><span class="o">-</span><span class="n">sub_len</span>
+        
+        <span class="c1"># Assign placeholders        </span>
+        <span class="n">CL_sub</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lenAoA</span><span class="p">,</span><span class="n">sub_len</span><span class="p">))</span>
+        <span class="n">CL_sup</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lenAoA</span><span class="p">,</span><span class="n">sup_len</span><span class="p">))</span>
+        <span class="n">CDi_sub</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lenAoA</span><span class="p">,</span><span class="n">sub_len</span><span class="p">))</span>
+        <span class="n">CDi_sup</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">lenAoA</span><span class="p">,</span><span class="n">sup_len</span><span class="p">))</span>
+        <span class="n">CL_w_sub</span>  <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">CL_w_sup</span>  <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">CDi_w_sub</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">CDi_w_sup</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+            
+        <span class="c1"># Setup new array shapes for vectorization</span>
+        <span class="n">lenM</span>   <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">Mach</span><span class="p">)</span>
+        <span class="n">AoAs</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">AoA</span><span class="p">,</span><span class="n">lenM</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">Machs</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">Mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">zeros</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">Machs</span><span class="p">)</span>
+        
+        <span class="c1"># Setup Konditions    </span>
+        <span class="n">konditions</span>                              <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Results</span><span class="p">()</span>
+        <span class="n">konditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">angles</span><span class="o">.</span><span class="n">alpha</span>    <span class="o">=</span> <span class="n">AoAs</span>
+        <span class="n">konditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">mach_number</span>       <span class="o">=</span> <span class="n">Machs</span>
+        <span class="n">konditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">velocity</span>          <span class="o">=</span> <span class="n">zeros</span>
+        
+        <span class="n">total_lift</span><span class="p">,</span> <span class="n">total_drag</span><span class="p">,</span> <span class="n">total_side</span><span class="p">,</span> <span class="n">wing_lifts</span><span class="p">,</span> <span class="n">wing_drags</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">calculate_VLM</span><span class="p">(</span><span class="n">konditions</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">)</span>     
+    
+        <span class="c1"># Split subsonic from supersonic</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Machs</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">sub_sup_split</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sub_sup_split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Machs</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> 
+        <span class="n">len_sub_mach</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Mach</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">)</span>
+        <span class="n">len_sup_mach</span>  <span class="o">=</span> <span class="n">lenM</span> <span class="o">-</span> <span class="n">len_sub_mach</span>
+        
+        <span class="c1"># Divide up the data to get ready to store</span>
+        <span class="n">CL_sub</span>  <span class="o">=</span> <span class="n">total_lift</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sub_sup_split</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">CL_sup</span>  <span class="o">=</span> <span class="n">total_lift</span><span class="p">[</span><span class="n">sub_sup_split</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">CDi_sub</span> <span class="o">=</span> <span class="n">total_drag</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sub_sup_split</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">CDi_sup</span> <span class="o">=</span> <span class="n">total_drag</span><span class="p">[</span><span class="n">sub_sup_split</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>
+        
+        <span class="c1"># A little reshape to get into the right order</span>
+        <span class="n">CL_sub</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CL_sub</span><span class="p">,(</span><span class="n">len_sub_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">CL_sup</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CL_sup</span><span class="p">,(</span><span class="n">len_sup_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">CDi_sub</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CDi_sub</span><span class="p">,(</span><span class="n">len_sub_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">CDi_sup</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CDi_sup</span><span class="p">,(</span><span class="n">len_sup_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        
+        <span class="c1"># Now do the same for each wing</span>
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            
+            <span class="c1"># Slice out the sub and supersonic</span>
+            <span class="n">CL_wing_sub</span>  <span class="o">=</span> <span class="n">wing_lifts</span><span class="p">[</span><span class="n">wing</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">sub_sup_split</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">CL_wing_sup</span>  <span class="o">=</span> <span class="n">wing_lifts</span><span class="p">[</span><span class="n">wing</span><span class="p">][</span><span class="n">sub_sup_split</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">CDi_wing_sub</span> <span class="o">=</span> <span class="n">wing_drags</span><span class="p">[</span><span class="n">wing</span><span class="p">][</span><span class="mi">0</span><span class="p">:</span><span class="n">sub_sup_split</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>  
+            <span class="n">CDi_wing_sup</span> <span class="o">=</span> <span class="n">wing_drags</span><span class="p">[</span><span class="n">wing</span><span class="p">][</span><span class="n">sub_sup_split</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>  
+            
+            <span class="c1"># Rearrange and pack</span>
+            <span class="n">CL_w_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CL_wing_sub</span><span class="p">,(</span><span class="n">len_sub_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">CL_w_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CL_wing_sup</span><span class="p">,(</span><span class="n">len_sup_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+            <span class="n">CDi_w_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CDi_wing_sub</span><span class="p">,(</span><span class="n">len_sub_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>   
+            <span class="n">CDi_w_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">CDi_wing_sup</span><span class="p">,(</span><span class="n">len_sup_mach</span><span class="p">,</span><span class="n">lenAoA</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>   
+        
+        <span class="c1"># surrogate not run on sectional coefficients and pressure coefficients</span>
+        <span class="c1"># Store training data </span>
+        <span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>         <span class="o">=</span> <span class="n">CL_sub</span>
+        <span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>         <span class="o">=</span> <span class="n">CL_sup</span>
+        <span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>    <span class="o">=</span> <span class="n">CL_w_sub</span>        
+        <span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>    <span class="o">=</span> <span class="n">CL_w_sup</span>
+        <span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>         <span class="o">=</span> <span class="n">CDi_sub</span>
+        <span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sup</span>         <span class="o">=</span> <span class="n">CDi_sup</span>
+        <span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>    <span class="o">=</span> <span class="n">CDi_w_sub</span>        
+        <span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>    <span class="o">=</span> <span class="n">CDi_w_sup</span>
+        
+        <span class="k">return</span></div>
+
+        
+<div class="viewcode-block" id="Vortex_Lattice.build_surrogate">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.Vortex_Lattice.build_surrogate">[docs]</a>
+    <span class="k">def</span> <span class="nf">build_surrogate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a surrogate using sample evaluation results.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        see properties used</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        self.surrogates.</span>
+<span class="sd">          lift_coefficient            </span>
+<span class="sd">          wing_lift_coefficient       </span>
+<span class="sd">          drag_coefficient            </span>
+<span class="sd">          wing_drag_coefficient</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        self.training.</span>
+<span class="sd">          lift_coefficient            [-] </span>
+<span class="sd">          wing_lift_coefficient       [-] (wing specific)</span>
+<span class="sd">          drag_coefficient            [-] </span>
+<span class="sd">          wing_drag_coefficient       [-] (wing specific)</span>
+<span class="sd">        &quot;&quot;&quot;</span>           
+
+        <span class="c1"># unpack data</span>
+        <span class="n">surrogates</span>     <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">surrogates</span>
+        <span class="n">training</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span>
+        <span class="n">geometry</span>       <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geometry</span>
+        <span class="n">Mach</span>           <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">Mach</span>
+        <span class="n">AoA_data</span>       <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">angle_of_attack</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Mach</span><span class="o">&lt;</span><span class="mf">1.</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="n">sub_sup_split</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sub_sup_split</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">Mach</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span> 
+        <span class="n">mach_data_sub</span>  <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">Mach</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">sub_sup_split</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">mach_data_sup</span>  <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">Mach</span><span class="p">[</span><span class="n">sub_sup_split</span><span class="p">:,</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">CL_data_sub</span>    <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>   
+        <span class="n">CL_data_sup</span>    <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>
+        <span class="n">CDi_data_sub</span>   <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>         
+        <span class="n">CDi_data_sup</span>   <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">drag_coefficient_sup</span> 
+        <span class="n">CL_w_data_sub</span>  <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>
+        <span class="n">CL_w_data_sup</span>  <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>     
+        <span class="n">CDi_w_data_sub</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>         
+        <span class="n">CDi_w_data_sup</span> <span class="o">=</span> <span class="n">training</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>
+        
+        <span class="c1"># Instantiate surrogates as none for now</span>
+        <span class="n">CL_surrogate_sub</span>        <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CL_surrogate_sup</span>        <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CL_surrogate_trans</span>      <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CL_w_surrogates_sub</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CL_w_surrogates_sup</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CL_w_surrogates_trans</span>   <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_surrogate_sub</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_surrogate_sup</span>       <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_surrogate_trans</span>     <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_w_surrogates_sub</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_w_surrogates_sup</span>    <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">CDi_w_surrogates_trans</span>  <span class="o">=</span> <span class="kc">None</span>
+        
+
+        <span class="c1"># Check for 3 different cases, pure subsonic, pure supersonic, both</span>
+        <span class="n">SUB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">CL_data_sub</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+        <span class="n">SUP</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">CL_data_sup</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">&gt;</span><span class="mi">0</span>
+
+        <span class="c1"># Do the subsonic surrogates:</span>
+        <span class="k">if</span> <span class="n">SUB</span><span class="p">:</span>
+            <span class="n">CL_surrogate_sub</span>  <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sub</span><span class="p">,</span> <span class="n">CL_data_sub</span><span class="p">)</span>
+            <span class="n">CDi_surrogate_sub</span> <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sub</span><span class="p">,</span> <span class="n">CDi_data_sub</span><span class="p">)</span>  
+        
+        <span class="c1"># Do the supersonic surrogates:</span>
+        <span class="k">if</span> <span class="n">SUP</span><span class="p">:</span>
+            <span class="n">CL_surrogate_sup</span>  <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sup</span><span class="p">,</span> <span class="n">CL_data_sup</span><span class="p">)</span> 
+            <span class="n">CDi_surrogate_sup</span> <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sup</span><span class="p">,</span> <span class="n">CDi_data_sup</span><span class="p">)</span>    
+                
+        <span class="c1"># Do the transonic regime surrogates:</span>
+        <span class="k">if</span> <span class="n">SUB</span> <span class="ow">and</span> <span class="n">SUP</span><span class="p">:</span>	                             
+            <span class="n">CL_data_trans</span>        <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span>	      
+            <span class="n">CDi_data_trans</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">),</span><span class="mi">3</span><span class="p">))</span>	 	      
+            <span class="n">CL_w_data_trans</span>      <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>	                     
+            <span class="n">CDi_w_data_trans</span>     <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>    
+            <span class="n">CL_data_trans</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>   <span class="o">=</span> <span class="n">CL_data_sub</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>    	     
+            <span class="n">CL_data_trans</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>   <span class="o">=</span> <span class="n">CL_data_sup</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> 
+            <span class="n">CL_data_trans</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>   <span class="o">=</span> <span class="n">CL_data_sup</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> 
+            <span class="n">CDi_data_trans</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>  <span class="o">=</span> <span class="n">CDi_data_sub</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>	     
+            <span class="n">CDi_data_trans</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>  <span class="o">=</span> <span class="n">CDi_data_sup</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> 
+    
+            <span class="n">mach_data_trans_CL</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mach_data_sub</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">mach_data_sup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">mach_data_sup</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> 
+            <span class="n">mach_data_trans_CDi</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">mach_data_sub</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">mach_data_sup</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">mach_data_sup</span><span class="p">[</span><span class="mi">1</span><span class="p">]])</span> 
+    
+            <span class="n">CL_surrogate_trans</span>  <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_trans_CL</span><span class="p">),</span> <span class="n">CL_data_trans</span><span class="p">,</span> \
+                                                                     <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  
+            <span class="n">CDi_surrogate_trans</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_trans_CDi</span><span class="p">),</span> <span class="n">CDi_data_trans</span><span class="p">,</span> \
+                                                                     <span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>  
+
+        <span class="n">CL_w_surrogates_sub</span>            <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="n">CL_w_surrogates_sup</span>            <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="n">CL_w_surrogates_trans</span>          <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="n">CDi_w_surrogates_sub</span>           <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>             
+        <span class="n">CDi_w_surrogates_sup</span>           <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        <span class="n">CDi_w_surrogates_trans</span>         <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>           
+            
+            <span class="c1"># Do the subsonic surrogates:</span>
+            <span class="k">if</span> <span class="n">SUB</span><span class="p">:</span>
+                <span class="n">CL_w_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>    <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sub</span><span class="p">,</span> <span class="n">CL_w_data_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">])</span> 
+                <span class="n">CDi_w_surrogates_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>   <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sub</span><span class="p">,</span> <span class="n">CDi_w_data_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">])</span>  
+            <span class="c1"># Do the supersonic surrogates:</span>
+            <span class="k">if</span> <span class="n">SUP</span><span class="p">:</span>
+                <span class="n">CL_w_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>    <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sup</span><span class="p">,</span> <span class="n">CL_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">])</span> 
+                <span class="n">CDi_w_surrogates_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>   <span class="o">=</span> <span class="n">RectBivariateSpline</span><span class="p">(</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_sup</span><span class="p">,</span> <span class="n">CDi_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">])</span>
+            <span class="c1"># Do the transonic regime surrogates:</span>
+            <span class="k">if</span> <span class="n">SUB</span> <span class="ow">and</span> <span class="n">SUP</span><span class="p">:</span>	  
+                <span class="n">CLw</span>                    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">CL_data_trans</span><span class="p">)</span>
+                <span class="n">CDiw</span>                   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">CDi_data_trans</span><span class="p">)</span>            
+                <span class="n">CLw</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>               <span class="o">=</span> <span class="n">CL_w_data_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>   	 
+                <span class="n">CLw</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>               <span class="o">=</span> <span class="n">CL_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="mi">0</span><span class="p">]</span>  	
+                <span class="n">CLw</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>               <span class="o">=</span> <span class="n">CL_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="mi">1</span><span class="p">]</span>  	
+                <span class="n">CDiw</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>              <span class="o">=</span> <span class="n">CDi_w_data_sub</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>    
+                <span class="n">CDiw</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>              <span class="o">=</span> <span class="n">CDi_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="mi">0</span><span class="p">]</span>   
+                <span class="n">CDiw</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>              <span class="o">=</span> <span class="n">CDi_w_data_sup</span><span class="p">[</span><span class="n">wing</span><span class="p">][:,</span><span class="mi">1</span><span class="p">]</span>   
+                <span class="n">CL_w_data_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>  <span class="o">=</span> <span class="n">CLw</span>
+                <span class="n">CDi_w_data_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span> <span class="o">=</span> <span class="n">CDiw</span>  
+                
+                <span class="n">CL_w_surrogates_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span>  <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_trans_CL</span><span class="p">),</span>\
+                                                                       <span class="n">CL_w_data_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">],</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> \
+                                                                       <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>     
+                <span class="n">CDi_w_surrogates_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">]</span> <span class="o">=</span> <span class="n">RegularGridInterpolator</span><span class="p">((</span><span class="n">AoA_data</span><span class="p">,</span> <span class="n">mach_data_trans_CL</span><span class="p">),</span> \
+                                                                       <span class="n">CDi_w_data_trans</span><span class="p">[</span><span class="n">wing</span><span class="p">],</span><span class="n">method</span> <span class="o">=</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> \
+                                                                       <span class="n">bounds_error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>           
+    
+        <span class="c1"># Pack the outputs</span>
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sub</span>        <span class="o">=</span> <span class="n">CL_surrogate_sub</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_sup</span>        <span class="o">=</span> <span class="n">CL_surrogate_sup</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">lift_coefficient_trans</span>      <span class="o">=</span> <span class="n">CL_surrogate_trans</span>
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sub</span>   <span class="o">=</span> <span class="n">CL_w_surrogates_sub</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_sup</span>   <span class="o">=</span> <span class="n">CL_w_surrogates_sup</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_lift_coefficient_trans</span> <span class="o">=</span> <span class="n">CL_w_surrogates_trans</span>
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sub</span>        <span class="o">=</span> <span class="n">CDi_surrogate_sub</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_sup</span>        <span class="o">=</span> <span class="n">CDi_surrogate_sup</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">drag_coefficient_trans</span>      <span class="o">=</span> <span class="n">CDi_surrogate_trans</span>
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sub</span>   <span class="o">=</span> <span class="n">CDi_w_surrogates_sub</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_sup</span>   <span class="o">=</span> <span class="n">CDi_w_surrogates_sup</span>  
+        <span class="n">surrogates</span><span class="o">.</span><span class="n">wing_drag_coefficient_trans</span> <span class="o">=</span> <span class="n">CDi_w_surrogates_trans</span>
+        
+        <span class="k">return</span></div>
+</div>
+
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Helper Functions</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+<div class="viewcode-block" id="calculate_VLM">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Framework.Analyses.Aerodynamics.Common.html#RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice.calculate_VLM">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_VLM</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the total vehicle lift coefficient and specific wing coefficients (with specific wing reference areas)</span>
+<span class="sd">    using a vortex lattice method.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    conditions                      (passed to vortex lattice method)</span>
+<span class="sd">    settings                        (passed to vortex lattice method)</span>
+<span class="sd">    geometry.reference_area         [m^2]</span>
+<span class="sd">    geometry.wings.*.reference_area (each wing is also passed to the vortex lattice method)</span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    total_lift_coeff                [array]</span>
+<span class="sd">    total_induced_drag_coeff        [array]</span>
+<span class="sd">    wing_lifts                      [Data]</span>
+<span class="sd">    wing_drags                      [Data]</span>
+<span class="sd">    Properties Used:</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>            
+    <span class="c1"># iterate over wings</span>
+    <span class="n">total_lift_coeff</span>   <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">wing_lifts</span>         <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+    <span class="n">wing_drags</span>         <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+    <span class="n">wing_induced_angle</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        
+    <span class="n">results</span> <span class="o">=</span> <span class="n">VLM</span><span class="p">(</span><span class="n">conditions</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">)</span>
+    <span class="n">total_lift_coeff</span>          <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CL</span>
+    <span class="n">total_induced_drag_coeff</span>  <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CDi</span>
+    <span class="n">total_side_coef</span>           <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CYTOT</span>
+    <span class="n">CL_wing</span>                   <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CL_wing</span>  
+    <span class="n">CDi_wing</span>                  <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CDi_wing</span> 
+    <span class="n">cl_y</span>                      <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">cl_y</span>     
+    <span class="n">cdi_y</span>                     <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">cdi_y</span>    
+    <span class="n">alpha_i</span>                   <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">alpha_i</span>  
+    <span class="n">CPi</span>                       <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CP</span>  
+    <span class="n">CYMTOT</span>                    <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CYMTOT</span>
+    <span class="n">CRMTOT</span>                    <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CRMTOT</span>
+    <span class="n">CM</span>                        <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">CM</span>
+    
+    <span class="c1"># Dimensionalize the lift and drag for each wing</span>
+    <span class="n">areas</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">vortex_distribution</span><span class="o">.</span><span class="n">wing_areas</span>
+    <span class="n">dim_wing_lifts</span> <span class="o">=</span> <span class="n">CL_wing</span>  <span class="o">*</span> <span class="n">areas</span>
+    <span class="n">dim_wing_drags</span> <span class="o">=</span> <span class="n">CDi_wing</span> <span class="o">*</span> <span class="n">areas</span>
+    
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="c1"># Assign the lift and drag and non-dimensionalize</span>
+    <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">geometry</span><span class="o">.</span><span class="n">wings</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">ref</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span>
+        <span class="k">if</span> <span class="n">wing</span><span class="o">.</span><span class="n">symmetric</span><span class="p">:</span>
+            <span class="n">wing_lifts</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim_wing_lifts</span><span class="p">[:,</span><span class="n">i</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">ref</span>
+            <span class="n">wing_drags</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">dim_wing_drags</span><span class="p">[:,</span><span class="n">i</span><span class="p">:(</span><span class="n">i</span><span class="o">+</span><span class="mi">2</span><span class="p">)],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">ref</span>
+            <span class="n">wing_induced_angle</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">alpha_i</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">alpha_i</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">wing_lifts</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">dim_wing_lifts</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">ref</span>
+            <span class="n">wing_drags</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>         <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">dim_wing_drags</span><span class="p">[:,</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">T</span><span class="o">/</span><span class="n">ref</span>
+            <span class="n">wing_induced_angle</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">alpha_i</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">total_lift_coeff</span><span class="p">,</span> <span class="n">total_induced_drag_coeff</span><span class="p">,</span> <span class="n">total_side_coef</span><span class="p">,</span> <span class="n">wing_lifts</span><span class="p">,</span> <span class="n">wing_drags</span><span class="p">,</span> <span class="n">cl_y</span><span class="p">,</span> <span class="n">cdi_y</span><span class="p">,</span> <span class="n">wing_induced_angle</span><span class="p">,</span> <span class="n">CPi</span><span class="p">,</span><span class="n">CYMTOT</span><span class="p">,</span><span class="n">CRMTOT</span><span class="p">,</span> <span class="n">CM</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

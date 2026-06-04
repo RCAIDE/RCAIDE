@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Mission.Common.Update package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Methods.Mission.Segments package" href="RCAIDE.Library.Methods.Mission.Segments.html" />
+    <link rel="prev" title="RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns package" href="RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.html">RCAIDE.Library.Methods package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.Mission.html">RCAIDE.Library.Methods.Mission package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Methods.Mission.Common.html">RCAIDE.Library.Methods.Mission.Common package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Mission.Common.Update package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Methods.Mission.Common.Update.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-methods-mission-common-update-package">
+<h1>RCAIDE.Library.Methods.Mission.Common.Update package<a class="headerlink" href="#rcaide-library-methods-mission-common-update-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.acceleration">
+<span id="rcaide-library-methods-mission-common-update-acceleration-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.acceleration module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.acceleration" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.acceleration.acceleration">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.acceleration.</span></span><span class="sig-name descname"><span class="pre">acceleration</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/acceleration.html#acceleration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.acceleration.acceleration" title="Link to this definition"></a></dt>
+<dd><p>Differentiates the velocity vector to get accelerations</p>
+<p>Assumptions:
+Assumes a flat earth, this is planar motion.</p>
+<dl>
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:</dt><dd><p>frames.inertial.velocity_vector     [meters/second]</p>
+</dd>
+</dl>
+<p>segment.state.numerics.time.differentiate       [float]</p>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:           </dt><dd><p>frames.inertial.acceleration_vector [meters]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics">
+<span id="rcaide-library-methods-mission-common-update-aerodynamics-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics.aerodynamics">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics.</span></span><span class="sig-name descname"><span class="pre">aerodynamics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/aerodynamics.html#aerodynamics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.aerodynamics.aerodynamics" title="Link to this definition"></a></dt>
+<dd><p>Gets aerodynamics conditions</p>
+<p>Assumptions:
++X out nose
++Y out starboard wing
++Z down</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>segment.analyses.aerodynamics_model                    [Function]
+aerodynamics_model.settings.maximum_lift_coefficient   [unitless]
+aerodynamics_model.geometry.reference_area             [meter^2]
+segment.state.conditions.freestream.dynamic_pressure   [pascals]</p>
+</dd>
+<dt>Outputs:</dt><dd><p>conditions.aerodynamics.coefficients.lift [unitless]
+conditions.aerodynamics.coefficients.drag [unitless]
+conditions.frames.wind.lift_force_vector [newtons]
+conditions.frames.wind.drag_force_vector [newtons]</p>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.altitude">
+<span id="rcaide-library-methods-mission-common-update-altitude-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.altitude module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.altitude" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.altitude.altitude">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.altitude.</span></span><span class="sig-name descname"><span class="pre">altitude</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/altitude.html#altitude"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.altitude.altitude" title="Link to this definition"></a></dt>
+<dd><p>Updates freestream altitude from inertial position</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:</dt><dd><p>frames.inertial.position_vector [meters]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:</dt><dd><p>freestream.altitude             [meters]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.atmosphere">
+<span id="rcaide-library-methods-mission-common-update-atmosphere-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.atmosphere module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.atmosphere" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.atmosphere.atmosphere">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.atmosphere.</span></span><span class="sig-name descname"><span class="pre">atmosphere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/atmosphere.html#atmosphere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.atmosphere.atmosphere" title="Link to this definition"></a></dt>
+<dd><p>Computes conditions of the atmosphere at given altitudes</p>
+<p>Assumptions:
+N/A</p>
+<dl>
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>state.conditions:</dt><dd><p>freestream.altitude             [meters]</p>
+</dd>
+</dl>
+<p>segment.analyses.atmoshere          [Function]</p>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>state.conditions:</dt><dd><p>freestream.pressure             [pascals]
+freestream.temperature          [kelvin]
+freestream.density              [kilogram/meter^3]
+freestream.speed_of_sound       [meter/second]
+freestream.dynamic_viscosity    [pascals-seconds]
+freestream.kinematic_viscosity  [meters^2/second]
+freestream.thermal_conductivity [Watt/meter-Kelvin]
+freestream.prandtl_number       [unitless]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.battery_age">
+<span id="rcaide-library-methods-mission-common-update-battery-age-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.battery_age module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.battery_age" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.battery_age.battery_age">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.battery_age.</span></span><span class="sig-name descname"><span class="pre">battery_age</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/battery_age.html#battery_age"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.battery_age.battery_age" title="Link to this definition"></a></dt>
+<dd><p>Updates battery age based on operating conditions, cell temperature and time of operation.
+Source: 
+Cell specific. See individual battery cell for more details</p>
+<p>Assumptions:
+Cell specific. See individual battery cell for more details</p>
+<p>Inputs: 
+segment.</p>
+<blockquote>
+<div><p>conditions                         - conditions of battery at each segment  [unitless]
+increment_battery_age_by_one_day   - flag to increment battery cycle day    [boolean]</p>
+</div></blockquote>
+<p>Outputs:
+N/A</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.differentials_time">
+<span id="rcaide-library-methods-mission-common-update-differentials-time-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.differentials_time module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.differentials_time" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.differentials_time.differentials_time">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.differentials_time.</span></span><span class="sig-name descname"><span class="pre">differentials_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/differentials_time.html#differentials_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.differentials_time.differentials_time" title="Link to this definition"></a></dt>
+<dd><p>Updates the time descretization</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:</dt><dd><p>.frames.inertial.time         [s]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.numerics.time</dt><dd><p>.control_points               [s]
+.differentiate                [-]
+.integrate                    [-]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.forces">
+<span id="rcaide-library-methods-mission-common-update-forces-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.forces module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.forces" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.forces.forces">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.forces.</span></span><span class="sig-name descname"><span class="pre">forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/forces.html#forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.forces.forces" title="Link to this definition"></a></dt>
+<dd><p>Updates the total resultant force on the vehicle</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions.:</dt><dd><p>frames.wind.lift_force_vector          [N]
+frames.wind.drag_force_vector          [N]
+frames.body.thrust_force_vector        [N]
+frames.inertial.gravity_force_vector   [N]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.conditions</dt><dd><p>frames.inertial.total_force_vector     [N]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.freestream">
+<span id="rcaide-library-methods-mission-common-update-freestream-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.freestream module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.freestream" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.freestream.freestream">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.freestream.</span></span><span class="sig-name descname"><span class="pre">freestream</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/freestream.html#freestream"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.freestream.freestream" title="Link to this definition"></a></dt>
+<dd><p>Updates the freestream conditions</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions.:</dt><dd><p>frames.inertial.velocity_vector   [m/s]
+freestream.density                [kg/m^3]
+freestream.speed_of_sound         [m/s]
+freestream.dynamic_viscosity      [Pa-s]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.conditions.freestream</dt><dd><p>velocity                          [m/s]
+mach_number                       [-]
+reynolds_number                   [-]
+dynamic_pressure                  [Pa]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.gravity">
+<span id="rcaide-library-methods-mission-common-update-gravity-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.gravity module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.gravity" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.gravity.gravity">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.gravity.</span></span><span class="sig-name descname"><span class="pre">gravity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/gravity.html#gravity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.gravity.gravity" title="Link to this definition"></a></dt>
+<dd><p>Sets the gravity for each part of the mission</p>
+<p>Assumptions:
+Fixed sea level gravity, doesn’t use a gravity model yet</p>
+<p>Inputs:
+segment.analyses.planet.features.sea_level_gravity [Data]</p>
+<p>Outputs:
+state.conditions.freestream.gravity [meters/second^2]</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.ground_forces">
+<span id="rcaide-library-methods-mission-common-update-ground-forces-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.ground_forces module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.ground_forces" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.ground_forces.ground_forces">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.ground_forces.</span></span><span class="sig-name descname"><span class="pre">ground_forces</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/ground_forces.html#ground_forces"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.ground_forces.ground_forces" title="Link to this definition"></a></dt>
+<dd><p>Compute the rolling friction on the aircraft</p>
+<dl class="simple">
+<dt>Assumptions:</dt><dd><p>Does a force balance to calculate the load on the wheels using only lift. Uses only a single friction coefficient.</p>
+</dd>
+<dt>Source:</dt><dd><p>N/A</p>
+</dd>
+</dl>
+<p>Inputs:
+conditions:</p>
+<blockquote>
+<div><p>frames.inertial.gravity_force_vector       [meters/second^2]
+ground.friction_coefficient                [unitless]
+frames.wind.lift_force_vector              [newtons]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Outputs:</dt><dd><p>conditions.frames.inertial.ground_force_vector [newtons]</p>
+</dd>
+<dt>Properties Used:</dt><dd><p>N/A</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position">
+<span id="rcaide-library-methods-mission-common-update-inertial-horizontal-position-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position.inertial_horizontal_position">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position.</span></span><span class="sig-name descname"><span class="pre">inertial_horizontal_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/inertial_horizontal_position.html#inertial_horizontal_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.inertial_horizontal_position.inertial_horizontal_position" title="Link to this definition"></a></dt>
+<dd><p>Determines how far the airplane has traveled.</p>
+<p>Assumptions:
+Assumes a flat earth, this is planar motion.</p>
+<dl>
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:</dt><dd><p>frames.inertial.position_vector [meters]
+frames.inertial.velocity_vector [meters/second]</p>
+</dd>
+</dl>
+<p>segment.state.numerics.time.integrate       [float]</p>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:           </dt><dd><p>frames.inertial.position_vector [meters]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.kinematics">
+<span id="rcaide-library-methods-mission-common-update-kinematics-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.kinematics module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.kinematics" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.kinematics.kinematics">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.kinematics.</span></span><span class="sig-name descname"><span class="pre">kinematics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/kinematics.html#kinematics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.kinematics.kinematics" title="Link to this definition"></a></dt>
+<dd><p>Updates the kinematics of the rigid body (aircraft)</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.:</dt><dd><p>conditions.frames.inertial.velocity_vector    [m/s]
+numerics.time.differentiate                   [-]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.conditions </dt><dd><p>frames.inertial.acceleration_vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.noise">
+<span id="rcaide-library-methods-mission-common-update-noise-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.noise module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.noise" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.noise.noise">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.noise.</span></span><span class="sig-name descname"><span class="pre">noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/noise.html#noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.noise.noise" title="Link to this definition"></a></dt>
+<dd><p>Updates the noise produced by the vehicle</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>None</p>
+</dd>
+<dt>Outputs: </dt><dd><p>None</p>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.orientations">
+<span id="rcaide-library-methods-mission-common-update-orientations-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.orientations module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.orientations" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.orientations.orientations">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.orientations.</span></span><span class="sig-name descname"><span class="pre">orientations</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/orientations.html#orientations"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.orientations.orientations" title="Link to this definition"></a></dt>
+<dd><p>Updates the orientation of the vehicle throughout the mission for each relevant axis</p>
+<p>Assumptions:
+This assumes the vehicle has 3 frames: inertial, body, and wind</p>
+<p>Inputs:
+segment.state.conditions:</p>
+<blockquote>
+<div><p>frames.inertial.velocity_vector          [meters/second]
+frames.body.inertial_rotations           [Radians]</p>
+</div></blockquote>
+<p>segment.analyses.planet.features.mean_radius [meters]
+state.numerics.time.integrate                [float]</p>
+<dl class="simple">
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:           </dt><dd><p>aerodynamics.angles.alpha         [Radians]
+aerodynamics.angles.beta          [Radians]
+aerodynamics.angles.roll          [Radians]
+frames.body.transform_to_inertial [Radians]
+frames.wind.body_rotations        [Radians]
+frames.wind.transform_to_inertial [Radians]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.planet_position">
+<span id="rcaide-library-methods-mission-common-update-planet-position-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.planet_position module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.planet_position" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.planet_position.planet_position">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.planet_position.</span></span><span class="sig-name descname"><span class="pre">planet_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/planet_position.html#planet_position"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.planet_position.planet_position" title="Link to this definition"></a></dt>
+<dd><p>Updates the location of the vehicle relative to the Planet throughout the mission</p>
+<p>Assumptions:
+This is valid for small movements and times as it does not account for the rotation of the Planet beneath the vehicle</p>
+<p>Inputs:
+segment.state.conditions:</p>
+<blockquote>
+<div><p>freestream.velocity                      [meters/second]
+freestream.altitude                      [meters]
+frames.body.inertial_rotations           [Radians]</p>
+</div></blockquote>
+<p>segment.analyses.planet.features.mean_radius [meters]
+segment.state.numerics.time.integrate        [float]</p>
+<dl class="simple">
+<dt>Outputs:</dt><dd><dl class="simple">
+<dt>segment.state.conditions:           </dt><dd><p>frames.planet.latitude  [Radians]
+frames.planet.longitude [Radians]</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.stability">
+<span id="rcaide-library-methods-mission-common-update-stability-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.stability module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.stability" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.stability.stability">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.stability.</span></span><span class="sig-name descname"><span class="pre">stability</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/stability.html#stability"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.stability.stability" title="Link to this definition"></a></dt>
+<dd><p>Updates the stability of the aircraft</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>None</p>
+</dd>
+<dt>Outputs: </dt><dd><p>None</p>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.thrust">
+<span id="rcaide-library-methods-mission-common-update-thrust-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.thrust module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.thrust" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.thrust.thrust">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.thrust.</span></span><span class="sig-name descname"><span class="pre">thrust</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/thrust.html#thrust"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.thrust.thrust" title="Link to this definition"></a></dt>
+<dd><p>Updates the thrust vector of the vehicle from the propulsors</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><p>None</p>
+</dd>
+<dt>Outputs: </dt><dd><p>None</p>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update.weights">
+<span id="rcaide-library-methods-mission-common-update-weights-module"></span><h2>RCAIDE.Library.Methods.Mission.Common.Update.weights module<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update.weights" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="RCAIDE.Library.Methods.Mission.Common.Update.weights.weights">
+<span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Methods.Mission.Common.Update.weights.</span></span><span class="sig-name descname"><span class="pre">weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Methods/Mission/Common/Update/weights.html#weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Methods.Mission.Common.Update.weights.weights" title="Link to this definition"></a></dt>
+<dd><p>Updates the weight of the vehicle</p>
+<p>Assumptions:
+N/A</p>
+<dl class="simple">
+<dt>Inputs:</dt><dd><dl class="simple">
+<dt>segment.state.</dt><dd><p>numerics.time.integrate               [-]
+conditions.weights.total_mass         [kg]
+conditions.weights.vehicle_mass_rate  [kg/s]
+conditions.freestream.gravity         [m/s^2]</p>
+</dd>
+</dl>
+</dd>
+<dt>Outputs: </dt><dd><dl class="simple">
+<dt>segment.state.conditions.</dt><dd><p>weights.total_mass
+frames.inertial.gravity_force_vector</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Methods.Mission.Common.Update">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Methods.Mission.Common.Update" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Methods.Mission.Common.Unpack_Unknowns package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Methods.Mission.Segments.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Methods.Mission.Segments package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

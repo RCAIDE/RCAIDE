@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Framework.Networks.Turbofan_Engine_Network &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Framework.Networks.Turbofan_Engine_Network</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Framework.Networks.Turbofan_Engine_Network</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Networks</span>
+<span class="c1"># RCAIDE/Library/Compoments/Energy/Networks/Turbofan_Engine_Network.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Oct 2023, M. Clarke</span>
+<span class="c1"># Modified: </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># RCAIDE Imports  </span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>                                                                    <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Mission.Common</span>                                                          <span class="kn">import</span> <span class="n">Residuals</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Energy.Propulsors.Turbofan_Propulsor.compute_turbofan_performance</span>  <span class="kn">import</span> <span class="n">compute_turbofan_performance</span>
+<span class="kn">from</span> <span class="nn">.Network</span>                                                                                  <span class="kn">import</span> <span class="n">Network</span>  
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Turbofan</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Energy-Networks</span>
+<div class="viewcode-block" id="Turbofan_Engine_Network">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Networks.html#RCAIDE.Framework.Networks.Turbofan_Engine_Network.Turbofan_Engine_Network">[docs]</a>
+<span class="k">class</span> <span class="nc">Turbofan_Engine_Network</span><span class="p">(</span><span class="n">Network</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This is a turbofan. </span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">        Most of the componentes come from this book:</span>
+<span class="sd">        https://web.stanford.edu/~cantwell/AA283_Course_Material/AA283_Course_Notes/</span>
+<span class="sd">    &quot;&quot;&quot;</span>      
+    
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; This sets the default values for the network to function.</span>
+<span class="sd">    </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Properties Used:</span>
+<span class="sd">            N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>           
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                          <span class="o">=</span> <span class="s1">&#39;turbofan_engine_network&#39;</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">system_voltage</span>               <span class="o">=</span> <span class="kc">None</span>   
+        
+    <span class="c1"># linking the different network components</span>
+<div class="viewcode-block" id="Turbofan_Engine_Network.evaluate_thrust">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Networks.html#RCAIDE.Framework.Networks.Turbofan_Engine_Network.Turbofan_Engine_Network.evaluate_thrust">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate_thrust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Calculate thrust given the current state of the vehicle</span>
+<span class="sd">    </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">            state [state()]</span>
+<span class="sd">    </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            results.thrust_force_vector [newtons]</span>
+<span class="sd">            results.vehicle_mass_rate   [kg/s]</span>
+<span class="sd">            conditions.noise.sources.turbofan:</span>
+<span class="sd">                core:</span>
+<span class="sd">                    exit_static_temperature      </span>
+<span class="sd">                    exit_static_pressure       </span>
+<span class="sd">                    exit_stagnation_temperature </span>
+<span class="sd">                    exit_stagnation_pressure</span>
+<span class="sd">                    exit_velocity </span>
+<span class="sd">                fan:</span>
+<span class="sd">                    exit_static_temperature      </span>
+<span class="sd">                    exit_static_pressure       </span>
+<span class="sd">                    exit_stagnation_temperature </span>
+<span class="sd">                    exit_stagnation_pressure</span>
+<span class="sd">                    exit_velocity </span>
+<span class="sd">    </span>
+<span class="sd">            Properties Used:</span>
+<span class="sd">            Defaulted values</span>
+<span class="sd">        &quot;&quot;&quot;</span>           
+
+        <span class="c1"># Step 1: Unpack</span>
+        <span class="n">conditions</span>  <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">conditions</span>  
+        <span class="n">fuel_lines</span>  <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fuel_lines</span> 
+         
+        <span class="n">total_thrust</span>  <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> 
+        <span class="n">total_power</span>   <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+        <span class="n">total_mdot</span>    <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   
+        
+        <span class="c1"># Step 2: loop through compoments of network and determine performance</span>
+        <span class="k">for</span> <span class="n">fuel_line</span> <span class="ow">in</span> <span class="n">fuel_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">active</span><span class="p">:</span>   
+                
+                <span class="c1"># Step 2.1: Compute and store perfomrance of all propulsors </span>
+                <span class="n">fuel_line_T</span><span class="p">,</span><span class="n">fuel_line_P</span> <span class="o">=</span> <span class="n">compute_turbofan_performance</span><span class="p">(</span><span class="n">fuel_line</span><span class="p">,</span><span class="n">state</span><span class="p">)</span>  
+                <span class="n">total_thrust</span> <span class="o">+=</span> <span class="n">fuel_line_T</span>   
+                <span class="n">total_power</span>  <span class="o">+=</span> <span class="n">fuel_line_P</span>  
+                
+                <span class="c1"># Step 2.2: Link each turbofan the its respective fuel tank(s)</span>
+                <span class="k">for</span> <span class="n">fuel_tank</span> <span class="ow">in</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">fuel_tanks</span><span class="p">:</span>
+                    <span class="n">mdot</span> <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   
+                    <span class="k">for</span> <span class="n">turbofan</span> <span class="ow">in</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">propulsors</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="p">(</span><span class="n">turbofan</span><span class="o">.</span><span class="n">active_fuel_tanks</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">fuel_tank</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="n">source</span><span class="p">:</span> 
+                                <span class="n">mdot</span> <span class="o">+=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">][</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">fuel_flow_rate</span> 
+                        
+                    <span class="c1"># Step 2.3 : Determine cumulative fuel flow from fuel tank </span>
+                    <span class="n">fuel_tank_mdot</span> <span class="o">=</span> <span class="n">fuel_tank</span><span class="o">.</span><span class="n">fuel_selector_ratio</span><span class="o">*</span><span class="n">mdot</span> <span class="o">+</span> <span class="n">fuel_tank</span><span class="o">.</span><span class="n">secondary_fuel_flow</span> 
+                    
+                    <span class="c1"># Step 2.4: Store mass flow results </span>
+                    <span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">][</span><span class="n">fuel_tank</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">mass_flow_rate</span>  <span class="o">=</span> <span class="n">fuel_tank_mdot</span>  
+                    <span class="n">total_mdot</span> <span class="o">+=</span> <span class="n">fuel_tank_mdot</span>                    
+                            
+        <span class="c1"># Step 3: Pack results </span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">thrust_force_vector</span>  <span class="o">=</span> <span class="n">total_thrust</span>
+        <span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">power</span>                <span class="o">=</span> <span class="n">total_power</span> 
+        <span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">vehicle_mass_rate</span>    <span class="o">=</span> <span class="n">total_mdot</span>           
+        
+        <span class="c1"># A PATCH TO BE DELETED IN RCAIDE</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">thrust_force_vector</span>       <span class="o">=</span> <span class="n">total_thrust</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">power</span>                     <span class="o">=</span> <span class="n">total_power</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">vehicle_mass_rate</span>         <span class="o">=</span> <span class="n">total_mdot</span>      
+        <span class="n">results</span><span class="o">.</span><span class="n">network_y_axis_rotation</span>   <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.0</span>
+        <span class="c1"># -------------------------------------------------- </span>
+        
+        <span class="k">return</span> <span class="n">results</span></div>
+
+    
+<div class="viewcode-block" id="Turbofan_Engine_Network.unpack_unknowns">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Networks.html#RCAIDE.Framework.Networks.Turbofan_Engine_Network.Turbofan_Engine_Network.unpack_unknowns">[docs]</a>
+    <span class="k">def</span> <span class="nf">unpack_unknowns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Unpacks the unknowns set in the mission to be available for the mission.</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        </span>
+<span class="sd">        Inputs: </span>
+<span class="sd">            segment   - data structure of mission segment [-]</span>
+<span class="sd">        </span>
+<span class="sd">        Outputs: </span>
+<span class="sd">        </span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>            
+         
+        <span class="n">fuel_lines</span> <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">analyses</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">turbofan_engine</span><span class="o">.</span><span class="n">fuel_lines</span>
+        <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Library</span><span class="o">.</span><span class="n">Methods</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Unpack_Unknowns</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">fuel_line_unknowns</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span><span class="n">fuel_lines</span><span class="p">)</span> 
+            
+        <span class="k">return</span>    </div>
+
+     
+<div class="viewcode-block" id="Turbofan_Engine_Network.add_unknowns_and_residuals_to_segment">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Networks.html#RCAIDE.Framework.Networks.Turbofan_Engine_Network.Turbofan_Engine_Network.add_unknowns_and_residuals_to_segment">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_unknowns_and_residuals_to_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">segment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; This function sets up the information that the mission needs to run a mission segment using this network </span>
+<span class="sd">         </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    </span>
+<span class="sd">            Inputs:</span>
+<span class="sd">            segment</span>
+<span class="sd">            eestimated_throttles           [-]</span>
+<span class="sd">            estimated_propulsor_group_rpms [-]  </span>
+<span class="sd">            </span>
+<span class="sd">            Outputs:</span>
+<span class="sd">            segment</span>
+<span class="sd">    </span>
+<span class="sd">            Properties Used:</span>
+<span class="sd">            N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>                  
+        <span class="n">fuel_lines</span>  <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">analyses</span><span class="o">.</span><span class="n">energy</span><span class="o">.</span><span class="n">networks</span><span class="o">.</span><span class="n">turbofan_engine</span><span class="o">.</span><span class="n">fuel_lines</span>
+        <span class="n">ones_row</span>    <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">ones_row</span> 
+        <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">residuals</span><span class="o">.</span><span class="n">network</span> <span class="o">=</span> <span class="n">Residuals</span><span class="p">()</span>  
+        
+        <span class="k">for</span> <span class="n">fuel_line_i</span><span class="p">,</span> <span class="n">fuel_line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">fuel_lines</span><span class="p">):</span>    
+            <span class="c1"># ------------------------------------------------------------------------------------------------------            </span>
+            <span class="c1"># Create fuel_line results data structure  </span>
+            <span class="c1"># ------------------------------------------------------------------------------------------------------</span>
+            <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>       <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span>       
+            <span class="n">fuel_line_results</span>                                    <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">energy</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>    
+            <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">noise</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>        <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span>  
+            <span class="n">noise_results</span>                                        <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">noise</span><span class="p">[</span><span class="n">fuel_line</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>      
+     
+            <span class="k">for</span> <span class="n">fuel_tank</span> <span class="ow">in</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">fuel_tanks</span><span class="p">:</span>               
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">fuel_tank</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>                 <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span>  
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">fuel_tank</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">mass_flow_rate</span>  <span class="o">=</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">fuel_tank</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">mass</span>            <span class="o">=</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+                
+            <span class="c1"># ------------------------------------------------------------------------------------------------------</span>
+            <span class="c1"># Assign network-specific  residuals, unknowns and results data structures</span>
+            <span class="c1"># ------------------------------------------------------------------------------------------------------</span>
+            <span class="k">for</span> <span class="n">turbofan</span> <span class="ow">in</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">propulsors</span><span class="p">:</span>               
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>                         <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span> 
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">throttle</span>                <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>      
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">y_axis_rotation</span>         <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">thrust</span>                  <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+                <span class="n">fuel_line_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">power</span>                   <span class="o">=</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">ones_row</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> 
+                <span class="n">noise_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span>                             <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span> 
+                <span class="n">noise_results</span><span class="p">[</span><span class="n">turbofan</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">turbofan</span>                    <span class="o">=</span> <span class="n">RCAIDE</span><span class="o">.</span><span class="n">Framework</span><span class="o">.</span><span class="n">Mission</span><span class="o">.</span><span class="n">Common</span><span class="o">.</span><span class="n">Conditions</span><span class="p">()</span> 
+        
+        <span class="n">segment</span><span class="o">.</span><span class="n">process</span><span class="o">.</span><span class="n">iterate</span><span class="o">.</span><span class="n">unknowns</span><span class="o">.</span><span class="n">network</span>   <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">unpack_unknowns</span>                   
+        <span class="k">return</span> <span class="n">segment</span>    </div>
+
+        
+    <span class="fm">__call__</span> <span class="o">=</span> <span class="n">evaluate_thrust</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

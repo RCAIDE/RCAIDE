@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Cryogenics-Cryocooler</span>
+<span class="c1"># cryocooler_model.py</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Feb 2020,   K.Hamilton</span>
+<span class="c1"># Modified: Nov 2021,   S. Claridge</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE imports</span>
+<span class="kn">import</span> <span class="nn">RCAIDE</span>
+
+<span class="c1"># package imports</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Cryocooler Model </span>
+<span class="c1"># ----------------------------------------------------------------------    </span>
+<span class="c1">## @ingroup Methods-Cryogenics-Cryocooler</span>
+<div class="viewcode-block" id="cryocooler_model">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.cryocooler_model.cryocooler_model">[docs]</a>
+<span class="k">def</span> <span class="nf">cryocooler_model</span><span class="p">(</span><span class="n">Cryocooler</span><span class="p">):</span>
+
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate the power required by the cryocooler based on the cryocooler type, the required cooling power, and the temperature conditions.</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">        Based on mass data for Cryomech cryocoolers as per the datasheets for ground based non-massreduced coolers available via the cryomech website: https://www.cryomech.com/cryocoolers/.</span>
+<span class="sd">        The mass is calculated for the requested power level, the cryocooler should be sized for the maximum power level required as its mass will not change during the flight.</span>
+<span class="sd">        The efficiency scales with required cooling power and temperature only.</span>
+<span class="sd">        The temperature difference and efficiency are taken not to scale with ambient temperature. This should not matter in the narrow range of temperatures in which aircraft operate, i.e. for ambient temperatures between -50 and 50 C.</span>
+<span class="sd">        </span>
+<span class="sd">    Source: </span>
+<span class="sd">        https://www.cryomech.com/cryocoolers/</span>
+<span class="sd">        </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        self.inputs</span>
+<span class="sd">            cryo_temp -         cryogenic output temperature required                                   [kelvin]</span>
+<span class="sd">            cooling_power -     cooling power required of the cryocooler                                [watts]</span>
+<span class="sd">            </span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">        self.inputs</span>
+<span class="sd">            rated_power -   electrical input power required by the cryocooler         [watts]</span>
+<span class="sd">            mass -          mass of the cryocooler and supporting components          [kilogram]</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">        self.</span>
+<span class="sd">            cooler_type -       cryocooler type used</span>
+<span class="sd">            amb_temp -          ambient temperature the cooler will reject heat to, defaults to 19C     [kelvin]</span>
+<span class="sd">&quot;&quot;&quot;</span>      
+
+    <span class="n">amb_temp</span>        <span class="o">=</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">ambient_temp</span>
+    <span class="n">cooling_power</span>   <span class="o">=</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">cooling_power</span>
+    <span class="n">cryo_temp</span>       <span class="o">=</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">inputs</span><span class="o">.</span><span class="n">cryo_temp</span> 
+
+
+    <span class="c1"># Prevent unrealistic temperature changes.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">cryo_temp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.</span><span class="p">:</span>
+
+        <span class="n">cryo_temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">cryo_temp</span><span class="p">,</span> <span class="mf">5.</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Less than zero kelvin not possible, setting cryogenic temperature target to 5K.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Warn if ambient temperature is very low.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">amb_temp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">200.</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Suprisingly low ambient temperature, check altitude.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the shift in achievable minimum temperature based on the the ambient temperature (temp_amb) and the datasheet operating temperature (19C, 292.15K)</span>
+    <span class="n">temp_offset</span> <span class="o">=</span> <span class="mf">292.15</span> <span class="o">-</span> <span class="n">amb_temp</span>
+
+    <span class="c1"># Calculate the required temperature difference the cryocooler must produce.</span>
+    <span class="n">temp_diff</span> <span class="o">=</span> <span class="n">amb_temp</span><span class="o">-</span><span class="n">cryo_temp</span>
+
+    <span class="c1"># Disable if the target temperature is greater than the ambient temp. Technically cooling like this is possible, however there are better cooling technologies to use if this is the required scenario.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">temp_diff</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">:</span>
+
+        <span class="n">temp_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">temp_diff</span><span class="p">,</span> <span class="mf">0.</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Temperature conditions are not well suited to cryocooler use. Cryocooler disabled.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Set the parameters of the cooler based on the cooler type and the operating conditions. The default ambient operating temperature (19C) is used as a base.</span>
+    <span class="k">if</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">cooler_type</span> <span class="o">==</span>   <span class="s1">&#39;fps&#39;</span><span class="p">:</span> <span class="c1">#Free Piston Stirling</span>
+
+        <span class="n">temp_minRT</span>      <span class="o">=</span>  <span class="mf">35.0</span>      <span class="c1"># Minimum temperature achievable by this type of cooler when rejecting to an ambient temperature of 19C (K)</span>
+        <span class="n">temp_min</span>        <span class="o">=</span>  <span class="n">temp_minRT</span> <span class="o">-</span> <span class="n">temp_offset</span>   <span class="c1"># Updated minimum achievable temperature based on the supplied ambient temperature (K)</span>
+        <span class="n">eff</span>             <span class="o">=</span>  <span class="mf">0.0014</span><span class="o">*</span><span class="p">(</span><span class="n">cryo_temp</span><span class="o">-</span><span class="n">temp_min</span><span class="p">)</span> <span class="c1"># Efficiency function. This is a line fit from a survey of Cryomech coolers in November 2019  </span>
+        <span class="n">input_power</span>     <span class="o">=</span>  <span class="n">cooling_power</span><span class="o">/</span><span class="n">eff</span>           <span class="c1"># Electrical input power (W)</span>
+        <span class="n">mass</span>            <span class="o">=</span>  <span class="mf">0.0098</span><span class="o">*</span><span class="n">input_power</span><span class="o">+</span><span class="mf">1.0769</span>   <span class="c1"># Total cooler mass function. Fit from November 2019 Cryomech data. (kg)</span>
+
+    <span class="k">elif</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">cooler_type</span> <span class="o">==</span> <span class="s1">&#39;GM&#39;</span><span class="p">:</span> <span class="c1">#Gifford McMahon</span>
+
+        <span class="n">temp_minRT</span>      <span class="o">=</span>  <span class="mf">5.4</span>
+        <span class="n">temp_min</span>        <span class="o">=</span>  <span class="n">temp_minRT</span> <span class="o">-</span> <span class="n">temp_offset</span>
+        <span class="n">eff</span>             <span class="o">=</span>  <span class="mf">0.0005</span><span class="o">*</span><span class="p">(</span><span class="n">cryo_temp</span><span class="o">-</span><span class="n">temp_min</span><span class="p">)</span>
+        <span class="n">input_power</span>     <span class="o">=</span>  <span class="n">cooling_power</span><span class="o">/</span><span class="n">eff</span>
+        <span class="n">mass</span>            <span class="o">=</span>  <span class="mf">0.0129</span><span class="o">*</span><span class="n">input_power</span><span class="o">+</span><span class="mf">63.08</span> 
+
+    <span class="k">elif</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">cooler_type</span> <span class="o">==</span> <span class="s1">&#39;sPT&#39;</span><span class="p">:</span> <span class="c1">#Single Pulsetube</span>
+
+        <span class="n">temp_minRT</span>      <span class="o">=</span>  <span class="mf">16.0</span>
+        <span class="n">temp_min</span>        <span class="o">=</span>  <span class="n">temp_minRT</span> <span class="o">-</span> <span class="n">temp_offset</span>
+        <span class="n">eff</span>             <span class="o">=</span>  <span class="mf">0.0002</span><span class="o">*</span><span class="p">(</span><span class="n">cryo_temp</span><span class="o">-</span><span class="n">temp_min</span><span class="p">)</span>
+        <span class="n">input_power</span>     <span class="o">=</span>  <span class="n">cooling_power</span><span class="o">/</span><span class="n">eff</span>
+        <span class="n">mass</span>            <span class="o">=</span>  <span class="mf">0.0079</span><span class="o">*</span><span class="n">input_power</span><span class="o">+</span><span class="mf">51.124</span>  
+
+    <span class="k">elif</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">cooler_type</span> <span class="o">==</span> <span class="s1">&#39;dPT&#39;</span><span class="p">:</span> <span class="c1">#Double Pulsetube</span>
+
+        <span class="n">temp_minRT</span>      <span class="o">=</span>  <span class="mf">8.0</span>
+        <span class="n">temp_min</span>        <span class="o">=</span>  <span class="n">temp_minRT</span> <span class="o">-</span> <span class="n">temp_offset</span>
+        <span class="n">eff</span>             <span class="o">=</span>  <span class="mf">0.00001</span><span class="o">*</span><span class="p">(</span><span class="n">cryo_temp</span><span class="o">-</span><span class="n">temp_min</span><span class="p">)</span>
+        <span class="n">input_power</span>     <span class="o">=</span>  <span class="n">cooling_power</span><span class="o">/</span><span class="n">eff</span>
+        <span class="n">mass</span>            <span class="o">=</span>  <span class="mf">0.0111</span><span class="o">*</span><span class="n">input_power</span><span class="o">+</span><span class="mf">73.809</span>  
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: Unknown Cryocooler type&quot;</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span>
+
+    <span class="c1"># Warn if the cryogenic temperature is unachievable</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">cryo_temp</span> <span class="o">-</span> <span class="n">temp_min</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">amin</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.0</span><span class="p">:</span>
+
+        <span class="n">eff</span>         <span class="o">=</span>   <span class="mf">0.0</span>
+        <span class="n">input_power</span> <span class="o">=</span>   <span class="kc">None</span>
+        <span class="n">mass</span>        <span class="o">=</span>   <span class="kc">None</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Warning: The required cryogenic temperature of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">cryo_temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; is not achievable using a &quot;</span> <span class="o">+</span> <span class="n">Cryocooler</span><span class="o">.</span><span class="n">cooler_type</span> <span class="o">+</span> <span class="s2">&quot; cryocooler at an ambient temperature of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">amb_temp</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;. The minimum temperature achievable is &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp_min</span><span class="p">))</span>
+
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">input_power</span><span class="p">,</span> <span class="n">mass</span><span class="p">]</span></div>
+
+
+
+
+
+
+<span class="k">def</span> <span class="nf">_cryocooler_model</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of cryocooler_model.</span>
+<span class="sd">	Wraps cryocooler_model with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see cryocooler_model documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: Cryocooler = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">cryocooler_model</span><span class="p">(</span><span class="s1">&#39;Cryocooler&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

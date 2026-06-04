@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe </span>
+<span class="c1"># RCAIDE/Library/Methods/Noise/Correlation_Buildup/Airframe/airframe_noise.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke  </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+
+<span class="c1"># RCAIDE Imports</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>                      <span class="kn">import</span> <span class="n">Data</span> <span class="p">,</span> <span class="n">Units</span>
+
+<span class="kn">from</span> <span class="nn">.clean_wing_noise</span>             <span class="kn">import</span> <span class="n">clean_wing_noise</span>
+<span class="kn">from</span> <span class="nn">.landing_gear_noise</span>           <span class="kn">import</span> <span class="n">landing_gear_noise</span>
+<span class="kn">from</span> <span class="nn">.leading_edge_slat_noise</span>      <span class="kn">import</span> <span class="n">leading_edge_slat_noise</span>
+<span class="kn">from</span> <span class="nn">.trailing_edge_flap_noise</span>     <span class="kn">import</span> <span class="n">trailing_edge_flap_noise</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Metrics</span>  <span class="kn">import</span> <span class="n">PNL_noise_metric</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Metrics</span>  <span class="kn">import</span> <span class="n">EPNL_noise_metric</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Metrics</span>  <span class="kn">import</span> <span class="n">A_weighting_metric</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Common</span>   <span class="kn">import</span> <span class="n">noise_tone_correction</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Common</span>   <span class="kn">import</span> <span class="n">atmospheric_attenuation</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Noise.Common</span>   <span class="kn">import</span> <span class="n">SPL_arithmetic</span> 
+
+<span class="c1"># python imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Airframe Noise </span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1">## @ingroup Library-Methods-Noise-Correlation_Buildup-Airframe</span>
+<div class="viewcode-block" id="airframe_noise">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.html#RCAIDE.Library.Methods.Noise.Correlation_Buildup.Airframe.airframe_noise.airframe_noise">[docs]</a>
+<span class="k">def</span> <span class="nf">airframe_noise</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span><span class="n">analyses</span><span class="p">,</span><span class="n">config</span><span class="p">,</span><span class="n">settings</span><span class="p">):</span>  
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This computes the noise from different sources of the airframe for a given vehicle for a constant altitude flight. </span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">        Correlation based </span>
+<span class="sd"> </span>
+<span class="sd">    Source:</span>
+<span class="sd">        Fink, Martin R. Airframe noise prediction method. No. UTRC/R77-912607-11. UNITED </span>
+<span class="sd">        TECHNOLOGIES RESEARCH CENTER EAST HARTFORD CT, 1977.  </span>
+<span class="sd">               </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        vehicle	 - RCAIDE type vehicle</span>
+
+<span class="sd">        includes these fields:</span>
+<span class="sd">            S                          - Wing Area</span>
+<span class="sd">            bw                         - Wing Span</span>
+<span class="sd">            Sht                        - Horizontal tail area</span>
+<span class="sd">            bht                        - Horizontal tail span</span>
+<span class="sd">            Svt                        - Vertical tail area</span>
+<span class="sd">            bvt                        - Vertical tail span</span>
+<span class="sd">            deltaf                     - Flap deflection</span>
+<span class="sd">            Sf                         - Flap area</span>
+<span class="sd">            cf                         - Flap chord</span>
+<span class="sd">            slots                      - Number of slots (Flap type)</span>
+<span class="sd">            Dp                         - Main landing gear tyre diameter</span>
+<span class="sd">            Hp                         - Main lading gear strut length</span>
+<span class="sd">            Dn                         - Nose landing gear tyre diameter</span>
+<span class="sd">            Hn                         - Nose landing gear strut length</span>
+<span class="sd">            wheels                     - Number of wheels </span>
+<span class="sd">            </span>
+<span class="sd">        noise segment - flight path data, containing:</span>
+<span class="sd">            distance_vector             - distance from the source location to observer</span>
+<span class="sd">            angle                       - polar angle from the source to the observer</span>
+<span class="sd">            phi                         - azimuthal angle from the source to the observer</span>
+
+
+<span class="sd">    Outputs: One Third Octave Band SPL [dB]</span>
+<span class="sd">        SPL_wing                        - Sound Pressure Level of the clean wing</span>
+<span class="sd">        SPLht                           - Sound Pressure Level of the horizontal tail</span>
+<span class="sd">        SPLvt                           - Sound Pressure Level of the vertical tail</span>
+<span class="sd">        SPL_flap                        - Sound Pressure Level of the flaps trailing edge</span>
+<span class="sd">        SPL_slat                        - Sound Pressure Level of the slat leading edge</span>
+<span class="sd">        SPL_main_landing_gear           - Sound Pressure Level og the main landing gear</span>
+<span class="sd">        SPL_nose_landing_gear           - Sound Pressure Level of the nose landing gear</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">        N/A      </span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>  
+    <span class="c1"># Unpack </span>
+    <span class="n">wing</span>     <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">wings</span>
+    <span class="n">flap</span>     <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">control_surfaces</span><span class="o">.</span><span class="n">flap</span> 
+    <span class="n">Sw</span>       <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span>  <span class="o">/</span> <span class="p">(</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>              <span class="c1"># wing area, sq.ft</span>
+    <span class="n">bw</span>       <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span> <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>                    <span class="c1"># wing span, ft</span>
+    <span class="n">Sht</span>      <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">horizontal_stabilizer</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="p">(</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>   <span class="c1"># horizontal tail area, sq.ft</span>
+    <span class="n">bht</span>      <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">horizontal_stabilizer</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span> <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>        <span class="c1"># horizontal tail span, ft</span>
+    <span class="n">Svt</span>      <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">vertical_stabilizer</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span> <span class="o">/</span> <span class="p">(</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>     <span class="c1"># vertical tail area, sq.ft</span>
+    <span class="n">bvt</span>      <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">vertical_stabilizer</span><span class="o">.</span><span class="n">spans</span><span class="o">.</span><span class="n">projected</span>  <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>         <span class="c1"># vertical tail span, ft</span>
+    <span class="n">deltaf</span>   <span class="o">=</span> <span class="n">flap</span><span class="o">.</span><span class="n">deflection</span>                                              <span class="c1"># flap delection, rad</span>
+    <span class="n">Sf</span>       <span class="o">=</span> <span class="n">flap</span><span class="o">.</span><span class="n">area</span>  <span class="o">/</span> <span class="p">(</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>                                   <span class="c1"># flap area, sq.ft        </span>
+    <span class="n">cf</span>       <span class="o">=</span> <span class="n">flap</span><span class="o">.</span><span class="n">chord_dimensional</span>  <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>                           <span class="c1"># flap chord, ft</span>
+    <span class="n">Dp</span>       <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main_tire_diameter</span>  <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>           <span class="c1"># MLG tyre diameter, ft</span>
+    <span class="n">Hp</span>       <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose_tire_diameter</span>  <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>           <span class="c1"># MLG strut length, ft</span>
+    <span class="n">Dn</span>       <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main_strut_length</span>   <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>           <span class="c1"># NLG tyre diameter, ft</span>
+    <span class="n">Hn</span>       <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose_strut_length</span>   <span class="o">/</span> <span class="n">Units</span><span class="o">.</span><span class="n">ft</span>           <span class="c1"># NLG strut length, ft</span>
+    <span class="n">gear</span>     <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">gear_condition</span>                           <span class="c1"># Gear up or gear down</span>
+    
+    <span class="n">nose_wheels</span>  <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">nose_wheels</span>                          <span class="c1"># Number of wheels   </span>
+    <span class="n">main_wheels</span>  <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main_wheels</span>                          <span class="c1"># Number of wheels   </span>
+    <span class="n">main_units</span>   <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">landing_gear</span><span class="o">.</span><span class="n">main_units</span>                           <span class="c1"># Number of main units   </span>
+    <span class="n">velocity</span>     <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>              <span class="c1"># aircraft velocity  </span>
+    <span class="n">noise_time</span>   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">frames</span><span class="o">.</span><span class="n">inertial</span><span class="o">.</span><span class="n">time</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>             <span class="c1"># time discretization </span>
+
+    <span class="c1"># determining flap slot number</span>
+    <span class="k">if</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">control_surfaces</span><span class="o">.</span><span class="n">flap</span><span class="o">.</span><span class="n">configuration_type</span>   <span class="o">==</span> <span class="s1">&#39;single_slotted&#39;</span><span class="p">:</span>
+        <span class="n">slots</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">control_surfaces</span><span class="o">.</span><span class="n">flap</span><span class="o">.</span><span class="n">configuration_type</span> <span class="o">==</span> <span class="s1">&#39;double_slotted&#39;</span><span class="p">:</span>
+        <span class="n">slots</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">wing</span><span class="o">.</span><span class="n">main_wing</span><span class="o">.</span><span class="n">control_surfaces</span><span class="o">.</span><span class="n">flap</span><span class="o">.</span><span class="n">configuration_type</span> <span class="o">==</span> <span class="s1">&#39;triple_slotted&#39;</span><span class="p">:</span>
+        <span class="n">slots</span> <span class="o">=</span> <span class="mi">3</span>  
+
+    <span class="c1"># Geometric information from the source to observer position </span>
+    <span class="n">RML</span>                 <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">noise</span><span class="o">.</span><span class="n">relative_microphone_locations</span>  
+    <span class="n">distance_vector</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">RML</span><span class="p">,</span><span class="n">axis</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">thetas</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">RML</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">distance_vector</span><span class="p">)</span> 
+    <span class="n">phis</span>                <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">RML</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">distance_vector</span><span class="p">)</span>   
+    <span class="n">viscosity</span>           <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">dynamic_viscosity</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span><span class="o">*</span><span class="n">Units</span><span class="o">.</span><span class="n">ft</span> <span class="c1"># units converstion - m2 to ft2 </span>
+    <span class="n">M</span>                   <span class="o">=</span> <span class="n">segment</span><span class="o">.</span><span class="n">conditions</span><span class="o">.</span><span class="n">freestream</span><span class="o">.</span><span class="n">mach_number</span>
+    
+    <span class="c1"># Generate array with the One Third Octave Band Center Frequencies</span>
+    <span class="n">frequency</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">center_frequencies</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>  
+    <span class="n">num_f</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span> 
+    <span class="n">n_cpts</span>    <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">thetas</span><span class="p">)</span>  
+    <span class="n">n_mic</span>     <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">RML</span><span class="p">[</span><span class="mi">0</span><span class="p">,:,</span><span class="mi">0</span><span class="p">])</span> 
+
+    <span class="n">SPL_wing_history</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPLht_history</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPLvt_history</span>                 <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPL_flap_history</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPL_slat_history</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPL_main_landing_gear_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPL_nose_landing_gear_history</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>
+    <span class="n">SPL_total_history</span>             <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span> 
+    <span class="n">SPLt_dBA_history</span>              <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">,</span><span class="n">num_f</span><span class="p">))</span>  
+    <span class="n">SPLt_dBA_max</span>                  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_cpts</span><span class="p">,</span><span class="n">n_mic</span><span class="p">))</span>    
+    
+    <span class="c1"># START LOOP FOR EACH POSITION OF AIRCRAFT   </span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_cpts</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_mic</span><span class="p">):</span> 
+            
+            <span class="c1"># Emission angle</span>
+            <span class="n">theta</span> <span class="o">=</span> <span class="n">thetas</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">phi</span>   <span class="o">=</span> <span class="n">phis</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+            
+            <span class="c1"># Distance from airplane to observer, evaluated at retarded time</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="n">distance_vector</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>    
+           
+            <span class="c1"># Atmospheric attenuation</span>
+            <span class="n">delta_atmo</span><span class="o">=</span><span class="n">atmospheric_attenuation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">distance</span><span class="p">]),</span><span class="n">frequency</span><span class="p">)[:,</span><span class="mi">0</span><span class="p">]</span>
+    
+            <span class="c1"># Call each noise source model</span>
+            <span class="n">SPL_wing</span> <span class="o">=</span> <span class="n">clean_wing_noise</span><span class="p">(</span><span class="n">Sw</span><span class="p">,</span><span class="n">bw</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">velocity</span><span class="p">,</span><span class="n">viscosity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span> <span class="o">-</span> <span class="n">delta_atmo</span>    <span class="c1">#Wing Noise</span>
+            <span class="n">SPLht</span>    <span class="o">=</span> <span class="n">clean_wing_noise</span><span class="p">(</span><span class="n">Sht</span><span class="p">,</span><span class="n">bht</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">velocity</span><span class="p">,</span><span class="n">viscosity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span>  <span class="o">-</span><span class="n">delta_atmo</span>    <span class="c1">#Horizontal Tail Noise</span>
+            <span class="n">SPLvt</span>    <span class="o">=</span> <span class="n">clean_wing_noise</span><span class="p">(</span><span class="n">Svt</span><span class="p">,</span><span class="n">bvt</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">velocity</span><span class="p">,</span><span class="n">viscosity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span>  <span class="o">-</span><span class="n">delta_atmo</span>    <span class="c1">#Vertical Tail Noise</span>
+     
+            <span class="n">SPL_slat</span> <span class="o">=</span> <span class="n">leading_edge_slat_noise</span><span class="p">(</span><span class="n">SPL_wing</span><span class="p">,</span><span class="n">Sw</span><span class="p">,</span><span class="n">bw</span><span class="p">,</span><span class="n">velocity</span><span class="p">,</span><span class="n">viscosity</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span> <span class="o">-</span><span class="n">delta_atmo</span>        <span class="c1">#Slat leading edge</span>
+     
+            <span class="k">if</span> <span class="p">(</span><span class="n">deltaf</span><span class="o">==</span><span class="mi">0</span><span class="p">):</span>
+                <span class="n">SPL_flap</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">SPL_flap</span> <span class="o">=</span> <span class="n">trailing_edge_flap_noise</span><span class="p">(</span><span class="n">Sf</span><span class="p">,</span><span class="n">cf</span><span class="p">,</span><span class="n">deltaf</span><span class="p">,</span><span class="n">slots</span><span class="p">,</span><span class="n">velocity</span><span class="p">,</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span> <span class="o">-</span> <span class="n">delta_atmo</span> <span class="c1">#Trailing Edge Flaps Noise</span>
+     
+            <span class="k">if</span> <span class="n">gear</span><span class="o">==</span><span class="s1">&#39;up&#39;</span><span class="p">:</span> <span class="c1">#0</span>
+                <span class="n">SPL_main_landing_gear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_f</span><span class="p">)</span>
+                <span class="n">SPL_nose_landing_gear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">SPL_main_landing_gear</span> <span class="o">=</span> <span class="n">landing_gear_noise</span><span class="p">(</span><span class="n">Dp</span><span class="p">,</span><span class="n">Hp</span><span class="p">,</span><span class="n">main_wheels</span><span class="p">,</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">velocity</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span>  <span class="o">-</span> <span class="n">delta_atmo</span>     <span class="c1">#Main Landing Gear Noise</span>
+                <span class="n">SPL_nose_landing_gear</span> <span class="o">=</span> <span class="n">landing_gear_noise</span><span class="p">(</span><span class="n">Dn</span><span class="p">,</span><span class="n">Hn</span><span class="p">,</span><span class="n">nose_wheels</span><span class="p">,</span><span class="n">M</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">velocity</span><span class="p">,</span><span class="n">phi</span><span class="p">,</span><span class="n">theta</span><span class="p">,</span><span class="n">distance</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span>  <span class="o">-</span> <span class="n">delta_atmo</span>     <span class="c1">#Nose Landing Gear Noise</span>
+            <span class="k">if</span> <span class="n">main_units</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">:</span> <span class="c1"># Incoherent summation of each main landing gear unit</span>
+                <span class="n">SPL_main_landing_gear</span> <span class="o">=</span> <span class="n">SPL_main_landing_gear</span><span class="o">+</span><span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">main_units</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> 
+     
+            <span class="c1"># Total Airframe Noise</span>
+            <span class="n">SPL_total</span> <span class="o">=</span> <span class="mf">10.</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPL_wing</span><span class="p">)</span><span class="o">+</span><span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPLht</span><span class="p">)</span><span class="o">+</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPL_flap</span><span class="p">)</span><span class="o">+</span> \
+                 <span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPL_slat</span><span class="p">)</span><span class="o">+</span><span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPL_main_landing_gear</span><span class="p">)</span><span class="o">+</span><span class="mf">10.0</span><span class="o">**</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">SPL_nose_landing_gear</span><span class="p">))</span>
+                
+            <span class="n">SPL_total_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>             <span class="o">=</span> <span class="n">SPL_total</span> 
+            <span class="n">SPL_wing_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>              <span class="o">=</span> <span class="n">SPL_wing</span> 
+            <span class="n">SPLvt_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>                 <span class="o">=</span> <span class="n">SPLvt</span> 
+            <span class="n">SPLht_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>                 <span class="o">=</span> <span class="n">SPLht</span> 
+            <span class="n">SPL_flap_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>              <span class="o">=</span> <span class="n">SPL_flap</span> 
+            <span class="n">SPL_slat_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span>              <span class="o">=</span> <span class="n">SPL_slat</span> 
+            <span class="n">SPL_nose_landing_gear_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">SPL_nose_landing_gear</span> 
+            <span class="n">SPL_main_landing_gear_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">SPL_main_landing_gear</span>  
+            
+            <span class="c1"># Calculation of dBA based on the sound pressure time history </span>
+            <span class="n">SPLt_dBA_history</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">A_weighting_metric</span><span class="p">(</span><span class="n">SPL_total</span><span class="p">,</span><span class="n">frequency</span><span class="p">)</span>
+            <span class="n">SPLt_dBA_max</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>       <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">A_weighting_metric</span><span class="p">(</span><span class="n">SPL_total</span><span class="p">,</span><span class="n">frequency</span><span class="p">))</span>    
+              
+    <span class="c1"># Calculation of the Perceived Noise Level EPNL based on the sound time history </span>
+    <span class="n">PNL_total</span>             <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_total_history</span><span class="p">)</span>
+    <span class="n">PNL_wing</span>              <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_wing_history</span><span class="p">)</span>
+    <span class="n">PNL_ht</span>                <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPLht_history</span><span class="p">)</span>
+    <span class="n">PNL_vt</span>                <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPLvt_history</span><span class="p">)</span>
+    <span class="n">PNL_nose_landing_gear</span> <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_nose_landing_gear_history</span><span class="p">)</span>
+    <span class="n">PNL_main_landing_gear</span> <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_main_landing_gear_history</span><span class="p">)</span>
+    <span class="n">PNL_slat</span>              <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_slat_history</span><span class="p">)</span>
+    <span class="n">PNL_flap</span>              <span class="o">=</span> <span class="n">PNL_noise_metric</span><span class="p">(</span><span class="n">SPL_flap_history</span><span class="p">)</span>
+     
+    <span class="c1"># Calculation of the tones corrections on the SPL for each component and total</span>
+    <span class="n">tone_correction_total</span>             <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_total_history</span><span class="p">)</span> 
+    <span class="n">tone_correction_wing</span>              <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_wing_history</span><span class="p">)</span>
+    <span class="n">tone_correction_ht</span>                <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPLht_history</span><span class="p">)</span>
+    <span class="n">tone_correction_vt</span>                <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPLvt_history</span><span class="p">)</span>
+    <span class="n">tone_correction_flap</span>              <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_flap_history</span><span class="p">)</span>
+    <span class="n">tone_correction_slat</span>              <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_slat_history</span><span class="p">)</span>
+    <span class="n">tone_correction_nose_landing_gear</span> <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_nose_landing_gear_history</span><span class="p">)</span>
+    <span class="n">tone_correction_main_landing_gear</span> <span class="o">=</span> <span class="n">noise_tone_correction</span><span class="p">(</span><span class="n">SPL_main_landing_gear_history</span><span class="p">)</span>
+    
+    <span class="c1"># Calculation of the PLNT for each component and total</span>
+    <span class="n">PNLT_total</span>             <span class="o">=</span> <span class="n">PNL_total</span><span class="o">+</span><span class="n">tone_correction_total</span>
+    <span class="n">PNLT_wing</span>              <span class="o">=</span> <span class="n">PNL_wing</span><span class="o">+</span><span class="n">tone_correction_wing</span>
+    <span class="n">PNLT_ht</span>                <span class="o">=</span> <span class="n">PNL_ht</span><span class="o">+</span><span class="n">tone_correction_ht</span>
+    <span class="n">PNLT_vt</span>                <span class="o">=</span> <span class="n">PNL_vt</span><span class="o">+</span><span class="n">tone_correction_vt</span>
+    <span class="n">PNLT_nose_landing_gear</span> <span class="o">=</span> <span class="n">PNL_nose_landing_gear</span><span class="o">+</span><span class="n">tone_correction_nose_landing_gear</span>
+    <span class="n">PNLT_main_landing_gear</span> <span class="o">=</span> <span class="n">PNL_main_landing_gear</span><span class="o">+</span><span class="n">tone_correction_main_landing_gear</span>
+    <span class="n">PNLT_slat</span>              <span class="o">=</span> <span class="n">PNL_slat</span><span class="o">+</span><span class="n">tone_correction_slat</span>
+    <span class="n">PNLT_flap</span>              <span class="o">=</span> <span class="n">PNL_flap</span><span class="o">+</span><span class="n">tone_correction_flap</span>
+    
+    <span class="c1">#Calculation of the EPNL for each component and total</span>
+    <span class="n">EPNL_total</span>             <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_total</span><span class="p">)</span>
+    <span class="n">EPNL_wing</span>              <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_wing</span><span class="p">)</span>
+    <span class="n">EPNL_ht</span>                <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_ht</span><span class="p">)</span>
+    <span class="n">EPNL_vt</span>                <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_vt</span><span class="p">)</span>    
+    <span class="n">EPNL_nose_landing_gear</span> <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_nose_landing_gear</span><span class="p">)</span>
+    <span class="n">EPNL_main_landing_gear</span> <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_main_landing_gear</span><span class="p">)</span>
+    <span class="n">EPNL_slat</span>              <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_slat</span><span class="p">)</span>
+    <span class="n">EPNL_flap</span>              <span class="o">=</span> <span class="n">EPNL_noise_metric</span><span class="p">(</span><span class="n">PNLT_flap</span><span class="p">)</span> 
+    
+    <span class="c1"># Pack Airframe Noise </span>
+    <span class="n">airframe_noise</span>                        <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_total</span>             <span class="o">=</span> <span class="n">EPNL_total</span>
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_wing</span>              <span class="o">=</span> <span class="n">EPNL_wing</span>              
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_ht</span>                <span class="o">=</span> <span class="n">EPNL_ht</span>                
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_vt</span>                <span class="o">=</span> <span class="n">EPNL_vt</span>                
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_nose_landing_gear</span> <span class="o">=</span> <span class="n">EPNL_nose_landing_gear</span> 
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_main_landing_gear</span> <span class="o">=</span> <span class="n">EPNL_main_landing_gear</span> 
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_slat</span>              <span class="o">=</span> <span class="n">EPNL_slat</span>              
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">EPNL_flap</span>              <span class="o">=</span> <span class="n">EPNL_flap</span>    
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">SPL</span>                    <span class="o">=</span> <span class="n">SPL_arithmetic</span><span class="p">(</span><span class="n">SPL_total_history</span><span class="p">,</span> <span class="n">sum_axis</span><span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">SPL_1_3_spectrum</span>       <span class="o">=</span> <span class="n">SPL_total_history</span>
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">SPL_dBA</span>                <span class="o">=</span> <span class="n">SPL_arithmetic</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="n">SPLt_dBA_history</span><span class="p">),</span> <span class="n">sum_axis</span><span class="o">=</span> <span class="mi">2</span><span class="p">)</span> 
+    <span class="n">airframe_noise</span><span class="o">.</span><span class="n">noise_time</span>             <span class="o">=</span> <span class="n">noise_time</span> 
+    <span class="k">return</span> <span class="n">airframe_noise</span></div>
+
+
+
+
+<span class="k">def</span> <span class="nf">_airframe_noise</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of airframe_noise.</span>
+<span class="sd">	Wraps airframe_noise with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see airframe_noise documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: segment  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: analyses = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: config   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: settings = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">airframe_noise</span><span class="p">(</span><span class="s1">&#39;segment&#39;</span><span class="p">,</span> <span class="s1">&#39;analyses&#39;</span><span class="p">,</span> <span class="s1">&#39;config&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Cooling-Cryogen-Consumption</span>
+<span class="c1"># Coolant_use.py</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Feb 2020,   K. Hamilton - Through New Zealand Ministry of Business Innovation and Employment Research Contract RTVU2004 </span>
+<span class="c1"># Modified: Feb 2022,   S. Claridge </span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1"># import math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">integrate</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Cryogen Coolant_use</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1">## @ingroup Library-Methods-Thermal_Management.Cryogenics</span>
+<div class="viewcode-block" id="compute_cryogen_mass_flow_rate">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Cryogenics.compute_cryogen_mass_flow_rate.compute_cryogen_mass_flow_rate">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_cryogen_mass_flow_rate</span><span class="p">(</span><span class="n">cryogen</span><span class="p">,</span><span class="n">cryogen_temp</span><span class="p">,</span><span class="n">equipment_temp</span><span class="p">,</span><span class="n">cooling_required</span><span class="p">,</span><span class="n">pressure</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Calculate the mass flow rate of cryogen required to maintain cryogenic equipment temperature</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    constant pressure cryogen system</span>
+<span class="sd">    perfect mixing and thermal conduction in cryogen</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        cryogen</span>
+<span class="sd">        cryogen_temp                [K]</span>
+<span class="sd">        equipment_temp              [K]</span>
+<span class="sd">        cooling_power               [W]</span>
+<span class="sd">        pressure                    [Pa]</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">        mdot                        [kg/s]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Method:</span>
+    <span class="c1"># Given the cryogen pressure find the boiling temperature using the Antoine Equation.</span>
+    <span class="c1"># T = B/(A-log10(P))-C</span>
+    <span class="n">boil_temp</span> <span class="o">=</span> <span class="p">(</span><span class="n">cryogen</span><span class="o">.</span><span class="n">antoine_B</span> <span class="o">/</span> <span class="p">(</span><span class="n">cryogen</span><span class="o">.</span><span class="n">antoine_A</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">pressure</span><span class="p">)))</span> <span class="o">-</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">antoine_C</span>
+
+    <span class="c1"># Define cooling type flags and initial values</span>
+    <span class="n">Liquid_Cooled</span>       <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">Evap_Cooled</span>         <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">Gas_Cooled</span>          <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">liq_cooling</span>         <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">gas_cooling</span>         <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">evap_cooling</span>        <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="c1"># Calculate cooling type based on boiling temp and required temp</span>
+    <span class="c1"># Then set the limits of each cooling type based on whether boiling occurs</span>
+    <span class="k">if</span> <span class="n">boil_temp</span> <span class="o">&lt;</span> <span class="n">equipment_temp</span><span class="p">:</span>
+        <span class="n">Gas_Cooled</span>      <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">gas_Ti</span>          <span class="o">=</span> <span class="n">cryogen_temp</span>
+        <span class="n">gas_Tf</span>          <span class="o">=</span> <span class="n">equipment_temp</span>
+    <span class="k">if</span> <span class="n">boil_temp</span> <span class="o">&gt;</span> <span class="n">cryogen_temp</span><span class="p">:</span>
+        <span class="n">Liquid_Cooled</span>   <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">liq_Ti</span>          <span class="o">=</span> <span class="n">cryogen_temp</span>
+        <span class="n">liq_Tf</span>          <span class="o">=</span> <span class="n">equipment_temp</span>
+    <span class="k">if</span> <span class="n">Gas_Cooled</span> <span class="ow">and</span> <span class="n">Liquid_Cooled</span><span class="p">:</span>
+        <span class="n">Evap_Cooled</span>     <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">liq_Tf</span>          <span class="o">=</span> <span class="n">boil_temp</span>
+        <span class="n">gas_Ti</span>          <span class="o">=</span> <span class="n">boil_temp</span>
+
+    <span class="c1"># Calculate the cooling power per gram of coolant for each of the cooling modes</span>
+    <span class="c1"># LIQUID COOLING</span>
+    <span class="c1"># find the area under C_P vs temperature between the temperatures over which the cryogen is a liquid, as this will be the cooling available (in Joules) per gram, aka watts per gram per second.</span>
+    <span class="k">if</span> <span class="n">Liquid_Cooled</span><span class="p">:</span>
+        <span class="n">liq_cooling</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="n">cryogen</span><span class="o">.</span><span class="n">LCP_C3</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">3.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">LCP_C2</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">2.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">LCP_C1</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">LCP_C0</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">0.</span><span class="p">),</span> <span class="n">liq_Ti</span><span class="p">,</span> <span class="n">liq_Tf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># GAS COOLING</span>
+    <span class="c1"># find the area under C_P vs temperature between the temperatures over which the cryogen is a vapour, as this will be the cooling available (in Joules) per gram, aka watts per gram per second.</span>
+    <span class="k">if</span> <span class="n">Gas_Cooled</span><span class="p">:</span>
+        <span class="n">gas_cooling</span> <span class="o">=</span> <span class="n">integrate</span><span class="o">.</span><span class="n">quad</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="p">(</span><span class="n">cryogen</span><span class="o">.</span><span class="n">GCP_C3</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">3.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">GCP_C2</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">2.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">GCP_C1</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">GCP_C0</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="mf">0.</span><span class="p">),</span> <span class="n">gas_Ti</span><span class="p">,</span> <span class="n">gas_Tf</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># EVAPORATION COOLING</span>
+    <span class="c1"># Calculate the enthalpy using the polynomial fit to pressure. Enthalpy is in kJ/kg, i.e. J/g.</span>
+    <span class="k">if</span> <span class="n">Evap_Cooled</span><span class="p">:</span>
+        <span class="n">evap_cooling</span> <span class="o">=</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">H_C3</span><span class="o">*</span><span class="n">pressure</span><span class="o">**</span><span class="mf">3.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">H_C2</span><span class="o">*</span><span class="n">pressure</span><span class="o">**</span><span class="mf">2.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">H_C1</span><span class="o">*</span><span class="n">pressure</span><span class="o">**</span><span class="mf">1.</span> <span class="o">+</span> <span class="n">cryogen</span><span class="o">.</span><span class="n">H_C0</span><span class="o">*</span><span class="n">pressure</span><span class="o">**</span><span class="mf">0.</span>
+
+    <span class="c1"># Sum the components of cooling to give the total cooling power per gram. X1000 to give per kg.</span>
+    <span class="n">cooling_power</span> <span class="o">=</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="p">(</span><span class="n">liq_cooling</span> <span class="o">+</span> <span class="n">evap_cooling</span> <span class="o">+</span> <span class="n">gas_cooling</span><span class="p">)</span>
+
+    <span class="c1"># Divide the cooling power by the per kg cooling power to calculate the coolant mass flow rate    </span>
+    <span class="n">mdot</span> <span class="o">=</span> <span class="n">cooling_required</span><span class="o">/</span><span class="n">cooling_power</span>       <span class="c1"># [kg/s]    </span>
+
+    <span class="c1"># Return mass flow rate of the cryogen         </span>
+    <span class="k">return</span> <span class="n">mdot</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_compute_cryogen_mass_flow_rate</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of compute_cryogen_mass_flow_rate.</span>
+<span class="sd">	Wraps compute_cryogen_mass_flow_rate with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see compute_cryogen_mass_flow_rate documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: cryogen          = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: cryogen_temp     = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: equipment_temp   = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: cooling_required = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: pressure         = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">compute_cryogen_mass_flow_rate</span><span class="p">(</span><span class="s1">&#39;cryogen&#39;</span><span class="p">,</span> <span class="s1">&#39;cryogen_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;equipment_temp&#39;</span><span class="p">,</span> <span class="s1">&#39;cooling_required&#39;</span><span class="p">,</span> <span class="s1">&#39;pressure&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

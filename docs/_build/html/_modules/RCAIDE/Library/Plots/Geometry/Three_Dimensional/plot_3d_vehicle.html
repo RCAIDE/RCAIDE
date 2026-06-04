@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Plots-Geometry-Three_Dimensional</span>
+<span class="c1"># RCAIDE/Library/Plots/Geometry/Three_Dimensional/plot_3d_vehicle.py</span>
+<span class="c1"># </span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT </span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Analyses.Aerodynamics.Common.Vortex_Lattice</span>    <span class="kn">import</span> <span class="n">Vortex_Lattice</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Methods.Aerodynamics.Vortex_Lattice_Method</span>        <span class="kn">import</span> <span class="n">generate_vortex_distribution</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_fuselage</span> <span class="kn">import</span> <span class="n">plot_3d_fuselage</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_wing</span>     <span class="kn">import</span> <span class="n">plot_3d_wing</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_nacelle</span>  <span class="kn">import</span> <span class="n">plot_3d_nacelle</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_rotor</span>    <span class="kn">import</span> <span class="n">plot_3d_rotor</span>
+
+<span class="c1"># python imports </span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>  
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  PLOTS</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Library-Plots-Geometry-Three_Dimensional</span>
+<div class="viewcode-block" id="plot_3d_vehicle">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Plots.Geometry.Three_Dimensional.html#RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle.plot_3d_vehicle">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_3d_vehicle</span><span class="p">(</span><span class="n">vehicle</span><span class="p">,</span>
+                    <span class="n">show_axis</span>                   <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="n">save_figure</span>                 <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="n">alpha</span>                       <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                    <span class="n">show_wing_control_points</span>    <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                    <span class="n">show_rotor_wake_vortex_core</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                    <span class="n">save_filename</span>               <span class="o">=</span> <span class="s2">&quot;Vehicle_Geometry&quot;</span><span class="p">,</span>
+                    <span class="n">min_x_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">max_x_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">min_y_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">max_y_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">min_z_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">max_z_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                    <span class="n">camera_eye_x</span>                <span class="o">=</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span>
+                    <span class="n">camera_eye_y</span>                <span class="o">=</span> <span class="o">-</span><span class="mf">1.5</span><span class="p">,</span>
+                    <span class="n">camera_eye_z</span>                <span class="o">=</span> <span class="mf">.8</span><span class="p">,</span>
+                    <span class="n">camera_center_x</span>             <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                    <span class="n">camera_center_y</span>             <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                    <span class="n">camera_center_z</span>             <span class="o">=</span> <span class="mf">0.</span><span class="p">,</span>
+                    <span class="n">show_figure</span>                 <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;This plots a 3D representation of the aircraft </span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">       vehicle                      - vehicle data structure </span>
+<span class="sd">       show_axis                    - plot axis flag          </span>
+<span class="sd">       save_figure                  - safe figure flag              </span>
+<span class="sd">       alpha                        - opacity                   </span>
+<span class="sd">       show_wing_control_points     - show control point flag  </span>
+<span class="sd">       show_rotor_wake_vortex_core  - show rotor wake flag </span>
+<span class="sd">       save_filename                - filename for saving  </span>
+<span class="sd">       x_axis_limit                 - limits of axis  </span>
+<span class="sd">       y_axis_limit                 - limits of axis  </span>
+<span class="sd">       z_axis_limit                 - limits of axis  </span>
+<span class="sd">       show_figure                  - show figure flag  </span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    Plots</span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Plotting vehicle&quot;</span><span class="p">)</span> 
+    <span class="n">camera</span>        <span class="o">=</span>  <span class="nb">dict</span><span class="p">(</span><span class="n">eye</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">camera_eye_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">camera_eye_y</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">camera_eye_z</span><span class="p">),</span> <span class="n">center</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span> <span class="n">camera_center_x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">camera_center_x</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span> <span class="n">camera_center_z</span><span class="p">))</span>   
+    <span class="n">plot_data</span>     <span class="o">=</span> <span class="p">[]</span>
+    
+    <span class="n">plot_data</span><span class="p">,</span><span class="n">x_min</span><span class="p">,</span><span class="n">x_max</span><span class="p">,</span><span class="n">y_min</span><span class="p">,</span><span class="n">y_max</span><span class="p">,</span><span class="n">z_min</span><span class="p">,</span><span class="n">z_max</span>  <span class="o">=</span> <span class="n">generate_3d_vehicle_geometry_data</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span>
+                                                                                       <span class="n">vehicle</span><span class="p">,</span>
+                                                                                       <span class="n">alpha</span><span class="p">,</span>
+                                                                                       <span class="n">show_wing_control_points</span><span class="p">,</span>
+                                                                                       <span class="n">show_rotor_wake_vortex_core</span><span class="p">,</span>
+                                                                                       <span class="n">min_x_axis_limit</span><span class="p">,</span>
+                                                                                       <span class="n">max_x_axis_limit</span><span class="p">,</span>
+                                                                                       <span class="n">min_y_axis_limit</span><span class="p">,</span>
+                                                                                       <span class="n">max_y_axis_limit</span><span class="p">,</span>
+                                                                                       <span class="n">min_z_axis_limit</span><span class="p">,</span>
+                                                                                       <span class="n">max_z_axis_limit</span><span class="p">)</span>
+    
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">plot_data</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_scenes</span><span class="p">(</span><span class="n">aspectmode</span>   <span class="o">=</span> <span class="s1">&#39;cube&#39;</span><span class="p">,</span>
+                      <span class="n">xaxis_visible</span><span class="o">=</span><span class="n">show_axis</span><span class="p">,</span>
+                      <span class="n">yaxis_visible</span><span class="o">=</span><span class="n">show_axis</span><span class="p">,</span>
+                      <span class="n">zaxis_visible</span><span class="o">=</span><span class="n">show_axis</span>
+                      <span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span> 
+             <span class="n">width</span>     <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span>
+             <span class="n">height</span>    <span class="o">=</span> <span class="mi">1500</span><span class="p">,</span> 
+             <span class="n">scene</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+                        <span class="n">xaxis</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">showbackground</span><span class="o">=</span><span class="n">show_axis</span><span class="p">,</span>
+                                     <span class="n">zerolinecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="n">x_min</span><span class="p">,</span><span class="n">x_max</span><span class="p">]),</span>
+                        <span class="n">yaxis</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span> <span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="n">showbackground</span><span class="o">=</span><span class="n">show_axis</span><span class="p">,</span> 
+                                     <span class="n">zerolinecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="n">y_min</span><span class="p">,</span><span class="n">y_max</span><span class="p">]),</span>
+                        <span class="n">zaxis</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">backgroundcolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span><span class="n">gridcolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span><span class="n">showbackground</span><span class="o">=</span><span class="n">show_axis</span><span class="p">,</span>
+                                     <span class="n">zerolinecolor</span><span class="o">=</span><span class="s2">&quot;white&quot;</span><span class="p">,</span> <span class="nb">range</span><span class="o">=</span><span class="p">[</span><span class="n">z_min</span><span class="p">,</span><span class="n">z_max</span><span class="p">])),</span>             
+             <span class="n">scene_camera</span><span class="o">=</span><span class="n">camera</span><span class="p">)</span> 
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_coloraxes</span><span class="p">(</span><span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+    <span class="n">fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">opacity</span> <span class="o">=</span> <span class="n">alpha</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save_figure</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">save_filename</span> <span class="o">+</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span>
+        
+    <span class="k">if</span> <span class="n">show_figure</span><span class="p">:</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span> <span class="n">save_filename</span> <span class="o">+</span> <span class="s1">&#39;.html&#39;</span><span class="p">,</span> <span class="n">auto_open</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> 
+    
+    <span class="k">return</span>     </div>
+
+
+<span class="c1">## @ingroup Library-Plots-Geometry-Three_Dimensional</span>
+<div class="viewcode-block" id="generate_3d_vehicle_geometry_data">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Plots.Geometry.Three_Dimensional.html#RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle.generate_3d_vehicle_geometry_data">[docs]</a>
+<span class="k">def</span> <span class="nf">generate_3d_vehicle_geometry_data</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span>
+                                      <span class="n">vehicle</span><span class="p">,</span>
+                                      <span class="n">alpha</span>                       <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+                                      <span class="n">show_wing_control_points</span>    <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                      <span class="n">show_rotor_wake_vortex_core</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                      <span class="n">min_x_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">max_x_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">min_y_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">max_y_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">min_z_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                                      <span class="n">max_z_axis_limit</span>            <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This plots the 3D surface of the network</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">       vehicle                      - vehicle data structure          </span>
+<span class="sd">       alpha                        - opacity                   </span>
+<span class="sd">       show_wing_control_points     - show control point flag  </span>
+<span class="sd">       show_rotor_wake_vortex_core  - show rotor wake flag </span>
+<span class="sd">       save_filename                - filename for saving  </span>
+<span class="sd">       x_axis_limit                 - limits of axis  </span>
+<span class="sd">       y_axis_limit                 - limits of axis  </span>
+<span class="sd">       z_axis_limit                 - limits of axis   </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="c1"># unpack vortex distribution</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">VD</span> <span class="o">=</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">vortex_distribution</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">VL</span> <span class="o">=</span> <span class="n">Vortex_Lattice</span><span class="p">()</span>  
+        <span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">number_spanwise_vortices</span>  <span class="o">=</span> <span class="mi">25</span>
+        <span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">number_chordwise_vortices</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">spanwise_cosine_spacing</span>   <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">model_fuselage</span>            <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">model_nacelle</span>             <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">VD</span> <span class="o">=</span> <span class="n">generate_vortex_distribution</span><span class="p">(</span><span class="n">vehicle</span><span class="p">,</span><span class="n">VL</span><span class="o">.</span><span class="n">settings</span><span class="p">)</span>
+
+    
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># DEFINE PLOT LIMITS </span>
+    <span class="c1"># -------------------------------------------------------------------------  </span>
+    <span class="k">if</span> <span class="n">min_x_axis_limit</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">min_x_axis_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">XC</span><span class="p">)</span><span class="o">*</span><span class="mf">1.2</span><span class="p">)</span> 
+    <span class="k">if</span> <span class="n">max_x_axis_limit</span>  <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">max_x_axis_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">XC</span><span class="p">)</span><span class="o">*</span><span class="mf">1.2</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">min_y_axis_limit</span>  <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">min_y_axis_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">YC</span><span class="p">)</span><span class="o">*</span><span class="mf">1.2</span>
+    <span class="k">if</span> <span class="n">min_y_axis_limit</span>  <span class="o">==</span> <span class="kc">None</span><span class="p">:</span> 
+        <span class="n">max_y_axis_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">YC</span><span class="p">)</span><span class="o">*</span><span class="mf">1.2</span>
+    <span class="k">if</span> <span class="n">min_z_axis_limit</span>  <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>  
+        <span class="n">min_z_axis_limit</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">ZC</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_z_axis_limit</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">min_z_axis_limit</span> <span class="o">=</span> <span class="mf">2.5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">VD</span><span class="o">.</span><span class="n">ZC</span><span class="p">)</span> 
+    
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># PLOT WING</span>
+    <span class="c1"># ------------------------------------------------------------------------- </span>
+    <span class="n">plot_data</span>       <span class="o">=</span> <span class="n">plot_3d_wing</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">VD</span><span class="p">,</span><span class="n">color_map</span> <span class="o">=</span><span class="s1">&#39;greys&#39;</span><span class="p">)</span>
+    <span class="k">if</span>  <span class="n">show_wing_control_points</span><span class="p">:</span> 
+        <span class="n">ctrl_pts</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">VD</span><span class="o">.</span><span class="n">XC</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">VD</span><span class="o">.</span><span class="n">YC</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">VD</span><span class="o">.</span><span class="n">ZC</span><span class="p">,</span>
+                                    <span class="n">mode</span>  <span class="o">=</span> <span class="s1">&#39;markers&#39;</span><span class="p">,</span>
+                                    <span class="n">marker</span><span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">),</span>
+                                    <span class="n">line</span>  <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+        
+        <span class="n">plot_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ctrl_pts</span><span class="p">)</span> 
+ 
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># PLOT FUSELAGE</span>
+    <span class="c1"># ------------------------------------------------------------------------- </span>
+    <span class="k">for</span> <span class="n">fus</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">fuselages</span><span class="p">:</span>
+        <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_fuselage</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">fus</span><span class="p">,</span><span class="n">color_map</span> <span class="o">=</span> <span class="s1">&#39;teal&#39;</span><span class="p">)</span>
+
+    
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># PLOT BOOMS</span>
+    <span class="c1"># ------------------------------------------------------------------------- </span>
+    <span class="k">for</span> <span class="n">boom</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">booms</span><span class="p">:</span>
+        <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_fuselage</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">boom</span><span class="p">,</span><span class="n">color_map</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+            
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># PLOT NACELLE</span>
+    <span class="c1"># ------------------------------------------------------------------------- </span>
+    <span class="n">number_of_airfoil_points</span> <span class="o">=</span> <span class="mi">21</span>
+    <span class="n">tessellation</span>             <span class="o">=</span> <span class="mi">24</span>
+    <span class="k">for</span> <span class="n">nacelle</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">nacelles</span><span class="p">:</span>    
+        <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_nacelle</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">nacelle</span><span class="p">,</span><span class="n">tessellation</span><span class="p">,</span><span class="n">number_of_airfoil_points</span><span class="p">,</span><span class="n">color_map</span> <span class="o">=</span> <span class="s1">&#39;darkmint&#39;</span><span class="p">)</span>  
+        
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># PLOT ROTORS</span>
+    <span class="c1"># ------------------------------------------------------------------------- </span>
+    <span class="n">number_of_airfoil_points</span> <span class="o">=</span> <span class="mi">11</span>
+    <span class="k">for</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">vehicle</span><span class="o">.</span><span class="n">networks</span><span class="p">:</span>
+        <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_energy_network</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">network</span><span class="p">,</span><span class="n">number_of_airfoil_points</span><span class="p">,</span><span class="n">color_map</span> <span class="o">=</span> <span class="s1">&#39;turbid&#39;</span> <span class="p">)</span>
+ 
+    <span class="k">return</span> <span class="n">plot_data</span><span class="p">,</span><span class="n">min_x_axis_limit</span><span class="p">,</span><span class="n">max_x_axis_limit</span><span class="p">,</span><span class="n">min_y_axis_limit</span><span class="p">,</span><span class="n">max_y_axis_limit</span><span class="p">,</span><span class="n">min_z_axis_limit</span><span class="p">,</span><span class="n">max_z_axis_limit</span></div>
+
+
+<span class="c1">## @ingroup Library-Plots-Geometry-Three_Dimensional</span>
+<div class="viewcode-block" id="plot_3d_energy_network">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Plots.Geometry.Three_Dimensional.html#RCAIDE.Library.Plots.Geometry.Three_Dimensional.plot_3d_vehicle.plot_3d_energy_network">[docs]</a>
+<span class="k">def</span> <span class="nf">plot_3d_energy_network</span><span class="p">(</span><span class="n">plot_data</span><span class="p">,</span><span class="n">network</span><span class="p">,</span><span class="n">number_of_airfoil_points</span><span class="p">,</span><span class="n">color_map</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This plots the 3D surface of the network</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    None</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    network            - network data structure</span>
+<span class="sd">    network_face_color - color of panel</span>
+<span class="sd">    network_edge_color - color of panel edge </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+    <span class="n">show_axis</span>     <span class="o">=</span> <span class="kc">False</span> 
+    <span class="n">save_figure</span>   <span class="o">=</span> <span class="kc">False</span> 
+    <span class="n">show_figure</span>   <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">save_filename</span> <span class="o">=</span> <span class="s1">&#39;Rotor&#39;</span>
+ 
+    <span class="k">if</span> <span class="s1">&#39;busses&#39;</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>  
+        <span class="k">for</span> <span class="n">bus</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">busses</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">propulsor</span> <span class="ow">in</span> <span class="n">bus</span><span class="o">.</span><span class="n">propulsors</span><span class="p">:</span>
+                <span class="n">rotor</span> <span class="o">=</span> <span class="n">propulsor</span><span class="o">.</span><span class="n">rotor</span> 
+                <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_rotor</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">save_filename</span><span class="p">,</span><span class="n">save_figure</span><span class="p">,</span><span class="n">plot_data</span><span class="p">,</span><span class="n">show_figure</span><span class="p">,</span><span class="n">show_axis</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">number_of_airfoil_points</span><span class="p">,</span><span class="n">color_map</span><span class="p">)</span> 
+ 
+    <span class="k">elif</span> <span class="s1">&#39;fuel_lines&#39;</span> <span class="ow">in</span> <span class="n">network</span><span class="p">:</span>  
+        <span class="k">for</span> <span class="n">fuel_line</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">fuel_lines</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">propulsor</span> <span class="ow">in</span> <span class="n">fuel_line</span><span class="o">.</span><span class="n">propulsors</span><span class="p">:</span>
+                <span class="n">rotor</span> <span class="o">=</span> <span class="n">propulsor</span><span class="o">.</span><span class="n">rotor</span> 
+                <span class="n">plot_data</span> <span class="o">=</span> <span class="n">plot_3d_rotor</span><span class="p">(</span><span class="n">rotor</span><span class="p">,</span><span class="n">save_filename</span><span class="p">,</span><span class="n">save_figure</span><span class="p">,</span><span class="n">plot_data</span><span class="p">,</span><span class="n">show_figure</span><span class="p">,</span><span class="n">show_axis</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">number_of_airfoil_points</span><span class="p">,</span><span class="n">color_map</span><span class="p">)</span> 
+ 
+    <span class="k">return</span> <span class="n">plot_data</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

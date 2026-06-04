@@ -20,7 +20,6 @@ import matplotlib.ticker as ticker
 # ------------------------------------------------------------------
 #   Altitude, SFC & Weight
 # ------------------------------------------------------------------
-
 ## @ingroup Plots-Performance
 def plot_altitude_sfc_weight(results, line_color = 'bo-', save_figure = False, save_filename = "Altitude_SFC_Weight" , file_type = ".png",
                              width=8, height=5):

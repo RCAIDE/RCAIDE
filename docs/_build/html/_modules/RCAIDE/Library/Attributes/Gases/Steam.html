@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Attributes.Gases.Steam &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Attributes.Gases.Steam</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Attributes.Gases.Steam</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Attributes-Gases</span>
+<span class="c1"># RCAIDE/Library/Attributes/Gases/CO2.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Mar 2024, M. Clarke</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+ 
+<span class="kn">from</span> <span class="nn">.Gas</span> <span class="kn">import</span> <span class="n">Gas</span>  
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1"># Steam Class</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Library-Attributes-Gases</span>
+<div class="viewcode-block" id="Steam">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam">[docs]</a>
+<span class="k">class</span> <span class="nc">Steam</span><span class="p">(</span><span class="n">Gas</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Holds constants and functions that compute gas properties for steam. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values.</span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">            None</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                   <span class="o">=</span><span class="s1">&#39;steam&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">molecular_mass</span>        <span class="o">=</span> <span class="mf">18.</span>           <span class="c1"># kg/kmol</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gas_specific_constant</span> <span class="o">=</span> <span class="mf">461.889</span>       <span class="c1"># m^2/s^2-K, specific gas constant</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">composition</span><span class="o">.</span><span class="n">H2O</span>       <span class="o">=</span> <span class="mf">1.0</span>
+
+<div class="viewcode-block" id="Steam.compute_density">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam.compute_density">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_density</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">101325</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes steam density given temperature and pressure </span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            Ideal gas</span>
+<span class="sd">            </span>
+<span class="sd">        Source:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">        Args:</span>
+<span class="sd">            self       : steam                 [unitless]</span>
+<span class="sd">            T (float)  : temperature           [K]</span>
+<span class="sd">            P (float)  : pressure              [Pa]</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            rho (float): density               [kg/m^3]       </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="n">p</span><span class="o">/</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_specific_constant</span><span class="o">*</span><span class="n">T</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Steam.compute_speed_of_sound">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam.compute_speed_of_sound">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_speed_of_sound</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">101325</span><span class="p">,</span><span class="n">variable_gamma</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes speed of sound given temperature and pressure</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">            Ideal gas with gamma = 1.33 if variable gamma is False</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">            None </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            self                     : steam         [unitless]</span>
+<span class="sd">            T (float)                : temperature   [K]    </span>
+<span class="sd">            p (float)                : Pressure      [Pa]      </span>
+<span class="sd">            variable_gamma (boolean) :               [unitless]</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            a (float)                : speed of sound [m/s] </span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">if</span> <span class="n">variable_gamma</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_gamma</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="mf">1.33</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">g</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gas_specific_constant</span><span class="o">*</span><span class="n">T</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span> </div>
+
+
+<div class="viewcode-block" id="Steam.compute_cp">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam.compute_cp">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_cp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">101325</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes Cp by 3rd-order polynomial data fit: cp(T) = c1*T^3 + c2*T^2 + c3*T + c4</span>
+<span class="sd">             </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            300 K &lt; T &lt; 1500 K</span>
+<span class="sd">            </span>
+<span class="sd">        Source:</span>
+<span class="sd">            Unknown, possibly Combustion Technologies for a Clean Environment </span>
+<span class="sd">            (Energy, Combustion and the Environment), Jun 15, 1995, Carvalhoc</span>
+<span class="sd">    </span>
+<span class="sd">        Args:</span>
+<span class="sd">            self      : steam             [unitless]</span>
+<span class="sd">            T (float) : temperature       [K]</span>
+<span class="sd">            P (float) : pressure          [Pa]</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            cp (float): specfic heat capacity [J/(kg K)]         </span>
+<span class="sd">        &quot;&quot;&quot;</span>   
+        <span class="n">c</span> <span class="o">=</span> <span class="p">[</span><span class="mf">5E-9</span><span class="p">,</span> <span class="o">-</span><span class="mf">.0001</span><span class="p">,</span>  <span class="mf">.9202</span><span class="p">,</span> <span class="mf">1524.7</span><span class="p">]</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">T</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">cp</span></div>
+
+
+<div class="viewcode-block" id="Steam.compute_gamma">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam.compute_gamma">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_gamma</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">101325</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Gives constant gamma of 1.33 </span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">             233 K &lt; T &lt; 1273 K </span>
+<span class="sd">            </span>
+<span class="sd">        Source:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">        Args:</span>
+<span class="sd">            self      : steam         [unitless]</span>
+<span class="sd">            T (float) : temperature   [K]</span>
+<span class="sd">            P (float) : pressure      [Pa]</span>
+<span class="sd">            </span>
+<span class="sd">        Returns: </span>
+<span class="sd">            g  (float): gamma         [unitless] </span>
+<span class="sd">        &quot;&quot;&quot;</span>           
+        <span class="n">g</span> <span class="o">=</span> <span class="mf">1.33</span>   
+        <span class="k">return</span> <span class="n">g</span></div>
+
+
+<div class="viewcode-block" id="Steam.compute_absolute_viscosity">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Attributes.Gases.html#RCAIDE.Library.Attributes.Gases.Steam.Steam.compute_absolute_viscosity">[docs]</a>
+    <span class="k">def</span> <span class="nf">compute_absolute_viscosity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">T</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span><span class="n">p</span><span class="o">=</span><span class="mi">101325</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns a constant absolute viscosity of 1e-6 </span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">            </span>
+<span class="sd">        Source:</span>
+<span class="sd">            None</span>
+<span class="sd">    </span>
+<span class="sd">        Args:</span>
+<span class="sd">            self      : steam                 [unitless]</span>
+<span class="sd">            T (float) : temperature           [K]</span>
+<span class="sd">            P (float) : pressure              [Pa]</span>
+<span class="sd">            </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            mu (float): absolute viscosity    [kg/(m-s)]       </span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="n">mu</span> <span class="o">=</span><span class="mf">1E-6</span> 
+        <span class="k">return</span> <span class="n">mu</span> </div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

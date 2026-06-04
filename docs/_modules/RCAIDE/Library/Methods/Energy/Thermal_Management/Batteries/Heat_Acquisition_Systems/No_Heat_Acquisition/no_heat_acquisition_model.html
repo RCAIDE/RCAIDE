@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition.no_heat_acquisition_model &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition.no_heat_acquisition_model</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition.no_heat_acquisition_model</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Thermal_Management-Batteries-Heat_Acquisition_System-No_Heat_Acquisition</span>
+<span class="c1"># RCAIDE/Library/Methods/Thermal_Management/Batteries/Heat_Acquisition_System/No_Heat_Acquisition/direct_convection_model.py</span>
+<span class="c1"># </span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Data</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  Compute Net Convected Heat </span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Methods-Thermal_Management-Batteries-Atmospheric_Air_Convection_Cooling </span>
+<div class="viewcode-block" id="no_heat_acquisition_model">
+<a class="viewcode-back" href="../../../../../../../../../RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition.html#RCAIDE.Library.Methods.Energy.Thermal_Management.Batteries.Heat_Acquisition_Systems.No_Heat_Acquisition.no_heat_acquisition_model.no_heat_acquisition_model">[docs]</a>
+<span class="k">def</span> <span class="nf">no_heat_acquisition_model</span><span class="p">(</span><span class="n">HAS</span><span class="p">,</span><span class="n">battery</span><span class="p">,</span><span class="n">Q_heat_gen</span><span class="p">,</span><span class="n">T_cell</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">dt</span><span class="p">,</span><span class="n">i</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Computes no heat removed by heat acquisition system. Battery simply accumulated heat. </span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">        None</span>
+<span class="sd">        </span>
+<span class="sd">    Inputs:  </span>
+<span class="sd">        battery. </span>
+<span class="sd">              h                         (heat transfer coefficient)  [W/(m^2*K)] </span>
+<span class="sd">              As_cell                   (battery cell surface area)  [meters^2]</span>
+<span class="sd">              H_cell                    (battery cell height)        [meters]</span>
+<span class="sd">              T_ambient                 (ambient temperature)        [Kelvin]</span>
+<span class="sd">              T_current                 (pack temperature)           [Kelvin]</span>
+<span class="sd">              T_cell                    (battery cell temperature)   [Kelvin] </span>
+<span class="sd">              heat_transfer_efficiency                               [unitless]</span>
+<span class="sd">      </span>
+<span class="sd">      Outputs:</span>
+<span class="sd">        battery. </span>
+<span class="sd">             net_power                                               [Watts] </span>
+<span class="sd"> </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    None </span>
+<span class="sd">    &#39;&#39;&#39;</span> 
+    
+    <span class="c1"># battery properties           </span>
+    <span class="n">cell_mass</span>                <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">mass</span>    
+    <span class="n">Cp</span>                       <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">specific_heat_capacity</span>    
+    <span class="n">Nn</span>                       <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">geometrtic_configuration</span><span class="o">.</span><span class="n">normal_count</span>            
+    <span class="n">Np</span>                       <span class="o">=</span> <span class="n">battery</span><span class="o">.</span><span class="n">module</span><span class="o">.</span><span class="n">geometrtic_configuration</span><span class="o">.</span><span class="n">parallel_count</span>    
+    <span class="n">n_total_module</span>           <span class="o">=</span> <span class="n">Nn</span><span class="o">*</span><span class="n">Np</span>    
+    <span class="n">Q_convec</span>                 <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">n_total_module</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  
+        <span class="n">Q_heat_gen_tot</span> <span class="o">=</span> <span class="n">Q_heat_gen</span>  
+    <span class="k">else</span><span class="p">:</span> 
+        <span class="n">Q_heat_gen_tot</span> <span class="o">=</span> <span class="n">Q_heat_gen</span><span class="o">*</span><span class="n">n_total_module</span> 
+     
+    <span class="n">dT_dt</span>                  <span class="o">=</span> <span class="n">Q_heat_gen_tot</span> <span class="o">/</span><span class="p">(</span><span class="n">cell_mass</span><span class="o">*</span><span class="n">n_total_module</span><span class="o">*</span><span class="n">Cp</span><span class="p">)</span>
+    <span class="n">T_current</span>              <span class="o">=</span> <span class="n">T_cell</span> <span class="o">+</span> <span class="n">dT_dt</span><span class="o">*</span><span class="n">dt</span>   
+    <span class="n">HAS_outputs</span>            <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="n">total_heat_generated</span> <span class="o">=</span> <span class="n">Q_heat_gen_tot</span><span class="p">,</span> 
+                                  <span class="n">total_heat_removed</span>   <span class="o">=</span> <span class="n">Q_convec</span><span class="p">,</span>
+                                  <span class="n">current_battery_temperature</span> <span class="o">=</span> <span class="n">T_current</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">HAS_outputs</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_no_heat_acquisition_model</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of no_heat_acquisition_model.</span>
+<span class="sd">	Wraps no_heat_acquisition_model with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see no_heat_acquisition_model documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: HAS        = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: battery    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q_heat_gen = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: T_cell     = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: state      = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: dt         = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: i          = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">no_heat_acquisition_model</span><span class="p">(</span><span class="s1">&#39;HAS&#39;</span><span class="p">,</span> <span class="s1">&#39;battery&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_heat_gen&#39;</span><span class="p">,</span> <span class="s1">&#39;T_cell&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="s1">&#39;i&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag_aircraft &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag_aircraft</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag_aircraft</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Methods-Aerodynamics-Common-Drag</span>
+<span class="c1"># RCAIDE/Library/Methods/Aerodynamics/Common/Drag/induced_drag_aircraft.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Dec 2013, SUAVE Team</span>
+<span class="c1"># Modified: Jan 2016, E. Botero</span>
+<span class="c1">#           Apr 2020, M. Clarke     </span>
+<span class="c1">#           Jun 2020, E. Botero</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1"># suave imports</span>
+<span class="kn">from</span> <span class="nn">Legacy.trunk.S.Core</span> <span class="kn">import</span> <span class="n">Data</span>
+
+<span class="c1"># package imports</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ----------------------------------------------------------------------</span>
+<span class="c1">#  Induced Drag Aircraft</span>
+<span class="c1"># ----------------------------------------------------------------------</span>
+
+<span class="c1">## @ingroup Library-Methods-Aerodynamics-Common-Fidelity_Zero-Drag</span>
+<div class="viewcode-block" id="induced_drag_aircraft">
+<a class="viewcode-back" href="../../../../../../../RCAIDE.Library.Methods.Aerodynamics.Common.Drag.html#RCAIDE.Library.Methods.Aerodynamics.Common.Drag.induced_drag_aircraft.induced_drag_aircraft">[docs]</a>
+<span class="k">def</span> <span class="nf">induced_drag_aircraft</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">settings</span><span class="p">,</span><span class="n">geometry</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Determines induced drag for the full aircraft</span>
+
+<span class="sd">    Assumptions:</span>
+<span class="sd">    This function operates in one of three ways:</span>
+<span class="sd">       -An oswald efficiency is provided. All induced drag, inviscid and viscous, is use calculated using that factor</span>
+<span class="sd">       -A span efficiency is provided. The inviscid induced drag is calculated from that. Viscous induced drag is</span>
+<span class="sd">            calculated using the viscous_lift_dependent_drag_factor, K, and the parasite drag.</span>
+<span class="sd">       -The inviscid induced drag from the the lift calculation for each wing, usually a vortex lattice, is used. Viscous induced drag is</span>
+<span class="sd">            calculated using the viscous_lift_dependent_drag_factor, K, and the parasite drag.</span>
+<span class="sd">            </span>
+<span class="sd">        The last two options do not explicitly provide for the case where the fuselage produces an induced drag directly.</span>
+
+<span class="sd">    Source:</span>
+<span class="sd">    adg.stanford.edu (Stanford AA241 A/B Course Notes)</span>
+<span class="sd">    http://aerodesign.stanford.edu/aircraftdesign/aircraftdesign.html</span>
+
+<span class="sd">    Inputs:</span>
+<span class="sd">    state.conditions.aerodynamics.</span>
+<span class="sd">        lift_coefficient                                               [Unitless]</span>
+<span class="sd">        lift_breakdown.inviscid_wings[wings.*.tag]                     [Unitless]</span>
+<span class="sd">        drag_breakdown.induced.inviscid                                [Unitless]</span>
+<span class="sd">        drag_breakdown.induced.inviscid_wings[wings.*.tag]             [Unitless]</span>
+<span class="sd">        drag_breakdown.parasite[wings.*.tag].parasite_drag_coefficient [Unitless]</span>
+<span class="sd">        drag_breakdown.parasite[wings.*.tag].reference_area            [m^2]</span>
+<span class="sd">    settings.oswald_efficiency_factor                                  [Unitless]</span>
+<span class="sd">    settings.viscous_lift_dependent_drag_factor                        [Unitless]</span>
+<span class="sd">    settings.span_efficiency                                           [Unitless]</span>
+<span class="sd">    </span>
+
+<span class="sd">    Outputs:</span>
+<span class="sd">    conditions.aerodynamics.drag_breakdown.induced.</span>
+<span class="sd">         total                                                         [Unitless]</span>
+<span class="sd">         viscous                                                       [Unitless]</span>
+<span class="sd">         oswald_efficiency_factor                                      [Unitless]</span>
+<span class="sd">         viscous_wings_drag                                            [Unitless]</span>
+<span class="sd">    </span>
+<span class="sd">    total_induced_drag                                                 [Unitless]</span>
+<span class="sd">    </span>
+
+<span class="sd">    Properties Used:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># unpack inputs</span>
+    <span class="n">conditions</span>    <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">conditions</span>
+    <span class="n">configuration</span> <span class="o">=</span> <span class="n">settings</span>
+    <span class="n">wings</span>         <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">wings</span>
+    
+    <span class="n">K</span>       <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">viscous_lift_dependent_drag_factor</span>
+    <span class="n">e_osw</span>   <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">oswald_efficiency_factor</span>	
+    <span class="n">e_span</span>  <span class="o">=</span> <span class="n">configuration</span><span class="o">.</span><span class="n">span_efficiency</span>
+    <span class="n">CL</span>      <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">coefficients</span><span class="o">.</span><span class="n">lift</span>
+    <span class="n">CDi</span>     <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid</span>
+    <span class="n">S_ref</span>   <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">reference_area</span>
+
+    <span class="n">wing_viscous_induced_drags</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+
+    <span class="c1"># If the oswald efficiency factor is not specified (typical case)</span>
+    <span class="k">if</span> <span class="n">e_osw</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+
+        <span class="c1"># Prime totals</span>
+        <span class="n">area</span>                        <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">AR</span>                          <span class="o">=</span> <span class="mf">0.01</span>  
+        <span class="n">total_induced_viscous_drag</span>  <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">total_induced_inviscid_drag</span> <span class="o">=</span> <span class="mf">0.</span>
+        
+        <span class="c1"># Go through each wing, and make calculations</span>
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">wings</span><span class="p">:</span>
+            <span class="n">tag</span>        <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">tag</span>
+            <span class="n">ar</span>         <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span>
+            <span class="n">s_wing</span>     <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">parasite</span><span class="p">[</span><span class="n">wing</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">reference_area</span>
+            <span class="n">cl_wing</span>    <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">lift_breakdown</span><span class="o">.</span><span class="n">inviscid_wings</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+            <span class="n">cdi_i_wing</span> <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid_wings</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span>
+            <span class="n">cdp_wing</span>   <span class="o">=</span> <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">parasite</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span><span class="o">.</span><span class="n">parasite_drag_coefficient</span>
+                
+            <span class="n">cdi_v_wing</span> <span class="o">=</span> <span class="n">K</span><span class="o">*</span><span class="n">cdp_wing</span><span class="o">*</span><span class="p">(</span><span class="n">cl_wing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">total_induced_viscous_drag</span> <span class="o">=</span> <span class="n">total_induced_viscous_drag</span> <span class="o">+</span> <span class="p">(</span><span class="n">cdi_v_wing</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">s_wing</span><span class="o">/</span><span class="n">S_ref</span><span class="p">)</span>
+            
+            <span class="c1"># Does the user specify a span efficiency?</span>
+            <span class="k">if</span> <span class="n">e_span</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">total_induced_inviscid_drag</span> <span class="o">=</span> <span class="n">total_induced_inviscid_drag</span> <span class="o">+</span> <span class="n">cdi_i_wing</span><span class="o">*</span><span class="p">(</span><span class="n">s_wing</span><span class="o">/</span><span class="n">S_ref</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Override the wings inviscid induced drag</span>
+                <span class="n">cdi_i_wing</span> <span class="o">=</span> <span class="p">(</span><span class="n">cl_wing</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">ar</span><span class="o">*</span><span class="n">e_span</span><span class="p">)</span>
+                <span class="n">total_induced_inviscid_drag</span> <span class="o">=</span> <span class="n">total_induced_inviscid_drag</span> <span class="o">+</span> <span class="n">cdi_i_wing</span><span class="o">*</span><span class="p">(</span><span class="n">s_wing</span><span class="o">/</span><span class="n">S_ref</span><span class="p">)</span>
+                
+                <span class="c1"># Repack</span>
+                <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">inviscid_wings</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">cdi_i_wing</span>
+            
+            <span class="c1"># pack the wing level viscous induced drag</span>
+            <span class="n">wing_viscous_induced_drags</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">cdi_v_wing</span>
+            
+            <span class="c1"># Save this for later</span>
+            <span class="k">if</span> <span class="n">s_wing</span> <span class="o">&gt;</span> <span class="n">area</span><span class="p">:</span>
+                <span class="n">area</span> <span class="o">=</span> <span class="n">s_wing</span>
+                <span class="n">AR</span>  <span class="o">=</span> <span class="n">ar</span>
+                
+        <span class="n">total_induced_drag</span> <span class="o">=</span> <span class="n">total_induced_viscous_drag</span> <span class="o">+</span> <span class="n">total_induced_inviscid_drag</span>
+        
+        <span class="c1"># Now calculate the vehicle level oswald efficiency</span>
+        <span class="n">e_osw</span> <span class="o">=</span> <span class="p">(</span><span class="n">CL</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">AR</span><span class="o">*</span><span class="n">total_induced_drag</span><span class="p">)</span>
+        
+    <span class="c1"># If the user specifies a vehicle level oswald efficiency factor</span>
+    <span class="k">else</span><span class="p">:</span>
+        
+        <span class="c1"># Find the largest wing, use that for AR</span>
+        <span class="n">S</span>  <span class="o">=</span> <span class="mf">0.</span>
+        <span class="n">AR</span> <span class="o">=</span> <span class="mf">0.01</span>        
+        <span class="k">for</span> <span class="n">wing</span> <span class="ow">in</span> <span class="n">wings</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">wing</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span><span class="o">&gt;</span><span class="n">S</span><span class="p">:</span>
+                <span class="n">AR</span> <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">aspect_ratio</span>
+                <span class="n">S</span>  <span class="o">=</span> <span class="n">wing</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">reference</span> 
+                
+        <span class="c1"># Calculate the induced drag       </span>
+        <span class="n">total_induced_drag</span> <span class="o">=</span> <span class="n">CL</span> <span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="n">AR</span><span class="o">*</span><span class="n">e_osw</span><span class="p">)</span>
+        <span class="n">total_induced_viscous_drag</span> <span class="o">=</span> <span class="n">total_induced_drag</span> <span class="o">-</span> <span class="n">CDi</span>
+    
+    
+    <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">total</span>                    <span class="o">=</span> <span class="n">total_induced_drag</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">viscous</span>                  <span class="o">=</span> <span class="n">total_induced_viscous_drag</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">oswald_efficiency_factor</span> <span class="o">=</span> <span class="n">e_osw</span>
+    <span class="n">conditions</span><span class="o">.</span><span class="n">aerodynamics</span><span class="o">.</span><span class="n">drag_breakdown</span><span class="o">.</span><span class="n">induced</span><span class="o">.</span><span class="n">viscous_wings_drag</span>       <span class="o">=</span> <span class="n">wing_viscous_induced_drags</span>
+    
+    <span class="k">return</span> <span class="n">total_induced_drag</span></div>
+
+
+
+<span class="k">def</span> <span class="nf">_induced_drag_aircraft</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of induced_drag_aircraft.</span>
+<span class="sd">	Wraps induced_drag_aircraft with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see induced_drag_aircraft documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: state    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: settings = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: geometry = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">induced_drag_aircraft</span><span class="p">(</span><span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;settings&#39;</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

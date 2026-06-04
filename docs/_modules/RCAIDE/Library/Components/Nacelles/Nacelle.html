@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Components.Nacelles.Nacelle &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Components.Nacelles.Nacelle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Components.Nacelles.Nacelle</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Components-Nacelles</span>
+<span class="c1"># RCAIDE/Compoments/Nacelles/Nacelle.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Mar 2024, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1"># RCAIDE imports    </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span>              <span class="kn">import</span> <span class="n">Data</span><span class="p">,</span> <span class="n">Container</span> 
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Components</span>          <span class="kn">import</span> <span class="n">Component</span>  
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Components.Airfoils</span> <span class="kn">import</span> <span class="n">Airfoil</span>
+<span class="kn">import</span> <span class="nn">scipy</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+ 
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#  Nacalle</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">## @ingroup Library-Components-Nacelles</span>
+<div class="viewcode-block" id="Nacelle">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle">[docs]</a>
+<span class="k">class</span> <span class="nc">Nacelle</span><span class="p">(</span><span class="n">Component</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; This is a nacelle for a generic aircraft.</span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">    None</span>
+<span class="sd">    </span>
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; This sets the default values for the component to function.</span>
+<span class="sd">        </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+<span class="sd">    </span>
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+<span class="sd">    </span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+<span class="sd">    </span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+<span class="sd">    </span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>      
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>                       <span class="o">=</span> <span class="s1">&#39;nacelle&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">origin</span>                    <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aerodynamic_center</span>        <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas</span>                     <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">front_projected</span>     <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">side_projected</span>      <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">areas</span><span class="o">.</span><span class="n">wetted</span>              <span class="o">=</span> <span class="mf">0.0</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">diameter</span>                  <span class="o">=</span> <span class="mf">0.0</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">inlet_diameter</span>            <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span>                    <span class="o">=</span> <span class="mf">0.0</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">orientation_euler_angles</span>  <span class="o">=</span> <span class="p">[</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">]</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">flow_through</span>              <span class="o">=</span> <span class="kc">True</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">differential_pressure</span>     <span class="o">=</span> <span class="mf">0.0</span>   
+        <span class="bp">self</span><span class="o">.</span><span class="n">Airfoil</span>                   <span class="o">=</span> <span class="n">Airfoil</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cowling_airfoil_angle</span>     <span class="o">=</span> <span class="mf">0.0</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">Segments</span>                  <span class="o">=</span> <span class="n">Container</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="Nacelle.append_segment">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.append_segment">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">segment</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds a segment to the nacelle. </span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+
+        <span class="c1"># Assert database type</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">segment</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;input component must be of type Data()&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Store data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Segments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">segment</span><span class="p">)</span>
+
+        <span class="k">return</span> </div>
+
+    
+<div class="viewcode-block" id="Nacelle.append_airfoil">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.append_airfoil">[docs]</a>
+    <span class="k">def</span> <span class="nf">append_airfoil</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">airfoil</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Adds an airfoil to the segment </span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+
+        <span class="c1"># Assert database type</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">airfoil</span><span class="p">,</span><span class="n">Data</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;input component must be of type Data()&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Store data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Airfoil</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">airfoil</span><span class="p">)</span>
+
+        <span class="k">return</span>           </div>
+
+    
+
+<div class="viewcode-block" id="Nacelle.nac_vel_to_body">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.nac_vel_to_body">[docs]</a>
+    <span class="k">def</span> <span class="nf">nac_vel_to_body</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This rotates from the systems body frame to the nacelles velocity frame</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame</span>
+<span class="sd">        velocity frame is X out the nose, Z towards the ground, and Y out the right wing</span>
+<span class="sd">        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">body2nacvel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">body_to_nac_vel</span><span class="p">()</span>
+        
+        <span class="n">r</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_matrix</span><span class="p">(</span><span class="n">body2nacvel</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">inv</span><span class="p">()</span>
+        <span class="n">rot_mat</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">rot_mat</span></div>
+
+    
+<div class="viewcode-block" id="Nacelle.body_to_nac_vel">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.body_to_nac_vel">[docs]</a>
+    <span class="k">def</span> <span class="nf">body_to_nac_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This rotates from the systems body frame to the nacelles velocity frame</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame</span>
+<span class="sd">        velocity frame is X out the nose, Z towards the ground, and Y out the right wing</span>
+<span class="sd">        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Go from body to vehicle frame</span>
+        <span class="n">body_2_vehicle</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_rotvec</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+        
+        <span class="c1"># Go from vehicle frame to nacelle vehicle frame: rot 1 including the extra body rotation</span>
+        <span class="n">rots</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation_euler_angles</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.</span> 
+        <span class="n">vehicle_2_nac_vec</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_rotvec</span><span class="p">(</span><span class="n">rots</span><span class="p">)</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>        
+        
+        <span class="c1"># GO from the nacelle vehicle frame to the nacelle velocity frame: rot 2</span>
+        <span class="n">nac_vec_2_nac_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vec_to_vel</span><span class="p">()</span>
+        
+        <span class="c1"># Do all the matrix multiplies</span>
+        <span class="n">rot1</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">body_2_vehicle</span><span class="p">,</span><span class="n">vehicle_2_nac_vec</span><span class="p">)</span>
+        <span class="n">rot_mat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">rot1</span><span class="p">,</span><span class="n">nac_vec_2_nac_vel</span><span class="p">)</span>
+
+        
+        <span class="k">return</span> <span class="n">rot_mat</span>    </div>
+
+    
+    
+
+<div class="viewcode-block" id="Nacelle.vec_to_vel">
+<a class="viewcode-back" href="../../../../../RCAIDE.Library.Components.Nacelles.html#RCAIDE.Library.Components.Nacelles.Nacelle.Nacelle.vec_to_vel">[docs]</a>
+    <span class="k">def</span> <span class="nf">vec_to_vel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This rotates from the nacelles vehicle frame to the nacelles velocity frame</span>
+
+<span class="sd">        Assumptions:</span>
+<span class="sd">        There are two nacelle frames, the vehicle frame describing the location and the nacelle velocity frame</span>
+<span class="sd">        velocity frame is X out the nose, Z towards the ground, and Y out the right wing</span>
+<span class="sd">        vehicle frame is X towards the tail, Z towards the ceiling, and Y out the right wing</span>
+
+<span class="sd">        Source:</span>
+<span class="sd">        N/A</span>
+
+<span class="sd">        Inputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Outputs:</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Properties Used:</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">rot_mat</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">spatial</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">Rotation</span><span class="o">.</span><span class="n">from_rotvec</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">as_matrix</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="n">rot_mat</span></div>
+</div>
+
+    
+    
+        
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

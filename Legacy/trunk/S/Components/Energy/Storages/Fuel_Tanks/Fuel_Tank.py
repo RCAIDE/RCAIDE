@@ -20,7 +20,6 @@ from Legacy.trunk.S.Components.Energy.Energy_Component import Energy_Component
 # ----------------------------------------------------------------------    
 
 ## @ingroup Components-Energy-Storages-Fuel_Tank
-
 class Fuel_Tank(Energy_Component):
     """
     Energy Component object that stores fuel. Contains values

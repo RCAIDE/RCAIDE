@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Components.Wings package &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=8d563738"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RCAIDE.Library.Components.Wings.Control_Surfaces package" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html" />
+    <link rel="prev" title="RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems package" href="RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">RCAIDE</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="RCAIDE.html">RCAIDE package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="RCAIDE.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="RCAIDE.Framework.html">RCAIDE.Framework package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.Vehicle">RCAIDE.Vehicle module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.load">RCAIDE.load module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.save">RCAIDE.save module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE.version">RCAIDE.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.html#module-RCAIDE">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">RCAIDE</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.html">RCAIDE package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.html">RCAIDE.Library package</a></li>
+          <li class="breadcrumb-item"><a href="RCAIDE.Library.Components.html">RCAIDE.Library.Components package</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Components.Wings package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/RCAIDE.Library.Components.Wings.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="rcaide-library-components-wings-package">
+<h1>RCAIDE.Library.Components.Wings package<a class="headerlink" href="#rcaide-library-components-wings-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html">RCAIDE.Library.Components.Wings.Control_Surfaces package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron">RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Aileron.Aileron"><code class="docutils literal notranslate"><span class="pre">Aileron</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Control_Surface">RCAIDE.Library.Components.Wings.Control_Surfaces.Control_Surface module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Control_Surface.Control_Surface"><code class="docutils literal notranslate"><span class="pre">Control_Surface</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator">RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Elevator.Elevator"><code class="docutils literal notranslate"><span class="pre">Elevator</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Flap">RCAIDE.Library.Components.Wings.Control_Surfaces.Flap module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Flap.Flap"><code class="docutils literal notranslate"><span class="pre">Flap</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder">RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Rudder.Rudder"><code class="docutils literal notranslate"><span class="pre">Rudder</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces.Slat">RCAIDE.Library.Components.Wings.Control_Surfaces.Slat module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#RCAIDE.Library.Components.Wings.Control_Surfaces.Slat.Slat"><code class="docutils literal notranslate"><span class="pre">Slat</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="RCAIDE.Library.Components.Wings.Control_Surfaces.html#module-RCAIDE.Library.Components.Wings.Control_Surfaces">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.All_Moving_Surface">
+<span id="rcaide-library-components-wings-all-moving-surface-module"></span><h2>RCAIDE.Library.Components.Wings.All_Moving_Surface module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.All_Moving_Surface" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.All_Moving_Surface.</span></span><span class="sig-name descname"><span class="pre">All_Moving_Surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/All_Moving_Surface.html#All_Moving_Surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Library.Components.html#RCAIDE.Library.Components.Component.Component" title="RCAIDE.Library.Components.Component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a></p>
+<p>This class is used to allow every all-moving control surface class
+(e.g. Stabilator) to inherit from both a type of Wing (Horizontal_Tail
+in the case of a Stabilator) and this class. This, way All_Moving_Surface
+subclasses can inherit necessary functionality without code bloat or 
+lengthy type checking if-statements.</p>
+<p>In general, this class should not be used directly, and should only exist
+as one of the parents of another class that also inherits from Wing</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Horizontal_Tail">
+<span id="rcaide-library-components-wings-horizontal-tail-module"></span><h2>RCAIDE.Library.Components.Wings.Horizontal_Tail module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Horizontal_Tail" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Horizontal_Tail.Horizontal_Tail">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Horizontal_Tail.</span></span><span class="sig-name descname"><span class="pre">Horizontal_Tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Horizontal_Tail.html#Horizontal_Tail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Horizontal_Tail.Horizontal_Tail" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Library.Components.Wings.Wing.Wing" title="RCAIDE.Library.Components.Wings.Wing.Wing"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wing</span></code></a></p>
+<p>This is the horizontal stabilizer class</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Main_Wing">
+<span id="rcaide-library-components-wings-main-wing-module"></span><h2>RCAIDE.Library.Components.Wings.Main_Wing module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Main_Wing" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Main_Wing.Main_Wing">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Main_Wing.</span></span><span class="sig-name descname"><span class="pre">Main_Wing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Main_Wing.html#Main_Wing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Main_Wing.Main_Wing" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Library.Components.Wings.Wing.Wing" title="RCAIDE.Library.Components.Wings.Wing.Wing"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wing</span></code></a></p>
+<p>This class is used to define main wings SUAVE</p>
+<p>Assumptions:Container()
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Main_Wing.</span></span><span class="sig-name descname"><span class="pre">Segment_Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Main_Wing.html#Segment_Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></p>
+<p>Container for wing segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.append">
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Main_Wing.html#Segment_Container.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.append" title="Link to this definition"></a></dt>
+<dd><p>Appends the value to the containers
+This overrides the basic data class append</p>
+<blockquote>
+<div><p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+self</p>
+<p>Outputs:
+N/A</p>
+<p>Properties Used:
+N/A</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.get_children">
+<span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Main_Wing.html#Segment_Container.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Main_Wing.Segment_Container.get_children" title="Link to this definition"></a></dt>
+<dd><p>Returns the components that can go inside</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Segment">
+<span id="rcaide-library-components-wings-segment-module"></span><h2>RCAIDE.Library.Components.Wings.Segment module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Segment" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Segment.Segment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Segment.</span></span><span class="sig-name descname"><span class="pre">Segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Segment.html#Segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Segment.Segment" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Library.Components.html#RCAIDE.Library.Components.Component.Component" title="RCAIDE.Library.Components.Component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Segment.Segment.append_airfoil">
+<span class="sig-name descname"><span class="pre">append_airfoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">airfoil</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Segment.html#Segment.append_airfoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Segment.Segment.append_airfoil" title="Link to this definition"></a></dt>
+<dd><p>Adds an airfoil to the segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Segment.Segment_Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Segment.</span></span><span class="sig-name descname"><span class="pre">Segment_Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Segment.html#Segment_Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Segment.Segment_Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></p>
+<p>Container for wing segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Segment.Segment_Container.get_children">
+<span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Segment.html#Segment_Container.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Segment.Segment_Container.get_children" title="Link to this definition"></a></dt>
+<dd><p>Returns the components that can go inside</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Stabilator">
+<span id="rcaide-library-components-wings-stabilator-module"></span><h2>RCAIDE.Library.Components.Wings.Stabilator module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Stabilator" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Stabilator.Stabilator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Stabilator.</span></span><span class="sig-name descname"><span class="pre">Stabilator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Stabilator.html#Stabilator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Stabilator.Stabilator" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Library.Components.Wings.Horizontal_Tail.Horizontal_Tail" title="RCAIDE.Library.Components.Wings.Horizontal_Tail.Horizontal_Tail"><code class="xref py py-class docutils literal notranslate"><span class="pre">Horizontal_Tail</span></code></a>, <a class="reference internal" href="#RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface" title="RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">All_Moving_Surface</span></code></a></p>
+<p>This class is used to define stabilators in RCAIDE. Note that it 
+inherits from both Horizontal_Tail and All_Moving_Surface</p>
+<blockquote>
+<div><p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</div></blockquote>
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Vertical_Tail">
+<span id="rcaide-library-components-wings-vertical-tail-module"></span><h2>RCAIDE.Library.Components.Wings.Vertical_Tail module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Vertical_Tail" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Vertical_Tail.</span></span><span class="sig-name descname"><span class="pre">Vertical_Tail</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Vertical_Tail.html#Vertical_Tail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Library.Components.Wings.Wing.Wing" title="RCAIDE.Library.Components.Wings.Wing.Wing"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wing</span></code></a></p>
+<p>This class is used to define vertical tails RCAIDE</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail.make_x_z_reflection">
+<span class="sig-name descname"><span class="pre">make_x_z_reflection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Vertical_Tail.html#Vertical_Tail.make_x_z_reflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail.make_x_z_reflection" title="Link to this definition"></a></dt>
+<dd><p>This returns a Vertical_Tail class or subclass object that is the reflection
+of this object over the x-z plane. This is useful since if Vertical_Tail’s symmetric 
+attribute is True, the symmetric wing gets reflected over the x-y plane.</p>
+<p>WARNING: this uses deepcopy to achieve its purpose. If this copies too many unwanted 
+attributes, it is recommended that the user should write their own code, taking 
+after the form of this function.</p>
+<p>It is also recommended that the user call this function after they set control surface
+or all moving surface deflections. This way the deflection is also properly reflected 
+to the other side</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving">
+<span id="rcaide-library-components-wings-vertical-tail-all-moving-module"></span><h2>RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.</span></span><span class="sig-name descname"><span class="pre">Vertical_Tail_All_Moving</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Vertical_Tail_All_Moving.html#Vertical_Tail_All_Moving"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail" title="RCAIDE.Library.Components.Wings.Vertical_Tail.Vertical_Tail"><code class="xref py py-class docutils literal notranslate"><span class="pre">Vertical_Tail</span></code></a>, <a class="reference internal" href="#RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface" title="RCAIDE.Library.Components.Wings.All_Moving_Surface.All_Moving_Surface"><code class="xref py py-class docutils literal notranslate"><span class="pre">All_Moving_Surface</span></code></a></p>
+<p>This class is used to define all-moving vertical tails in RCAIDE. Note that it 
+inherits from both Horizontal_Tail and All_Moving_Surface</p>
+<blockquote>
+<div><p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</div></blockquote>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving.make_x_z_reflection">
+<span class="sig-name descname"><span class="pre">make_x_z_reflection</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Vertical_Tail_All_Moving.html#Vertical_Tail_All_Moving.make_x_z_reflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Vertical_Tail_All_Moving.Vertical_Tail_All_Moving.make_x_z_reflection" title="Link to this definition"></a></dt>
+<dd><p>This returns a Vertical_Tail class or subclass object that is the reflection
+of this object over the x-z plane. This is useful since if Vertical_Tail’s symmetric 
+attribute is True, the symmetric wing gets reflected over the x-y plane.</p>
+<p>This function uses deepcopy to achieve its purpose. If this copies too many unwanted 
+attributes, it is recommended that the user should write their own code, taking 
+after the form of this function.</p>
+<p>It is also recommended that the user call this function after they set control surface
+or all moving surface deflections. This way the deflection is also properly reflected 
+to the other side</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings.Wing">
+<span id="rcaide-library-components-wings-wing-module"></span><h2>RCAIDE.Library.Components.Wings.Wing module<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings.Wing" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Wing.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Container"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Library.Components.html#RCAIDE.Library.Components.Component.Container" title="RCAIDE.Library.Components.Component.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Container.get_children">
+<span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Container.get_children"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Container.get_children" title="Link to this definition"></a></dt>
+<dd><p>Returns the components that can go inside</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">RCAIDE.Library.Components.Wings.Wing.</span></span><span class="sig-name descname"><span class="pre">Wing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Wing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Library.Components.html#RCAIDE.Library.Components.Component.Component" title="RCAIDE.Library.Components.Component.Component"><code class="xref py py-class docutils literal notranslate"><span class="pre">Component</span></code></a></p>
+<p>This class defines the wing in RCAIDE</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwarg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.Container" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="RCAIDE.Library.Components.html#RCAIDE.Library.Components.Component.Container" title="RCAIDE.Library.Components.Component.Container"><code class="xref py py-class docutils literal notranslate"><span class="pre">Container</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.Container.get_children">
+<span class="sig-name descname"><span class="pre">get_children</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.Container.get_children" title="Link to this definition"></a></dt>
+<dd><p>Returns the components that can go inside</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.append_airfoil">
+<span class="sig-name descname"><span class="pre">append_airfoil</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">airfoil</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Wing.append_airfoil"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.append_airfoil" title="Link to this definition"></a></dt>
+<dd><p>Adds an airfoil to the segment</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.append_control_surface">
+<span class="sig-name descname"><span class="pre">append_control_surface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">control_surface</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Wing.append_control_surface"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.append_control_surface" title="Link to this definition"></a></dt>
+<dd><p>Adds a component to vehicle</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.append_fuel_tank">
+<span class="sig-name descname"><span class="pre">append_fuel_tank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fuel_tank</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Wing.append_fuel_tank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.append_fuel_tank" title="Link to this definition"></a></dt>
+<dd><p>Adds a fuel tank to the wing</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="RCAIDE.Library.Components.Wings.Wing.Wing.append_segment">
+<span class="sig-name descname"><span class="pre">append_segment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">segment</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/RCAIDE/Library/Components/Wings/Wing.html#Wing.append_segment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#RCAIDE.Library.Components.Wings.Wing.Wing.append_segment" title="Link to this definition"></a></dt>
+<dd><p>Adds a segment to the wing</p>
+<p>Assumptions:
+None</p>
+<p>Source:
+N/A</p>
+<p>Inputs:
+None</p>
+<p>Outputs:
+None</p>
+<p>Properties Used:
+N/A</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-RCAIDE.Library.Components.Wings">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-RCAIDE.Library.Components.Wings" title="Link to this heading"></a></h2>
+<p>RCAIDE Package Setup</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems.html" class="btn btn-neutral float-left" title="RCAIDE.Library.Components.Thermal_Management.Batteries.Heat_Exchanger_Systems package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="RCAIDE.Library.Components.Wings.Control_Surfaces.html" class="btn btn-neutral float-right" title="RCAIDE.Library.Components.Wings.Control_Surfaces package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

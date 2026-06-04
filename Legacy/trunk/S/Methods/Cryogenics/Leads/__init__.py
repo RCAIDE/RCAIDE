@@ -1,7 +1,4 @@
 ## @defgroup Methods-Cryogenics-Leads Leads
 # This contains functions that can compute calculations associated with cryogenic leads
 # @ingroup Methods
-
-
-#from .lead_calculations import Q_min
-## Commented out due to deprication of SciPy derivative
+from .lead_calculations import Q_min

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976 &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Library-Attributes-Atmospheres-Earth</span>
+<span class="c1"># RCAIDE/Library/Attributes/Atmospheres/Earth/US_Standard_1976.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1">#</span>
+<span class="c1"># Created:  Mar 2024, M. Clarke</span>
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#  Imports</span>
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+ 
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Data</span> <span class="p">,</span> <span class="n">Units</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Attributes.Gases</span> <span class="kn">import</span> <span class="n">Air</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Attributes.Atmospheres</span> <span class="kn">import</span> <span class="n">Atmosphere</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Library.Attributes.Planets</span> <span class="kn">import</span> <span class="n">Earth</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># ---------------------------------------------------------------------------------------------------------------------- </span>
+<span class="c1">#  US_Standard_1976 Class</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Library-Attributes-Atmospheres-Earth  </span>
+<div class="viewcode-block" id="US_Standard_1976">
+<a class="viewcode-back" href="../../../../../../RCAIDE.Library.Attributes.Atmospheres.Earth.html#RCAIDE.Library.Attributes.Atmospheres.Earth.US_Standard_1976.US_Standard_1976">[docs]</a>
+<span class="k">class</span> <span class="nc">US_Standard_1976</span><span class="p">(</span><span class="n">Atmosphere</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Contains US Standard 1976 values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values at breaks in the atmosphere. </span>
+<span class="sd">    </span>
+<span class="sd">        Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">        </span>
+<span class="sd">        Source:</span>
+<span class="sd">            U.S. Standard Atmosphere (1976 version) </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="s1">&#39; U.S. Standard Atmosphere (1976)&#39;</span>
+
+        <span class="c1"># break point data: </span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluid_properties</span>   <span class="o">=</span> <span class="n">Air</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">planet</span>             <span class="o">=</span> <span class="n">Earth</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">breaks</span>             <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">breaks</span><span class="o">.</span><span class="n">altitude</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.00</span>    <span class="p">,</span> <span class="mf">0.00</span><span class="p">,</span>     <span class="mf">11.00</span><span class="p">,</span>      <span class="mf">20.00</span><span class="p">,</span>      <span class="mf">32.00</span><span class="p">,</span>      <span class="mf">47.00</span><span class="p">,</span>      <span class="mf">51.00</span><span class="p">,</span>      <span class="mf">71.00</span><span class="p">,</span>      <span class="mf">84.852</span><span class="p">])</span> <span class="o">*</span> <span class="n">Units</span><span class="o">.</span><span class="n">km</span>     <span class="c1"># m, geopotential altitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">breaks</span><span class="o">.</span><span class="n">temperature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">301.15</span>   <span class="p">,</span> <span class="mf">288.15</span><span class="p">,</span>   <span class="mf">216.65</span><span class="p">,</span>     <span class="mf">216.65</span><span class="p">,</span>     <span class="mf">228.65</span><span class="p">,</span>     <span class="mf">270.65</span><span class="p">,</span>     <span class="mf">270.65</span><span class="p">,</span>     <span class="mf">214.65</span><span class="p">,</span>     <span class="mf">186.95</span><span class="p">])</span>      <span class="c1"># K</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">breaks</span><span class="o">.</span><span class="n">pressure</span>    <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">127774.0</span> <span class="p">,</span> <span class="mf">101325.0</span><span class="p">,</span> <span class="mf">22632.1</span><span class="p">,</span>    <span class="mf">5474.89</span><span class="p">,</span>    <span class="mf">868.019</span><span class="p">,</span>    <span class="mf">110.906</span><span class="p">,</span>    <span class="mf">66.9389</span><span class="p">,</span>    <span class="mf">3.95642</span><span class="p">,</span>    <span class="mf">0.3734</span><span class="p">])</span>      <span class="c1"># Pa</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">breaks</span><span class="o">.</span><span class="n">density</span>     <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span> <span class="p">[</span><span class="mf">1.47808e0</span><span class="p">,</span> <span class="mf">1.2250e0</span><span class="p">,</span> <span class="mf">3.63918e-1</span><span class="p">,</span> <span class="mf">8.80349e-2</span><span class="p">,</span> <span class="mf">1.32250e-2</span><span class="p">,</span> <span class="mf">1.42753e-3</span><span class="p">,</span> <span class="mf">8.61606e-4</span><span class="p">,</span> <span class="mf">6.42099e-5</span><span class="p">,</span> <span class="mf">6.95792e-6</span><span class="p">])</span>  <span class="c1"># kg/m^3</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

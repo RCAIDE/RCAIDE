@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Framework.Analyses.Analysis &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Framework.Analyses.Analysis</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Framework.Analyses.Analysis</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Analyses</span>
+<span class="c1"># RCAIDE/Analyses/Analysis.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Container</span> <span class="k">as</span> <span class="n">ContainerBase</span>
+<span class="kn">from</span> <span class="nn">RCAIDE.Framework.Core</span> <span class="kn">import</span> <span class="n">Data</span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1"># Analysis</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">## @ingroup Analyses</span>
+<div class="viewcode-block" id="Analysis">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Analysis">[docs]</a>
+<span class="k">class</span> <span class="nc">Analysis</span><span class="p">(</span><span class="n">Data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; RCAIDE.Framework.Analyses.Analysis()</span>
+<span class="sd">    </span>
+<span class="sd">        The Top Level Analysis Class</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">            </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__defaults__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This sets the default values and methods for the analysis.</span>
+<span class="sd">        </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">        </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">        </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">        </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">        </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>           
+        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>    <span class="o">=</span> <span class="s1">&#39;analysis&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">settings</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span> 
+        
+<div class="viewcode-block" id="Analysis.initialize">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Analysis.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to initialize the analysis&#39; specific algorithms.</span>
+<span class="sd">                </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>        
+        <span class="k">return</span></div>
+
+    
+<div class="viewcode-block" id="Analysis.evaluate">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Analysis.evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to execute the analysis&#39; specific algorithms.</span>
+<span class="sd">                </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>             
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+        <span class="k">return</span> <span class="n">Data</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="Analysis.post_process">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Analysis.post_process">[docs]</a>
+    <span class="k">def</span> <span class="nf">post_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to post_process </span>
+<span class="sd">                </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>                
+        <span class="k">return</span> </div>
+
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to set the class&#39; call behavior to the evaluate function.</span>
+<span class="sd">                        </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                        </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                        </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                        </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                        </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>                        
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span></div>
+
+    
+    
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------  </span>
+<span class="c1">#  CONFIG CONTAINER</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="c1">## @ingroup Analyses</span>
+<div class="viewcode-block" id="Container">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Container">[docs]</a>
+<span class="k">class</span> <span class="nc">Container</span><span class="p">(</span><span class="n">ContainerBase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; RCAIDE.Framework.Analyses.Analysis.Container()</span>
+<span class="sd">    </span>
+<span class="sd">        The Analysis Container Class</span>
+<span class="sd">        </span>
+<span class="sd">            Assumptions:</span>
+<span class="sd">            None</span>
+<span class="sd">            </span>
+<span class="sd">            Source:</span>
+<span class="sd">            N/A</span>
+<span class="sd">    &quot;&quot;&quot;</span> 
+        
+<div class="viewcode-block" id="Container.initialize">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Container.initialize">[docs]</a>
+    <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to execute the initialize functions of the analyses</span>
+<span class="sd">            stored in the container.</span>
+<span class="sd">                                        </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                                        </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                                        </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                        </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                        </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>                    
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span><span class="n">analysis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">analysis</span><span class="p">,</span><span class="s1">&#39;initialize&#39;</span><span class="p">):</span>
+                <span class="n">analysis</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span> </div>
+
+    
+<div class="viewcode-block" id="Container.evaluate">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Container.evaluate">[docs]</a>
+    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to execute the evaluate functions of the analyses</span>
+<span class="sd">            stored in the container.</span>
+<span class="sd">                                                </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                                                </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                Results of the Evaluate Functions</span>
+<span class="sd">                                                </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">Data</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span><span class="n">analysis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span> 
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">analysis</span><span class="p">,</span><span class="s1">&#39;evaluate&#39;</span><span class="p">):</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">analysis</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span>
+            <span class="n">results</span><span class="p">[</span><span class="n">tag</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">results</span></div>
+
+    
+<div class="viewcode-block" id="Container.post_process">
+<a class="viewcode-back" href="../../../../RCAIDE.Framework.Analyses.html#RCAIDE.Framework.Analyses.Analysis.Container.post_process">[docs]</a>
+    <span class="k">def</span> <span class="nf">post_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to execute post processing functions </span>
+<span class="sd">                                                </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                                                </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>        
+        
+        <span class="k">for</span> <span class="n">tag</span><span class="p">,</span><span class="n">analysis</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">analysis</span><span class="p">,</span><span class="s1">&#39;post_process&#39;</span><span class="p">):</span>
+                <span class="n">analysis</span><span class="o">.</span><span class="n">post_process</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span></div>
+
+                
+    
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">):</span> 
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is used to set the class&#39; call behavior to the evaluate functions.</span>
+<span class="sd">                                                        </span>
+<span class="sd">                Assumptions:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                        </span>
+<span class="sd">                Source:</span>
+<span class="sd">                N/A</span>
+<span class="sd">                                                        </span>
+<span class="sd">                Inputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                        </span>
+<span class="sd">                Outputs:</span>
+<span class="sd">                None</span>
+<span class="sd">                                                        </span>
+<span class="sd">                Properties Used:</span>
+<span class="sd">                N/A</span>
+<span class="sd">            &quot;&quot;&quot;</span>                
+        
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span><span class="o">**</span><span class="n">kwarg</span><span class="p">)</span></div>
+
+
+    
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="c1">#  LINKING</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------   </span>
+<span class="n">Analysis</span><span class="o">.</span><span class="n">Container</span> <span class="o">=</span> <span class="n">Container</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

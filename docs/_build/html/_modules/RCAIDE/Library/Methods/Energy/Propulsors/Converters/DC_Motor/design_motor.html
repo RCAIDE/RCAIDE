@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor &mdash; RCAIDE 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../../../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../../../../../_static/documentation_options.js?v=8d563738"></script>
+        <script src="../../../../../../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../../../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../../../../../index.html" class="icon icon-home">
+            RCAIDE
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../../../../../modules.html">RCAIDE</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../../../../../index.html">RCAIDE</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../../../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor</h1><div class="highlight"><pre>
+<span></span><span class="c1">## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor</span>
+<span class="c1"># RCAIDE/Library/Methods/Energy/Propulsors/Converters/DC_Motor/design_motor.py</span>
+<span class="c1"># (c) Copyright 2023 Aerospace Research Community LLC</span>
+<span class="c1"># </span>
+<span class="c1"># Created:  Jul 2023, M. Clarke </span>
+
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------</span>
+<span class="c1">#  IMPORT</span>
+<span class="c1"># ----------------------------------------------------------------------------------------------------------------------    </span>
+
+<span class="c1"># package imports </span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">minimize</span> 
+
+<span class="c1">## @ingroup Methods-Energy-Propulsors-Converters-DC_Motor</span>
+<div class="viewcode-block" id="design_motor">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.design_motor">[docs]</a>
+<span class="k">def</span> <span class="nf">design_motor</span><span class="p">(</span><span class="n">motor</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Optimizes the motor to obtain the best combination of speed constant and resistance values</span>
+<span class="sd">    by essentially sizing the motor for a design RPM value. Note that this design RPM </span>
+<span class="sd">    value can be compute from design tip mach  </span>
+<span class="sd">    </span>
+<span class="sd">    Assumptions:</span>
+<span class="sd">    motor design performance occurs at 90% nominal voltage to account for off design conditions </span>
+<span class="sd">    </span>
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    motor                         [-]  </span>
+<span class="sd">      </span>
+<span class="sd">    motor.     </span>
+<span class="sd">      no_load_current             [amps]</span>
+<span class="sd">      mass_properties.mass        [kg]</span>
+<span class="sd">           </span>
+<span class="sd">    Outputs:     </span>
+<span class="sd">    motor.     </span>
+<span class="sd">      speed_constant              [untiless]</span>
+<span class="sd">      design_torque               [Nm] </span>
+<span class="sd">      motor.resistance            [Ohms]</span>
+<span class="sd">      motor.angular_velocity      [rad/s]</span>
+<span class="sd">      motor.origin                [m]</span>
+<span class="sd">    &#39;&#39;&#39;</span>    
+      
+    <span class="c1"># design conditions for motor </span>
+    <span class="n">io</span>                          <span class="o">=</span> <span class="n">motor</span><span class="o">.</span><span class="n">no_load_current</span>
+    <span class="n">v</span>                           <span class="o">=</span> <span class="n">motor</span><span class="o">.</span><span class="n">nominal_voltage</span>
+    <span class="n">omeg</span>                        <span class="o">=</span> <span class="n">motor</span><span class="o">.</span><span class="n">angular_velocity</span>     
+    <span class="n">etam</span>                        <span class="o">=</span> <span class="n">motor</span><span class="o">.</span><span class="n">efficiency</span> 
+    <span class="n">Q</span>                           <span class="o">=</span> <span class="n">motor</span><span class="o">.</span><span class="n">design_torque</span> 
+    
+    <span class="c1"># solve for speed constant   </span>
+    <span class="n">opt_params</span> <span class="o">=</span> <span class="n">optimize_kv</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span>  <span class="n">Q</span><span class="p">)</span>
+    
+    <span class="n">Kv</span>  <span class="o">=</span>  <span class="n">opt_params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">Res</span> <span class="o">=</span>  <span class="n">opt_params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>    
+    
+    <span class="n">motor</span><span class="o">.</span><span class="n">speed_constant</span>   <span class="o">=</span> <span class="n">Kv</span> 
+    <span class="n">motor</span><span class="o">.</span><span class="n">resistance</span>       <span class="o">=</span> <span class="n">Res</span> 
+    
+    <span class="k">return</span> <span class="n">motor</span> </div>
+
+  
+<span class="c1">## @ingroup Methods-Energy-Propulsors</span>
+<div class="viewcode-block" id="optimize_kv">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.optimize_kv">[docs]</a>
+<span class="k">def</span> <span class="nf">optimize_kv</span><span class="p">(</span><span class="n">io</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span>  <span class="n">Q</span><span class="p">,</span> <span class="n">kv_lower_bound</span> <span class="o">=</span>  <span class="mf">0.01</span><span class="p">,</span> <span class="n">Res_lower_bound</span> <span class="o">=</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">kv_upper_bound</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">Res_upper_bound</span> <span class="o">=</span> <span class="mi">10</span> <span class="p">):</span> 
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Optimizer for compute_optimal_motor_parameters function  </span>
+<span class="sd">    </span>
+<span class="sd">    Source:</span>
+<span class="sd">    N/A</span>
+<span class="sd">    </span>
+<span class="sd">    Inputs:</span>
+<span class="sd">    motor    (to be modified)</span>
+<span class="sd">    </span>
+<span class="sd">    Outputs:</span>
+<span class="sd">    motor.</span>
+<span class="sd">      speed_constant     [untiless]</span>
+<span class="sd">      no_load_current    [amps]</span>
+<span class="sd">    &#39;&#39;&#39;</span>        
+    <span class="c1"># objective  </span>
+    
+    <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">)</span>
+    
+    <span class="n">hard_cons</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;eq&#39;</span><span class="p">,</span> <span class="s1">&#39;fun&#39;</span><span class="p">:</span> <span class="n">hard_constraint_1</span><span class="p">,</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">},</span>
+                 <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;eq&#39;</span><span class="p">,</span> <span class="s1">&#39;fun&#39;</span><span class="p">:</span> <span class="n">hard_constraint_2</span><span class="p">,</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">}]</span>
+    
+    <span class="n">slack_cons</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;eq&#39;</span><span class="p">,</span> <span class="s1">&#39;fun&#39;</span><span class="p">:</span> <span class="n">slack_constraint_1</span><span class="p">,</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">},</span>
+                  <span class="p">{</span><span class="s1">&#39;type&#39;</span><span class="p">:</span><span class="s1">&#39;eq&#39;</span><span class="p">,</span> <span class="s1">&#39;fun&#39;</span><span class="p">:</span> <span class="n">slack_constraint_2</span><span class="p">,</span><span class="s1">&#39;args&#39;</span><span class="p">:</span> <span class="n">args</span><span class="p">}]</span> 
+   
+    
+    <span class="n">bnds</span> <span class="o">=</span> <span class="p">((</span><span class="n">kv_lower_bound</span><span class="p">,</span> <span class="n">kv_upper_bound</span><span class="p">),</span> <span class="p">(</span><span class="n">Res_lower_bound</span> <span class="p">,</span> <span class="n">Res_upper_bound</span><span class="p">))</span> 
+    
+    <span class="c1"># try hard constraints to find optimum motor parameters</span>
+    <span class="n">sol</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;SLSQP&#39;</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bnds</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">hard_cons</span><span class="p">)</span> 
+    
+    <span class="k">if</span> <span class="n">sol</span><span class="o">.</span><span class="n">success</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+        <span class="c1"># use slack constraints  if optimum motor parameters cannot be found </span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Optimum motor design failed. Using slack constraints&#39;</span><span class="p">)</span>
+        <span class="n">sol</span> <span class="o">=</span> <span class="n">minimize</span><span class="p">(</span><span class="n">objective</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span><span class="p">)</span> <span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;SLSQP&#39;</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bnds</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-6</span><span class="p">,</span> <span class="n">constraints</span><span class="o">=</span><span class="n">slack_cons</span><span class="p">)</span>
+         
+        <span class="k">if</span> <span class="n">sol</span><span class="o">.</span><span class="n">success</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">assert</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Slack contraints failed&#39;</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">sol</span><span class="o">.</span><span class="n">x</span>   </div>
+
+  
+<span class="c1"># objective function</span>
+<div class="viewcode-block" id="objective">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.objective">[docs]</a>
+<span class="k">def</span> <span class="nf">objective</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">):</span> 
+    <span class="k">return</span> <span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">omeg</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>   </div>
+
+
+<span class="c1"># hard efficiency constraint</span>
+<div class="viewcode-block" id="hard_constraint_1">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.hard_constraint_1">[docs]</a>
+<span class="k">def</span> <span class="nf">hard_constraint_1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">):</span> 
+    <span class="k">return</span> <span class="n">etam</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="p">(</span><span class="n">io</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">omeg</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">*</span><span class="p">(</span><span class="n">omeg</span><span class="o">/</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>   </div>
+
+
+<span class="c1"># hard torque equality constraint</span>
+<div class="viewcode-block" id="hard_constraint_2">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.hard_constraint_2">[docs]</a>
+<span class="k">def</span> <span class="nf">hard_constraint_2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">):</span> 
+    <span class="k">return</span> <span class="p">((</span><span class="n">v</span> <span class="o">-</span> <span class="n">omeg</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">io</span><span class="p">)</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span>  </div>
+
+
+<span class="c1"># slack efficiency constraint </span>
+<div class="viewcode-block" id="slack_constraint_1">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.slack_constraint_1">[docs]</a>
+<span class="k">def</span> <span class="nf">slack_constraint_1</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">):</span> 
+    <span class="k">return</span> <span class="nb">abs</span><span class="p">(</span><span class="n">etam</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span> <span class="p">(</span><span class="n">io</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">omeg</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span><span class="o">*</span><span class="p">(</span><span class="n">omeg</span><span class="o">/</span><span class="p">(</span><span class="n">v</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])))</span> <span class="o">-</span> <span class="mf">0.2</span></div>
+
+
+<span class="c1"># slack torque equality constraint </span>
+<div class="viewcode-block" id="slack_constraint_2">
+<a class="viewcode-back" href="../../../../../../../../RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.html#RCAIDE.Library.Methods.Energy.Propulsors.Converters.DC_Motor.design_motor.slack_constraint_2">[docs]</a>
+<span class="k">def</span> <span class="nf">slack_constraint_2</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="p">,</span> <span class="n">omeg</span><span class="p">,</span>  <span class="n">etam</span> <span class="p">,</span> <span class="n">Q</span> <span class="p">,</span> <span class="n">io</span> <span class="p">):</span> 
+    <span class="k">return</span>  <span class="nb">abs</span><span class="p">(((</span><span class="n">v</span> <span class="o">-</span> <span class="n">omeg</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">io</span><span class="p">)</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">Q</span><span class="p">)</span> <span class="o">-</span> <span class="mi">200</span> </div>
+
+
+
+<span class="k">def</span> <span class="nf">_design_motor</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of design_motor.</span>
+<span class="sd">	Wraps design_motor with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see design_motor documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: motor = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">design_motor</span><span class="p">(</span><span class="s1">&#39;motor&#39;</span><span class="p">,)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_optimize_kv</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of optimize_kv.</span>
+<span class="sd">	Wraps optimize_kv with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see optimize_kv documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: io              = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg            = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam            = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q               = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: kv_lower_bound  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Res_lower_bound = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: kv_upper_bound  = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Res_upper_bound = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">optimize_kv</span><span class="p">(</span><span class="s1">&#39;io&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;kv_lower_bound&#39;</span><span class="p">,</span> <span class="s1">&#39;Res_lower_bound&#39;</span><span class="p">,</span> <span class="s1">&#39;kv_upper_bound&#39;</span><span class="p">,</span> <span class="s1">&#39;Res_upper_bound&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_objective</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of objective.</span>
+<span class="sd">	Wraps objective with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see objective documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: io   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">objective</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_hard_constraint_1</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of hard_constraint_1.</span>
+<span class="sd">	Wraps hard_constraint_1 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see hard_constraint_1 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: io   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">hard_constraint_1</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_hard_constraint_2</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of hard_constraint_2.</span>
+<span class="sd">	Wraps hard_constraint_2 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see hard_constraint_2 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: io   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">hard_constraint_2</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_slack_constraint_1</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of slack_constraint_1.</span>
+<span class="sd">	Wraps slack_constraint_1 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see slack_constraint_1 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: io   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">slack_constraint_1</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+
+
+<span class="k">def</span> <span class="nf">_slack_constraint_2</span><span class="p">(</span><span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span><span class="p">):</span>
+<span class="w">	</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">	Framework version of slack_constraint_2.</span>
+<span class="sd">	Wraps slack_constraint_2 with State, Settings, System pack/unpack.</span>
+<span class="sd">	Please see slack_constraint_2 documentation for more details.</span>
+<span class="sd">	&#39;&#39;&#39;</span>
+
+	<span class="c1">#TODO: x    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: v    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: omeg = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: etam = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: Q    = [Replace With State, Settings, or System Attribute]</span>
+	<span class="c1">#TODO: io   = [Replace With State, Settings, or System Attribute]</span>
+
+	<span class="n">results</span> <span class="o">=</span> <span class="n">slack_constraint_2</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span> <span class="s1">&#39;omeg&#39;</span><span class="p">,</span> <span class="s1">&#39;etam&#39;</span><span class="p">,</span> <span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">)</span>
+	<span class="c1">#TODO: [Replace results with the output of the original function]</span>
+
+	<span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span> <span class="o">=</span> <span class="n">results</span>
+	<span class="c1">#TODO: [Replace packing with correct attributes]</span>
+
+	<span class="k">return</span> <span class="n">State</span><span class="p">,</span> <span class="n">Settings</span><span class="p">,</span> <span class="n">System</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Aerospace Research Community LLC.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
