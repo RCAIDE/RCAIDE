@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from .Systems import Systems
-from RCAIDE.Library.Methods.Powertrain.Systems.append_ice_protection_conditions import append_ice_protection_conditions
+from RCAIDE.Library.Methods.Powertrain.Systems.append_systems_conditions import append_systems_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Ice_Protection
@@ -33,7 +33,7 @@ class Ice_Protection(Systems):
         bus : Data
             Electrical bus supplying power to the avionics
         """
-        append_ice_protection_conditions(self, segment, bus)
+        append_systems_conditions(self, segment, bus)
         return         
     
         

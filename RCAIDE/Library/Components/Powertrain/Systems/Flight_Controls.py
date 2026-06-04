@@ -7,7 +7,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from .Systems import Systems
-from RCAIDE.Library.Methods.Powertrain.Systems.append_flight_controls_conditions import append_flight_controls_conditions 
+from RCAIDE.Library.Methods.Powertrain.Systems.append_systems_conditions import append_systems_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Flight_Controls
@@ -69,5 +69,5 @@ class Flight_Controls(Systems):
         bus : Data
             Electrical bus supplying power to the flight_controls
         """
-        append_flight_controls_conditions(self, segment, bus)
+        append_systems_conditions(self, segment, bus)
         return 

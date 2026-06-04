@@ -8,7 +8,7 @@
 # RCAIDE imports
 from RCAIDE.Framework.Core import Data
 from .Systems import Systems
-from RCAIDE.Library.Methods.Powertrain.Systems.append_hydraulics_conditions import append_hydraulics_conditions
+from RCAIDE.Library.Methods.Powertrain.Systems.append_systems_conditions import append_systems_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Hydraulics
@@ -47,6 +47,6 @@ class Hydraulics(Systems):
         bus : Data
             Electrical bus supplying power to the hydraulic systems
         """
-        append_hydraulics_conditions(self, segment, bus)
+        append_systems_conditions(self, segment, bus)
         
         return

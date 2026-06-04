@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------------------------------------------------------   
 # RCAIDE imports  
 from .Systems import Systems
-from RCAIDE.Library.Methods.Powertrain.Systems.append_environmental_control_conditions import append_environmental_control_conditions
+from RCAIDE.Library.Methods.Powertrain.Systems.append_systems_conditions import append_systems_conditions
  
 # ----------------------------------------------------------------------------------------------------------------------
 #  Environmental_Controls
@@ -35,7 +35,7 @@ class Environmental_Controls(Systems):
         bus : Data
             Electrical bus supplying power to the avionics
         """
-        append_environmental_control_conditions(self, segment, bus)
+        append_systems_conditions(self, segment, bus)
         return         
     
         
