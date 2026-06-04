@@ -65,8 +65,8 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 200, leading_and_trailin
     if m == 0 and p == 0:
         pass
     else:
-        I_us = np.where(x_us<p)[0] 
-        I_ls = np.where(x_ls<p)[0]  
+        I_us = np.where(x_us < p)[0]
+        I_ls = np.where(x_ls < p)[0]
         c_us[I_us] = m/p**2*(2*p*x_us[I_us]-x_us[I_us]**2) 
         c_ls[I_ls] = m/p**2*(2*p*x_ls[I_ls]-x_ls[I_ls]**2) 
     
@@ -76,7 +76,7 @@ def compute_naca_4series(airfoil_geometry_file,npoints= 200, leading_and_trailin
     y_lo_surf = np.flip(c_ls - t_ls)
    
     # concatenate upper and lower surfaces  
-    x_data = np.hstack((x_lo_surf,x_up_surf))
+    x_data = np.hstack((x_lo_surf, x_up_surf))
     y_data = np.hstack((y_lo_surf, y_up_surf))  
 
     max_t  = np.max(thickness)

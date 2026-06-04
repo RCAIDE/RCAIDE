@@ -173,3 +173,4 @@ def lifting_line(conditions,settings,geometry):
     CD  = CDv + CDp
    
     return CL, CD
+

@@ -44,7 +44,7 @@ def initialize_differentials_dimensionless(segment):
     discretization_method = numerics.discretization_method
     
     # get operators
-    x,D,I = discretization_method(N,**numerics)
+    x,D,I = discretization_method(N, **numerics)
     x = atleast_2d_col(x)
     
     # pack

@@ -381,7 +381,7 @@ def vehicle_setup():
     segment.percent_z_location                  = -0.00144 
     segment.height                              = 0.7500
     segment.width                               = 0.6500
-    fuselage.Segments.append(segment)   
+    fuselage.Segments.append(segment)
     
     # Segment                                   
     segment                                     = SUAVE.Components.Lofted_Body_Segment.Segment()
@@ -512,7 +512,7 @@ def vehicle_setup():
     nacelle.inlet_diameter             = 1.90
     nacelle.diameter                   = 2.05
     nacelle.areas.wetted               = 1.1*np.pi*nacelle.diameter*nacelle.length
-    nacelle.origin                     = [[13.72, -4.86,-1.9]]
+    nacelle.origin                     = [[13.72, -4.86, -1.9]]
     nacelle.flow_through               = True   
     nacelle.Airfoil.NACA_4_series_flag = True 
     nacelle.Airfoil.coordinate_file    = '2410'  
@@ -535,10 +535,10 @@ def vehicle_setup():
     # setup
     turbofan.number_of_engines = 2.0
     turbofan.bypass_ratio      = 5.4
-    turbofan.engine_length     = 2.71
+    turbofan.lengths.total     = 2.71
 
     # This origin is overwritten by compute_component_centers_of_gravity(base,compute_propulsor_origin=True)
-    turbofan.origin            = [[13.72, 4.86,-1.9],[13.72, -4.86,-1.9]]
+    turbofan.origin            = [[13.72, 4.86,-1.9], [13.72, -4.86,-1.9]]
 
     # working fluid
     turbofan.working_fluid = SUAVE.Attributes.Gases.Air()
@@ -722,9 +722,6 @@ def vehicle_setup():
     turbofan.geometry_xe          = 1. # Geometry information for the installation effects function
     turbofan.geometry_ye          = 1. # Geometry information for the installation effects function
     turbofan.geometry_Ce          = 2. # Geometry information for the installation effects function
-
-
-
 
 
     #size the turbofan

@@ -64,15 +64,12 @@ def install(the_package,version,date):
     except ImportError:
         from distutils.core import setup
         
-    # test for requirements
-    import_tests()
-    
     # list all SUAVE sub packages
     #print 'Listing Packages and Sub-Packages:'
     packages = list_subpackages(the_package,verbose=False)
     packages = list(map( '.'.join, packages ))
     
-    requires = ['numpy','scipy','sklearn','plotly','matplotlib']
+    requires = ['numpy','scipy','scikit-learn','plotly','matplotlib']
     python_v = '>=3.6'
 
     # run the setup!!!
@@ -89,7 +86,7 @@ def install(the_package,version,date):
         #license = '',
         platforms = ['Win, Linux, Unix, Mac OS-X'],
         zip_safe  = False,
-        requires  = requires,
+        install_requires  = requires,
         python_requires = python_v,
         #long_description = read('../README.md');
     )  

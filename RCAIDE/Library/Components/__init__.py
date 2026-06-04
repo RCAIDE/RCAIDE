@@ -8,17 +8,24 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Component        import Component
-from .Mass_Properties  import Mass_Properties
-  
-from . import Propulsors
-from . import Energy
-from . import Airfoils
-from . import Booms
-from . import Configs
+from os import path
+from pathlib import Path
+
+# Component Types
+
 from . import Fuselages
-from . import Landing_Gear
+from . import Airfoils
 from . import Nacelles
-from . import Payloads
-from . import Systems
+from . import Landing_Gear
 from . import Wings
+from . import Energy
+
+# Top-Level Components for Direct Import
+
+from .Airfoils import Airfoil
+from .Fuselages import Fuselage
+from .Landing_Gear import LandingGear
+from .Wings import Wing
+from .Nacelles import Nacelle
+
+from RCAIDE.Library.Component import *

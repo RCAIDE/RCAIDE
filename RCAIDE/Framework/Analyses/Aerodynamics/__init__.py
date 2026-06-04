@@ -8,5 +8,5 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
  
-from .Aerodynamics          import Aerodynamics
-from .Vortex_Lattice_Method import Vortex_Lattice_Method
+from .TestAero import TestAero
+from .VORJAX import VORJAX, VLMSettings, Vortices, InitializeVORJAX, SupersonicSettings

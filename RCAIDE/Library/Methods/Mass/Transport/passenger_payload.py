@@ -1,0 +1,86 @@
+# passenger_payload.py
+#
+# Created:  Apr 2024, J. Smart
+# Modified:
+
+# ----------------------------------------------------------------------
+#  Imports
+# ---------------------------------------------------------------------- 
+
+from RCAIDE.Library import Units
+
+import RCAIDE.Library as rcl
+import RCAIDE.Framework as rcf
+
+# -----------------------------------------------------------------------
+# Functional/Library Version
+# -----------------------------------------------------------------------
+
+def func_passenger_payload(n_passengers,
+                           m_passenger=195. * Units.lbm,
+                           m_baggage=30. * Units.lbm):
+    """
+    Calculate the total mass of passengers and their baggage.
+
+    Parameters:
+    - n_passengers (int): Number of passengers.
+    - wt_passenger (float): Weight of a single passenger, defaults to 195 lbm.
+    - wt_baggage (float): Weight of the baggage per passenger, defaults to 30 lbm.
+    - *args: Variable length argument list.
+    - **kwargs: Arbitrary keyword arguments.
+
+    Returns:
+    - tuple: (passenger_mass, baggage_mass)
+        - passenger_mass (float): Total mass of all passengers.
+        - baggage_mass (float): Total mass of all passengers' baggage.
+    """
+
+    passenger_mass = n_passengers * m_passenger
+
+    baggage_mass = n_passengers * m_baggage
+
+    return passenger_mass, baggage_mass
+
+
+# -----------------------------------------------------------------------
+# Stateful/Framework Version
+# -----------------------------------------------------------------------
+
+def passenger_payload(state: "rcf.State",
+                      system: "rcf.System",
+                      settings: "rcf.Settings"):
+
+    n_passengers    = system.number_of_passengers
+
+    passenger_mass, baggage_mass = func_passenger_payload(n_passengers)
+
+    def _build_payload(payload: "rcl.Component"):
+
+        if hasattr(payload, 'passengers'):
+            payload.passengers.mass_properties.total = passenger_mass
+        else:
+            passengers = rcl.Component(tag='passengers')
+            passengers.mass_properties.total = passenger_mass
+            payload.add_subcomponent(passengers)
+
+        if hasattr(payload, 'baggage'):
+            payload.baggage.mass_properties.total = baggage_mass
+        else:
+            baggage = rcl.Component(tag='baggage')
+            baggage.mass_properties.total = baggage_mass
+            payload.add_subcomponent(baggage)
+
+        payload.sum_mass()
+
+        return payload
+
+    if hasattr(system, 'payload'):
+        _payload = system.payload
+        system.payload = _build_payload(_payload)
+        system.sum_mass()
+    else:
+        _payload = rcl.Component(tag='payload')
+        payload = _build_payload(_payload)
+        system.add_subcomponent(payload)
+
+    return state, system, settings

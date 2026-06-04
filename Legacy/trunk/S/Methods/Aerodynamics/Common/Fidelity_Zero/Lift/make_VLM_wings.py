@@ -169,8 +169,9 @@ def make_VLM_wings(geometry, settings):
         n_LE        = len(LE_breaks)
         n_TE        = len(TE_breaks)
         n_seg       = len(seg_breaks)
-        i, j, k     = 0,0,0
+        i, j, k     = 0, 0, 0
         big_num     = float('inf')
+
         while True:
             LE_span  = LE_breaks[i].span_fraction  if (i < n_LE)  else big_num
             TE_span  = TE_breaks[j].span_fraction  if (j < n_TE)  else big_num

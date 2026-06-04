@@ -8,4 +8,6 @@
 #  IMPORT
 # ----------------------------------------------------------------------------------------------------------------------
 
-from .Energy        import Energy
+from RCAIDE.Library.Methods.Energy import *
+
+from .Turbofan_Performance import TurbofanPerformance

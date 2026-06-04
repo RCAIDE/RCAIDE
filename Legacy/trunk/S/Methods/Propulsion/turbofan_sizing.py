@@ -17,7 +17,8 @@ from Legacy.trunk.S.Core import Data
 #   Sizing
 # ----------------------------------------------------------------------
 
-def turbofan_sizing(turbofan,mach_number = None, altitude = None, delta_isa = 0, conditions = None):  
+
+def turbofan_sizing(turbofan, mach_number=None, altitude = None, delta_isa = 0, conditions = None):
     """ create and evaluate a gas turbine network
     """
 

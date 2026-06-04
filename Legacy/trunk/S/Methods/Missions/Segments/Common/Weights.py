@@ -80,7 +80,7 @@ def update_gravity(segment):
     g      = planet.features.compute_gravity(H)
 
     # pack
-    segment.state.conditions.freestream.gravity[:,0] = g[:,0]
+    segment.state.conditions.freestream.gravity[:, 0] = g[:, 0]
 
     return
 

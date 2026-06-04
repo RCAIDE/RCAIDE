@@ -74,8 +74,8 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0, TURBULENT_SURF,
             if l == 0.0:
                 pass
             else: 
-                theta_0      = THETA_0[case,cpt] 
-                Re_L         = RE_L[case,cpt] 
+                theta_0      = THETA_0[case, cpt]
+                Re_L         = RE_L[case, cpt]
                 nu           = l/Re_L    
                 x_i          = TURBULENT_COORD.data[:,case,cpt][TURBULENT_COORD.mask[:,case,cpt] ==False] 
                 Ve_i         = VE_I.data[:,case,cpt][TURBULENT_COORD.mask[:,case,cpt] ==False]
@@ -87,7 +87,7 @@ def heads_method(npanel,ncases,ncpts,DEL_0,THETA_0,DELTA_STAR_0, TURBULENT_SURF,
                 if np.isnan(H1_0):
                     H1_0     = (del_0 - del_star_0) / theta_0 
                 y0           = [theta_0, getVe(0,x_i,Ve_i)*theta_0*H1_0]     
-                y            = odeint(odefcn,y0,x_i,args=(Re_L/l, x_i, Ve_i, dVe_i))  
+                y            = odeint(odefcn, y0, x_i, args=(Re_L/l, x_i, Ve_i, dVe_i))
                 
                 # Compute momentum thickness, theta 
                 theta            = y[:,0]  
@@ -238,7 +238,7 @@ def odefcn(y,x,ReL_div_L, x_i, Ve_i, dVe_i):
     cf          = getcf(np.atleast_1d(Re_theta),np.atleast_1d(H))
     dydx_1      = 0.5*cf-(theta/getVe(x,x_i,Ve_i))*(2+H)*getdVe(x, x_i, dVe_i)
     dydx_2      = getVe(x,x_i,Ve_i)*0.0306*(H1 - 3)**-0.6169 
-    f           = [dydx_1,dydx_2] 
+    f           = [dydx_1[0], dydx_2]
     return f 
 
 def getVe(x,x_i,Ve_i):

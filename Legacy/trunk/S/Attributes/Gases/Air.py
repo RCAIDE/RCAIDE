@@ -141,7 +141,7 @@ class Air(Gas):
 
         return cp
 
-    def compute_gamma(self,T=300.,p=101325.):
+    def compute_gamma(self, T=300., p=101325.):
         """Computes Cp by 3rd-order polynomial data fit:
         gamma(T) = c1*T^3 + c2*T^2 + c3*T + c4
 
