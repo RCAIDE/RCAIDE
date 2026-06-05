@@ -44,7 +44,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking basic additive with no active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=100,num_samples=20,tolerance=1e-8,print_output=False)
+    outputs = solver.Additive_Solve(problem,max_iterations=500,num_samples=200,tolerance=1e-8,print_output=False)
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
