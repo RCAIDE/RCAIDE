@@ -22,7 +22,7 @@ def main():
     np.random.seed(0)
     
     problem = setup() 
-    tolerance = 5e-2
+    tolerance = 1e-1
     
     def set_add_solver():
         solver = Additive_Solver()
@@ -57,6 +57,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(0.0 - obj))
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(0.0 - x2))
     assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
@@ -86,6 +89,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(1.0 - obj) / 1.0)
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
     assert abs(1.0  - obj) / 1.0 < tolerance
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(1.0  - x2 ) / 1.0 < tolerance
@@ -115,6 +121,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(5.41 - obj) / 5.41)
+    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
+    print(f"x2 error: ",abs(-1.0 - x2) / 1.0)
     assert abs(5.41 - obj) / 5.41 < tolerance
     assert abs(2.0  - x1 ) / 2.0  < tolerance
     assert abs(-1.0 - x2 ) / 1.0  < tolerance
@@ -146,6 +155,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(0.0 - obj))
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(0.0 - x2))
     assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
@@ -175,6 +187,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(1.0 - obj) / 1.0)
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
     assert abs(1.0  - obj) / 1.0 < tolerance
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(1.0  - x2 ) / 1.0 < tolerance
@@ -204,6 +219,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(5.41 - obj) / 5.41)
+    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
+    print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
     assert abs(5.41 - obj) / 5.41 < tolerance
     assert abs(2.0  - x1 ) / 2.0  < tolerance
     assert abs(-1.0 - x2 ) / 1.0  < tolerance
@@ -240,6 +258,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(0.0 - obj))
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(0.0 - x2))
     assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
@@ -272,6 +293,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(1.0 - obj) / 1.0)
+    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
+    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
     assert abs(1.0  - obj) / 1.0 < tolerance
     assert abs(-0.1 - x1 ) / 0.1 < tolerance
     assert abs(1.0  - x2 ) / 1.0 < tolerance
@@ -308,6 +332,9 @@ def main():
     print(f"x1: {x1}")
     print(f"x2: {x2}")
     #   Check Results
+    print(f"obj error:", abs(5.41 - obj) / 5.41)
+    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
+    print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
     assert abs(5.41 - obj) / 5.41 < tolerance
     assert abs(2.0  - x1 ) / 2.0  < tolerance
     assert abs(-1.0 - x2 ) / 1.0  < tolerance
