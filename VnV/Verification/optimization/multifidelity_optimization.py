@@ -73,7 +73,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking basic additive with one active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False)
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
@@ -102,7 +102,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking basic additive with two active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False)
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
@@ -133,7 +133,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking MEI additive with no active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=1e-8,print_output=False,opt_type='MEI')
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
@@ -162,7 +162,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking MEI additive with one active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=1e-8,print_output=False,opt_type='MEI')
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
@@ -191,7 +191,7 @@ def main():
     ],dtype=object)
 
     print('\n\n Checking MEI additive with two active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=1e-8,print_output=False,opt_type='MEI')
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
     print(outputs)
     obj,x1,x2 = get_results(outputs)
 
@@ -224,7 +224,7 @@ def main():
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.trust_region_max_iterations           = 100
     TRM_opt.optimizer  = tr_optimizer
     print('\n\n Checking TRMM with no active constraints...')
     outputs = TRM_opt.optimize(problem,print_output=False)
@@ -256,7 +256,7 @@ def main():
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.trust_region_max_iterations           = 100
     TRM_opt.optimizer  = tr_optimizer
     print('\n\n Checking TRMM with one active constraint...')
     outputs = TRM_opt.optimize(problem,print_output=False)
@@ -288,7 +288,7 @@ def main():
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.trust_region_max_iterations           = 100
     TRM_opt.optimizer  = tr_optimizer
     print('\n\n Checking TRMM with active constraints...')
     outputs = TRM_opt.optimize(problem,print_output=False)
