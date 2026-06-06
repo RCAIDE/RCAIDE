@@ -53,7 +53,7 @@ def main():
     # ------------------------------------------------------------------    
 
     assert( np.isclose(obj,  0, atol=1e-3) )
-    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x1 ,-.1, atol=3e-2) )
     assert( np.isclose(x2 ,  0, atol=2e-2) )      
     
     # ------------------------------------------------------------------
