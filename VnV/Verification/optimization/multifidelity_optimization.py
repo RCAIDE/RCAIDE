@@ -21,8 +21,8 @@ import os
 def main():
     np.random.seed(0)
     
-    problem = setup() 
-    tolerance = 1e-2
+    problem = setup()
+    tol = 1e-8
     
     def set_add_solver():
         solver = Additive_Solver()
@@ -31,296 +31,243 @@ def main():
         return solver
     
     ################### Basic Additive ##################################################
-
+    
     # ------------------------------------------------------------------
     #   Inactive constraints
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>', -50., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking basic additive with no active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=500,num_samples=200,tolerance=1e-8,print_output=False)
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking basic additive with no active constraints...')
+    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=1e-8,print_output=False)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(0.0 - obj))
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used 
-
+    assert( np.isclose(obj,  0, atol=1e-6) )
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  0, atol=1e-2) )      
+    
     # ------------------------------------------------------------------
     #   Active constraint
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>',   1., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking basic additive with one active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False)
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking basic additive with one active constraint...')
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(1.0 - obj) / 1.0)
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance 
-
+    assert( np.isclose(obj,  1, atol=1e-6) )
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  1, atol=1e-2) )     
+    
     # ------------------------------------------------------------------
     #   Other active constraints
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '=',   2., 1., 1*Units.less],
         [ 'x2' , '<',  -1., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking basic additive with two active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False)
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking basic additive with two active constraints...')
+    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(5.41 - obj) / 5.41)
-    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
-    print(f"x2 error: ",abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance 
-
+    assert( np.isclose(obj,5.41, atol=1e-6) )
+    assert( np.isclose(x1 ,   2, atol=1e-2) )
+    assert( np.isclose(x2 ,  -1, atol=1e-2) )  
+    
     ################# Additive MEI ##################################################
-
+    
     # ------------------------------------------------------------------
     #   Inactive constraints
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>', -50., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking MEI additive with no active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking MEI additive with no active constraint...')
+    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=tol,print_output=False,opt_type='MEI')
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(0.0 - obj))
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance     # truth is zero; absolute error used
-
+    assert( np.isclose(obj,  0, atol=1e-6) )
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  0, atol=1e-2) )      
+    
     # ------------------------------------------------------------------
     #   Active constraint
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>',   1., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking MEI additive with one active constraint...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking MEI additive with one active constraint...')
+    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=tol,print_output=False,opt_type='MEI')
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(1.0 - obj) / 1.0)
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance 
-
-    # ------------------------------------------------------------------
+    assert( np.isclose(obj,  1, atol=1e-4) ) # optimizer does not reach exactly optimum here
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  1, atol=1e-2) )     
+    
+    #------------------------------------------------------------------
     #   Other active constraints
-    # ------------------------------------------------------------------
-
+    #------------------------------------------------------------------     
+    
     solver = set_add_solver()
-
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '=',   2., 1., 1*Units.less],
         [ 'x2' , '<',  -1., 1., 1*Units.less],
-    ],dtype=object)
-
-    print('\n\n Checking MEI additive with two active constraints...')
-    outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=200,tolerance=1e-8,print_output=False,opt_type='MEI')
-    print(outputs)
+    ],dtype=object)    
+    
+    print('Checking MEI additive with two active constraints...')
+    outputs = solver.Additive_Solve(problem,max_iterations=10,num_samples=20,tolerance=tol,print_output=False,opt_type='MEI')
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(5.41 - obj) / 5.41)
-    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
-    print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance 
-
+    assert( np.isclose(obj,5.41, atol=1e-6) )
+    assert( np.isclose(x1 ,   2, atol=1e-6) )
+    assert( np.isclose(x2 ,  -1, atol=1e-6) )     
+    
     ################# TRMM ##################################################
-
+    
     tr_optimizer = 'SLSQP'
-
+    
     # ------------------------------------------------------------------
     #   Inactive constraints
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>', -50., 1., 1*Units.less],
-    ],dtype=object)
-
+    ],dtype=object)    
+    
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 100
-    TRM_opt.optimizer  = tr_optimizer
-    print('\n\n Checking TRMM with no active constraints...')
+    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.optimizer  = tr_optimizer    
+    print('Checking TRMM with no active constraints...')
     outputs = TRM_opt.optimize(problem,print_output=False)
-    print(outputs)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(0.0 - obj))
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used 
-
+    assert( np.isclose(obj,  0, atol=1e-6) )
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  0, atol=1e-2) )       
+    
     # ------------------------------------------------------------------
     #   Active constraint
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>',   1., 1., 1*Units.less],
-    ],dtype=object)
-
+    ],dtype=object)   
+    
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 100
-    TRM_opt.optimizer  = tr_optimizer
-    print('\n\n Checking TRMM with one active constraint...')
+    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.optimizer  = tr_optimizer    
+    print('Checking TRMM with one active constraint...')
     outputs = TRM_opt.optimize(problem,print_output=False)
-    print(outputs)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
-
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(1.0 - obj) / 1.0)
-    print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
-    print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance 
-
+    assert( np.isclose(obj,  1, atol=1e-6) )
+    assert( np.isclose(x1 ,-.1, atol=1e-2) )
+    assert( np.isclose(x2 ,  1, atol=1e-2) )  
+    
     # ------------------------------------------------------------------
     #   Other constraints
-    # ------------------------------------------------------------------
-
+    # ------------------------------------------------------------------     
+    
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '=',   2., 1., 1*Units.less],
         [ 'x2' , '<',  -1., 1., 1*Units.less],
-    ],dtype=object)
-
+    ],dtype=object)     
+    
     tr = Trust_Region()
     problem.trust_region = tr
     TRM_opt = tro.Trust_Region_Optimization()
-    TRM_opt.trust_region_max_iterations           = 100
-    TRM_opt.optimizer  = tr_optimizer
-    print('\n\n Checking TRMM with active constraints...')
+    TRM_opt.trust_region_max_iterations           = 20
+    TRM_opt.optimizer  = tr_optimizer    
+    print('Checking TRMM with active constraints...')
     outputs = TRM_opt.optimize(problem,print_output=False)
-    print(outputs)
+    print(outputs)   
     obj,x1,x2 = get_results(outputs)
+    
 
-    # removes files from folder after regression is completed
-    os.remove("add_hist.txt")
-    os.remove("TRM_hist.txt")
-
+    # removes files from folder after regression is completed 
+    os.remove("add_hist.txt")  
+    os.remove("TRM_hist.txt") 
+    
     # ------------------------------------------------------------------
     #   Check Results
-    # ------------------------------------------------------------------
+    # ------------------------------------------------------------------    
 
-    # print results
-    print(f"Objective: {obj}")
-    print(f"x1: {x1}")
-    print(f"x2: {x2}")
-    #   Check Results
-    print(f"obj error:", abs(5.41 - obj) / 5.41)
-    print(f"x1 error: ", abs(2.0 - x1) / 2.0)
-    print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance 
-
+    assert( np.isclose(obj,5.41, atol=1e-6) )
+    assert( np.isclose(x1 ,   2, atol=1e-2) )
+    assert( np.isclose(x2 ,  -1, atol=1e-2) )      
+     
     return
 
 # ----------------------------------------------------------------------        
