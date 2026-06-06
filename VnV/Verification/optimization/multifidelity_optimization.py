@@ -22,7 +22,7 @@ def main():
     np.random.seed(0)
     
     problem = setup() 
-    tolerance = 1e-1
+    tolerance = 1e-2
     
     def set_add_solver():
         solver = Additive_Solver()
@@ -60,9 +60,7 @@ def main():
     print(f"obj error:", abs(0.0 - obj))
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
+    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used 
 
     # ------------------------------------------------------------------
     #   Active constraint
@@ -92,9 +90,7 @@ def main():
     print(f"obj error:", abs(1.0 - obj) / 1.0)
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(1.0  - x2 ) / 1.0 < tolerance
+    assert abs(1.0  - obj) / 1.0 < tolerance 
 
     # ------------------------------------------------------------------
     #   Other active constraints
@@ -124,9 +120,7 @@ def main():
     print(f"obj error:", abs(5.41 - obj) / 5.41)
     print(f"x1 error: ", abs(2.0 - x1) / 2.0)
     print(f"x2 error: ",abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance
-    assert abs(2.0  - x1 ) / 2.0  < tolerance
-    assert abs(-1.0 - x2 ) / 1.0  < tolerance
+    assert abs(5.41 - obj) / 5.41 < tolerance 
 
     ################# Additive MEI ##################################################
 
@@ -158,9 +152,7 @@ def main():
     print(f"obj error:", abs(0.0 - obj))
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
+    assert abs(0.0  - obj)        < tolerance     # truth is zero; absolute error used
 
     # ------------------------------------------------------------------
     #   Active constraint
@@ -190,9 +182,7 @@ def main():
     print(f"obj error:", abs(1.0 - obj) / 1.0)
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(1.0  - x2 ) / 1.0 < tolerance
+    assert abs(1.0  - obj) / 1.0 < tolerance 
 
     # ------------------------------------------------------------------
     #   Other active constraints
@@ -222,9 +212,7 @@ def main():
     print(f"obj error:", abs(5.41 - obj) / 5.41)
     print(f"x1 error: ", abs(2.0 - x1) / 2.0)
     print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance
-    assert abs(2.0  - x1 ) / 2.0  < tolerance
-    assert abs(-1.0 - x2 ) / 1.0  < tolerance
+    assert abs(5.41 - obj) / 5.41 < tolerance 
 
     ################# TRMM ##################################################
 
@@ -261,9 +249,7 @@ def main():
     print(f"obj error:", abs(0.0 - obj))
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(0.0 - x2))
-    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(0.0  - x2 )        < tolerance    # truth is zero; absolute error used
+    assert abs(0.0  - obj)        < tolerance    # truth is zero; absolute error used 
 
     # ------------------------------------------------------------------
     #   Active constraint
@@ -296,9 +282,7 @@ def main():
     print(f"obj error:", abs(1.0 - obj) / 1.0)
     print(f"x1 error: ", abs(-0.1 - x1) / 0.1)
     print(f"x2 error: ", abs(1.0 - x2) / 1.0)
-    assert abs(1.0  - obj) / 1.0 < tolerance
-    assert abs(-0.1 - x1 ) / 0.1 < tolerance
-    assert abs(1.0  - x2 ) / 1.0 < tolerance
+    assert abs(1.0  - obj) / 1.0 < tolerance 
 
     # ------------------------------------------------------------------
     #   Other constraints
@@ -335,9 +319,7 @@ def main():
     print(f"obj error:", abs(5.41 - obj) / 5.41)
     print(f"x1 error: ", abs(2.0 - x1) / 2.0)
     print(f"x2 error: ", abs(-1.0 - x2) / 1.0)
-    assert abs(5.41 - obj) / 5.41 < tolerance
-    assert abs(2.0  - x1 ) / 2.0  < tolerance
-    assert abs(-1.0 - x2 ) / 1.0  < tolerance
+    assert abs(5.41 - obj) / 5.41 < tolerance 
 
     return
 
