@@ -198,11 +198,6 @@ def main():
                        missions=missions,
                        filename=_test_file)
 
-    # Mirror to GUI app_data without re-serializing
-    _app_data = os.path.abspath(os.path.join(_script_dir, '..', '..', 'RCAIDE_GUI',
-                                             'app_data', 'aircraft', 'Boeing_737_800.json'))
-    shutil.copy2(_test_file + '.json', _app_data)
-
     RCAIDE_JSON_Test = import_rcaide_data(_test_file)
     compare_rcaide_data(vehicle, configs, analyses, missions, RCAIDE_JSON_Test) 
 
@@ -293,7 +288,7 @@ def mission_setup(analyses):
     # ------------------------------------------------------------------
 
     mission = RCAIDE.Framework.Mission.Sequential_Segments()
-    mission.tag = 'the_mission'
+    mission.tag = 'base_mission'
   
     Segments = RCAIDE.Framework.Mission.Segments 
     base_segment = Segments.Segment()
@@ -307,7 +302,7 @@ def mission_setup(analyses):
     segment.tag = "cruise" 
     segment.analyses.extend(analyses.base) 
     segment.altitude                                                = 11. * Units.km    
-    segment.speed                                                   = 450 *Units.knots
+    segment.air_speed                                               = 450 *Units.knots
     segment.distance                                                = 500 * Units.km   
                 
     # define flight dynamics to model             
@@ -317,7 +312,7 @@ def mission_setup(analyses):
     # define flight controls 
     segment.assigned_control_variables.throttle.active              = True           
     segment.assigned_control_variables.throttle.assigned_propulsors = [['propulsor_1','propulsor_2']]
-    segment.assigned_control_variables.throttle.initial_guess       = True  
+    segment.assigned_control_variables.throttle.initial_guess       = [[0.5]]
         
     mission.append_segment(segment)   
      
@@ -326,8 +321,7 @@ def mission_setup(analyses):
 
 def missions_setup(mission): 
  
-    missions     = RCAIDE.Framework.Mission.Missions() 
-    mission.tag  = 'base_mission'
+    missions     = RCAIDE.Framework.Mission.Missions()
     missions.append(mission)
  
     return missions  
