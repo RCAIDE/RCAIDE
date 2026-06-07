@@ -61,17 +61,7 @@ def save(data, filename, pickle_format=False):
         res_dict = build_dict_base(data) 
 
         with open( filename + '.json', 'w') as f:
-            json.dump(res_dict, f, indent=4)
-        
-        ################################################
-        # OLD FORMAT - DO NOT DELETE 
-        ## Convert the dictionary to a JSON string
-        #res_string = json.dumps(res_dict) 
-        ## Write results to a file
-        #f = open(filename,'w')   
-        #f.write(res_string)
-        #f.close()  
-        ################################################
+            json.dump(res_dict, f, indent=4) 
     return  
         
 def build_dict_base(base):
