@@ -58,15 +58,16 @@ def main():
     
     # ------------------------------------------------------------------
     #   Active constraint
-    # ------------------------------------------------------------------     
-    
+    # ------------------------------------------------------------------
+
     solver = set_add_solver()
-    
+    np.random.seed(0)
+
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '>', -10., 1., 1*Units.less],
         [ 'x2' , '>',   1., 1., 1*Units.less],
-    ],dtype=object)    
-    
+    ],dtype=object)
+
     print('Checking basic additive with one active constraint...')
     outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
     print(outputs)   
@@ -82,15 +83,16 @@ def main():
     
     # ------------------------------------------------------------------
     #   Other active constraints
-    # ------------------------------------------------------------------     
-    
+    # ------------------------------------------------------------------
+
     solver = set_add_solver()
-    
+    np.random.seed(0)
+
     problem.optimization_problem.constraints = np.array([
         [ 'x1' , '=',   2., 1., 1*Units.less],
         [ 'x2' , '<',  -1., 1., 1*Units.less],
-    ],dtype=object)    
-    
+    ],dtype=object)
+
     print('Checking basic additive with two active constraints...')
     outputs = solver.Additive_Solve(problem,max_iterations=1000,num_samples=20,tolerance=1e-8,print_output=False)
     print(outputs)   

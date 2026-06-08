@@ -98,7 +98,7 @@ def plot_airfoil_polar_files(polar_data,
         
      
     # get line colors for plots 
-    line_colors   = segment_colors(np.linspace(0,1,n_Re))     
+    line_colors   = segment_colors(n_Re)     
      
     fig   = plt.figure(save_filename)
     fig.set_size_inches(width,height) 
