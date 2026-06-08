@@ -1,10 +1,6 @@
-# import_rcaide_data.py
+# RCAIDE/Input_Output/import_data.py
 #
 # Created: May 2026, M. Clarke
-
-# ----------------------------------------------------------------------------------------------------------------------
-#  IMPORTS
-# ----------------------------------------------------------------------------------------------------------------------
 
 import json
 import importlib
@@ -13,11 +9,8 @@ from collections import OrderedDict
 
 import RCAIDE
 from RCAIDE.Framework.Core import Data, DataOrdered
-from RCAIDE.load import read_RCAIDE_json_dict
+from RCAIDE.Input_Output.load import read_RCAIDE_json_dict
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  Type-restoration helpers  (mirrors rcaide_io.py logic)
-# ----------------------------------------------------------------------------------------------------------------------
 
 def _is_mapping(v):
     return hasattr(v, 'items') and hasattr(v, '__setitem__')
@@ -153,7 +146,6 @@ def _restore_typed_subcomponents(obj):
 
 
 def _strip_unit_arguments(value):
-    """Strip [value, unit_index] pairs, leaving raw scalars."""
     if _is_mapping(value):
         clean = OrderedDict()
         for key, item in value.items():
@@ -167,12 +159,7 @@ def _strip_unit_arguments(value):
     return value
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  Vehicle reconstruction
-# ----------------------------------------------------------------------------------------------------------------------
-
 def vehicle_setup(vehicle_raw):
-    """Reconstruct a fully typed RCAIDE Vehicle from raw JSON data."""
     vehicle_clean = _strip_unit_arguments(vehicle_raw)
     vehicle = RCAIDE.Vehicle()
     vehicle.update(read_RCAIDE_json_dict(vehicle_clean))
@@ -182,12 +169,7 @@ def vehicle_setup(vehicle_raw):
     return vehicle
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  Config diff application
-# ----------------------------------------------------------------------------------------------------------------------
-
 def _coerce_leaf(new_val, obj, key):
-    """Convert list → ndarray when the existing attribute is a numpy array."""
     if isinstance(new_val, list):
         try:
             if isinstance(obj[key], np.ndarray):
@@ -198,12 +180,6 @@ def _coerce_leaf(new_val, obj, key):
 
 
 def _apply_diff(obj, diff_dict):
-    """
-    Walk the stripped diff dict and apply every leaf value to the matching
-    attribute of obj, navigating via the same key path.
-
-    Example path: wings → main_wing → control_surfaces → flap → deflection
-    """
     for key, value in diff_dict.items():
         if key == '__type__':
             continue
@@ -221,46 +197,25 @@ def _apply_diff(obj, diff_dict):
 
 
 def configs_setup(config_data, base_vehicle):
-    """
-    Build a Config.Container from the stored config_data list.
-
-    Each entry must have 'tag' and 'diff' keys (written by export_rcaide_data).
-    The base vehicle is deepcopied once per config; the diff tree is then walked
-    and applied so that only the changed attributes are overwritten.
-    """
     from RCAIDE.Library.Components.Configs.Config import Config
-
     configs = Config.Container()
-
     for entry in config_data:
         if not isinstance(entry, dict):
             continue
-
         name = entry.get('tag') or entry.get('config name', '')
         if not name:
             continue
-
         config = Config(base_vehicle)
         config.tag = name
-
         diff_raw = entry.get('diff', {})
         if diff_raw:
             diff_clean = _strip_unit_arguments(diff_raw)
             _apply_diff(config, diff_clean)
-
         configs.append(config)
-
     return configs
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  Analysis / mission reconstruction
-# ----------------------------------------------------------------------------------------------------------------------
 def _apply_analysis_settings(obj, data_dict):
-    """
-    Walk a stripped (unit-arguments removed) dict and apply every leaf value to
-    obj via key-path navigation — same pattern as _apply_diff.
-    """
     _skip = frozenset({'__type__', 'vehicle'})
     for key, value in data_dict.items():
         if key in _skip:
@@ -279,21 +234,11 @@ def _apply_analysis_settings(obj, data_dict):
                 obj[key] = _coerce_leaf(value, obj, key)
             except (KeyError, TypeError, AttributeError):
                 pass
- 
+
 
 def base_analysis(vehicle, sub_analyses):
-    """
-    Build one RCAIDE.Framework.Analyses.Vehicle from a list of sub-analysis
-    type descriptors.
-
-    Each sub-analysis is instantiated from its __type__ string so that the
-    class __init__ wires up all default settings and process trees correctly.
-    Any settings that differed from the class defaults are then applied by
-    walking the saved diff tree directly.
-    """
     analysis = RCAIDE.Framework.Analyses.Vehicle()
     analysis['vehicle'] = vehicle
-
     for entry in sub_analyses:
         ts = entry.get('__type__', '')
         if not ts:
@@ -304,38 +249,25 @@ def base_analysis(vehicle, sub_analyses):
         try:
             sub = cls()
             sub['vehicle'] = vehicle
-
             diff_raw = entry.get('diff', {})
             if diff_raw:
                 diff_clean = _strip_unit_arguments(diff_raw)
                 _apply_analysis_settings(sub, diff_clean)
-
             analysis.append(sub)
         except Exception:
             pass
-
     return analysis
 
 
 def analyses_setup(analysis_data, configurations):
-    """
-    Rebuild a fully typed Analysis.Container from serialised analysis_data.
-
-    For each entry the matching Config is located and passed to base_analysis,
-    which re-instantiates every sub-analysis from its __type__ string.
-    """
     from RCAIDE.Framework.Analyses.Analysis import Analysis
-
     analyses = Analysis.Container()
-
     for entry in analysis_data:
         if not isinstance(entry, dict):
             continue
-
         tag = entry.get('tag', '')
         if not tag:
             continue
-
         config = None
         for cfg_tag, cfg in configurations.items():
             if cfg_tag == tag or getattr(cfg, 'tag', '') == tag:
@@ -343,19 +275,13 @@ def analyses_setup(analysis_data, configurations):
                 break
         if config is None:
             continue
-
         analysis     = base_analysis(config, entry.get('sub_analyses', []))
         analysis.tag = tag
         analyses[tag] = analysis
-
     return analyses
 
 
 def _apply_segment_settings(obj, data_dict):
-    """
-    Walk a stripped dict and apply every leaf value to a segment object.
-    Skips meta-keys that are handled separately during reconstruction.
-    """
     _skip = frozenset({'__type__', 'tag', 'config_tag', 'analyses', 'vehicle', 'process'})
     for key, value in data_dict.items():
         if key in _skip:
@@ -377,23 +303,12 @@ def _apply_segment_settings(obj, data_dict):
 
 
 def missions_setup(mission_data, analyses=None):
-    """
-    Rebuild a fully parameterised Missions container from serialised mission_data.
-
-    Each segment is instantiated by __type__, all saved parameters (altitude,
-    speed, flight_dynamics flags, assigned_control_variables, …) are restored,
-    and segment.analyses is extended with the correct configuration's analysis
-    vehicle using the stored 'config_tag'.
-    """
     missions = RCAIDE.Framework.Mission.Missions()
-
     for entry in mission_data:
         if not isinstance(entry, dict):
             continue
-
         clean       = _strip_unit_arguments(entry)
         mission_tag = clean.get('mission_tag', clean.get('tag', 'mission'))
-
         ts          = clean.get('__type__', '')
         mission_cls = _class_for_type_string(ts) if ts else None
         try:
@@ -401,12 +316,10 @@ def missions_setup(mission_data, analyses=None):
         except Exception:
             mission = RCAIDE.Framework.Mission.Sequential_Segments()
         mission.tag = mission_tag
-
         for seg_info in clean.get('segments', []):
             seg_tag      = seg_info.get('tag', '')
             seg_type_str = seg_info.get('__type__', '')
             config_tag   = seg_info.get('config_tag', '')
-
             seg = None
             if seg_type_str:
                 cls = _class_for_type_string(seg_type_str)
@@ -416,48 +329,31 @@ def missions_setup(mission_data, analyses=None):
                         seg.tag = seg_tag
                     except Exception:
                         seg = None
-
             if seg is None:
                 seg     = RCAIDE.Framework.Mission.Segments.Segment()
                 seg.tag = seg_tag
-
-            # Restore all saved parameters
             _apply_segment_settings(seg, seg_info)
-
-            # Re-attach the correct analyses config
             if config_tag and analyses is not None:
                 try:
                     seg.analyses.extend(analyses[config_tag])
                 except Exception:
                     pass
-
             mission.append_segment(seg)
-
         missions.append(mission)
-
     return missions
 
 
-# ----------------------------------------------------------------------------------------------------------------------
-#  Public API
-# ----------------------------------------------------------------------------------------------------------------------
-
-def import_rcaide_data(filename):
-    """
-    Load a RCAIDE study previously saved by export_rcaide_data.
-
-    The base vehicle is reconstructed with full type restoration.
-    Each configuration is rebuilt by creating a Config(base_vehicle) and
-    applying only the stored diff — no full vehicle copy is needed per config.
+def import_data(filename):
+    """Load a RCAIDE study previously saved by RCAIDE.io.export.
 
     Parameters
     ----------
-    filename : str  (reads from  filename + '.json')
+    filename : str  (reads from filename + '.json')
 
     Returns
     -------
     result : RCAIDE.Framework.Core.Data
-        Attributes: vehicle, configurations, analyses, missions, propulsor_names
+        Attributes: vehicle, configurations, analyses, missions
     """
     with open(filename + '.json') as f:
         raw = json.load(f, object_pairs_hook=OrderedDict)
@@ -465,12 +361,11 @@ def import_rcaide_data(filename):
     vehicle        = vehicle_setup(raw['rcaide_vehicle'])
     configurations = configs_setup(raw.get('config_data', []), vehicle)
     analyses       = analyses_setup(raw.get('analysis_data', []), configurations)
-    missions       = missions_setup(raw.get('mission_data', []), analyses) 
+    missions       = missions_setup(raw.get('mission_data', []), analyses)
 
-    result                 = Data()
-    result.vehicle         = vehicle
-    result.configurations  = configurations
-    result.analyses        = analyses
-    result.missions        = missions 
-
+    result                = Data()
+    result.vehicle        = vehicle
+    result.configurations = configurations
+    result.analyses       = analyses
+    result.missions       = missions
     return result

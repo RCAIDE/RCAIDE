@@ -9,9 +9,8 @@ import RCAIDE
 from RCAIDE.Framework.Core import Units ,  Data
 from RCAIDE.Library.Plots             import *       
 
-# python imports 
+# python imports
 import numpy as np
-import pylab as plt 
 import sys
 import os
 
@@ -30,13 +29,9 @@ from Boeing_737    import configs_setup as configs_setup
 
 #from RCAIDE.Library.Methods.Performance.compute_load_and_trim_diagram        import compute_load_and_trim_diagram
  
-from RCAIDE.export_rcaide_data import export_rcaide_data
-from RCAIDE.import_rcaide_data import import_rcaide_data
-# python imports 
-import numpy as np
+from RCAIDE.Input_Output import export, import_data
 from copy import deepcopy
 import matplotlib.pyplot as plt
-import os
 import shutil
 
 # ----------------------------------------------------------------------
@@ -192,13 +187,13 @@ def main():
     _script_dir = os.path.dirname(os.path.abspath(__file__))
     _test_file  = os.path.join(_script_dir, 'RCAIDE_JSON_Test')
 
-    export_rcaide_data(vehicle=vehicle,
-                       configurations=configs,
-                       analyses=analyses,
-                       missions=missions,
-                       filename=_test_file)
+    export(vehicle=vehicle,
+           configurations=configs,
+           analyses=analyses,
+           missions=missions,
+           filename=_test_file)
 
-    RCAIDE_JSON_Test = import_rcaide_data(_test_file)
+    RCAIDE_JSON_Test = import_data(_test_file)
     compare_rcaide_data(vehicle, configs, analyses, missions, RCAIDE_JSON_Test) 
 
     
